@@ -3,9 +3,9 @@
     class="button-color"
     rounded
     color-text="white"
-    @click="buttonMethod"
     :type="buttonType"
     :disabled="buttonDisabled"
+    @click="buttonMethod"
   >
     <slot></slot>
   </v-btn>
