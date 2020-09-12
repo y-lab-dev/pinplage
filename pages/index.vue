@@ -1,5 +1,6 @@
 <template>
   <div>
+    <nuxt-link to="login">ログイン</nuxt-link>
     <nuxt-link to="/timeline">タイムライン</nuxt-link>
     <nuxt-link to="/search">検索</nuxt-link>
     <nuxt-link to="/post">投稿</nuxt-link>

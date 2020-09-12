@@ -1,6 +1,5 @@
 <template>
   <v-btn
-    class="button-color"
     rounded
     color-text="white"
     :type="buttonType"
@@ -24,7 +23,7 @@ export default {
     },
     buttonDisabled: {
       type: Boolean,
-      default: false,
+      required: true,
     },
   },
 };
