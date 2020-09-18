@@ -11,7 +11,7 @@ export const getters = {
     return state.user.uid;
   },
   isAuthenticated(state) {
-    return state.isLogin;
+    return state.user.isLogin;
   },
 };
 
