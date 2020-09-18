@@ -1,28 +1,23 @@
 <template>
-  <div class="input-place">
-    <input
-      class="input-text"
-      :type="inputType"
-      :value="inputValue"
-      :placeholder="inputPlaceholder"
+  <div class="textarea-place">
+    <textarea
+      color="#61d4b3"
+      class="textarea-text"
+      :value="textareaValue"
+      :placeholder="textareaPlaceholder"
       @input="$emit('input', $event.target.value)"
-    />
+    ></textarea>
   </div>
 </template>
 <script>
 export default {
   props: {
-    inputType: {
+    textareaValue: {
       type: String,
       required: true,
       default: '',
     },
-    inputValue: {
-      type: String,
-      required: true,
-      default: '',
-    },
-    inputPlaceholder: {
+    textareaPlaceholder: {
       type: String,
       required: true,
       default: '',
@@ -31,10 +26,10 @@ export default {
 };
 </script>
 <style scoped>
-.input-place {
+.textarea-place {
   text-align: center;
 }
-.input-text {
+.textarea-text {
   border: 1px solid #61d4b3;
   width: 300px;
   outline: none;
