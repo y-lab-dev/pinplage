@@ -36,7 +36,6 @@ export default {
 }
 .input-text {
   border: 1px solid #61d4b3;
-  border-radius: 25px;
   width: 300px;
   outline: none;
 }
