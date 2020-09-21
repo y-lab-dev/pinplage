@@ -59,8 +59,30 @@ export default {
       contentPlaceholder: '内容',
       name: '',
       content: '',
-      postValidation: false,
+      nameCompleted: false,
+      contentCompleted: false,
+      postValidation: true,
     };
+  },
+  watch: {
+    name(val) {
+      if (val.length === 0) {
+        this.nameCompleted = false;
+        this.check();
+      } else {
+        this.nameCompleted = true;
+        this.check();
+      }
+    },
+    content(val) {
+      if (val.length === 0) {
+        this.contentCompleted = false;
+        this.check();
+      } else {
+        this.contentCompleted = true;
+        this.check();
+      }
+    },
   },
   methods: {
     post() {
@@ -81,6 +103,13 @@ export default {
         .catch((err) => {
           alert(err);
         });
+    },
+    check() {
+      if (this.nameCompleted === true && this.contentCompleted === true) {
+        this.postValidation = false;
+      } else {
+        this.postValidation = true;
+      }
     },
   },
 };
