@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation class="bottom-navigation" color="#78dabe">
+  <v-bottom-navigation :app="true" grow fixed class="bottom-navigation" color="#78dabe">
     <v-btn
       v-for="item in tabItems"
       :key="item.link"
@@ -38,6 +38,7 @@ export default {
 .active-tab {
   color: yellow;
 }
+
 .bottom-navigation {
   border-radius: 5px 6px 0 0;
 }

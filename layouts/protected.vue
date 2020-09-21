@@ -1,12 +1,10 @@
 <template>
   <v-app>
     <top-header />
-    <v-main>
+    <v-main class="main-layout-styles">
       <nuxt />
     </v-main>
-    <v-footer class="pa-0" fixed color="white">
-      <bottom-tab />
-    </v-footer>
+    <bottom-tab />
   </v-app>
 </template>
 <script>
@@ -22,5 +20,8 @@ export default {
 <style scoped>
 #app {
   font-family: 'Kosugi', sans-serif;
+}
+.main-layout-styles {
+  height: 100%;
 }
 </style>
