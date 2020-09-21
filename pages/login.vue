@@ -2,30 +2,31 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" md="8" sm="6">
-        <v-card>
-          <v-card-text>
-            <div class="title">Pin Plage ログイン</div>
-            <input-text
-              :input-type="inputType"
-              :input-placeholder="mailPlaceholder"
-              :input-value="email"
-              @input="email = $event"
-            ></input-text>
-            <input-text
-              :input-type="inputType"
-              :input-placeholder="passwordPlaceholder"
-              :input-value="password"
-              @input="password = $event"
-            ></input-text>
-            <sign-in-button
-              :button-method="login"
-              :button-type="buttonType"
-              :button-disabled="loginValidation"
-              >ログイン</sign-in-button
-            >
-            <nuxt-link to="reset_password">パスワードを忘れた方へ</nuxt-link>
-          </v-card-text>
-        </v-card>
+        <div class="title">Pin Plage ログイン</div>
+        <input-text
+          :input-type="inputType"
+          :input-placeholder="mailPlaceholder"
+          :input-value="email"
+          @input="email = $event"
+        ></input-text>
+        <div class="validation-email">{{ emailValidation }}</div>
+
+        <input-text
+          :input-type="inputType"
+          :input-placeholder="passwordPlaceholder"
+          :input-value="password"
+          @input="password = $event"
+        ></input-text>
+        <div class="validation-password">{{ passwordValidation }}</div>
+
+        <sign-in-button
+          :button-method="login"
+          :button-type="buttonType"
+          :button-disabled="loginValidation"
+          >ログイン</sign-in-button
+        >
+        <nuxt-link to="resetPassword">パスワードを忘れた方へ</nuxt-link>
+        <nuxt-link to="signUp">新規登録</nuxt-link>
       </v-col>
     </v-row>
   </v-container>
@@ -48,8 +49,44 @@ export default {
       passwordPlaceholder: 'パスワード',
       email: '',
       password: '',
-      loginValidation: false,
+      emailValidation: '',
+      passwordValidation: '',
+      completedEmail: false,
+      completedPassword: false,
+      loginValidation: true,
     };
+  },
+  watch: {
+    email(val) {
+      if (val.length === 0) {
+        this.emailValidation = 'メールアドレスを入力してください';
+        this.completedEmail = false;
+        this.check();
+      } else if (
+        !new RegExp(
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com/
+        ).test(val)
+      ) {
+        this.emailValidation = '静大メールを入力してください';
+        this.completedEmail = false;
+        this.check();
+      } else {
+        this.emailValidation = '';
+        this.completedEmail = true;
+        this.check();
+      }
+    },
+    password(val) {
+      if (val.length >= 6) {
+        this.passwordValidation = '';
+        this.completedPassword = true;
+        this.check();
+      } else {
+        this.passwordValidation = '英数字６文字以上で入力してください';
+        this.completedPassword = false;
+        this.check();
+      }
+    },
   },
   methods: {
     login() {
@@ -60,12 +97,11 @@ export default {
           alert('ログイン成功');
           firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-              console.log('user: ', user);
               this.$store.dispatch('user/login', {
                 uid: user.uid,
                 email: user.email,
               });
-              this.$router.push({ name: 'mypage' });
+              this.$router.push({ name: 'timeline' });
             }
           });
         })
@@ -73,11 +109,26 @@ export default {
           alert(error);
         });
     },
+    check() {
+      if (this.completedEmail === true && this.completedPassword === true) {
+        this.loginValidation = false;
+      } else {
+        this.loginValidation = true;
+      }
+    },
   },
 };
 </script>
 <style scoped>
 .title {
   text-align: center;
+}
+.validation-email {
+  text-align: center;
+  color: red;
+}
+.validation-password {
+  text-align: center;
+  color: red;
 }
 </style>

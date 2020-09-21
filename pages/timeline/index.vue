@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs color="#61d4b3" class="tabs" v-model="model" grow center-active show-arrows>
+    <v-tabs v-model="model" color="#61d4b3" class="tabs" grow center-active show-arrows>
       <v-tab href="#tab-1">スレッド</v-tab>
       <v-tab href="#tab-2">知恵袋 </v-tab>
       <v-tab href="#tab-3">アルバイト</v-tab>
