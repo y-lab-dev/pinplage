@@ -1,12 +1,10 @@
 <template>
   <v-app>
     <top-header />
-    <v-main>
+    <v-main style="height: 100%">
       <nuxt />
     </v-main>
-    <v-footer class="pa-0" fixed color="white">
-      <bottom-tab />
-    </v-footer>
+    <bottom-tab />
   </v-app>
 </template>
 <script>

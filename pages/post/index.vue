@@ -1,13 +1,13 @@
 <template>
-  <div class="header-footer">
-    <v-container>
-      <v-row justify="center">
+  <div class="post-items">
+    <v-container class="py-0 post-items" fluid>
+      <v-row class="post-items" align-content="center">
         <v-col cols="6">
           <nuxt-link to="post/threadPost" class="card-title">
             <v-card>
               <v-img
                 class="white--text align-end"
-                height="150px"
+                height="24vh"
                 src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
               >
                 <v-card-title>スレッド</v-card-title>
@@ -20,7 +20,7 @@
             <v-card>
               <v-img
                 class="white--text align-end"
-                height="150px"
+                height="24vh"
                 src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
               >
                 <v-card-title>知恵袋</v-card-title>
@@ -33,7 +33,7 @@
             <v-card>
               <v-img
                 class="white--text align-end"
-                height="150px"
+                height="24vh"
                 src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
               >
                 <v-card-title>イベント</v-card-title>
@@ -46,7 +46,7 @@
             <v-card>
               <v-img
                 class="white--text align-end"
-                height="150px"
+                height="24vh"
                 src="https://cdn.vuetifyjs.com/images/cards/road.jpg"
               >
                 <v-card-title>周辺施設</v-card-title>
@@ -59,10 +59,10 @@
             <v-card>
               <v-img
                 class="white--text align-end"
-                height="150px"
+                height="24vh"
                 src="https://cdn.vuetifyjs.com/images/cards/plane.jpg"
               >
-                <v-card-title> アルバイト</v-card-title>
+                <v-card-title>アルバイト</v-card-title>
               </v-img>
             </v-card>
           </nuxt-link>
@@ -77,9 +77,8 @@ export default {
 };
 </script>
 <style scoped>
-.header-footer {
-  padding-top: 60px;
-  padding-bottom: 60px;
+.post-items {
+  height: 100%;
 }
 .card-title {
   color: aliceblue;
