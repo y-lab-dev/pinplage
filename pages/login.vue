@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row justify="center">
+    <v-row>
       <v-col cols="12" md="8" sm="6">
         <div class="title">Pin Plage ログイン</div>
         <input-text
@@ -93,10 +93,12 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
-        .then((user) => {
-          alert('ログイン成功');
+        .then(() => {
           firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
+            if (!user.emailVerified) {
+              alert('認証メールを確認してください');
+            } else {
+              alert('ログイン成功');
               this.$store.dispatch('user/login', {
                 uid: user.uid,
                 email: user.email,
@@ -106,7 +108,8 @@ export default {
           });
         })
         .catch((error) => {
-          alert(error);
+          alert('メールアドレスまたはパスワードが違います');
+          console.log(error);
         });
     },
     check() {
