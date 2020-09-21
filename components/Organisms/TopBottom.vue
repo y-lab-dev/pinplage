@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation class="bottom-navigation" color="#f00">
+  <v-bottom-navigation class="bottom-navigation" color="#78dabe">
     <v-btn
       v-for="item in tabItems"
       :key="item.link"
@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: 'TopButom',
   data() {
     return {
       tabItems: [
@@ -27,9 +28,6 @@ export default {
         { name: 'マイページ', link: '/mypage', icon: 'mdi-account-outline' },
       ],
     };
-  },
-  created() {
-    console.log(this.$nuxt.$route.path);
   },
 };
 </script>
