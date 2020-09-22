@@ -40,9 +40,12 @@ export default {
 }
 
 .bottom-navigation {
-  border-radius: 5px 6px 0 0;
+  border-radius: 15px 15px 0 0;
 }
 .v-item-group.v-bottom-navigation .v-btn {
   min-width: 20%;
+}
+.theme--light.v-btn:hover::before {
+  opacity: 0 !important;
 }
 </style>
