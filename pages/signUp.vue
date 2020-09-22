@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row align-content="center">
       <v-col cols="12" md="8" sm="6">
-        <div class="title">Pin Plage ログイン</div>
+        <div class="title">Pin Plage 新規登録</div>
         <input-text
           :input-type="inputType"
           :input-placeholder="mailPlaceholder"
@@ -19,27 +19,26 @@
         ></input-text>
         <div class="validation-password">{{ passwordValidation }}</div>
 
-        <sign-in-button
-          :button-method="login"
+        <sign-up-button
+          :button-method="signUp"
           :button-type="buttonType"
           :button-disabled="loginValidation"
-          >ログイン</sign-in-button
+          >新規登録</sign-up-button
         >
-        <nuxt-link to="resetPassword">パスワードを忘れた方へ</nuxt-link>
-        <nuxt-link to="signUp">新規登録</nuxt-link>
+        <nuxt-link to="login">ログイン</nuxt-link>
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
 import InputText from '~/components/atoms/AppInput';
-import SignInButton from '~/components/atoms/AppButton';
+import SignUpButton from '~/components/atoms/AppButton';
 import firebase from '~/plugins/firebase';
 
 export default {
   components: {
     InputText,
-    SignInButton,
+    SignUpButton,
   },
   data() {
     return {
@@ -89,28 +88,39 @@ export default {
     },
   },
   methods: {
-    login() {
+    signUp() {
+      const that = this;
       firebase
         .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(() => {
-          firebase.auth().onAuthStateChanged((user) => {
-            if (!user.emailVerified) {
-              alert('認証メールを確認してください');
-            } else {
-              alert('ログイン成功');
-              this.$store.dispatch('user/login', {
-                uid: user.uid,
-                email: user.email,
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then((user) => {
+          firebase.auth().languageCode = 'ja';
+          user.user.sendEmailVerification().then(() => {
+            firebase
+              .auth()
+              .onAuthStateChanged((user) => {
+                if (user) {
+                  that.saveUserData(user);
+                }
+              })
+              .then(() => {
+                that.$router.push({ name: 'timeline' });
               });
-              this.$router.push({ name: 'timeline' });
-            }
           });
         })
         .catch((error) => {
-          alert('メールアドレスまたはパスワードが違います');
-          console.log(error);
+          alert(error.message);
         });
+    },
+    saveUserData(val) {
+      const user = firebase.firestore().collection('users');
+
+      user.doc(val.uid).set({
+        email: val.email,
+        name: '',
+        icon: '',
+        userToken: '',
+      });
     },
     check() {
       if (this.completedEmail === true && this.completedPassword === true) {

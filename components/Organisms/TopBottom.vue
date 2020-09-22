@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation class="bottom-navigation" color="#f00">
+  <v-bottom-navigation :app="true" grow fixed class="bottom-navigation" color="#78dabe">
     <v-btn
       v-for="item in tabItems"
       :key="item.link"
@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: 'TopButom',
   data() {
     return {
       tabItems: [
@@ -28,9 +29,6 @@ export default {
       ],
     };
   },
-  created() {
-    console.log(this.$nuxt.$route.path);
-  },
 };
 </script>
 <style scoped>
@@ -40,6 +38,7 @@ export default {
 .active-tab {
   color: yellow;
 }
+
 .bottom-navigation {
   border-radius: 5px 6px 0 0;
 }
