@@ -46,6 +46,7 @@ const minute = Today.getMinutes();
 const dateTime = year + '-' + month + '-' + day + '-' + hour + ':' + minute;
 
 export default {
+  layout: 'protected',
   components: {
     InputText,
     InputTextarea,
