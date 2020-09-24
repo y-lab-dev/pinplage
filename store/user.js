@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 export const state = () => ({
   user: {
     uid: '',
@@ -27,7 +29,7 @@ export const mutations = {
 
 export const actions = {
   login({ commit }, payload) {
-    console.log(payload);
+    Cookies.set('accessToken', payload.token, { expires: 365, secure: true, httpOnly: true });
     commit('getData', {
       uid: payload.uid,
       email: payload.email,
