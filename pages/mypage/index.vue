@@ -23,13 +23,7 @@
               <v-list-item class="justify-center">
                 <v-row class="white--text mx-auto">
                   <v-col class="white--text text-center">
-                    <p
-                      v-if="isCreated"
-                      class="user-name bold"
-                      :class="[
-                        $vuetify.breakpoint.smAndDown ? 'mobile-font-size' : 'desktop-font-size',
-                      ]"
-                    >
+                    <p class="user-name bold mobile-font-size">
                       {{ userInfo.userName }}
                     </p>
                   </v-col>
@@ -101,7 +95,6 @@ export default {
           ['#FFFB7D', '#85FFBD'],
         ],
       },
-      isCreated: false,
       userTab: null,
       items: ['投稿一覧', 'お気に入り', 'pp獲得履歴'],
       text:
@@ -123,12 +116,15 @@ export default {
         return 50;
       }
     },
+    userEmail() {
+      return this.$store.getters['user/email'];
+    },
   },
   created() {
     const that = this;
     const userData = firebase.firestore().collection('userData');
     userData
-      .doc('kaji.takahiro.17@shizuoka.ac.jp')
+      .doc(that.userEmail)
       .get()
       .then((doc) => {
         that.userInfo = doc.data();
