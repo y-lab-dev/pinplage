@@ -3,14 +3,14 @@
     <v-container class="py-0 post-items" fluid>
       <v-row class="post-items" align-content="center">
         <v-col cols="6">
-          <nuxt-link to="post/threadPost" class="card-title">
+          <nuxt-link to="post/eventPost" class="card-title">
             <v-card>
               <v-img
-                class="white--text align-end"
+                class="white--text"
                 height="24vh"
-                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                :src="require('~/assets/post/eventPost.png')"
               >
-                <v-card-title>スレッド</v-card-title>
+                <v-card-title class="text-subtitle-1 pt-3">イベント</v-card-title>
               </v-img>
             </v-card>
           </nuxt-link>
@@ -19,37 +19,24 @@
           <nuxt-link to="post/wisdomPost" class="card-title">
             <v-card>
               <v-img
-                class="white--text align-end"
+                class="white--text"
                 height="24vh"
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                :src="require('~/assets/post/wisdomPost.png')"
               >
-                <v-card-title>知恵袋</v-card-title>
+                <v-card-title class="text-subtitle-1 pt-3">知恵袋</v-card-title>
               </v-img>
             </v-card>
           </nuxt-link>
         </v-col>
         <v-col cols="12">
-          <nuxt-link to="post/eventPost" class="card-title">
+          <nuxt-link to="post/threadPost" class="card-title">
             <v-card>
               <v-img
-                class="white--text align-end"
+                class="white--text"
                 height="24vh"
-                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                :src="require('~/assets/post/threadPost.png')"
               >
-                <v-card-title>イベント</v-card-title>
-              </v-img>
-            </v-card>
-          </nuxt-link>
-        </v-col>
-        <v-col cols="6">
-          <nuxt-link to="post/placePost" class="card-title">
-            <v-card>
-              <v-img
-                class="white--text align-end"
-                height="24vh"
-                src="https://cdn.vuetifyjs.com/images/cards/road.jpg"
-              >
-                <v-card-title>周辺施設</v-card-title>
+                <v-card-title class="text-subtitle-1 pt-2">スレッド</v-card-title>
               </v-img>
             </v-card>
           </nuxt-link>
@@ -58,11 +45,24 @@
           <nuxt-link to="post/parttimeJobPost" class="card-title">
             <v-card>
               <v-img
-                class="white--text align-end"
+                class="white--text"
                 height="24vh"
-                src="https://cdn.vuetifyjs.com/images/cards/plane.jpg"
+                :src="require('~/assets/post/parttimeJobPost.png')"
               >
-                <v-card-title>アルバイト</v-card-title>
+                <v-card-title class="text-subtitle-1 pt-3">アルバイト</v-card-title>
+              </v-img>
+            </v-card>
+          </nuxt-link>
+        </v-col>
+        <v-col cols="6">
+          <nuxt-link to="post/placePost" class="card-title">
+            <v-card>
+              <v-img
+                class="white--text"
+                height="24vh"
+                :src="require('~/assets/post/placePost.png')"
+              >
+                <v-card-title class="text-subtitle-1 pt-3">周辺施設</v-card-title>
               </v-img>
             </v-card>
           </nuxt-link>

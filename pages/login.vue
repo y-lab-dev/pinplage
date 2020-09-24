@@ -94,14 +94,16 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then(() => {
-          firebase.auth().onAuthStateChanged((user) => {
+          firebase.auth().onAuthStateChanged(async (user) => {
             if (!user.emailVerified) {
               alert('認証メールを確認してください');
             } else {
+              const token = await firebase.auth().currentUser.getIdToken(true);
               alert('ログイン成功');
               this.$store.dispatch('user/login', {
                 uid: user.uid,
                 email: user.email,
+                token,
               });
               this.$router.push({ name: 'timeline' });
             }
