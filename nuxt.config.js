@@ -32,23 +32,21 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [
-      {
-        rel: 'icon',
-        type: 'image/x-icon',
-        href: '/favicon.ico',
-      },
-    ],
+    link: [{
+      rel: 'icon',
+      type: 'image/x-icon',
+      href: '/favicon.ico'
+    }],
   },
   /*
    ** Global CSS
    */
-  css: ['@/assets/fontStyles.css', '@/assets/reset.css'],
+  css: ['@/assets/fontStyles.css', '@/assets/reset.css', '@/assets/pageTransition.css'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/firebase.js'],
+  plugins: ['@/plugins/firebase.js', '@/plugins/localstrage.js', '@/plugins/vue-instantsearch.js'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -102,5 +100,7 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    transpile: ['vue-instantsearch', 'instantsearch.js/es'],
+  },
 };
