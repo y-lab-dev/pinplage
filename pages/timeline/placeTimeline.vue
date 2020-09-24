@@ -18,12 +18,12 @@
             {{ item.name }}
           </v-card-title>
           <div @click="toReviewDetail(item)">
-            <Rating
-              :readOnly="true"
-              :starSize="20"
-              :ratingResult="item.rating"
+            <rating
+              :read-only="true"
+              :star-size="20"
+              :rating-result="item.rating"
               :increment="1"
-            ></Rating>
+            ></rating>
             <v-card-subtitle>{{ item.comment }}</v-card-subtitle>
             <v-list-item>
               <v-list-item-content class="date">

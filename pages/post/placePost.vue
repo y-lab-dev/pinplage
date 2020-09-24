@@ -12,13 +12,13 @@
               type="text"
               placeholder="店名を入力してください"
             />
-            <Rating
-              :readOnly="false"
-              :starSize="40"
-              :ratingResult="0"
-              @input="setRating"
+            <rating
+              :read-only="false"
+              :star-size="40"
+              :rating-result="0"
               :increment="1"
-            ></Rating>
+              @input="setRating"
+            ></rating>
             <input-textarea
               :textarea-placeholder="contentPlaceholder"
               :textarea-value="content"
