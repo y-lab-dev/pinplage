@@ -2,12 +2,12 @@
   <div>
     <v-card>
       <v-card-title> {{ reviewArray.name }} </v-card-title>
-      <Rating
-        :readOnly="true"
-        :starSize="20"
-        :ratingResult="reviewArray.rating"
+      <rating
+        :read-only="true"
+        :star-size="20"
+        :rating-result="reviewArray.rating"
         :increment="1"
-      ></Rating>
+      ></rating>
       <v-card-subtitle>{{ reviewArray.comment }}</v-card-subtitle>
       <v-list-item>
         <v-list-item-content class="date"> {{ reviewArray.date }} </v-list-item-content>

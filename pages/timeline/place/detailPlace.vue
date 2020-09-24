@@ -6,12 +6,12 @@
         {{ place.name }}
       </v-card-title>
       <v-card-subtitle>{{ place.vincinty }}</v-card-subtitle>
-      <Rating
-        :readOnly="true"
-        :starSize="20"
-        :ratingResult="place.rating"
+      <rating
+        :read-only="true"
+        :star-size="20"
+        :rating-result="place.rating"
         :increment="0.1"
-      ></Rating>
+      ></rating>
       <img class="photo" :src="place.imgUrl" />
 
       <div ref="map" class="main" />
