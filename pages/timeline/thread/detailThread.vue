@@ -72,7 +72,6 @@ export default {
   },
   data() {
     return {
-      model: 'tab-1',
       inputType: 'text',
       buttonType: 'submit',
       namePlaceholder: '名前（匿名）',
