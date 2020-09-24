@@ -25,7 +25,9 @@
       </v-tab-item>
       <v-tab-item value="tab-2"></v-tab-item>
       <v-tab-item value="tab-3"></v-tab-item>
-      <v-tab-item value="tab-4"></v-tab-item>
+      <v-tab-item value="tab-4">
+        <Timeline-place></Timeline-place>
+      </v-tab-item>
       <v-tab-item value="tab-5"></v-tab-item>
       <v-tab-item value="tab-6"></v-tab-item>
     </v-tabs-items>
@@ -33,10 +35,14 @@
 </template>
 <script>
 import firebase from '~/plugins/firebase';
+import TimelinePlace from '~/components/Organisms/TimelinePlace';
 
 const threads = firebase.firestore().collection('threads');
 export default {
   layout: 'protected',
+  components: {
+    TimelinePlace,
+  },
   data() {
     return {
       model: 'tab-1',
