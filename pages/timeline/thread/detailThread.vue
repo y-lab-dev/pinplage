@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-card v-for="item in threadArray" :key="item.id" :elevation="2">
-      <v-card-title>
-        {{ item.content }}
-      </v-card-title>
+      <v-card-title>{{ item.content }} </v-card-title>
       <v-card-subtitle>{{ item.name }}</v-card-subtitle>
       <v-list-item>
         <v-list-item-content class="date">
@@ -25,14 +23,12 @@
         :button-method="reply"
         :button-type="buttonType"
         :button-disabled="postValidation"
-        >投稿</post-button
+        >返信</post-button
       >
     </v-card>
     <template v-if="isReply">
-      <v-card v-for="item in replyArray" :key="item.id" :elevation="2">
-        <v-card-title>
-          {{ item.content }}
-        </v-card-title>
+      <v-card v-for="item in replyArray" :key="item.id" :elevation="1">
+        <v-card-title class="text-subtitle-2"> {{ item.number }}:{{ item.content }} </v-card-title>
         <v-card-subtitle>{{ item.name }}</v-card-subtitle>
         <v-list-item>
           <v-list-item-content class="date">
@@ -98,24 +94,27 @@ export default {
         alert(err);
       });
 
+    let i = 1;
     threads
       .doc(that.$store.state.thread.threadId)
       .collection('reply')
+      .orderBy('createdAt', 'asc')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          console.log(doc.data());
           if (doc.exists) {
             that.replyArray = [
               ...that.replyArray,
               {
                 id: doc.id,
+                number: i,
                 name: doc.data().name,
                 content: doc.data().content,
                 date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
               },
             ];
             that.isReply = true;
+            i++;
           }
         });
       })
