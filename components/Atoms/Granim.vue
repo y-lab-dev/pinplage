@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Granim from 'Granim';
+import Granim from 'granim';
 
 export default {
   name: 'Granim',

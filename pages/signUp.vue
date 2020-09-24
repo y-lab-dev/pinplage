@@ -31,8 +31,8 @@
   </v-container>
 </template>
 <script>
-import InputText from '~/components/atoms/AppInput';
-import SignUpButton from '~/components/atoms/AppButton';
+import InputText from '~/components/Atoms/AppInput';
+import SignUpButton from '~/components/Atoms/AppButton';
 import firebase from '~/plugins/firebase';
 
 export default {

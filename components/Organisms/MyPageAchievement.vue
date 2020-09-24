@@ -22,7 +22,7 @@ export default {
   computed: {
     cardInfoTitleSize() {
       if (this.$vuetify.breakpoint.smAndDown) {
-        return 90;
+        return 70;
       } else {
         return 50;
       }

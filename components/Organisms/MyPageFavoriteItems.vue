@@ -1,0 +1,11 @@
+<template>
+  <div>
+    <v-list>
+      <v-list-items>
+        <v-list-item>aseddfasdf</v-list-item>
+        <v-list-item>aseddfasdf</v-list-item>
+        <v-list-item>aseddfasdf</v-list-item>
+      </v-list-items>
+    </v-list>
+  </div>
+</template>
