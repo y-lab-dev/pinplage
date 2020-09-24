@@ -34,16 +34,6 @@ import InputTextarea from '~/components/Atoms/AppTextarea';
 import PostButton from '~/components/Atoms/AppButton';
 import firebase from '~/plugins/firebase';
 const threads = firebase.firestore().collection('threads');
-const timestamp = firebase.firestore.Timestamp.now();
-const Today = new Date();
-const year = Today.getFullYear();
-let month = '0' + (Today.getMonth() + 1);
-month = month.slice(-2);
-let day = '0' + Today.getDate();
-day = day.slice(-2);
-const hour = Today.getHours();
-const minute = Today.getMinutes();
-const dateTime = year + '-' + month + '-' + day + '-' + hour + ':' + minute;
 
 export default {
   layout: 'protected',
@@ -64,6 +54,11 @@ export default {
       contentCompleted: false,
       postValidation: true,
     };
+  },
+  computed: {
+    uid() {
+      return this.$store.getters['user/uid'];
+    },
   },
   watch: {
     name(val) {
@@ -88,6 +83,7 @@ export default {
   methods: {
     post() {
       const that = this;
+      const timestamp = firebase.firestore.Timestamp.now();
 
       threads
         .doc()
@@ -96,7 +92,7 @@ export default {
           content: that.content,
           createdAt: timestamp,
           read: true,
-          date: dateTime,
+          uid: that.uid,
         })
         .then(() => {
           that.$router.push({ name: 'timeline' });

@@ -10,6 +10,7 @@
   </div>
 </template>
 <script>
+import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 
 const threads = firebase.firestore().collection('threads');
@@ -25,7 +26,6 @@ export default {
   },
   created() {
     const that = this;
-
     threads
       .orderBy('createdAt', 'desc')
       .get()
@@ -37,7 +37,7 @@ export default {
               id: doc.id,
               name: doc.data().name,
               content: doc.data().content,
-              date: doc.data().date,
+              date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
             },
           ];
         });

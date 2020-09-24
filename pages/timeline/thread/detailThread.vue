@@ -44,24 +44,13 @@
   </div>
 </template>
 <script>
+import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import InputText from '~/components/Atoms/AppInput';
 import InputTextarea from '~/components/Atoms/AppTextarea';
 import PostButton from '~/components/Atoms/AppButton';
 
 const threads = firebase.firestore().collection('threads');
-const timestamp = firebase.firestore.Timestamp.now();
-const Today = new Date();
-const year = Today.getFullYear();
-let month = '0' + (Today.getMonth() + 1);
-month = month.slice(-2);
-let day = '0' + Today.getDate();
-day = day.slice(-2);
-let hour = '0' + Today.getHours();
-hour = hour.slice(-2);
-let minute = '0' + Today.getMinutes();
-minute = minute.slice(-2);
-const dateTime = year + '-' + month + '-' + day + '-' + hour + ':' + minute;
 
 export default {
   layout: 'protected',
@@ -84,6 +73,11 @@ export default {
       postValidation: false,
     };
   },
+  computed: {
+    uid() {
+      return this.$store.getters['user/uid'];
+    },
+  },
   created() {
     const that = this;
     threads
@@ -96,7 +90,7 @@ export default {
             id: doc.id,
             name: doc.data().name,
             content: doc.data().content,
-            date: doc.data().date,
+            date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
           },
         ];
       })
@@ -118,7 +112,7 @@ export default {
                 id: doc.id,
                 name: doc.data().name,
                 content: doc.data().content,
-                date: doc.data().date,
+                date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
               },
             ];
             that.isReply = true;
@@ -132,6 +126,8 @@ export default {
   methods: {
     reply() {
       const that = this;
+      const timestamp = firebase.firestore.Timestamp.now();
+
       threads
         .doc(that.$store.state.thread.threadId)
         .collection('reply')
@@ -141,7 +137,7 @@ export default {
           content: that.content,
           createdAt: timestamp,
           read: true,
-          date: dateTime,
+          uid: that.uid,
         })
         .then(() => {
           that.$router.push({ name: 'timeline' });
