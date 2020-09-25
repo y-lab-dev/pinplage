@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-card v-for="item in threadArray" :key="item.id" :elevation="2">
+      <v-img v-show="item.img" :src="item.img"></v-img>
       <v-card-title>{{ item.content }} </v-card-title>
       <v-card-subtitle>{{ item.name }}</v-card-subtitle>
       <v-list-item>
@@ -86,6 +87,7 @@ export default {
             id: doc.id,
             name: doc.data().name,
             content: doc.data().content,
+            img: doc.data().img,
             date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
           },
         ];

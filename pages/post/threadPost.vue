@@ -16,6 +16,7 @@
               :textarea-value="content"
               @input="content = $event"
             ></input-textarea>
+            <input-image @imgSubmit="imgAdd"></input-image>
             <post-button
               :button-method="post"
               :button-type="buttonType"
@@ -31,6 +32,7 @@
 <script>
 import InputText from '~/components/Atoms/AppInput';
 import InputTextarea from '~/components/Atoms/AppTextarea';
+import InputImage from '~/components/Atoms/AppImageInput';
 import PostButton from '~/components/Atoms/AppButton';
 import firebase from '~/plugins/firebase';
 const threads = firebase.firestore().collection('threads');
@@ -40,6 +42,7 @@ export default {
   components: {
     InputText,
     InputTextarea,
+    InputImage,
     PostButton,
   },
   data() {
@@ -48,8 +51,10 @@ export default {
       buttonType: 'submit',
       namePlaceholder: '名前（匿名）',
       contentPlaceholder: '内容',
+      imgPlaceholder: '画像',
       name: '',
       content: '',
+      img: '',
       nameCompleted: false,
       contentCompleted: false,
       postValidation: true,
@@ -90,6 +95,7 @@ export default {
         .set({
           name: that.name,
           content: that.content,
+          img: that.img,
           createdAt: timestamp,
           read: true,
           uid: that.uid,
@@ -107,6 +113,9 @@ export default {
       } else {
         this.postValidation = true;
       }
+    },
+    imgAdd(url) {
+      this.img = url;
     },
   },
 };
