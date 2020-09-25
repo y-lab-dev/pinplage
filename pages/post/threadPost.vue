@@ -33,7 +33,7 @@
 import { mapGetters } from 'vuex';
 import InputText from '~/components/Atoms/AppInput';
 import InputTextarea from '~/components/Atoms/AppTextarea';
-import InputImage from '~/components/Atoms/AppImageInput';
+import InputImage from '~/components/Molecules/AppImageInput';
 import PostButton from '~/components/Atoms/AppButton';
 import firebase from '~/plugins/firebase';
 const threads = firebase.firestore().collection('threads');
