@@ -42,7 +42,7 @@
           </nuxt-link>
         </v-col>
         <v-col cols="6">
-          <nuxt-link to="post/parttimeJobPost" class="card-title">
+          <nuxt-link to="post/jobPost" class="card-title">
             <v-card>
               <v-img
                 class="white--text"
