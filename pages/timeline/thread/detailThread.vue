@@ -72,11 +72,33 @@ export default {
       replyArray: [],
       name: '',
       content: '',
-      postValidation: false,
+      nameCompleted: false,
+      contentCompleted: false,
+      postValidation: true,
     };
   },
   computed: {
-    ...mapGetters({ uid: 'user/uid', id: 'thread/id' }),
+    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'thread/id' }),
+  },
+  watch: {
+    name(val) {
+      if (val.length === 0) {
+        this.nameCompleted = false;
+        this.check();
+      } else {
+        this.nameCompleted = true;
+        this.check();
+      }
+    },
+    content(val) {
+      if (val.length === 0) {
+        this.contentCompleted = false;
+        this.check();
+      } else {
+        this.contentCompleted = true;
+        this.check();
+      }
+    },
   },
   created() {
     const that = this;
@@ -143,6 +165,7 @@ export default {
           createdAt: timestamp,
           read: true,
           uid: that.uid,
+          email: that.email,
         })
         .then(() => {
           that.$router.push('/timeline');
@@ -150,6 +173,13 @@ export default {
         .catch((err) => {
           alert(err);
         });
+    },
+    check() {
+      if (this.nameCompleted === true && this.contentCompleted === true) {
+        this.postValidation = false;
+      } else {
+        this.postValidation = true;
+      }
     },
   },
 };

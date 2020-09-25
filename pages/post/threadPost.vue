@@ -30,6 +30,7 @@
   </v-container>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import InputText from '~/components/Atoms/AppInput';
 import InputTextarea from '~/components/Atoms/AppTextarea';
 import InputImage from '~/components/Atoms/AppImageInput';
@@ -61,9 +62,7 @@ export default {
     };
   },
   computed: {
-    uid() {
-      return this.$store.getters['user/uid'];
-    },
+    ...mapGetters({ uid: 'user/uid', email: 'user/email' }),
   },
   watch: {
     name(val) {
@@ -99,6 +98,7 @@ export default {
           createdAt: timestamp,
           read: true,
           uid: that.uid,
+          email: that.email,
         })
         .then(() => {
           that.$router.push({ name: 'timeline' });
