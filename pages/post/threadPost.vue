@@ -16,6 +16,7 @@
               :textarea-value="content"
               @input="content = $event"
             ></input-textarea>
+            <input-image @imgSubmit="imgAdd"></input-image>
             <post-button
               :button-method="post"
               :button-type="buttonType"
@@ -29,26 +30,20 @@
   </v-container>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import InputText from '~/components/Atoms/AppInput';
 import InputTextarea from '~/components/Atoms/AppTextarea';
+import InputImage from '~/components/Atoms/AppImageInput';
 import PostButton from '~/components/Atoms/AppButton';
 import firebase from '~/plugins/firebase';
 const threads = firebase.firestore().collection('threads');
-const timestamp = firebase.firestore.Timestamp.now();
-const Today = new Date();
-const year = Today.getFullYear();
-let month = '0' + (Today.getMonth() + 1);
-month = month.slice(-2);
-let day = '0' + Today.getDate();
-day = day.slice(-2);
-const hour = Today.getHours();
-const minute = Today.getMinutes();
-const dateTime = year + '-' + month + '-' + day + '-' + hour + ':' + minute;
 
 export default {
+  layout: 'protected',
   components: {
     InputText,
     InputTextarea,
+    InputImage,
     PostButton,
   },
   data() {
@@ -57,12 +52,17 @@ export default {
       buttonType: 'submit',
       namePlaceholder: '名前（匿名）',
       contentPlaceholder: '内容',
+      imgPlaceholder: '画像',
       name: '',
       content: '',
+      img: '',
       nameCompleted: false,
       contentCompleted: false,
       postValidation: true,
     };
+  },
+  computed: {
+    ...mapGetters({ uid: 'user/uid', email: 'user/email' }),
   },
   watch: {
     name(val) {
@@ -87,15 +87,18 @@ export default {
   methods: {
     post() {
       const that = this;
+      const timestamp = firebase.firestore.Timestamp.now();
 
       threads
         .doc()
         .set({
           name: that.name,
           content: that.content,
+          img: that.img,
           createdAt: timestamp,
           read: true,
-          date: dateTime,
+          uid: that.uid,
+          email: that.email,
         })
         .then(() => {
           that.$router.push({ name: 'timeline' });
@@ -110,6 +113,9 @@ export default {
       } else {
         this.postValidation = true;
       }
+    },
+    imgAdd(url) {
+      this.img = url;
     },
   },
 };

@@ -32,7 +32,7 @@ export const mutations = {
 
 export const actions = {
   login({ commit }, payload) {
-    Cookies.set('accessToken', payload.token, { expires: 365, secure: true, httpOnly: true });
+    Cookies.set('accessToken', payload.token, { expires: 365 });
     commit('getData', {
       uid: payload.uid,
       email: payload.email,

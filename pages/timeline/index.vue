@@ -10,18 +10,7 @@
     </v-tabs>
     <v-tabs-items v-model="model">
       <v-tab-item value="tab-1">
-        <v-card
-          v-for="item in threadArray"
-          :key="item.id"
-          :elevation="2"
-          @click="toThreadDetail(item)"
-        >
-          <v-card-title>{{ item.content }}</v-card-title>
-          <v-card-subtitle>{{ item.name }}</v-card-subtitle>
-          <v-list-item>
-            <v-list-item-content class="date">{{ item.date }}</v-list-item-content>
-          </v-list-item>
-        </v-card>
+        <thread></thread>
       </v-tab-item>
       <v-tab-item value="tab-2"></v-tab-item>
       <v-tab-item value="tab-3"></v-tab-item>
@@ -33,10 +22,13 @@
 </template>
 <script>
 import firebase from '~/plugins/firebase';
-
+import Thread from '~/components/Organisms/TimelineThread';
 const threads = firebase.firestore().collection('threads');
 export default {
   layout: 'protected',
+  components: {
+    Thread,
+  },
   data() {
     return {
       model: 'tab-1',

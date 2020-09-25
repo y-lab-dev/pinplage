@@ -11,6 +11,5 @@ export const getters = {
 export const mutations = {
   getId(state, payload) {
     state.threadId = payload.id;
-    console.log(payload);
   },
 };
