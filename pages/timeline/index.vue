@@ -21,9 +21,8 @@
   </div>
 </template>
 <script>
-import firebase from '~/plugins/firebase';
 import Thread from '~/components/Organisms/TimelineThread';
-const threads = firebase.firestore().collection('threads');
+
 export default {
   layout: 'protected',
   components: {
@@ -32,41 +31,7 @@ export default {
   data() {
     return {
       model: 'tab-1',
-      threadArray: [],
-      inputType: 'text',
-      buttonType: 'submit',
-      namePlaceholder: '名前（匿名）',
-      contentPlaceholder: '内容',
     };
-  },
-  created() {
-    const that = this;
-
-    threads
-      .orderBy('createdAt', 'desc')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          that.threadArray = [
-            ...that.threadArray,
-            {
-              id: doc.id,
-              name: doc.data().name,
-              content: doc.data().content,
-              date: doc.data().date,
-            },
-          ];
-        });
-      });
-  },
-  methods: {
-    toThreadDetail(obj) {
-      const that = this;
-      async function assignment() {
-        await that.$store.commit('thread/getId', obj);
-      }
-      assignment().then(this.$router.push({ name: 'timeline-thread-detailThread' }));
-    },
   },
 };
 </script>
