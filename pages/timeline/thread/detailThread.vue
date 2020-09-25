@@ -1,7 +1,11 @@
 <template>
   <div>
     <v-card v-for="item in threadArray" :key="item.id" :elevation="2">
-      <v-img v-show="item.img" :src="item.img"></v-img>
+      <viewer :images="item.img">
+        <template v-for="src in item.img">
+          <img class="top-img" :src="src" :key="src" />
+        </template>
+      </viewer>
       <v-card-title>{{ item.content }} </v-card-title>
       <v-card-subtitle>{{ item.name }}</v-card-subtitle>
       <v-list-item>
@@ -41,6 +45,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import InputText from '~/components/Atoms/AppInput';
@@ -71,14 +76,12 @@ export default {
     };
   },
   computed: {
-    uid() {
-      return this.$store.getters['user/uid'];
-    },
+    ...mapGetters({ uid: 'user/uid', id: 'thread/id' }),
   },
   created() {
     const that = this;
     threads
-      .doc(that.$store.state.thread.threadId)
+      .doc(this.id)
       .get()
       .then((doc) => {
         that.threadArray = [
@@ -87,10 +90,11 @@ export default {
             id: doc.id,
             name: doc.data().name,
             content: doc.data().content,
-            img: doc.data().img,
+            img: [doc.data().img],
             date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
           },
         ];
+        console.log('that.threadArray: ', that.threadArray);
       })
       .catch((err) => {
         alert(err);
@@ -98,7 +102,7 @@ export default {
 
     let i = 1;
     threads
-      .doc(that.$store.state.thread.threadId)
+      .doc(this.id)
       .collection('reply')
       .orderBy('createdAt', 'asc')
       .get()
@@ -130,7 +134,7 @@ export default {
       const timestamp = firebase.firestore.Timestamp.now();
 
       threads
-        .doc(that.$store.state.thread.threadId)
+        .doc(this.id)
         .collection('reply')
         .doc()
         .set({
@@ -141,7 +145,7 @@ export default {
           uid: that.uid,
         })
         .then(() => {
-          that.$router.push({ name: 'timeline' });
+          that.$router.push('/timeline');
         })
         .catch((err) => {
           alert(err);
@@ -150,3 +154,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.top-img {
+  width: 100vw;
+}
+</style>
