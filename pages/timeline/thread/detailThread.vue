@@ -3,7 +3,7 @@
     <v-card v-for="item in threadArray" :key="item.id" :elevation="2">
       <viewer :images="item.img">
         <template v-for="src in item.img">
-          <img class="top-img" :src="src" :key="src" />
+          <img :key="src" class="top-img" :src="src" />
         </template>
       </viewer>
       <v-card-title>{{ item.content }} </v-card-title>
