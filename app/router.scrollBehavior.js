@@ -17,7 +17,7 @@ export default function (to, from, savedPosition) {
       }
       setTimeout(() => {
         resolve(position);
-      }, 140);
+      }, 250);
     });
   });
 }
