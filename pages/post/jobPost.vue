@@ -263,7 +263,7 @@ export default {
               jobId: firebase.firestore.FieldValue.arrayUnion(doc.id),
             })
             .then(() => {
-              alert('登録完了');
+              that.$router.push({ name: 'timeline' });
             })
             .catch((err) => {
               alert(err);

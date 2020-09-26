@@ -2,7 +2,7 @@
   <div class="mt-1 pt-3">
     <div ref="map" />
     <v-icon> mdi-map-marker-radius </v-icon>
-    <input class="input-text" ref="input" :type="inputType" :placeholder="inputPlaceholder" />
+    <input ref="input" class="input-text" :type="inputType" :placeholder="inputPlaceholder" />
   </div>
 </template>
 
