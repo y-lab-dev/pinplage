@@ -16,7 +16,7 @@
               :textarea-value="content"
               @input="content = $event"
             ></input-textarea>
-            <input-image @imgSubmit="imgAdd"></input-image>
+            <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
             <post-button
               :button-method="post"
               :button-type="buttonType"
@@ -50,6 +50,7 @@ export default {
     return {
       inputType: 'text',
       buttonType: 'submit',
+      imgPath: 'threads/image',
       namePlaceholder: '名前（匿名）',
       contentPlaceholder: '内容',
       imgPlaceholder: '画像',
