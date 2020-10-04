@@ -1,27 +1,28 @@
 <template>
   <div>
-    <v-card v-for="item in jobArray" :key="item.id" :elevation="2" @click="tojobDetail(item)">
+    <v-card v-for="item in jobArray" :key="item.id" :elevation="4" @click="tojobDetail(item)">
+      <v-chip color="green" outlined> NEW </v-chip>
       <v-chip v-if="item.isRecruit" class="ma-2" color="red" outlined> 募集中 </v-chip>
       <v-chip v-if="!item.isRecruit" class="ma-2" color="primary" outlined> 募集締切 </v-chip>
+      <v-card-title
+        ><span class="blue--text text--darken-3">{{ item.name }}</span></v-card-title
+      >
+      <v-card-subtitle>{{ item.genre }}</v-card-subtitle>
       <div class="d-flex justify-space-around">
-        <v-img height="20vh" width="1%" v-show="item.img" :src="item.img"></v-img>
+        <v-img height="12vh" width="40vw" v-show="item.img" :src="item.img"></v-img>
         <div>
-          <v-card-title
-            ><span class="blue--text text--darken-3">{{ item.name }}</span></v-card-title
-          >
-          <v-card-subtitle>{{ item.genre }}</v-card-subtitle>
+          <v-list-item>
+            <v-icon size="25" left>mdi-currency-cny</v-icon>
+            <v-list-item-content class="text-subtitle-2">時給{{ item.money }}</v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-icon size="25" left>mdi-clock-time-three-outline</v-icon>
+            <v-list-item-content class="text-subtitle-2"
+              >勤務時間帯 {{ item.startTime }}-{{ item.endTime }}</v-list-item-content
+            >
+          </v-list-item>
         </div>
       </div>
-      <v-list-item>
-        <v-icon size="25" left>mdi-currency-cny</v-icon>
-        <v-list-item-content>時給{{ item.money }}</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-icon size="25" left>mdi-clock-time-three-outline</v-icon>
-        <v-list-item-content
-          >勤務時間帯 {{ item.startTime }}-{{ item.endTime }}</v-list-item-content
-        >
-      </v-list-item>
     </v-card>
   </div>
 </template>
