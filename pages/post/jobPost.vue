@@ -258,9 +258,9 @@ export default {
           user
             .doc(this.uid)
             .collection('job')
-            .doc('post_job')
+            .doc('post')
             .update({
-              jobId: firebase.firestore.FieldValue.arrayUnion(doc.id),
+              id: firebase.firestore.FieldValue.arrayUnion(doc.id),
             })
             .then(() => {
               that.$router.push({ name: 'timeline' });
