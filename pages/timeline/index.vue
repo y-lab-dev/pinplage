@@ -13,7 +13,9 @@
         <thread></thread>
       </v-tab-item>
       <v-tab-item value="tab-2"></v-tab-item>
-      <v-tab-item value="tab-3"></v-tab-item>
+      <v-tab-item value="tab-3">
+        <job></job>
+      </v-tab-item>
       <v-tab-item value="tab-4"></v-tab-item>
       <v-tab-item value="tab-5"></v-tab-item>
       <v-tab-item value="tab-6"></v-tab-item>
@@ -22,11 +24,13 @@
 </template>
 <script>
 import Thread from '~/components/Organisms/TimelineThread';
+import Job from '~/components/Organisms/TimelineJob';
 
 export default {
   layout: 'protected',
   components: {
     Thread,
+    Job,
   },
   data() {
     return {
