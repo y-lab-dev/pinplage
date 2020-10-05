@@ -130,7 +130,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .item-title {
   font-size: 0.9rem !important;
