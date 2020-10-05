@@ -10,21 +10,12 @@
     </v-tabs>
     <v-tabs-items v-model="model">
       <v-tab-item value="tab-1">
-        <v-card
-          v-for="item in threadArray"
-          :key="item.id"
-          :elevation="2"
-          @click="toThreadDetail(item)"
-        >
-          <v-card-title>{{ item.content }}</v-card-title>
-          <v-card-subtitle>{{ item.name }}</v-card-subtitle>
-          <v-list-item>
-            <v-list-item-content class="date">{{ item.date }}</v-list-item-content>
-          </v-list-item>
-        </v-card>
+        <thread></thread>
       </v-tab-item>
       <v-tab-item value="tab-2"></v-tab-item>
-      <v-tab-item value="tab-3"></v-tab-item>
+      <v-tab-item value="tab-3">
+        <job></job>
+      </v-tab-item>
       <v-tab-item value="tab-4">
         <Timeline-place></Timeline-place>
       </v-tab-item>
@@ -36,51 +27,20 @@
 <script>
 import firebase from '~/plugins/firebase';
 import TimelinePlace from '~/components/Organisms/TimelinePlace';
+import Thread from '~/components/Organisms/TimelineThread';
+import Job from '~/components/Organisms/TimelineJob';
 
-const threads = firebase.firestore().collection('threads');
 export default {
   layout: 'protected',
   components: {
     TimelinePlace,
+    Thread,
+    Job,
   },
   data() {
     return {
       model: 'tab-1',
-      threadArray: [],
-      inputType: 'text',
-      buttonType: 'submit',
-      namePlaceholder: '名前（匿名）',
-      contentPlaceholder: '内容',
     };
-  },
-  created() {
-    const that = this;
-
-    threads
-      .orderBy('createdAt', 'desc')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          that.threadArray = [
-            ...that.threadArray,
-            {
-              id: doc.id,
-              name: doc.data().name,
-              content: doc.data().content,
-              date: doc.data().date,
-            },
-          ];
-        });
-      });
-  },
-  methods: {
-    toThreadDetail(obj) {
-      const that = this;
-      async function assignment() {
-        await that.$store.commit('thread/getId', obj);
-      }
-      assignment().then(this.$router.push({ name: 'timeline-thread-detailThread' }));
-    },
   },
 };
 </script>

@@ -1,9 +1,12 @@
 <template>
   <div>
     <v-card v-for="item in threadArray" :key="item.id" :elevation="2">
-      <v-card-title>
-        {{ item.content }}
-      </v-card-title>
+      <viewer :images="item.img">
+        <template v-for="src in item.img">
+          <img :key="src" class="top-img" :src="src" />
+        </template>
+      </viewer>
+      <v-card-title>{{ item.content }} </v-card-title>
       <v-card-subtitle>{{ item.name }}</v-card-subtitle>
       <v-list-item>
         <v-list-item-content class="date">
@@ -25,14 +28,12 @@
         :button-method="reply"
         :button-type="buttonType"
         :button-disabled="postValidation"
-        >投稿</post-button
+        >返信</post-button
       >
     </v-card>
     <template v-if="isReply">
-      <v-card v-for="item in replyArray" :key="item.id" :elevation="2">
-        <v-card-title>
-          {{ item.content }}
-        </v-card-title>
+      <v-card v-for="item in replyArray" :key="item.id" :elevation="1">
+        <v-card-title class="text-subtitle-2"> {{ item.number }}:{{ item.content }} </v-card-title>
         <v-card-subtitle>{{ item.name }}</v-card-subtitle>
         <v-list-item>
           <v-list-item-content class="date">
@@ -44,24 +45,14 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import InputText from '~/components/Atoms/AppInput';
 import InputTextarea from '~/components/Atoms/AppTextarea';
 import PostButton from '~/components/Atoms/AppButton';
 
 const threads = firebase.firestore().collection('threads');
-const timestamp = firebase.firestore.Timestamp.now();
-const Today = new Date();
-const year = Today.getFullYear();
-let month = '0' + (Today.getMonth() + 1);
-month = month.slice(-2);
-let day = '0' + Today.getDate();
-day = day.slice(-2);
-let hour = '0' + Today.getHours();
-hour = hour.slice(-2);
-let minute = '0' + Today.getMinutes();
-minute = minute.slice(-2);
-const dateTime = year + '-' + month + '-' + day + '-' + hour + ':' + minute;
 
 export default {
   layout: 'protected',
@@ -72,7 +63,6 @@ export default {
   },
   data() {
     return {
-      model: 'tab-1',
       inputType: 'text',
       buttonType: 'submit',
       namePlaceholder: '名前（匿名）',
@@ -82,13 +72,38 @@ export default {
       replyArray: [],
       name: '',
       content: '',
-      postValidation: false,
+      nameCompleted: false,
+      contentCompleted: false,
+      postValidation: true,
     };
+  },
+  computed: {
+    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'thread/id' }),
+  },
+  watch: {
+    name(val) {
+      if (val.length === 0) {
+        this.nameCompleted = false;
+        this.check();
+      } else {
+        this.nameCompleted = true;
+        this.check();
+      }
+    },
+    content(val) {
+      if (val.length === 0) {
+        this.contentCompleted = false;
+        this.check();
+      } else {
+        this.contentCompleted = true;
+        this.check();
+      }
+    },
   },
   created() {
     const that = this;
     threads
-      .doc(that.$store.state.thread.threadId)
+      .doc(this.id)
       .get()
       .then((doc) => {
         that.threadArray = [
@@ -97,32 +112,37 @@ export default {
             id: doc.id,
             name: doc.data().name,
             content: doc.data().content,
-            date: doc.data().date,
+            img: [doc.data().img],
+            date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
           },
         ];
+        console.log('that.threadArray: ', that.threadArray);
       })
       .catch((err) => {
         alert(err);
       });
 
+    let i = 1;
     threads
-      .doc(that.$store.state.thread.threadId)
+      .doc(this.id)
       .collection('reply')
+      .orderBy('createdAt', 'asc')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          console.log(doc.data());
           if (doc.exists) {
             that.replyArray = [
               ...that.replyArray,
               {
                 id: doc.id,
+                number: i,
                 name: doc.data().name,
                 content: doc.data().content,
-                date: doc.data().date,
+                date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
               },
             ];
             that.isReply = true;
+            i++;
           }
         });
       })
@@ -133,8 +153,10 @@ export default {
   methods: {
     reply() {
       const that = this;
+      const timestamp = firebase.firestore.Timestamp.now();
+
       threads
-        .doc(that.$store.state.thread.threadId)
+        .doc(this.id)
         .collection('reply')
         .doc()
         .set({
@@ -142,15 +164,28 @@ export default {
           content: that.content,
           createdAt: timestamp,
           read: true,
-          date: dateTime,
+          uid: that.uid,
+          email: that.email,
         })
         .then(() => {
-          that.$router.push({ name: 'timeline' });
+          that.$router.push('/timeline');
         })
         .catch((err) => {
           alert(err);
         });
     },
+    check() {
+      if (this.nameCompleted === true && this.contentCompleted === true) {
+        this.postValidation = false;
+      } else {
+        this.postValidation = true;
+      }
+    },
   },
 };
 </script>
+<style scoped>
+.top-img {
+  width: 100vw;
+}
+</style>

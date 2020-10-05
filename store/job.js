@@ -1,15 +1,15 @@
 export const state = () => ({
-  threadId: '',
+  jobId: '',
 });
 
 export const getters = {
   id(state) {
-    return state.threadId;
+    return state.jobId;
   },
 };
 
 export const mutations = {
   getId(state, payload) {
-    state.threadId = payload.id;
+    state.jobId = payload.id;
   },
 };

@@ -8,3 +8,8 @@
     <nuxt-link to="/mypage">マイページ</nuxt-link>
   </div>
 </template>
+<script>
+export default {
+  middleware: 'authenticated',
+};
+</script>
