@@ -107,6 +107,14 @@
         キープ済み
       </v-btn>
     </v-list-item>
+    <v-list-item v-show="isEdit">
+      <nuxt-link to="/timeline/job/jobEdit">
+        <v-btn rounded color="red" large dark>
+          <v-icon left>mdi-pencil</v-icon>
+          編集する
+        </v-btn>
+      </nuxt-link>
+    </v-list-item>
   </div>
 </template>
 <script>
@@ -120,6 +128,7 @@ export default {
       jobArray: [],
       jobDetailArray: [],
       isKeep: false,
+      isEdit: false,
     };
   },
   computed: {
@@ -150,6 +159,9 @@ export default {
           endTime: doc.data().endTime,
         },
       ];
+      if (that.uid === doc.data().uid) {
+        that.isEdit = true;
+      }
     });
     jobDetail.get().then((snapshot) => {
       snapshot.forEach((doc) => {
