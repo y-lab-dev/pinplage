@@ -219,7 +219,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'job/id' }),
+    ...mapGetters({ id: 'job/id' }),
   },
   created() {
     const that = this;
@@ -238,7 +238,8 @@ export default {
       job
         .collection('detail')
         .doc('browse')
-        .get((doc) => {
+        .get()
+        .then((doc) => {
           console.log(doc.data());
           that.holiday = doc.data().holiday;
           that.content = doc.data().content;
@@ -246,7 +247,7 @@ export default {
           that.welfare = doc.data().welfare;
           that.carfare = doc.data().carfare;
           that.refer = doc.data().refer;
-          that.hpUrl = doc.data().hpUrl;
+          that.hpUrl = doc.data().hp;
           that.contactEmail = doc.data().contactEmail;
           that.secret = doc.data().secret;
         });
@@ -268,9 +269,7 @@ export default {
           startTime: that.startTime,
           endTime: that.endTime,
           isRecruit: true,
-          uid: that.uid,
-          email: that.email,
-          createdAt: timestamp,
+          updatedAt: timestamp,
         })
         .then((doc) => {
           job.doc(doc.id).collection('detail').doc('browse').update({

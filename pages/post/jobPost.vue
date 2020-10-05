@@ -241,9 +241,10 @@ export default {
           uid: that.uid,
           email: that.email,
           createdAt: timestamp,
+          updatedAt: timestamp,
         })
         .then((doc) => {
-          job.doc(doc.id).collection('detail').add({
+          job.doc(doc.id).collection('detail').doc('browse').set({
             holiday: that.holiday,
             content: that.content,
             shift: that.shift,
