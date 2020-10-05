@@ -12,13 +12,7 @@
               type="text"
               placeholder="店名を入力してください"
             />
-            <rating
-              :read-only="false"
-              :star-size="40"
-              :rating-result="0"
-              :increment="1"
-              @input="setRating"
-            ></rating>
+            <rating :star-size="40" @rating-selected="rating = $event"></rating>
             <input-textarea
               :textarea-placeholder="contentPlaceholder"
               :textarea-value="content"
@@ -41,7 +35,7 @@
 import loadGoogleMapsApi from 'load-google-maps-api';
 import InputTextarea from '~/components/Atoms/AppTextarea';
 import PostButton from '~/components/Atoms/AppButton';
-import Rating from '~/components/molecules/Rating';
+import Rating from '~/components/molecules/PostRating';
 import firebase from '~/plugins/firebase';
 const collection = firebase.firestore().collection('reviews');
 const timestamp = firebase.firestore.Timestamp.now();
@@ -134,9 +128,6 @@ export default {
       this.placeId = place.place_id;
       this.placeName = place.name;
       console.log(place);
-    },
-    setRating(rating) {
-      this.rating = rating;
     },
     post() {
       const self = this;

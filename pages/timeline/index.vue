@@ -16,19 +16,24 @@
       <v-tab-item value="tab-3">
         <job></job>
       </v-tab-item>
-      <v-tab-item value="tab-4"></v-tab-item>
+      <v-tab-item value="tab-4">
+        <Timeline-place></Timeline-place>
+      </v-tab-item>
       <v-tab-item value="tab-5"></v-tab-item>
       <v-tab-item value="tab-6"></v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 <script>
+import firebase from '~/plugins/firebase';
+import TimelinePlace from '~/components/Organisms/TimelinePlace';
 import Thread from '~/components/Organisms/TimelineThread';
 import Job from '~/components/Organisms/TimelineJob';
 
 export default {
   layout: 'protected',
   components: {
+    TimelinePlace,
     Thread,
     Job,
   },
