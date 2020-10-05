@@ -34,6 +34,12 @@ export default {
       placesList: [],
       geometry: {},
       imgUrl: '',
+      latLngBounds: {
+        north: 34.854409,
+        south: 34.38496,
+        west: 137.547374,
+        east: 137.820871,
+      },
     };
   },
   async mounted() {
@@ -43,6 +49,10 @@ export default {
     start() {
       this.message = '処理中';
       const latLng = new this.gmap.LatLng(34.706396, 137.731436);
+      const defaultBounds = new this.gmap.LatLngBounds(
+        new this.gmap.LatLng(this.latLngBounds.south, this.latLngBounds.west),
+        new this.gmap.LatLng(this.latLngBounds.north, this.latLngBounds.east)
+      );
 
       const service = new this.gmap.places.PlacesService(this.$refs.map);
       const request = {
@@ -102,6 +112,7 @@ export default {
                 });
             }
           }
+
           await _sleep(1100);
           const setjson = JSON.stringify(this.array);
           this.$localStorage.set('placeIdDatas', setjson);
