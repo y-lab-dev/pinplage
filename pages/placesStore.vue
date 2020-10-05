@@ -49,11 +49,6 @@ export default {
     start() {
       this.message = '処理中';
       const latLng = new this.gmap.LatLng(34.706396, 137.731436);
-      const defaultBounds = new this.gmap.LatLngBounds(
-        new this.gmap.LatLng(this.latLngBounds.south, this.latLngBounds.west),
-        new this.gmap.LatLng(this.latLngBounds.north, this.latLngBounds.east)
-      );
-
       const service = new this.gmap.places.PlacesService(this.$refs.map);
       const request = {
         location: latLng,
