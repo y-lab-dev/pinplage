@@ -25,6 +25,12 @@ function md5hex(str /*: string */) {
   return md5.update(str, 'binary').digest('hex');
 }
 export default {
+  props: {
+    imgPath: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       img: {
@@ -41,7 +47,7 @@ export default {
 
       const storageRef = firebase
         .storage()
-        .ref('threads/image/' + md5hex(JSON.stringify(new Date())) + imgName);
+        .ref(this.imgPath + md5hex(JSON.stringify(new Date())) + imgName);
 
       storageRef.put(e).then(function () {
         storageRef.getDownloadURL().then(function (url) {

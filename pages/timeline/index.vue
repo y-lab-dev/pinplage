@@ -13,7 +13,9 @@
         <thread></thread>
       </v-tab-item>
       <v-tab-item value="tab-2"></v-tab-item>
-      <v-tab-item value="tab-3"></v-tab-item>
+      <v-tab-item value="tab-3">
+        <job></job>
+      </v-tab-item>
       <v-tab-item value="tab-4"></v-tab-item>
       <v-tab-item value="tab-5"></v-tab-item>
       <v-tab-item value="tab-6"></v-tab-item>
@@ -21,52 +23,19 @@
   </div>
 </template>
 <script>
-import firebase from '~/plugins/firebase';
 import Thread from '~/components/Organisms/TimelineThread';
-const threads = firebase.firestore().collection('threads');
+import Job from '~/components/Organisms/TimelineJob';
+
 export default {
   layout: 'protected',
   components: {
     Thread,
+    Job,
   },
   data() {
     return {
       model: 'tab-1',
-      threadArray: [],
-      inputType: 'text',
-      buttonType: 'submit',
-      namePlaceholder: '名前（匿名）',
-      contentPlaceholder: '内容',
     };
-  },
-  created() {
-    const that = this;
-
-    threads
-      .orderBy('createdAt', 'desc')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          that.threadArray = [
-            ...that.threadArray,
-            {
-              id: doc.id,
-              name: doc.data().name,
-              content: doc.data().content,
-              date: doc.data().date,
-            },
-          ];
-        });
-      });
-  },
-  methods: {
-    toThreadDetail(obj) {
-      const that = this;
-      async function assignment() {
-        await that.$store.commit('thread/getId', obj);
-      }
-      assignment().then(this.$router.push({ name: 'timeline-thread-detailThread' }));
-    },
   },
 };
 </script>

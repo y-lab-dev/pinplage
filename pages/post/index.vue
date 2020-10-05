@@ -42,13 +42,9 @@
           </nuxt-link>
         </v-col>
         <v-col cols="6">
-          <nuxt-link to="post/parttimeJobPost" class="card-title">
+          <nuxt-link to="post/jobPost" class="card-title">
             <v-card>
-              <v-img
-                class="white--text"
-                height="24vh"
-                :src="require('~/assets/post/parttimeJobPost.png')"
-              >
+              <v-img class="white--text" height="24vh" :src="require('~/assets/post/jobPost.png')">
                 <v-card-title class="text-subtitle-1 pt-3">アルバイト</v-card-title>
               </v-img>
             </v-card>
