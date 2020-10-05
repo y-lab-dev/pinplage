@@ -9,7 +9,7 @@
       >
       <v-card-subtitle>{{ item.genre }}</v-card-subtitle>
       <div class="d-flex justify-space-around">
-        <v-img height="12vh" width="40vw" v-show="item.img" :src="item.img"></v-img>
+        <v-img v-show="item.img" height="12vh" width="40vw" :src="item.img"></v-img>
         <div>
           <v-list-item>
             <v-icon size="25" left>mdi-currency-cny</v-icon>
