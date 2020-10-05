@@ -199,10 +199,8 @@ export default {
         'キャバクラ/クラブ',
         '専門職/その他',
       ],
-      img: '',
       name: '',
       genre: '',
-      place: '',
       money: '',
       startTime: '',
       endTime: '',
@@ -219,17 +217,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ id: 'job/id' }),
+    ...mapGetters({ id: 'job/id', img: 'job/img', place: 'job/placeName' }),
   },
   created() {
     const that = this;
     const job = firebase.firestore().collection('jobs').doc(this.id);
 
     job.get().then((doc) => {
-      that.img = doc.data().img;
       that.name = doc.data().name;
       that.genre = doc.data().genre;
-      that.place = doc.data().place;
       that.money = doc.data().money;
       that.startTime = doc.data().startTime;
       that.endTime = doc.data().endTime;
@@ -240,7 +236,6 @@ export default {
         .doc('browse')
         .get()
         .then((doc) => {
-          console.log(doc.data());
           that.holiday = doc.data().holiday;
           that.content = doc.data().content;
           that.shift = doc.data().shift;
@@ -261,28 +256,34 @@ export default {
 
       job
         .update({
-          img: that.img,
-          name: that.name,
-          genre: that.genre,
-          place: that.place,
-          money: that.money,
-          startTime: that.startTime,
-          endTime: that.endTime,
+          img: this.img,
+          name: this.name,
+          genre: this.genre,
+          place: this.place,
+          money: this.money,
+          startTime: this.startTime,
+          endTime: this.endTime,
           isRecruit: true,
           updatedAt: timestamp,
         })
-        .then((doc) => {
-          job.doc(doc.id).collection('detail').doc('browse').update({
-            holiday: that.holiday,
-            content: that.content,
-            shift: that.shift,
-            welfare: that.welfare,
-            carfare: that.carfare,
-            refer: that.refer,
-            hp: that.hpUrl,
-            contactEmail: that.contactEmail,
-            secret: that.secret,
-          });
+        .then(() => {
+          job
+            .collection('detail')
+            .doc('browse')
+            .update({
+              holiday: that.holiday,
+              content: that.content,
+              shift: that.shift,
+              welfare: that.welfare,
+              carfare: that.carfare,
+              refer: that.refer,
+              hp: that.hpUrl,
+              contactEmail: that.contactEmail,
+              secret: that.secret,
+            })
+            .then(() => {
+              this.$router.go(-1);
+            });
         })
         .catch((err) => {
           alert(err);

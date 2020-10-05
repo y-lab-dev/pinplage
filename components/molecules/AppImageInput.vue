@@ -42,7 +42,6 @@ export default {
   methods: {
     imgAdd(e) {
       const that = this;
-      console.log(e);
       const imgName = e.name;
 
       const storageRef = firebase
