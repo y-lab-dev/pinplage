@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card v-for="item in jobArray" :key="item.id" :elevation="4" @click="tojobDetail(item)">
-      <v-chip color="green" outlined> NEW </v-chip>
+      <v-chip v-show="item.isNew" color="green" outlined> NEW </v-chip>
       <v-chip v-if="item.isRecruit" class="ma-2" color="red" outlined> 募集中 </v-chip>
       <v-chip v-if="!item.isRecruit" class="ma-2" color="primary" outlined> 募集締切 </v-chip>
       <v-card-title
@@ -27,6 +27,7 @@
   </div>
 </template>
 <script>
+import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 
 const jobs = firebase.firestore().collection('jobs');
@@ -43,6 +44,9 @@ export default {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
+          const now = dayjs();
+          const newDate = dayjs(doc.data().createdAt.toDate()).locale('ja').add(1, 'week');
+          const isNew = dayjs(now).isBefore(newDate);
           that.jobArray = [
             ...that.jobArray,
             {
@@ -55,6 +59,7 @@ export default {
               endTime: doc.data().endTime,
               money: doc.data().money,
               isRecruit: doc.data().isRecruit,
+              isNew,
             },
           ];
         });

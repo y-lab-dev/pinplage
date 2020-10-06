@@ -107,6 +107,26 @@
         キープ済み
       </v-btn>
     </v-list-item>
+    <v-list-item v-show="!isClose">
+      <v-btn rounded color="pink" large dark @click="close">
+        <v-icon left>mdi-star</v-icon>
+        募集を締め切る
+      </v-btn>
+    </v-list-item>
+    <v-list-item v-show="isClose">
+      <v-btn rounded color="grey" large dark>
+        <v-icon left>mdi-star</v-icon>
+        募集を終了しました
+      </v-btn>
+    </v-list-item>
+    <v-list-item v-show="isEdit">
+      <nuxt-link to="/timeline/job/jobEdit">
+        <v-btn rounded color="red" large dark>
+          <v-icon left>mdi-pencil</v-icon>
+          編集する
+        </v-btn>
+      </nuxt-link>
+    </v-list-item>
   </div>
 </template>
 <script>
@@ -120,6 +140,8 @@ export default {
       jobArray: [],
       jobDetailArray: [],
       isKeep: false,
+      isEdit: false,
+      isClose: false,
     };
   },
   computed: {
@@ -150,6 +172,12 @@ export default {
           endTime: doc.data().endTime,
         },
       ];
+      if (that.uid === doc.data().uid) {
+        that.isEdit = true;
+      }
+      if (doc.data().isRecruit === false) {
+        that.isClose = true;
+      }
     });
     jobDetail.get().then((snapshot) => {
       snapshot.forEach((doc) => {
@@ -210,6 +238,22 @@ export default {
         .then(() => {
           alert('キープを解除しました');
           that.isKeep = false;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    close() {
+      const that = this;
+      const job = firebase.firestore().collection('jobs').doc(this.id);
+
+      job
+        .update({
+          isRecruit: false,
+        })
+        .then(() => {
+          alert('このアルバイトの募集を締め切りました');
+          that.isClose = true;
         })
         .catch((err) => {
           alert(err);

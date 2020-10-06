@@ -2,7 +2,7 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" md="8" sm="6">
-        <div class="title">アルバイト投稿</div>
+        <div class="title">アルバイト編集</div>
         <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
         <v-text-field
           v-model="name"
@@ -160,7 +160,7 @@
             contactEmail == '' ||
             secret == ''
           "
-          >投稿</post-button
+          >編集完了</post-button
         >
       </v-col>
     </v-row>
@@ -199,10 +199,8 @@ export default {
         'キャバクラ/クラブ',
         '専門職/その他',
       ],
-      img: '',
       name: '',
       genre: '',
-      place: '',
       money: '',
       startTime: '',
       endTime: '',
@@ -219,55 +217,72 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ uid: 'user/uid', email: 'user/email' }),
+    ...mapGetters({ id: 'job/id', img: 'job/img', place: 'job/placeName' }),
+  },
+  created() {
+    const that = this;
+    const job = firebase.firestore().collection('jobs').doc(this.id);
+
+    job.get().then((doc) => {
+      that.name = doc.data().name;
+      that.genre = doc.data().genre;
+      that.money = doc.data().money;
+      that.startTime = doc.data().startTime;
+      that.endTime = doc.data().endTime;
+      that.isRecruit = doc.data().isRecruit;
+
+      job
+        .collection('detail')
+        .doc('browse')
+        .get()
+        .then((doc) => {
+          that.holiday = doc.data().holiday;
+          that.content = doc.data().content;
+          that.shift = doc.data().shift;
+          that.welfare = doc.data().welfare;
+          that.carfare = doc.data().carfare;
+          that.refer = doc.data().refer;
+          that.hpUrl = doc.data().hp;
+          that.contactEmail = doc.data().contactEmail;
+          that.secret = doc.data().secret;
+        });
+    });
   },
   methods: {
     post() {
       const that = this;
       const timestamp = firebase.firestore.Timestamp.now();
-      const db = firebase.firestore();
-      const job = db.collection('jobs');
-      const user = db.collection('users');
+      const job = firebase.firestore().collection('jobs').doc(this.id);
+
       job
-        .add({
-          img: that.img,
-          name: that.name,
-          genre: that.genre,
-          place: that.place,
-          money: that.money,
-          startTime: that.startTime,
-          endTime: that.endTime,
+        .update({
+          img: this.img,
+          name: this.name,
+          genre: this.genre,
+          place: this.place,
+          money: this.money,
+          startTime: this.startTime,
+          endTime: this.endTime,
           isRecruit: true,
-          uid: that.uid,
-          email: that.email,
-          createdAt: timestamp,
           updatedAt: timestamp,
         })
-        .then((doc) => {
-          job.doc(doc.id).collection('detail').doc('browse').set({
-            holiday: that.holiday,
-            content: that.content,
-            shift: that.shift,
-            welfare: that.welfare,
-            carfare: that.carfare,
-            refer: that.refer,
-            hp: that.hpUrl,
-            contactEmail: that.contactEmail,
-            secret: that.secret,
-          });
-
-          user
-            .doc(this.uid)
-            .collection('job')
-            .doc('post')
+        .then(() => {
+          job
+            .collection('detail')
+            .doc('browse')
             .update({
-              id: firebase.firestore.FieldValue.arrayUnion(doc.id),
+              holiday: that.holiday,
+              content: that.content,
+              shift: that.shift,
+              welfare: that.welfare,
+              carfare: that.carfare,
+              refer: that.refer,
+              hp: that.hpUrl,
+              contactEmail: that.contactEmail,
+              secret: that.secret,
             })
             .then(() => {
-              that.$router.push({ name: 'timeline' });
-            })
-            .catch((err) => {
-              alert(err);
+              this.$router.go(-1);
             });
         })
         .catch((err) => {
