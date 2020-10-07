@@ -8,6 +8,9 @@
       @click="toDetail(item)"
     >
       <v-img v-if="item.img" class="white--text align-end" height="200px" :src="item.img"></v-img>
+      <v-card-subtitle v-if="item.cancel" class="red--text pb-0"
+        >このイベントが中止になりました</v-card-subtitle
+      >
       <v-card-title class="title">{{ item.title }}</v-card-title>
       <v-card-subtitle>{{ item.placeName }}</v-card-subtitle>
       <v-list-item>
@@ -55,6 +58,7 @@ export default {
               placeName: doc.data().placeName,
               date: doc.data().date,
               holdDate: doc.data().date,
+              cancel: doc.data().cancel,
             },
           ];
         });

@@ -151,6 +151,12 @@
           "
           >投稿</post-button
         >
+        <post-button
+          :button-method="eventCancel"
+          :button-type="buttonType"
+          :button-disabled="cancel == true"
+          >イベント中止</post-button
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -191,6 +197,7 @@ export default {
       type: '',
       place: '',
       date: '',
+      cancel: '',
       startTime: '',
       finishTime: '',
       capacity: '',
@@ -241,6 +248,7 @@ export default {
         that.placeId = doc.data().placeId;
         that.placeName = doc.data().placeName;
         that.date = doc.data().date;
+        that.cancel = doc.data().cancel;
       })
       .then(() => {
         event
@@ -339,6 +347,20 @@ export default {
     },
     imgDelete() {
       this.img = '';
+    },
+    eventCancel() {
+      const event = firebase.firestore().collection('events').doc(this.id);
+      event
+        .update({
+          cancel: true,
+        })
+        .then(() => {
+          alert('このイベントを中止にしました');
+          this.$router.push({ name: 'timeline' });
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
 };
