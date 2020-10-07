@@ -33,7 +33,7 @@
               >イベントに参加</v-card-title
             >
 
-            <v-card-text style="margin-top: 20px; padding: 0 20px 20px; text-align: center"
+            <v-card-text class="mt-5 px-5 pb-5" style="text-align: center"
               >このイベントに参加しますか？</v-card-text
             >
             <v-divider></v-divider>
@@ -76,7 +76,7 @@
               >イベントのキャンセル</v-card-title
             >
 
-            <v-card-text style="margin-top: 20px; padding: 0 20px 20px; text-align: center"
+            <v-card-text class="mt-5 px-5 pb-5" style="text-align: center"
               >このイベントの参加をやめますか？</v-card-text
             >
             <v-divider></v-divider>
@@ -102,7 +102,7 @@
         <v-list-item class="mt-3">
           <v-icon size="25" left>mdi-account-multiple</v-icon>
           <v-list-item-content class="text-subtitle-2">
-            参加予定人数2人・5人が興味あり
+            参加予定人数{{ eventObject.join }}人・{{ eventObject.interest }}人が興味あり
           </v-list-item-content>
         </v-list-item>
         <v-list-item>
@@ -144,12 +144,17 @@
           <v-list-item-content class="text-subtitle-2">{{
             eventDetailObject.capacity
           }}</v-list-item-content>
-          <v-list-item-content class="font-weight-black">参考URL</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">
-            https://chrome.google.com/webstore/category/extensions?hl=ja
+          <v-list-item-content v-if="eventDetailObject.hpUrl" class="font-weight-black"
+            >参考URL</v-list-item-content
+          >
+          <v-list-item-content
+            class="text-subtitle-2 content-url"
+            @click="toLink(eventDetailObject.hpUrl)"
+          >
+            {{ eventDetailObject.hpUrl }}
           </v-list-item-content>
         </v-list>
-        <nuxt-link to="/timeline/event/editEvent">
+        <nuxt-link to="/timeline/event/eventEdit">
           <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
             <v-icon>mdi-pencil</v-icon>編集
           </v-btn>
@@ -200,6 +205,8 @@ export default {
           placeName: doc.data().placeName,
           date: doc.data().date,
           holdDate: doc.data().date,
+          join: doc.data().join,
+          interest: doc.data().interest,
         };
         if (that.uid === doc.data().uid) {
           that.isEdit = true;
@@ -218,6 +225,7 @@ export default {
               capacity: doc.data().capacity,
               content: doc.data().content,
               fee: doc.data().fee,
+              hpUrl: doc.data().hpUrl,
               startTime: doc.data().startTime,
               finishTime: doc.data().finishTime,
             };
@@ -334,6 +342,13 @@ export default {
           alert(err);
         });
     },
+    toLink(link) {
+      if (link.match(/^http(s)?/)) {
+        location.href = link;
+      } else {
+        return null;
+      }
+    },
   },
 };
 </script>
@@ -347,5 +362,9 @@ export default {
 .content-title {
   color: #61d4b3;
   text-align: center;
+}
+.content-url {
+  color: #00f;
+  text-decoration: underline;
 }
 </style>

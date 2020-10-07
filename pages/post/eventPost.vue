@@ -107,6 +107,12 @@
           label="参加費"
           prepend-icon="mdi-cash-usd"
         ></v-text-field>
+        <v-text-field
+          v-model="hpUrl"
+          color="#61d4b3"
+          label="ホームページなど（URL）"
+          prepend-icon="mdi-home-circle-outline"
+        ></v-text-field>
         <v-textarea
           v-model="content"
           color="#61d4b3"
@@ -167,6 +173,7 @@ export default {
       capacity: '',
       img: '',
       entryFee: '無料',
+      hpUrl: '',
       content: '',
       types: ['フリーイベント', 'セミナー'],
       publisherArray: {},
@@ -198,8 +205,10 @@ export default {
           createdAt: timestamp,
           updatedAt: timestamp,
           cancel: false,
-          uid: that.uid,
+          poster: that.uid,
           email: that.email,
+          interest: 0,
+          join: 0,
         })
         .then((doc) => {
           event.doc(doc.id).collection('detail').doc('browse').set({
@@ -207,6 +216,7 @@ export default {
             finishTime: that.finishTime,
             fee: that.entryFee,
             capacity: that.capacity,
+            hpUrl: that.hpUrl,
             content: that.content,
           });
         })

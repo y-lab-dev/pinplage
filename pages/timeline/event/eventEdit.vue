@@ -119,6 +119,12 @@
           label="参加費"
           prepend-icon="mdi-cash-usd"
         ></v-text-field>
+        <v-text-field
+          v-model="hpUrl"
+          color="#61d4b3"
+          label="ホームページなど（URL）"
+          prepend-icon="mdi-home-circle-outline"
+        ></v-text-field>
         <v-textarea
           v-model="content"
           color="#61d4b3"
@@ -188,6 +194,7 @@ export default {
       startTime: '',
       finishTime: '',
       capacity: '',
+      hpUrl: '',
       img: '',
       entryFee: '',
       content: '',
@@ -245,6 +252,7 @@ export default {
             that.finishTime = doc.data().finishTime;
             that.entryFee = doc.data().fee;
             that.capacity = doc.data().capacity;
+            that.hpUrl = doc.data().hpUrl;
             that.content = doc.data().content;
           });
       });
@@ -304,6 +312,7 @@ export default {
             finishTime: that.finishTime,
             fee: that.entryFee,
             capacity: that.capacity,
+            hpUrl: that.hpUrl,
             content: that.content,
           });
         })
