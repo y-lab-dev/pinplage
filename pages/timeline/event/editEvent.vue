@@ -182,6 +182,7 @@ export default {
       imgPath: 'events/image/',
       placeholder: '場所',
       title: '',
+      type: '',
       place: '',
       date: '',
       startTime: '',
@@ -227,6 +228,7 @@ export default {
         that.title = doc.data().title;
         that.type = doc.data().type;
         that.img = doc.data().img;
+        that.placeId = doc.data().placeId;
         that.placeName = doc.data().placeName;
         that.date = doc.data().date;
       })
