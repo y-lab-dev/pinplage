@@ -134,7 +134,8 @@
             img == '' ||
             title == '' ||
             type == '' ||
-            place == '' ||
+            placeId == '' ||
+            placeName == '' ||
             date == '' ||
             startTime == '' ||
             finishTime == '' ||
@@ -226,7 +227,7 @@ export default {
         that.title = doc.data().title;
         that.type = doc.data().type;
         that.img = doc.data().img;
-        that.place = doc.data().place;
+        that.placeName = doc.data().placeName;
         that.date = doc.data().date;
       })
       .then(() => {
@@ -289,7 +290,8 @@ export default {
           title: that.title,
           type: that.type,
           img: that.img,
-          place: that.place,
+          placeId: that.placeId,
+          placeName: that.placeName,
           date: that.date,
           updatedAt: timestamp,
           cancel: false,

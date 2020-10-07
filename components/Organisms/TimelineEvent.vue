@@ -9,7 +9,7 @@
     >
       <v-img v-if="item.img" class="white--text align-end" height="200px" :src="item.img"></v-img>
       <v-card-title class="title">{{ item.title }}</v-card-title>
-      <v-card-subtitle>{{ item.place }}</v-card-subtitle>
+      <v-card-subtitle>{{ item.placeName }}</v-card-subtitle>
       <v-list-item>
         <v-chip v-if="now == item.holdDate" color="#ff3912" text-color="white">開催日</v-chip>
         <v-chip v-if="now > item.holdDate" color="#7d7af5" text-color="white">開催済み</v-chip>
@@ -52,7 +52,7 @@ export default {
               title: doc.data().title,
               type: doc.data().type,
               img: doc.data().img,
-              place: doc.data().place,
+              placeName: doc.data().placeName,
               date: doc.data().date,
               holdDate: doc.data().date,
             },

@@ -122,7 +122,8 @@
             img == '' ||
             title == '' ||
             type == '' ||
-            place == '' ||
+            placeId == '' ||
+            placeName == '' ||
             date == '' ||
             startTime == '' ||
             finishTime == '' ||
@@ -158,7 +159,8 @@ export default {
       placeholder: '場所',
       title: '',
       type: '新歓',
-      place: '',
+      placeId: '',
+      placeName: '',
       date: '',
       startTime: '',
       finishTime: '',
@@ -190,7 +192,8 @@ export default {
           title: that.title,
           type: that.type,
           img: that.img,
-          place: that.place,
+          placeId: that.placeId,
+          placeName: that.placeName,
           date: that.date,
           createdAt: timestamp,
           updatedAt: timestamp,
@@ -217,8 +220,9 @@ export default {
     imgAdd(url) {
       this.img = url;
     },
-    placeAdd(id) {
-      this.place = id;
+    placeAdd(val) {
+      this.placeId = val.placeId;
+      this.placeName = val.placeName;
     },
   },
 };

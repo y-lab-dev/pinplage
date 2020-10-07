@@ -12,7 +12,7 @@
             <v-list-item-subtitle class="red--text">{{ eventObject.date }}</v-list-item-subtitle>
             <v-list-item-title>{{ eventObject.title }}</v-list-item-title>
             <v-list-item-subtitle>
-              {{ eventObject.place }}
+              {{ eventObject.placeName }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -113,11 +113,9 @@
         </v-list-item>
         <v-list-item>
           <v-icon size="25" left>mdi-map-marker</v-icon>
-          <v-list-item-content
-            class="text-subtitle-2"
-            style="color: #00f; text-decoration: underline"
-            >{{ eventObject.place }}</v-list-item-content
-          >
+          <v-list-item-content class="text-subtitle-2">{{
+            eventObject.placeName
+          }}</v-list-item-content>
         </v-list-item>
         <v-divider class="mt-4 content-divider"></v-divider>
         <v-list>
@@ -135,7 +133,9 @@
             }}
           </v-list-item-content>
           <v-list-item-content class="font-weight-black">場所</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">{{ eventObject.place }}</v-list-item-content>
+          <v-list-item-content class="text-subtitle-2">{{
+            eventObject.placeName
+          }}</v-list-item-content>
           <v-list-item-content class="font-weight-black">参加費</v-list-item-content>
           <v-list-item-content class="text-subtitle-2">{{
             eventDetailObject.fee
@@ -144,6 +144,10 @@
           <v-list-item-content class="text-subtitle-2">{{
             eventDetailObject.capacity
           }}</v-list-item-content>
+          <v-list-item-content class="font-weight-black">参考URL</v-list-item-content>
+          <v-list-item-content class="text-subtitle-2">
+            https://chrome.google.com/webstore/category/extensions?hl=ja
+          </v-list-item-content>
         </v-list>
         <nuxt-link to="/timeline/event/editEvent">
           <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
@@ -192,7 +196,8 @@ export default {
           title: doc.data().title,
           type: doc.data().type,
           img: [doc.data().img],
-          place: doc.data().place,
+          placeId: doc.data().placeId,
+          placeName: doc.data().placeName,
           date: doc.data().date,
           holdDate: doc.data().date,
         };
