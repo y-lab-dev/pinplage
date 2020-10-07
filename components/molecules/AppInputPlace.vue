@@ -2,7 +2,13 @@
   <div class="mt-1 pt-3">
     <div ref="map" />
     <v-icon> mdi-map-marker-radius </v-icon>
-    <input ref="input" class="input-text" :type="inputType" :placeholder="inputPlaceholder" />
+    <input
+      ref="input"
+      v-model="placeName"
+      class="input-text"
+      :type="inputType"
+      :placeholder="inputPlaceholder"
+    />
   </div>
 </template>
 
@@ -47,7 +53,6 @@ export default {
         strictBounds: false,
       },
       fiels: ['place_id', 'name', 'type'],
-      placeId: '',
       placeName: '',
     };
   },
@@ -82,7 +87,8 @@ export default {
   methods: {
     onClickLocation() {
       const place = this.mapAutoComplete.getPlace();
-      this.$emit('place', place.place_id);
+      this.placeName = place.name;
+      this.$emit('place', { placeId: place.place_id, placeName: place.name });
     },
   },
 };
