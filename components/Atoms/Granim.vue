@@ -1,4 +1,3 @@
-//このコンポーネント
 <template>
   <div>
     <canvas id="granim-canvas" :style="[changeHeight, changeWidth, changeRound]"></canvas>

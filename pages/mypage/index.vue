@@ -121,10 +121,12 @@ export default {
     },
   },
   created() {
+    this.$store.state.user.email = 'kaji.takahiro.17@shizuoika.ac.jp';
     const that = this;
     const userData = firebase.firestore().collection('userData');
     userData
-      .doc(that.userEmail)
+      // .doc(that.userEmail)
+      .doc('kaji.takahiro.17@shizuoka.ac.jp')
       .get()
       .then((doc) => {
         that.userInfo = doc.data();
