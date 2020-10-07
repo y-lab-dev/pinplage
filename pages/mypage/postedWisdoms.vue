@@ -47,7 +47,17 @@
         </v-col>
       </v-row>
     </v-container> -->
-    <wisdom-thread />
+    <wisdom-thread
+      v-for="item in postedWisdom"
+      :key="item.id"
+      :resolved="item.resolved"
+      :poster="item.poster"
+      :created-day="item.createdDay"
+      :content="item.content"
+      :category="item.category"
+      :liked-amount="item.likedamount"
+      :reply-amount="item.replyAmpunt"
+    />
   </div>
 </template>
 <script>
@@ -70,21 +80,26 @@ export default {
   },
   created() {
     const that = this;
-    const wisdoms = firebase.firestore().collection('allQuestion');
+    const wisdoms = firebase.firestore().collection('wisdoms');
     wisdoms
-      // .where('userEmail', '==', that.userEmail)
-      .where('userEmail', '==', 'kaji.takahiro.17@shizuoka.ac.jp')
+      .where('poster', '==', 'uid')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
           const postedWisdom = {
+            id: doc.id,
             content: doc.data().content,
             niceNumber: doc.data().niceNumber,
-            answers: doc.data().answers.length,
             createdDay: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD'),
             icon: doc.data().userIconUrl,
             userName: doc.data().user,
             category: doc.data().category,
+            replyAmount: wisdoms
+              .collection('reply')
+              .get()
+              .then((snapshot) => {
+                return snapshot.size;
+              }),
           };
           that.postedWisdoms.push(postedWisdom);
         });

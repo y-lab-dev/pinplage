@@ -55,7 +55,7 @@ export default {
       states: {
         'default-state': {
           gradients: this.granimGradients,
-          transitionSpeed: 4000,
+          transitionSpeed: 10000,
           stretchMode: 'stretch-if-smappler',
         },
       },

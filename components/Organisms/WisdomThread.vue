@@ -97,10 +97,12 @@ export default {
     };
   },
   created() {
-    // const that = this;
-    const posterInfo = firebase.firestore().collection('users').doc('CMtv22qbuWNq2Gv1t9g7ryL3HL52');
+    const that = this;
+    const posterInfo = firebase.firestore().collection('users').doc(that.poster);
     posterInfo.get().then((doc) => {
-      console.log(doc.data());
+      const data = doc.data();
+      that.posterName = data.name;
+      that.posterIcon = data.icon;
     });
   },
 };

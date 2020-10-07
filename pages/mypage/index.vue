@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <section id="user-top">
       <div class="granim-back">
         <granim
@@ -11,8 +11,12 @@
           class="granim-card d-flex justify-center"
           elevation="0"
           width="100vw"
+          height="30vh"
           color="rgba(255,255,255,0)"
         >
+          <v-btn icon dark class="user-settings" @click="pushPage">
+            <v-icon dark>mdi-account-edit-outline</v-icon>
+          </v-btn>
           <v-card-actions>
             <v-list color="rgba(0,0,0,0)">
               <v-list-item class="justify-center">
@@ -91,8 +95,10 @@ export default {
         height: '30vh',
         width: '100vw',
         gradients: [
-          ['#85FFBD', '#FFFB7D'],
-          ['#FFFB7D', '#85FFBD'],
+          // ['#85FFBD', '#FFFB7D'],
+          // ['#FFFB7D', '#85FFBD'],
+          ['#F71810', '#FCCE22'],
+          ['#F4DD2E', '#F3EC0E'],
         ],
       },
       userTab: null,
@@ -150,6 +156,13 @@ export default {
 }
 .granim-card {
   position: absolute;
+}
+.user-settings {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding-left: 2px;
 }
 .mobile-font-size {
   font-size: 1.3rem;
