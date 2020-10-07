@@ -1,13 +1,12 @@
 <template>
   <v-container fluid>
     <v-row align="center">
-      <v-col cols="24" sm="12">
+      <v-col>
         <viewer :images="eventObject.img">
           <template v-for="src in eventObject.img">
             <img :key="src" class="top-img" :src="src" />
           </template>
         </viewer>
-        <!-- ここにheight="200px" -->
         <v-list-item>
           <v-list-item-content>
             <v-list-item-subtitle class="red--text">{{ eventObject.date }}</v-list-item-subtitle>
@@ -60,7 +59,7 @@
         </v-btn>
         <v-btn
           v-show="isJoin"
-          class="button"
+          class="ml-2"
           color="#61d4b3"
           rounded
           width="80%"
@@ -90,7 +89,7 @@
         </v-dialog>
         <v-btn
           v-show="isInterest"
-          class="button"
+          class="ml-2"
           color="#61d4b3"
           style="color: #ea5532; float: right"
           fab
@@ -146,7 +145,7 @@
             eventDetailObject.capacity
           }}</v-list-item-content>
         </v-list>
-        <v-btn rounded style="margin: 0 auto; float: right">
+        <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
           <v-icon>mdi-pencil</v-icon>編集
         </v-btn>
       </v-col>
@@ -165,6 +164,7 @@ export default {
       eventDetailObject: [],
       isInterest: false,
       isJoin: false,
+      isEdit: false,
       isCancel: false,
       joinDialog: false,
       cancelDialog: false,
@@ -196,6 +196,7 @@ export default {
         };
         if (that.uid === doc.data().uid) {
           that.isEdit = true;
+          console.log('that.isEdit: ', that.isEdit);
         }
         if (doc.data().isCancel === true) {
           that.isCancel = true;
@@ -331,7 +332,7 @@ export default {
 </script>
 <style scoped>
 .top-img {
-  width: 100vw;
+  width: 90vw;
 }
 .content-divider {
   border-color: #61d4b3;
