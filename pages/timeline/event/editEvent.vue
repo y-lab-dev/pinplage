@@ -218,6 +218,9 @@ export default {
       placeName: '',
     };
   },
+  computed: {
+    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'event/id' }),
+  },
   created() {
     const that = this;
     const event = firebase.firestore().collection('events').doc(this.id);
@@ -245,9 +248,6 @@ export default {
             that.content = doc.data().content;
           });
       });
-  },
-  computed: {
-    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'event/id' }),
   },
   async mounted() {
     this.gmap = await initMap();

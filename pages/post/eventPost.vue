@@ -23,8 +23,8 @@
           @place="placeAdd"
         ></input-place>
         <v-dialog
-          v-model="dateModal"
           ref="dialogs"
+          v-model="dateModal"
           :return-value.sync="date"
           persistent
           width="290px"
@@ -47,8 +47,8 @@
         </v-dialog>
         <div style="display: inline-flex">
           <v-dialog
-            v-model="startTimeModal"
             ref="dialog1"
+            v-model="startTimeModal"
             :return-value.sync="startTime"
             persistent
             width="290px"
@@ -60,8 +60,8 @@
                 label="時間(始まり)"
                 prepend-icon="mdi-clock"
                 readonly
-                v-on="on"
                 class="mr-3"
+                v-on="on"
               ></v-text-field>
             </template>
             <v-time-picker v-if="startTimeModal" v-model="startTime" full-width color="#61d4b3">
@@ -71,8 +71,8 @@
             </v-time-picker>
           </v-dialog>
           <v-dialog
-            v-model="finishTimeModal"
             ref="dialog2"
+            v-model="finishTimeModal"
             :return-value.sync="finishTime"
             persistent
             width="290px"
