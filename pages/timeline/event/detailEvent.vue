@@ -145,9 +145,11 @@
             eventDetailObject.capacity
           }}</v-list-item-content>
         </v-list>
-        <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
-          <v-icon>mdi-pencil</v-icon>編集
-        </v-btn>
+        <nuxt-link to="/timeline/event/editEvent">
+          <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
+            <v-icon>mdi-pencil</v-icon>編集
+          </v-btn>
+        </nuxt-link>
       </v-col>
     </v-row>
   </v-container>
