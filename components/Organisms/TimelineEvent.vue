@@ -22,7 +22,7 @@
         </v-list-item-content>
         <v-row align="center" justify="end">
           <v-icon class="mr-1" style="color: #ea5532">mdi-thumb-up</v-icon>
-          <!-- <span class="subheading mr-2">{{ item.interestedUserNumber }}</span> -->
+          <span v-if="item.interest" class="subheading mr-2">{{ item.interest }}</span>
         </v-row>
       </v-list-item>
     </v-card>
@@ -59,6 +59,7 @@ export default {
               date: doc.data().date,
               holdDate: doc.data().date,
               cancel: doc.data().cancel,
+              interest: doc.data().interest,
             },
           ];
         });
