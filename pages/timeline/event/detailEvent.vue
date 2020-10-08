@@ -162,8 +162,8 @@
         <v-divider class="mt-12 content-divider"></v-divider>
         <v-list two-line>
           <v-list-item-title class="content-title">質問リスト</v-list-item-title>
-          <template v-for="item in eventQuestionArray">
-            <v-list-item :key="item.name">
+          <div v-for="item in eventQuestionArray" :key="item.index">
+            <v-list-item>
               <v-list-item-avatar>
                 <v-img :src="item.icon"></v-img>
               </v-list-item-avatar>
@@ -172,11 +172,11 @@
                 <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item-content :key="item.content" class="ml-4 pt-0">
+            <v-list-item-content class="ml-4 pt-0">
               {{ item.content }}
             </v-list-item-content>
-            <v-divider :key="item.content"></v-divider>
-          </template>
+            <v-divider></v-divider>
+          </div>
           <text-area
             class="mt-4"
             :textarea-placeholder="contentPlaceholder"
@@ -308,7 +308,6 @@ export default {
                   icon: that.icon,
                 },
               ];
-              console.log(that.eventQuestionArray);
             });
         });
       });
