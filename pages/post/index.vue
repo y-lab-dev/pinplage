@@ -51,7 +51,7 @@
           </nuxt-link>
         </v-col>
         <v-col cols="6">
-          <nuxt-link to="post/placePost" class="card-title">
+          <nuxt-link to="post/reviewPost" class="card-title">
             <v-card>
               <v-img
                 class="white--text"

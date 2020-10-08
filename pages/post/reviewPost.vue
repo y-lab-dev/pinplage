@@ -32,22 +32,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import loadGoogleMapsApi from 'load-google-maps-api';
 import InputTextarea from '~/components/Atoms/AppTextarea';
 import PostButton from '~/components/Atoms/AppButton';
 import Rating from '~/components/molecules/PostRating';
 import firebase from '~/plugins/firebase';
-const collection = firebase.firestore().collection('reviews');
-const timestamp = firebase.firestore.Timestamp.now();
-const Today = new Date();
-const year = Today.getFullYear();
-let month = '0' + (Today.getMonth() + 1);
-month = month.slice(-2);
-let day = '0' + Today.getDate();
-day = day.slice(-2);
-const hour = Today.getHours();
-const minute = Today.getMinutes();
-const dateTime = year + '-' + month + '-' + day + '-' + hour + ':' + minute;
 
 async function initMap() {
   const gmap = await loadGoogleMapsApi({
@@ -88,12 +78,18 @@ export default {
       contentPlaceholder: '内容',
       placeId: '',
       placeName: '',
+      mainImg: '',
+      subImg: [],
       content: '',
       rating: 0,
+      purpose: [],
+      hashtag: [],
       postValidation: false,
       fiels: ['place_id', 'name', 'type'],
-      img: '',
     };
+  },
+  computed: {
+    ...mapGetters({ uid: 'user/uid', email: 'user/email' }),
   },
   async mounted() {
     this.gmap = await initMap();
@@ -130,21 +126,39 @@ export default {
       console.log(place);
     },
     post() {
+      const db = firebase.firestore().collection('reviews');
+      const timestamp = firebase.firestore.Timestamp.now();
       const self = this;
       if (this.placeName !== '' && this.content !== '') {
-        collection
-          .doc()
-          .set({
+        db.doc()
+          .add({
             placeId: self.placeId,
-            name: self.placeName,
+            placeName: self.placeName,
+            mainImg: self.mainImg,
             comment: self.content,
             rating: self.rating,
+            purpose: self.purpose,
+            hashtag: self.hashtag,
             createdAt: timestamp,
-            read: true,
-            date: dateTime,
+            uid: self.uid,
+            email: self.email,
+            isRead: true,
           })
-          .then(() => {
-            alert('保存');
+          .then((doc) => {
+            db.doc(doc.id)
+              .collection('detail')
+              .doc('browse')
+              .add({
+                userName: self.userName,
+                subImg: self.subImg,
+                updatedAt: timestamp,
+              })
+              .then(() => {
+                self.$router.push({ name: 'timeline' });
+              })
+              .catch((err) => {
+                alert(err);
+              });
           })
           .catch((err) => {
             alert(err);
