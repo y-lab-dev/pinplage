@@ -56,6 +56,7 @@ export default {
               type: doc.data().type,
               img: doc.data().img,
               placeName: doc.data().placeName,
+              geometry: doc.data().geometry,
               date: doc.data().date,
               holdDate: doc.data().date,
               cancel: doc.data().cancel,
@@ -69,7 +70,7 @@ export default {
     toDetail(obj) {
       const that = this;
       async function assignment() {
-        await that.$store.commit('event/getId', obj);
+        await that.$store.commit('event/getData', obj);
       }
       assignment().then(this.$router.push('timeline/event/detailEvent'));
     },

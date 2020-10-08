@@ -167,6 +167,7 @@ export default {
       type: '新歓',
       placeId: '',
       placeName: '',
+      geometry: '',
       date: '',
       startTime: '',
       finishTime: '',
@@ -201,6 +202,7 @@ export default {
           img: that.img,
           placeId: that.placeId,
           placeName: that.placeName,
+          geometry: that.geometry,
           date: that.date,
           createdAt: timestamp,
           updatedAt: timestamp,
@@ -233,6 +235,7 @@ export default {
     placeAdd(val) {
       this.placeId = val.placeId;
       this.placeName = val.placeName;
+      this.geometry = val.geometry;
     },
   },
 };

@@ -136,6 +136,7 @@
           <v-list-item-content class="text-subtitle-2">{{
             eventObject.placeName
           }}</v-list-item-content>
+          <google-map v-show="geometry" :geometry="geometry"></google-map>
           <v-list-item-content class="font-weight-black">参加費</v-list-item-content>
           <v-list-item-content class="text-subtitle-2">{{
             eventDetailObject.fee
@@ -162,8 +163,8 @@
         <v-divider class="mt-12 content-divider"></v-divider>
         <v-list two-line>
           <v-list-item-title class="content-title">質問リスト</v-list-item-title>
-          <template v-for="item in eventQuestionArray">
-            <v-list-item :key="item.name">
+          <div v-for="item in eventQuestionArray" :key="item.index">
+            <v-list-item>
               <v-list-item-avatar>
                 <v-img :src="item.icon"></v-img>
               </v-list-item-avatar>
@@ -172,11 +173,11 @@
                 <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item-content :key="item.content" class="ml-4 pt-0">
+            <v-list-item-content class="ml-4 pt-0">
               {{ item.content }}
             </v-list-item-content>
-            <v-divider :key="item.content"></v-divider>
-          </template>
+            <v-divider></v-divider>
+          </div>
           <text-area
             class="mt-4"
             :textarea-placeholder="contentPlaceholder"
@@ -207,12 +208,14 @@ import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
+import GoogleMap from '~/components/Atoms/GoogleMap';
 
 export default {
   layout: 'onlyBack',
   components: {
     PostButton,
     TextArea,
+    GoogleMap,
   },
   data() {
     return {
@@ -234,7 +237,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'event/id' }),
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+      id: 'event/id',
+      geometry: 'event/geometry',
+    }),
   },
   created() {
     const that = this;
@@ -256,12 +264,13 @@ export default {
           img: [doc.data().img],
           placeId: doc.data().placeId,
           placeName: doc.data().placeName,
+          geometry: doc.data().geometry,
           date: doc.data().date,
           holdDate: doc.data().date,
           join: doc.data().join,
           interest: doc.data().interest,
         };
-        if (that.uid === doc.data().uid) {
+        if (that.uid === doc.data().poster) {
           that.isEdit = true;
           console.log('that.isEdit: ', that.isEdit);
         }
@@ -308,7 +317,6 @@ export default {
                   icon: that.icon,
                 },
               ];
-              console.log(that.eventQuestionArray);
             });
         });
       });
