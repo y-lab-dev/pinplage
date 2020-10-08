@@ -159,6 +159,43 @@
             <v-icon>mdi-pencil</v-icon>編集
           </v-btn>
         </nuxt-link>
+        <v-divider class="mt-12 content-divider"></v-divider>
+        <v-list two-line>
+          <v-list-item-title class="content-title">質問リスト</v-list-item-title>
+          <template v-for="item in eventQuestionArray">
+            <v-list-item :key="item.name">
+              <v-list-item-avatar>
+                <v-img :src="item.icon"></v-img>
+              </v-list-item-avatar>
+              <v-list-item-content class="py-0">
+                <v-list-item-title v-text="item.name"></v-list-item-title>
+                <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item-content class="ml-4 pt-0" :key="item.content">
+              {{ item.content }}
+            </v-list-item-content>
+            <v-divider :key="item.content"></v-divider>
+          </template>
+          <text-area
+            class="mt-4"
+            :textarea-placeholder="contentPlaceholder"
+            :textarea-value="content"
+            @input="content = $event"
+          ></text-area>
+          <v-list-item-content class="caption mx-6"
+            >不適切な投稿をすると、利用規約の違反により投稿の削除や利用停止となる場合があります。</v-list-item-content
+          >
+          <div class="post-button">
+            <post-button
+              class="mt-4"
+              :button-method="post"
+              :button-type="buttonType"
+              :button-disabled="content == ''"
+              >質問投稿</post-button
+            >
+          </div>
+        </v-list>
       </v-col>
     </v-row>
   </v-container>
@@ -166,19 +203,33 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
+import PostButton from '~/components/Atoms/AppButton';
+import TextArea from '~/components/Atoms/AppTextarea';
+
 export default {
   layout: 'onlyBack',
+  components: {
+    PostButton,
+    TextArea,
+  },
   data() {
     return {
+      buttonType: 'submit',
+      contentPlaceholder: 'イベントについて気になったことなど',
       eventObject: [],
       eventDetailObject: [],
+      eventQuestionArray: [],
+      content: '',
       isInterest: false,
       isJoin: false,
       isEdit: false,
       isCancel: false,
       joinDialog: false,
       cancelDialog: false,
+      name: '',
+      icon: '',
       userName: '',
     };
   },
@@ -189,8 +240,10 @@ export default {
     const that = this;
     const event = firebase.firestore().collection('events').doc(this.id);
     const eventDetail = event.collection('detail');
-    const user = firebase.firestore().collection('users').doc(this.uid);
-    const userEvent = user.collection('event');
+    const eventQuestion = event.collection('question');
+    const user = firebase.firestore().collection('users');
+    const loginUser = user.doc(this.uid);
+    const userEvent = loginUser.collection('event');
     const userEventJoin = userEvent.doc('join');
     const userEventInterest = userEvent.doc('interest');
 
@@ -231,8 +284,36 @@ export default {
             };
           });
       });
+    eventQuestion
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          user
+            .doc(doc.data().questioner)
+            .get()
+            .then((doc) => {
+              that.name = doc.data().name;
+              that.icon = doc.data().icon;
+            })
+            .then(() => {
+              that.eventQuestionArray = [
+                ...that.eventQuestionArray,
+                {
+                  content: doc.data().content,
+                  createdAt: dayjs(doc.data().createdAt.toDate())
+                    .locale('ja')
+                    .format('YY/MM/DD HH:mm'),
+                  name: that.name,
+                  icon: that.icon,
+                },
+              ];
+              console.log(that.eventQuestionArray);
+            });
+        });
+      });
 
-    user.get().then((doc) => {
+    loginUser.get().then((doc) => {
       that.userName = doc.data().name;
     });
 
@@ -326,28 +407,33 @@ export default {
           alert(err);
         });
     },
-    cancel() {
-      const that = this;
-      const event = firebase.firestore().collection('events').doc(this.id);
-
-      event
-        .update({
-          cancel: true,
-        })
-        .then(() => {
-          alert('このイベントを中止にしました');
-          that.isCancel = true;
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    },
     toLink(link) {
       if (link.match(/^http(s)?/)) {
         location.href = link;
       } else {
         return null;
       }
+    },
+    post() {
+      const that = this;
+      const eventQuestion = firebase
+        .firestore()
+        .collection('events')
+        .doc(this.id)
+        .collection('question');
+      const timestamp = firebase.firestore.Timestamp.now();
+
+      eventQuestion
+        .add({
+          questioner: that.uid,
+          email: that.email,
+          createdAt: timestamp,
+          content: that.content,
+        })
+        .then(() => {
+          alert('質問が投稿されました');
+          this.$router.go(-1);
+        });
     },
   },
 };
@@ -366,5 +452,8 @@ export default {
 .content-url {
   color: #00f;
   text-decoration: underline;
+}
+.post-button {
+  text-align: center;
 }
 </style>
