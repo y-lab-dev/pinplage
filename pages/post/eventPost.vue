@@ -23,8 +23,8 @@
           @place="placeAdd"
         ></input-place>
         <v-dialog
-          v-model="dateModal"
           ref="dialogs"
+          v-model="dateModal"
           :return-value.sync="date"
           persistent
           width="290px"
@@ -47,8 +47,8 @@
         </v-dialog>
         <div style="display: inline-flex">
           <v-dialog
-            v-model="startTimeModal"
             ref="dialog1"
+            v-model="startTimeModal"
             :return-value.sync="startTime"
             persistent
             width="290px"
@@ -60,8 +60,8 @@
                 label="時間(始まり)"
                 prepend-icon="mdi-clock"
                 readonly
-                v-on="on"
                 class="mr-3"
+                v-on="on"
               ></v-text-field>
             </template>
             <v-time-picker v-if="startTimeModal" v-model="startTime" full-width color="#61d4b3">
@@ -71,8 +71,8 @@
             </v-time-picker>
           </v-dialog>
           <v-dialog
-            v-model="finishTimeModal"
             ref="dialog2"
+            v-model="finishTimeModal"
             :return-value.sync="finishTime"
             persistent
             width="290px"
@@ -106,6 +106,12 @@
           color="#61d4b3"
           label="参加費"
           prepend-icon="mdi-cash-usd"
+        ></v-text-field>
+        <v-text-field
+          v-model="hpUrl"
+          color="#61d4b3"
+          label="ホームページなど（URL）"
+          prepend-icon="mdi-home-circle-outline"
         ></v-text-field>
         <v-textarea
           v-model="content"
@@ -167,6 +173,7 @@ export default {
       capacity: '',
       img: '',
       entryFee: '無料',
+      hpUrl: '',
       content: '',
       types: ['フリーイベント', 'セミナー'],
       publisherArray: {},
@@ -198,8 +205,10 @@ export default {
           createdAt: timestamp,
           updatedAt: timestamp,
           cancel: false,
-          uid: that.uid,
+          poster: that.uid,
           email: that.email,
+          interest: 0,
+          join: 0,
         })
         .then((doc) => {
           event.doc(doc.id).collection('detail').doc('browse').set({
@@ -207,6 +216,7 @@ export default {
             finishTime: that.finishTime,
             fee: that.entryFee,
             capacity: that.capacity,
+            hpUrl: that.hpUrl,
             content: that.content,
           });
         })

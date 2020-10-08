@@ -119,6 +119,12 @@
           label="参加費"
           prepend-icon="mdi-cash-usd"
         ></v-text-field>
+        <v-text-field
+          v-model="hpUrl"
+          color="#61d4b3"
+          label="ホームページなど（URL）"
+          prepend-icon="mdi-home-circle-outline"
+        ></v-text-field>
         <v-textarea
           v-model="content"
           color="#61d4b3"
@@ -144,6 +150,12 @@
             content == ''
           "
           >投稿</post-button
+        >
+        <post-button
+          :button-method="eventCancel"
+          :button-type="buttonType"
+          :button-disabled="cancel == true"
+          >イベント中止</post-button
         >
       </v-col>
     </v-row>
@@ -185,9 +197,11 @@ export default {
       type: '',
       place: '',
       date: '',
+      cancel: '',
       startTime: '',
       finishTime: '',
       capacity: '',
+      hpUrl: '',
       img: '',
       entryFee: '',
       content: '',
@@ -218,6 +232,9 @@ export default {
       placeName: '',
     };
   },
+  computed: {
+    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'event/id' }),
+  },
   created() {
     const that = this;
     const event = firebase.firestore().collection('events').doc(this.id);
@@ -231,6 +248,7 @@ export default {
         that.placeId = doc.data().placeId;
         that.placeName = doc.data().placeName;
         that.date = doc.data().date;
+        that.cancel = doc.data().cancel;
       })
       .then(() => {
         event
@@ -242,12 +260,10 @@ export default {
             that.finishTime = doc.data().finishTime;
             that.entryFee = doc.data().fee;
             that.capacity = doc.data().capacity;
+            that.hpUrl = doc.data().hpUrl;
             that.content = doc.data().content;
           });
       });
-  },
-  computed: {
-    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'event/id' }),
   },
   async mounted() {
     this.gmap = await initMap();
@@ -304,6 +320,7 @@ export default {
             finishTime: that.finishTime,
             fee: that.entryFee,
             capacity: that.capacity,
+            hpUrl: that.hpUrl,
             content: that.content,
           });
         })
@@ -330,6 +347,20 @@ export default {
     },
     imgDelete() {
       this.img = '';
+    },
+    eventCancel() {
+      const event = firebase.firestore().collection('events').doc(this.id);
+      event
+        .update({
+          cancel: true,
+        })
+        .then(() => {
+          alert('このイベントを中止にしました');
+          this.$router.push({ name: 'timeline' });
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
 };

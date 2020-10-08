@@ -8,6 +8,9 @@
       @click="toDetail(item)"
     >
       <v-img v-if="item.img" class="white--text align-end" height="200px" :src="item.img"></v-img>
+      <v-card-subtitle v-if="item.cancel" class="red--text pb-0"
+        >このイベントが中止になりました</v-card-subtitle
+      >
       <v-card-title class="title">{{ item.title }}</v-card-title>
       <v-card-subtitle>{{ item.placeName }}</v-card-subtitle>
       <v-list-item>
@@ -19,7 +22,7 @@
         </v-list-item-content>
         <v-row align="center" justify="end">
           <v-icon class="mr-1" style="color: #ea5532">mdi-thumb-up</v-icon>
-          <!-- <span class="subheading mr-2">{{ item.interestedUserNumber }}</span> -->
+          <span v-if="item.interest" class="subheading mr-2">{{ item.interest }}</span>
         </v-row>
       </v-list-item>
     </v-card>
@@ -55,6 +58,8 @@ export default {
               placeName: doc.data().placeName,
               date: doc.data().date,
               holdDate: doc.data().date,
+              cancel: doc.data().cancel,
+              interest: doc.data().interest,
             },
           ];
         });
