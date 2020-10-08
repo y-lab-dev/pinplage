@@ -25,7 +25,6 @@
   </div>
 </template>
 <script>
-import firebase from '~/plugins/firebase';
 import TimelinePlace from '~/components/Organisms/TimelinePlace';
 import Thread from '~/components/Organisms/TimelineThread';
 import Job from '~/components/Organisms/TimelineJob';
