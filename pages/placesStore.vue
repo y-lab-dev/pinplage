@@ -59,6 +59,7 @@ export default {
     start() {
       this.message = '処理中';
       const latLng = new this.gmap.LatLng(this.lat, this.lng);
+      const latLng = new this.gmap.LatLng(34.706396, 137.731436);
 
       const service = new this.gmap.places.PlacesService(this.$refs.map);
       const request = {
