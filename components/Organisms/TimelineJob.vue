@@ -81,6 +81,7 @@ export default {
               genre: doc.data().genre,
               img: doc.data().img,
               placeName: doc.data().placeName,
+              geometry: doc.data().geometry,
               startTime: doc.data().startTime,
               endTime: doc.data().endTime,
               money: doc.data().money,
@@ -95,7 +96,7 @@ export default {
     tojobDetail(obj) {
       const that = this;
       async function assignment() {
-        await that.$store.commit('job/getId', obj);
+        await that.$store.commit('job/getData', obj);
       }
       assignment().then(this.$router.push('timeline/job/detailjob'));
     },
