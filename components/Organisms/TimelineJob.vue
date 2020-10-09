@@ -1,25 +1,51 @@
 <template>
   <div>
-    <v-card v-for="item in jobArray" :key="item.id" :elevation="4" @click="tojobDetail(item)">
-      <v-chip v-show="item.isNew" color="green" outlined> NEW </v-chip>
-      <v-chip v-if="item.isRecruit" class="ma-2" color="red" outlined> 募集中 </v-chip>
-      <v-chip v-if="!item.isRecruit" class="ma-2" color="primary" outlined> 募集締切 </v-chip>
-      <v-card-title
-        ><span class="blue--text text--darken-3">{{ item.name }}</span></v-card-title
+    <v-card
+      v-for="item in jobArray"
+      :key="item.id"
+      class="mt-2 mx-2"
+      :elevation="4"
+      @click="tojobDetail(item)"
+    >
+      <v-chip v-show="item.isNew" color="green" small outlined class="ml-3 mt-3"> NEW </v-chip>
+      <v-chip
+        v-if="item.isRecruit"
+        :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
+        small
+        color="red"
+        outlined
       >
-      <v-card-subtitle>{{ item.genre }}</v-card-subtitle>
+        募集中
+      </v-chip>
+      <v-chip
+        v-if="!item.isRecruit"
+        :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
+        small
+        color="primary"
+        outlined
+      >
+        募集締切
+      </v-chip>
+      <v-card-title class="pl-3 pt-3 text-subtitle-1 font-weight-bold blue--text text--darken-3">{{
+        item.name
+      }}</v-card-title>
+      <v-card-subtitle class="pl-3 pb-3 text-caption">{{ item.genre }}</v-card-subtitle>
       <div class="d-flex justify-space-around">
-        <v-img v-show="item.img" height="12vh" width="40vw" :src="item.img"></v-img>
+        <v-img
+          v-show="item.img"
+          height="14vh"
+          width="44vw"
+          class="ml-3 mb-3"
+          :src="item.img"
+        ></v-img>
         <div>
           <v-list-item>
-            <v-icon size="25" left>mdi-currency-cny</v-icon>
-            <v-list-item-content class="text-subtitle-2">時給{{ item.money }}</v-list-item-content>
+            <v-icon size="20" left>mdi-currency-cny</v-icon>
+            <v-list-item-content class="caption py-0">{{ item.money }}</v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-icon size="25" left>mdi-clock-time-three-outline</v-icon>
-            <v-list-item-content class="text-subtitle-2"
-              >勤務時間帯 {{ item.startTime }}-{{ item.endTime }}</v-list-item-content
-            >
+            <v-icon size="20" left>mdi-map-marker</v-icon>
+            <v-list-item-content class="caption">{{ item.placeName }}</v-list-item-content>
           </v-list-item>
         </div>
       </div>
@@ -54,7 +80,7 @@ export default {
               name: doc.data().name,
               genre: doc.data().genre,
               img: doc.data().img,
-              place: doc.data().place,
+              placeName: doc.data().placeName,
               startTime: doc.data().startTime,
               endTime: doc.data().endTime,
               money: doc.data().money,
@@ -76,3 +102,13 @@ export default {
   },
 };
 </script>
+<style scoped>
+.newchip {
+  margin-top: 12px;
+  margin-left: 4px;
+}
+.no-newchip {
+  margin-top: 12px;
+  margin-left: 12px;
+}
+</style>
