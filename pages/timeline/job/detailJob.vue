@@ -172,7 +172,7 @@ export default {
           endTime: doc.data().endTime,
         },
       ];
-      if (that.uid === doc.data().uid) {
+      if (that.uid === doc.data().poster) {
         that.isEdit = true;
       }
       if (doc.data().isRecruit === false) {

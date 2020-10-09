@@ -81,7 +81,7 @@
         <v-text-field
           v-model="holiday"
           color="#61d4b3"
-          label="休日"
+          label="定休日"
           prepend-icon="mdi-seat-individual-suite"
         ></v-text-field>
         <v-textarea
@@ -147,7 +147,8 @@
             img == '' ||
             name == '' ||
             genre == '' ||
-            place == '' ||
+            placeId == '' ||
+            placeName == '' ||
             money == '' ||
             startTime == '' ||
             endTime == '' ||
@@ -202,7 +203,9 @@ export default {
       img: '',
       name: '',
       genre: '',
-      place: '',
+      placeId: '',
+      placeName: '',
+      geometry: '',
       money: '',
       startTime: '',
       endTime: '',
@@ -233,12 +236,14 @@ export default {
           img: that.img,
           name: that.name,
           genre: that.genre,
-          place: that.place,
+          placeId: that.placeId,
+          placeName: that.placeName,
+          geometry: that.geometry,
           money: that.money,
           startTime: that.startTime,
           endTime: that.endTime,
           isRecruit: true,
-          uid: that.uid,
+          poster: that.uid,
           email: that.email,
           createdAt: timestamp,
           updatedAt: timestamp,
@@ -277,8 +282,10 @@ export default {
     imgAdd(url) {
       this.img = url;
     },
-    placeAdd(id) {
-      this.place = id;
+    placeAdd(val) {
+      this.placeId = val.placeId;
+      this.placeName = val.placeName;
+      this.geometry = val.geometry;
     },
   },
 };
