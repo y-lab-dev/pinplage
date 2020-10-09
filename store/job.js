@@ -1,25 +1,20 @@
 export const state = () => ({
   jobId: '',
-  jobImg: '',
-  placeName: '',
+  geometry: '',
 });
 
 export const getters = {
   id(state) {
     return state.jobId;
   },
-  img(state) {
-    return state.jobImg;
-  },
-  placeName(state) {
-    return state.placeName;
+  geometry(state) {
+    return state.geometry;
   },
 };
 
 export const mutations = {
-  getId(state, payload) {
+  getData(state, payload) {
     state.jobId = payload.id;
-    state.jobImg = payload.img;
-    state.placeName = payload.place;
+    state.geometry = payload.geometry;
   },
 };

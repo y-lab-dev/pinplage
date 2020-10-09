@@ -3,18 +3,30 @@
     <v-row justify="center">
       <v-col cols="12" md="8" sm="6">
         <div class="title">アルバイト編集</div>
-        <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
+        <v-img v-show="img" :src="img" height="200px"></v-img>
+        <v-btn v-show="img" class="ml-2" style="float: right" @click="imgDelete">
+          <v-icon>mdi-delete-empty</v-icon>
+        </v-btn>
+        <v-file-input
+          v-show="!img"
+          color="#61d4b3"
+          accept="image/png, image/jpeg, image/bmp"
+          prepend-icon="mdi-camera"
+          label="画像"
+          :clearable="false"
+          @change="imgAdd"
+        ></v-file-input>
         <v-text-field
           v-model="name"
           color="#61d4b3"
           label="店舗名/アルバイト名"
           prepend-icon="mdi-flag-variant"
         ></v-text-field>
-        <input-place
-          :input-type="inputType"
-          :input-placeholder="placeholder"
-          @place="placeAdd"
-        ></input-place>
+        <div class="mt-1 pt-3">
+          <div ref="map" />
+          <v-icon> mdi-map-marker-radius </v-icon>
+          <input ref="input" v-model="placeName" class="input-text" />
+        </div>
         <v-select
           v-model="genre"
           :items="genres"
@@ -33,7 +45,7 @@
           <v-dialog
             ref="dialog1"
             v-model="startTimeModal"
-            :return-value.sync="startTime"
+            :return-placeue.sync="startTime"
             persistent
             width="290px"
           >
@@ -57,7 +69,7 @@
           <v-dialog
             ref="dialog2"
             v-model="endTimeModal"
-            :return-value.sync="endTime"
+            :return-placeue.sync="endTime"
             persistent
             width="290px"
           >
@@ -147,7 +159,8 @@
             img == '' ||
             name == '' ||
             genre == '' ||
-            place == '' ||
+            placeId == '' ||
+            placeName == '' ||
             money == '' ||
             startTime == '' ||
             endTime == '' ||
@@ -168,39 +181,65 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import loadGoogleMapsApi from 'load-google-maps-api';
 import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
-import InputImage from '~/components/Molecules/AppImageInput';
-import InputPlace from '~/components/Molecules/AppInputPlace';
+
+async function initMap() {
+  const gmap = await loadGoogleMapsApi({
+    key: 'AIzaSyCkPkussjC7YNEMi8dY9jwWy-XXZK9-SmA',
+    libraries: ['places'],
+    language: 'ja',
+  });
+  return gmap;
+}
+const crypto = require('crypto');
+function md5hex(str /*: string */) {
+  const md5 = crypto.createHash('md5');
+  return md5.update(str, 'binary').digest('hex');
+}
 
 export default {
   layout: 'protected',
   components: {
     PostButton,
-    InputImage,
-    InputPlace,
   },
   data() {
     return {
       inputType: 'text',
       buttonType: 'submit',
-      imgPath: 'jobs/image/',
-      placeholder: '場所',
       startTimeModal: false,
       endTimeModal: false,
       genres: [
+        '生協紹介',
+        '大学紹介',
         '飲食/フード',
+        'カフェ',
+        '居酒屋',
+        '販売・接客・サービス',
+        'アパレル・ファッション関連',
+        'レジャー・アミューズメント',
+        'クリエイティブ・編集',
+        'エンジニア・サポート・保守',
+        'イベント・キャンペーン',
         '教育',
-        '販売',
-        'アパレル',
-        'IT/コンピュータ',
-        '物流/配送',
-        '工場/製造',
-        'キャバクラ/クラブ',
-        '専門職/その他',
+        '塾講',
+        '家庭教師',
+        'エステ・理美容',
+        '医療・介護・保育',
+        'オフィスワーク',
+        '営業',
+        '配送・引越・ドライバー',
+        '軽作業',
+        '工場・倉庫・建築・土木',
+        '警備・清掃・ビル管理',
       ],
       name: '',
       genre: '',
+      img: '',
+      placeId: '',
+      placeName: '',
+      geometry: '',
       money: '',
       startTime: '',
       endTime: '',
@@ -214,10 +253,25 @@ export default {
       hpUrl: '',
       secret: '',
       res: '',
+      gmap: {},
+      mapAutoComplete: null,
+      map: null,
+      coord: { lat: 34.709557, lng: 137.726014 },
+      defaultZoom: 14.0,
+      restriction: {
+        latLngBounds: {
+          north: 34.854409,
+          south: 34.38496,
+          west: 137.547374,
+          east: 137.820871,
+        },
+        strictBounds: false,
+      },
+      fiels: ['place_id', 'name', 'type', 'geometry'],
     };
   },
   computed: {
-    ...mapGetters({ id: 'job/id', img: 'job/img', place: 'job/placeName' }),
+    ...mapGetters({ id: 'job/id' }),
   },
   created() {
     const that = this;
@@ -226,6 +280,9 @@ export default {
     job.get().then((doc) => {
       that.name = doc.data().name;
       that.genre = doc.data().genre;
+      that.img = doc.data().img;
+      that.placeId = doc.data().placeId;
+      that.placeName = doc.data().placeName;
       that.money = doc.data().money;
       that.startTime = doc.data().startTime;
       that.endTime = doc.data().endTime;
@@ -248,7 +305,44 @@ export default {
         });
     });
   },
+  async mounted() {
+    this.gmap = await initMap();
+    console.log(this.$refs);
+
+    this.map = new this.gmap.Map(this.$refs.map, {
+      center: new this.gmap.LatLng(this.coord.lat, this.coord.lng),
+      zoom: this.defaultZoom,
+      restriction: this.restriction,
+      mapTypeControl: false,
+      streetViewControl: false,
+    });
+    const defaultBounds = new this.gmap.LatLngBounds(
+      new this.gmap.LatLng(this.restriction.latLngBounds.south, this.restriction.latLngBounds.west),
+      new this.gmap.LatLng(this.restriction.latLngBounds.north, this.restriction.latLngBounds.east)
+    );
+    const searchOptions = {
+      bounds: defaultBounds,
+      componentRestrictions: { country: 'jp' },
+      types: ['establishment'],
+      strictBounds: true,
+    };
+    this.mapAutoComplete = new this.gmap.places.Autocomplete(this.$refs.input, searchOptions);
+    this.mapAutoComplete.setFields(this.fiels);
+    this.mapAutoComplete.addListener('place_changed', () => {
+      this.onClickLocation();
+    });
+  },
   methods: {
+    onClickLocation() {
+      const place = this.mapAutoComplete.getPlace();
+      const geometry = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+      this.placeId = place.place_id;
+      this.placeName = place.name;
+      this.geometry = geometry;
+    },
     post() {
       const that = this;
       const timestamp = firebase.firestore.Timestamp.now();
@@ -259,7 +353,9 @@ export default {
           img: this.img,
           name: this.name,
           genre: this.genre,
-          place: this.place,
+          placeId: this.placeId,
+          placeName: this.placeName,
+          geometry: this.geometry,
           money: this.money,
           startTime: this.startTime,
           endTime: this.endTime,
@@ -289,11 +385,22 @@ export default {
           alert(err);
         });
     },
-    imgAdd(url) {
-      this.img = url;
+    imgAdd(e) {
+      const that = this;
+      const imgName = e.name;
+
+      const storageRef = firebase
+        .storage()
+        .ref('jobs/image/' + md5hex(JSON.stringify(new Date())) + imgName);
+
+      storageRef.put(e).then(function () {
+        storageRef.getDownloadURL().then(function (url) {
+          that.img = url;
+        });
+      });
     },
-    placeAdd(id) {
-      this.place = id;
+    imgDelete() {
+      this.img = '';
     },
   },
 };
@@ -301,5 +408,11 @@ export default {
 <style scoped>
 .title {
   text-align: center;
+}
+.input-text {
+  border-bottom: 1px solid rgb(134, 134, 134);
+  margin-bottom: 28px;
+  width: 300px;
+  outline: none;
 }
 </style>

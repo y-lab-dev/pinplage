@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-img v-show="img.name" :src="img.url" height="200px"></v-img>
-    <v-btn v-show="img.name" style="float: right" @click="imgDelete">
+    <v-btn v-show="img.name" class="ml-2" style="float: right" @click="imgDelete">
       <v-icon>mdi-delete-empty</v-icon>
     </v-btn>
     <v-file-input

@@ -81,7 +81,7 @@
         <v-text-field
           v-model="holiday"
           color="#61d4b3"
-          label="休日"
+          label="定休日"
           prepend-icon="mdi-seat-individual-suite"
         ></v-text-field>
         <v-textarea
@@ -147,7 +147,8 @@
             img == '' ||
             name == '' ||
             genre == '' ||
-            place == '' ||
+            placeId == '' ||
+            placeName == '' ||
             money == '' ||
             startTime == '' ||
             endTime == '' ||
@@ -189,20 +190,35 @@ export default {
       startTimeModal: false,
       endTimeModal: false,
       genres: [
+        '生協紹介',
+        '大学紹介',
         '飲食/フード',
+        'カフェ',
+        '居酒屋',
+        '販売・接客・サービス',
+        'アパレル・ファッション関連',
+        'レジャー・アミューズメント',
+        'クリエイティブ・編集',
+        'エンジニア・サポート・保守',
+        'イベント・キャンペーン',
         '教育',
-        '販売',
-        'アパレル',
-        'IT/コンピュータ',
-        '物流/配送',
-        '工場/製造',
-        'キャバクラ/クラブ',
-        '専門職/その他',
+        '塾講',
+        '家庭教師',
+        'エステ・理美容',
+        '医療・介護・保育',
+        'オフィスワーク',
+        '営業',
+        '配送・引越・ドライバー',
+        '軽作業',
+        '工場・倉庫・建築・土木',
+        '警備・清掃・ビル管理',
       ],
       img: '',
       name: '',
       genre: '',
-      place: '',
+      placeId: '',
+      placeName: '',
+      geometry: '',
       money: '',
       startTime: '',
       endTime: '',
@@ -233,12 +249,14 @@ export default {
           img: that.img,
           name: that.name,
           genre: that.genre,
-          place: that.place,
+          placeId: that.placeId,
+          placeName: that.placeName,
+          geometry: that.geometry,
           money: that.money,
           startTime: that.startTime,
           endTime: that.endTime,
           isRecruit: true,
-          uid: that.uid,
+          poster: that.uid,
           email: that.email,
           createdAt: timestamp,
           updatedAt: timestamp,
@@ -277,8 +295,10 @@ export default {
     imgAdd(url) {
       this.img = url;
     },
-    placeAdd(id) {
-      this.place = id;
+    placeAdd(val) {
+      this.placeId = val.placeId;
+      this.placeName = val.placeName;
+      this.geometry = val.geometry;
     },
   },
 };
