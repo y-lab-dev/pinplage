@@ -12,12 +12,12 @@
       <v-tab-item value="tab-1">
         <thread></thread>
       </v-tab-item>
-      <v-tab-item value="tab-2"></v-tab-item>
+      <v-tab-item value="tab-2"><wisdom /></v-tab-item>
       <v-tab-item value="tab-3">
         <job></job>
       </v-tab-item>
       <v-tab-item value="tab-4">
-        <Timeline-place></Timeline-place>
+        <timeline-place></timeline-place>
       </v-tab-item>
       <v-tab-item value="tab-5"></v-tab-item>
       <v-tab-item value="tab-6"></v-tab-item>
@@ -28,6 +28,7 @@
 import TimelinePlace from '~/components/Organisms/TimelinePlace';
 import Thread from '~/components/Organisms/TimelineThread';
 import Job from '~/components/Organisms/TimelineJob';
+import Wisdom from '~/components/Organisms/TimelineWisdom';
 
 export default {
   layout: 'protected',
@@ -35,6 +36,7 @@ export default {
     TimelinePlace,
     Thread,
     Job,
+    Wisdom,
   },
   data() {
     return {

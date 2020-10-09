@@ -1,73 +1,26 @@
 <template>
   <div>
-    <!-- <v-container class="py-0">
-      <v-row>
-        <v-col v-for="wisdom in postedWisdoms" :key="wisdom.createdDay" class="pa-0" cols="12">
-          <v-card tile elevation="0">
-          <v-row class="my-2" style="max-width: 100vw">
-            <v-col cols="3">
-              <v-avatar class="ml-5 rounded-circle">
-                <img :src="wisdom.icon" />
-              </v-avatar>
-            </v-col>
-            <v-col class="pa-0 pt-3" cols="9">
-              <v-row>
-                <v-col class="pa-0 pl-3" cols="9">
-                  <span class="posted-user-name">{{ wisdom.userName }}</span>
-                </v-col>
-                <v-col class="pa-0" cols="3">
-                  <span style="font-size: 0.8rem">{{ wisdom.createdDay }}</span>
-                </v-col>
-              </v-row>
-              <p class="posted-content">{{ wisdom.content }}</p>
-              <v-row no-gutters>
-                <v-col class="pa-1" cols="4" align-self="center">
-                  <v-icon small color="#c8c8c8">mdi-message-outline</v-icon>
-                  <span class="posted-info">
-                    {{ wisdom.answers }}
-                  </span>
-                </v-col>
-                <v-col class="pa-1 pr-0" cols="4">
-                  <v-icon small color="#f00">mdi-heart</v-icon>
-                  <span class="posted-info">
-                    {{ wisdom.niceNumber }}
-                  </span>
-                </v-col>
-                <v-col class="pa-1 pr-0" cols="4">
-                  <v-icon small color="yellow">mdi-file-outline</v-icon>
-                  <span class="posted-info">
-                    {{ wisdom.category }}
-                  </span>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-      </v-row>
-    </v-container> -->
     <wisdom-thread
-      v-for="item in postedWisdom"
-      :key="item.id"
-      :resolved="item.resolved"
+      v-for="item in postedWisdoms"
+      :key="item.wisdomId"
+      :wisdom-id="item.wisdomId"
       :poster="item.poster"
-      :created-day="item.createdDay"
+      :resolved="item.resolved"
       :content="item.content"
       :category="item.category"
-      :liked-amount="item.likedamount"
-      :reply-amount="item.replyAmpunt"
+      :created-day="item.createdDay"
+      :like-amount="item.likeAmount"
+      :reply-amount="item.replyAmount"
     />
   </div>
 </template>
 <script>
-import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
-import wisdomThread from '~/components/Organisms/WisdomThread';
+import WisdomThread from '~/components/Organisms/WisdomThread';
 
 export default {
   layout: 'onlyBack',
-  components: wisdomThread,
+  components: WisdomThread,
   data() {
     return {
       postedWisdoms: [],
@@ -75,53 +28,44 @@ export default {
   },
   computed: {
     userEmail() {
-      return this.$store.getters['user/email'];
+      return this.$store.getters['user/uid'];
     },
   },
   created() {
     const that = this;
     const wisdoms = firebase.firestore().collection('wisdoms');
-    wisdoms
-      .where('poster', '==', 'uid')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          const postedWisdom = {
-            id: doc.id,
-            content: doc.data().content,
-            niceNumber: doc.data().niceNumber,
-            createdDay: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD'),
-            icon: doc.data().userIconUrl,
-            userName: doc.data().user,
-            category: doc.data().category,
-            replyAmount: wisdoms
+    // const users = firebase.firestore().collection('users');
+
+    async function getDetails() {
+      await wisdoms
+        .where('poster', '==', 'CMtv22qbuWNq2Gv1t9g7ryL3HL52')
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            const wisdom = doc.data();
+            const postedWisdom = {
+              wisdoeId: doc.id,
+              poster: wisdom.poster,
+              likeAmount: wisdom.like,
+              resolved: wisdom.resolved,
+              content: wisdom.content,
+              category: wisdom.category,
+              createdDay: wisdom.createdAt.toDate(),
+            };
+            wisdoms
+              .doc(doc.id)
               .collection('reply')
               .get()
-              .then((snapshot) => {
-                return snapshot.size;
-              }),
-          };
-          that.postedWisdoms.push(postedWisdom);
+              .then((doc) => {
+                postedWisdom.replyAmount = doc.size;
+                that.postedWisdoms.push(postedWisdom);
+              });
+          });
         });
-      });
+    }
+    getDetails().then(() => {
+      console.log(123);
+    });
   },
 };
 </script>
-<style scoped>
-.posted-wisdoms-title {
-  margin: 16px 0;
-  text-align: center;
-}
-.posted-user-name {
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin-bottom: 0;
-}
-.posted-content {
-  font-size: 0.85rem;
-  margin-bottom: 0;
-}
-.posted-info {
-  font-size: 0.7rem;
-}
-</style>
