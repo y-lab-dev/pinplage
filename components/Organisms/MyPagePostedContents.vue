@@ -84,7 +84,6 @@ export default {
       .get()
       .then((doc) => {
         that.userInfo = doc.data();
-        console.log(that.userInfo);
       });
   },
 };

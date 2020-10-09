@@ -12,7 +12,7 @@
       <v-tab-item value="tab-1">
         <thread></thread>
       </v-tab-item>
-      <v-tab-item value="tab-2"></v-tab-item>
+      <v-tab-item value="tab-2"><wisdom /></v-tab-item>
       <v-tab-item value="tab-3">
         <job></job>
       </v-tab-item>
@@ -29,6 +29,7 @@
 <script>
 import Thread from '~/components/Organisms/TimelineThread';
 import Job from '~/components/Organisms/TimelineJob';
+import Wisdom from '~/components/Organisms/TimelineWisdom';
 import Place from '~/components/Organisms/TimelinePlace';
 import Event from '~/components/Organisms/TimelineEvent';
 
@@ -38,6 +39,7 @@ export default {
     Thread,
     Place,
     Job,
+    Wisdom,
     Event,
   },
   data() {
