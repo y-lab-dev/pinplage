@@ -1,14 +1,11 @@
 <template>
   <div style="margin-bottom: 60px">
     <v-row align="center" justify="space-around">
-      <v-btn bottom left fixed rounded color="primary" class="bottom-button" dark
-        >連絡してみる</v-btn
-      >
       <v-btn
         v-show="!isKeep"
         width="50vw"
         bottom
-        right
+        left
         fixed
         rounded
         color="success"
@@ -19,10 +16,13 @@
         <v-icon left>mdi-star</v-icon>
         キープする
       </v-btn>
-      <v-btn v-show="isKeep" bottom right fixed rounded color="success" dark @click="notKeep">
+      <v-btn v-show="isKeep" bottom left fixed rounded color="success" dark @click="notKeep">
         <v-icon left>mdi-star</v-icon>
         キープ済み
       </v-btn>
+      <v-btn width="40vw" bottom right fixed rounded color="primary" class="bottom-button" dark
+        >連絡してみる</v-btn
+      >
     </v-row>
     <div>
       <viewer :images="jobObject.img">
@@ -389,6 +389,8 @@ export default {
 <style scoped>
 .top-img {
   width: 100vw;
+  height: 30vh;
+  object-fit: cover;
 }
 .content-divider {
   border-color: #61d4b3;
