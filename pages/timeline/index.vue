@@ -17,26 +17,30 @@
         <job></job>
       </v-tab-item>
       <v-tab-item value="tab-4">
-        <timeline-place></timeline-place>
+        <place></place>
       </v-tab-item>
-      <v-tab-item value="tab-5"></v-tab-item>
+      <v-tab-item value="tab-5">
+        <event></event>
+      </v-tab-item>
       <v-tab-item value="tab-6"></v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 <script>
-import TimelinePlace from '~/components/Organisms/TimelinePlace';
 import Thread from '~/components/Organisms/TimelineThread';
 import Job from '~/components/Organisms/TimelineJob';
 import Wisdom from '~/components/Organisms/TimelineWisdom';
+import Place from '~/components/Organisms/TimelinePlace';
+import Event from '~/components/Organisms/TimelineEvent';
 
 export default {
   layout: 'protected',
   components: {
-    TimelinePlace,
     Thread,
+    Place,
     Job,
     Wisdom,
+    Event,
   },
   data() {
     return {

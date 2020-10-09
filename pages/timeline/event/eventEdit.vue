@@ -2,7 +2,19 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" md="8" sm="6">
-        <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
+        <v-img v-show="img" :src="img" height="200px"></v-img>
+        <v-btn v-show="img" style="float: right" @click="imgDelete">
+          <v-icon>mdi-delete-empty</v-icon>
+        </v-btn>
+        <v-file-input
+          v-show="!img"
+          color="#61d4b3"
+          accept="image/png, image/jpeg, image/bmp"
+          prepend-icon="mdi-camera"
+          label="画像"
+          :clearable="false"
+          @change="imgAdd"
+        ></v-file-input>
         <v-text-field
           v-model="title"
           color="#61d4b3"
@@ -17,11 +29,11 @@
           label="イベントタイプ"
           prepend-icon="mdi-content-copy"
         ></v-select>
-        <input-place
-          :input-type="inputType"
-          :input-placeholder="placeholder"
-          @place="placeAdd"
-        ></input-place>
+        <div class="mt-1 pt-3">
+          <div ref="map" />
+          <v-icon> mdi-map-marker-radius </v-icon>
+          <input ref="input" v-model="placeName" class="input-text" />
+        </div>
         <v-dialog
           ref="dialogs"
           v-model="dateModal"
@@ -139,23 +151,41 @@
           "
           >投稿</post-button
         >
+        <post-button
+          :button-method="eventCancel"
+          :button-type="buttonType"
+          :button-disabled="cancel == true"
+          >イベント中止</post-button
+        >
       </v-col>
     </v-row>
   </v-container>
 </template>
+
 <script>
 import { mapGetters } from 'vuex';
+import loadGoogleMapsApi from 'load-google-maps-api';
 import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
-import InputImage from '~/components/Molecules/AppImageInput';
-import InputPlace from '~/components/Molecules/AppInputPlace';
+
+const crypto = require('crypto');
+function md5hex(str /*: string */) {
+  const md5 = crypto.createHash('md5');
+  return md5.update(str, 'binary').digest('hex');
+}
+async function initMap() {
+  const gmap = await loadGoogleMapsApi({
+    key: 'AIzaSyCkPkussjC7YNEMi8dY9jwWy-XXZK9-SmA',
+    libraries: ['places'],
+    language: 'ja',
+  });
+  return gmap;
+}
 
 export default {
   layout: 'onlyBack',
   components: {
     PostButton,
-    InputImage,
-    InputPlace,
   },
   data() {
     return {
@@ -164,17 +194,16 @@ export default {
       imgPath: 'events/image/',
       placeholder: '場所',
       title: '',
-      type: '新歓',
-      placeId: '',
-      placeName: '',
-      geometry: '',
+      type: '',
+      place: '',
       date: '',
+      cancel: '',
       startTime: '',
       finishTime: '',
       capacity: '',
-      img: '',
-      entryFee: '無料',
       hpUrl: '',
+      img: '',
+      entryFee: '',
       content: '',
       types: ['フリーイベント', 'セミナー'],
       publisherArray: {},
@@ -184,36 +213,109 @@ export default {
       dateModal: false,
       startTimeModal: false,
       finishTimeModal: false,
+      gmap: {},
+      mapAutoComplete: null,
+      map: null,
+      coord: { lat: 34.709557, lng: 137.726014 },
+      defaultZoom: 14.0,
+      restriction: {
+        latLngBounds: {
+          north: 34.854409,
+          south: 34.38496,
+          west: 137.547374,
+          east: 137.820871,
+        },
+        strictBounds: false,
+      },
+      fiels: ['place_id', 'name', 'type'],
+      placeId: '',
+      placeName: '',
     };
   },
   computed: {
-    ...mapGetters({ uid: 'user/uid', email: 'user/email' }),
+    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'event/id' }),
+  },
+  created() {
+    const that = this;
+    const event = firebase.firestore().collection('events').doc(this.id);
+
+    event
+      .get()
+      .then((doc) => {
+        that.title = doc.data().title;
+        that.type = doc.data().type;
+        that.img = doc.data().img;
+        that.placeId = doc.data().placeId;
+        that.placeName = doc.data().placeName;
+        that.date = doc.data().date;
+        that.cancel = doc.data().cancel;
+      })
+      .then(() => {
+        event
+          .collection('detail')
+          .doc('browse')
+          .get()
+          .then((doc) => {
+            that.startTime = doc.data().startTime;
+            that.finishTime = doc.data().finishTime;
+            that.entryFee = doc.data().fee;
+            that.capacity = doc.data().capacity;
+            that.hpUrl = doc.data().hpUrl;
+            that.content = doc.data().content;
+          });
+      });
+  },
+  async mounted() {
+    this.gmap = await initMap();
+    console.log(this.$refs);
+
+    this.map = new this.gmap.Map(this.$refs.map, {
+      center: new this.gmap.LatLng(this.coord.lat, this.coord.lng),
+      zoom: this.defaultZoom,
+      restriction: this.restriction,
+      mapTypeControl: false,
+      streetViewControl: false,
+    });
+    const defaultBounds = new this.gmap.LatLngBounds(
+      new this.gmap.LatLng(this.restriction.latLngBounds.south, this.restriction.latLngBounds.west),
+      new this.gmap.LatLng(this.restriction.latLngBounds.north, this.restriction.latLngBounds.east)
+    );
+    const searchOptions = {
+      bounds: defaultBounds,
+      componentRestrictions: { country: 'jp' },
+      types: ['establishment'],
+      strictBounds: true,
+    };
+    this.mapAutoComplete = new this.gmap.places.Autocomplete(this.$refs.input, searchOptions);
+    this.mapAutoComplete.setFields(this.fiels);
+    this.mapAutoComplete.addListener('place_changed', () => {
+      this.onClickLocation();
+    });
   },
   methods: {
+    onClickLocation() {
+      const place = this.mapAutoComplete.getPlace();
+      this.place = place.place_id;
+      this.placeName = place.name;
+    },
     post() {
       const that = this;
-      const event = firebase.firestore().collection('events');
+      const event = firebase.firestore().collection('events').doc(this.id);
       const timestamp = firebase.firestore.Timestamp.now();
 
       event
-        .add({
+        .update({
           title: that.title,
           type: that.type,
           img: that.img,
           placeId: that.placeId,
           placeName: that.placeName,
-          geometry: that.geometry,
           date: that.date,
-          createdAt: timestamp,
           updatedAt: timestamp,
           cancel: false,
-          poster: that.uid,
-          email: that.email,
-          interest: 0,
-          join: 0,
         })
-        .then((doc) => {
-          event.doc(doc.id).collection('detail').doc('browse').set({
+        .then(() => {
+          event.collection('detail').doc('browse').update({
             startTime: that.startTime,
             finishTime: that.finishTime,
             fee: that.entryFee,
@@ -223,20 +325,51 @@ export default {
           });
         })
         .then(() => {
-          that.$router.push({ name: 'timeline' });
+          this.$router.go(-1);
         })
         .catch((err) => {
           alert(err);
         });
     },
-    imgAdd(url) {
-      this.img = url;
+    imgAdd(e) {
+      const that = this;
+      const imgName = e.name;
+
+      const storageRef = firebase
+        .storage()
+        .ref('events/image/' + md5hex(JSON.stringify(new Date())) + imgName);
+
+      storageRef.put(e).then(function () {
+        storageRef.getDownloadURL().then(function (url) {
+          that.img = url;
+        });
+      });
     },
-    placeAdd(val) {
-      this.placeId = val.placeId;
-      this.placeName = val.placeName;
-      this.geometry = val.geometry;
+    imgDelete() {
+      this.img = '';
+    },
+    eventCancel() {
+      const event = firebase.firestore().collection('events').doc(this.id);
+      event
+        .update({
+          cancel: true,
+        })
+        .then(() => {
+          alert('このイベントを中止にしました');
+          this.$router.push({ name: 'timeline' });
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
 };
 </script>
+<style scoped>
+.input-text {
+  border-bottom: 1px solid rgb(134, 134, 134);
+  margin-bottom: 28px;
+  width: 300px;
+  outline: none;
+}
+</style>

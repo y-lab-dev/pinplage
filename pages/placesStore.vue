@@ -1,7 +1,15 @@
 <template>
   <div>
-    {{ message }}
+    <br />lat
+    <input v-model.number="lat" placeholder="lat" />
+    <br />lng
+    <input v-model.number="lng" placeholder="lng" />
+    <br />radius
+    <input v-model.number="radius" />
+    <br />type
+    <input v-model="type" />
     <div ref="map" />
+    {{ message }}
     <v-btn @click="start()">START</v-btn>
   </div>
 </template>
@@ -10,7 +18,7 @@
 import loadGoogleMapsApi from 'load-google-maps-api';
 import firebase from '~/plugins/firebase';
 
-const collection = firebase.firestore().collection('places');
+const db = firebase.firestore().collection('places');
 
 async function initMap() {
   const gmap = await loadGoogleMapsApi({
@@ -32,14 +40,16 @@ export default {
       map: null,
       request: 1,
       placesList: [],
+      details: {},
+      openingHours: [],
       geometry: {},
-      imgUrl: '',
-      latLngBounds: {
-        north: 34.854409,
-        south: 34.38496,
-        west: 137.547374,
-        east: 137.820871,
-      },
+      mainImg: '',
+      website: '',
+      formatted_phone_number: '',
+      lat: null,
+      lng: null,
+      radius: 50,
+      type: 'restaurant',
     };
   },
   async mounted() {
@@ -48,17 +58,18 @@ export default {
   methods: {
     start() {
       this.message = '処理中';
-      const latLng = new this.gmap.LatLng(34.706396, 137.731436);
+      const latLng = new this.gmap.LatLng(this.lat, this.lng);
       const service = new this.gmap.places.PlacesService(this.$refs.map);
       const request = {
         location: latLng,
-        radius: 100,
-        type: ['establishment'],
+        radius: this.radius,
+        type: [this.type],
         language: 'ja',
       };
       service.nearbySearch(request, this.displayResults);
     },
     async displayResults(results, status, pagination) {
+      const self = this;
       if (status === this.gmap.places.PlacesServiceStatus.OK) {
         // 検索結果をplacesList配列に連結
         this.placesList = this.placesList.concat(results);
@@ -73,37 +84,84 @@ export default {
 
           for (let i = 0; i < this.placesList.length; i++) {
             if (this.placesList[i].business_status) {
-              await _sleep(1000);
-              console.log(i);
-              this.geometry = {
-                lat: this.placesList[i].geometry.location.lat(),
-                lng: this.placesList[i].geometry.location.lng(),
-              };
-              this.imgUrl = '';
-              if (this.placesList[i].photos) {
-                this.imgUrl = this.placesList[i].photos[0].getUrl();
-                console.log(this.imgUrl);
-              }
-              collection
+              await db
                 .doc(this.placesList[i].place_id)
-                .set({
-                  placeId: this.placesList[i].place_id,
-                  name: this.placesList[i].name,
-                  vincinty: this.placesList[i].vicinity,
-                  types: this.placesList[i].types,
-                  icon: this.placesList[i].icon,
-                  geometry: this.geometry,
-                  imgUrl: this.imgUrl,
-                  rating: 0,
-                  reviews: [],
-                  hashtag: [],
-                  purpose: [],
+                .get()
+                .then(async function (doc) {
+                  if (doc.exists) {
+                    // console.log(self.placesList[i].name + ' is exist');
+                  } else {
+                    const service = new self.gmap.places.PlacesService(self.$refs.map);
+                    service.getDetails(
+                      {
+                        placeId: self.placesList[i].place_id,
+                        fields: ['formatted_phone_number', 'opening_hours', 'website', 'photos'],
+                      },
+                      function (place) {
+                        self.details = place;
+                        if (typeof place.opening_hours !== 'undefined') {
+                          self.openingHours = place.opening_hours.weekday_text;
+                        }
+                        if (typeof place.website !== 'undefined') {
+                          self.website = place.website;
+                        }
+                        if (typeof place.formatted_phone_number !== 'undefined') {
+                          self.formatted_phone_number = place.formatted_phone_number;
+                        }
+                      }
+                    );
+                    await _sleep(1000);
+                    console.log(i + 1);
+                    self.geometry = {
+                      lat: self.placesList[i].geometry.location.lat(),
+                      lng: self.placesList[i].geometry.location.lng(),
+                    };
+                    const imgUrls = [];
+                    if (typeof self.details.photos !== 'undefined') {
+                      for (let i = 0; i < self.details.photos.length; i++) {
+                        imgUrls.push(self.details.photos[i].getUrl());
+                      }
+                      self.mainImg = imgUrls[0];
+                    }
+                    db.doc(self.placesList[i].place_id)
+                      .set({
+                        placeId: self.placesList[i].place_id,
+                        name: self.placesList[i].name,
+                        vincinty: self.placesList[i].vicinity,
+                        types: self.placesList[i].types,
+                        mainImgUrl: self.mainImg,
+                        rating: 0,
+                        hashtags: [],
+                        purposes: [],
+                        keywords: [],
+                      })
+                      .then(() => {
+                        self.array.push(self.placesList[i].place_id);
+                        db.doc(self.placesList[i].place_id)
+                          .collection('detail')
+                          .doc('browse')
+                          .set({
+                            icon: self.placesList[i].icon,
+                            geometry: self.geometry,
+                            reviews: [],
+                            imgUrls,
+                            phoneNumber: self.formatted_phone_number,
+                            openingHours: self.openingHours,
+                            website: self.website,
+                            priceLevel: '',
+                          })
+                          .then(() => {})
+                          .catch((err) => {
+                            alert(err);
+                          });
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }
                 })
-                .then(() => {
-                  this.array.push(this.placesList[i].place_id);
-                })
-                .catch((err) => {
-                  console.log(err);
+                .catch(function (error) {
+                  console.log('Error getting document:', error);
                 });
             }
           }

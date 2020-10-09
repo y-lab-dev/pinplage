@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card-title>
-        <img class="icon" :src="place.icon" />
+        <img class="icon" :src="placeDetail.icon" />
         {{ place.name }}
       </v-card-title>
       <v-card-subtitle>{{ place.vincinty }}</v-card-subtitle>
@@ -12,7 +12,7 @@
         :rating-result="place.rating"
         :increment="0.1"
       ></rating>
-      <img class="photo" :src="place.imgUrl" />
+      <img class="photo" :src="place.mainImgUrl" />
 
       <div ref="map" class="main" />
     </v-card>
@@ -41,6 +41,7 @@ export default {
   data() {
     return {
       place: {},
+      placeDetail: {},
       gmap: {},
       map: null,
       coord: {},
@@ -58,13 +59,11 @@ export default {
           name: doc.data().name,
           vincinty: doc.data().vincinty,
           types: doc.data().types,
-          icon: doc.data().icon,
           rating: doc.data().rating,
-          reviews: doc.data().reviews,
-          hashtag: doc.data().hashtag,
-          purpose: doc.data().purpose,
-          geometry: doc.data().geometry,
-          imgUrl: doc.data().imgUrl,
+          keywords: doc.data().keywords,
+          purposes: doc.data().purposes,
+          hashtags: doc.data().hashtags,
+          mainImgUrl: doc.data().mainImgUrl,
         };
         console.log(this.place.rating);
       })
@@ -72,7 +71,29 @@ export default {
         alert(err);
         console.log(err);
       });
-    this.coord = { lat: this.place.geometry.lat, lng: this.place.geometry.lng };
+    await db
+      .doc(self.$store.state.place.placeId)
+      .collection('detail')
+      .doc('browse')
+      .get()
+      .then((doc) => {
+        this.placeDetail = {
+          icon: doc.data().icon,
+          website: doc.data().website,
+          phoneNumber: doc.data().phoneNumber,
+          pricelevel: doc.data().pricelevel,
+          openingHours: doc.data().openingHours,
+          reviews: doc.data().reviews,
+          geometry: doc.data().geometry,
+          imgUrls: doc.data().imgUrls,
+        };
+        console.log(this.place.rating);
+      })
+      .catch((err) => {
+        alert(err);
+        console.log(err);
+      });
+    this.coord = { lat: this.placeDetail.geometry.lat, lng: this.placeDetail.geometry.lng };
     this.gmap = await initMap();
     this.map = new this.gmap.Map(this.$refs.map, {
       center: this.coord,
