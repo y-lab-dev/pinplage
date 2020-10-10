@@ -66,7 +66,6 @@
               color="#61d4b3"
               rows="1"
               hide-details
-              counter="25"
               placeholder="回答する"
               @click="isTouch = true"
               @click:clear="clearMessage()"
@@ -92,7 +91,7 @@
               :disabled="overLimit || !answerMessage"
               dark
               color="#61d4b3"
-              @click="postToWisdom()"
+              @click="postReply()"
               >回答</v-chip
             >
           </v-col>
@@ -148,8 +147,6 @@ export default {
     }),
   },
   created() {
-    console.log(this.icon);
-    console.log(this.name);
     const that = this;
     const docId = this.$route.query;
     const wisdoms = firebase.firestore().collection('wisdoms').doc(docId);
@@ -213,7 +210,7 @@ export default {
     pushLike() {
       console.log('like');
     },
-    postToWisdom() {
+    postReply() {
       const that = this;
       if (that.uid === '') {
         console.log('no uid');
