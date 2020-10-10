@@ -130,17 +130,20 @@ export default {
     ...mapGetters({
       uid: 'user/uid',
       email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
     }),
   },
   created() {
     const that = this;
+    console.log(that.name);
+    console.log(that.icon);
     const userData = firebase.firestore().collection('users');
     userData
       .doc(that.uid)
       .get()
       .then((doc) => {
         that.userInfo = doc.data();
-        console.log(that.userInfo);
       })
       .then(() => {
         that.isCreated = true;

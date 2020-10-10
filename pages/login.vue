@@ -105,6 +105,7 @@ export default {
                 email: user.email,
                 token,
               });
+              this.$store.dispatch('user/getUserInfo');
               this.$router.push({ name: 'timeline' });
             }
           });
