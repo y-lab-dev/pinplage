@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
@@ -139,6 +140,12 @@ export default {
         return false;
       }
     },
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+      id: 'event/id',
+      geometry: 'event/geometry',
+    }),
   },
   created() {
     const that = this;
@@ -172,6 +179,7 @@ export default {
 
     wisdoms
       .collection('reply')
+      .orderBy('createdAt', 'desc')
       .get()
       .then((snapshot) => {
         if (snapshot.size !== 0) {
@@ -214,9 +222,9 @@ export default {
           content: that.answerMessage,
           bestAnswer: false,
           createdAt: timestamp,
-          email: 'kaji.takahiro.17@shizuoka.ac.jp',
+          email: that.email,
           like: 0,
-          replyer: 'CMtv22qbuWNq2Gv1t9g7ryL3HL52',
+          replyer: that.uid,
         })
         .then(() => {
           this.$router.go(-1);
