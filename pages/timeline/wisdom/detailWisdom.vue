@@ -143,8 +143,6 @@ export default {
     ...mapGetters({
       uid: 'user/uid',
       email: 'user/email',
-      id: 'event/id',
-      geometry: 'event/geometry',
     }),
   },
   created() {
@@ -213,6 +211,10 @@ export default {
     },
     postToWisdom() {
       const that = this;
+      if (that.uid === '') {
+        console.log('no uid');
+        return;
+      }
       const timestamp = firebase.firestore.Timestamp.now();
       const wisdoms = firebase.firestore().collection('wisdoms').doc(this.$route.query);
       wisdoms
@@ -227,7 +229,16 @@ export default {
           replyer: that.uid,
         })
         .then(() => {
-          this.$router.go(-1);
+          const newAnswer = {
+            wisdomId: timestamp.toDate().toString(),
+            poster: that.uid,
+            likeAmount: 0,
+            content: that.answerMessage,
+            createdDay: timestamp.toDate(),
+          };
+          that.answerMessage = '';
+          window.scrollTo(0, 0);
+          that.answers.unshift(newAnswer);
         });
     },
   },

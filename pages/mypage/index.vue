@@ -130,8 +130,6 @@ export default {
     ...mapGetters({
       uid: 'user/uid',
       email: 'user/email',
-      id: 'event/id',
-      geometry: 'event/geometry',
     }),
   },
   created() {
@@ -139,7 +137,6 @@ export default {
     const userData = firebase.firestore().collection('users');
     userData
       .doc(that.uid)
-      // .doc('kaji.takahiro.17@shizuoka.ac.jp')
       .get()
       .then((doc) => {
         that.userInfo = doc.data();
