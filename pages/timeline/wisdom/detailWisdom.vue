@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
@@ -139,6 +140,10 @@ export default {
         return false;
       }
     },
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+    }),
   },
   created() {
     const that = this;
@@ -172,6 +177,7 @@ export default {
 
     wisdoms
       .collection('reply')
+      .orderBy('createdAt', 'desc')
       .get()
       .then((snapshot) => {
         if (snapshot.size !== 0) {
@@ -205,6 +211,10 @@ export default {
     },
     postToWisdom() {
       const that = this;
+      if (that.uid === '') {
+        console.log('no uid');
+        return;
+      }
       const timestamp = firebase.firestore.Timestamp.now();
       const wisdoms = firebase.firestore().collection('wisdoms').doc(this.$route.query);
       wisdoms
@@ -214,12 +224,21 @@ export default {
           content: that.answerMessage,
           bestAnswer: false,
           createdAt: timestamp,
-          email: 'kaji.takahiro.17@shizuoka.ac.jp',
+          email: that.email,
           like: 0,
-          replyer: 'CMtv22qbuWNq2Gv1t9g7ryL3HL52',
+          replyer: that.uid,
         })
         .then(() => {
-          this.$router.go(-1);
+          const newAnswer = {
+            wisdomId: timestamp.toDate().toString(),
+            poster: that.uid,
+            likeAmount: 0,
+            content: that.answerMessage,
+            createdDay: timestamp.toDate(),
+          };
+          that.answerMessage = '';
+          window.scrollTo(0, 0);
+          that.answers.unshift(newAnswer);
         });
     },
   },

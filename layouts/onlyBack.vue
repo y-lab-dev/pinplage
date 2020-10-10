@@ -28,4 +28,15 @@ export default {
   height: 100%;
   width: 100vw;
 }
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.2s;
+}
+
+.page-enter,
+.page-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
+  transition: all 0.2s;
+}
 </style>

@@ -23,7 +23,7 @@
                 <div class="user-icon-back-back">
                   <div class="user-icon-back">
                     <v-avatar color="white" :size="iconSize">
-                      <v-img :src="userInfo.userIcon"></v-img>
+                      <v-img :src="userInfo.icon"></v-img>
                     </v-avatar>
                   </div>
                 </div>
@@ -32,7 +32,7 @@
                 <v-row class="white--text mx-auto">
                   <v-col class="white--text text-center">
                     <p class="user-name bold mobile-font-size">
-                      {{ userInfo.userName }}
+                      {{ userInfo.name }}
                     </p>
                   </v-col>
                 </v-row>
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import granim from '~/components/Atoms/Granim';
 import MyAchievement from '~/components/organisms/MyPageAchievement';
@@ -126,17 +127,16 @@ export default {
         return 50;
       }
     },
-    userEmail() {
-      return this.$store.getters['user/email'];
-    },
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+    }),
   },
   created() {
-    this.$store.state.user.email = 'kaji.takahiro.17@shizuoika.ac.jp';
     const that = this;
-    const userData = firebase.firestore().collection('userData');
+    const userData = firebase.firestore().collection('users');
     userData
-      // .doc(that.userEmail)
-      .doc('kaji.takahiro.17@shizuoka.ac.jp')
+      .doc(that.uid)
       .get()
       .then((doc) => {
         that.userInfo = doc.data();
