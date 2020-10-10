@@ -9,6 +9,7 @@
   transition: all 0.2s ease-out;
 }
 
+
 .layout-enter-active,
 .layout-leave-active {
   opacity: 0;
