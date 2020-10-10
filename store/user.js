@@ -1,10 +1,13 @@
 import Cookies from 'js-cookie';
+import firebase from '~/plugins/firebase';
 
 export const state = () => ({
   user: {
+    isLogin: false,
     uid: '',
     email: '',
-    isLogin: false,
+    icon: '',
+    name: '',
   },
 });
 
@@ -18,6 +21,12 @@ export const getters = {
   email(state) {
     return state.user.email;
   },
+  name(state) {
+    return state.user.name;
+  },
+  icon(state) {
+    return state.user.icon;
+  },
 };
 
 export const mutations = {
@@ -27,6 +36,10 @@ export const mutations = {
   },
   switchLogin(state) {
     state.user.isLogin = true;
+  },
+  setUserInfo(state, payload) {
+    state.user.name = payload.name;
+    state.user.icon = payload.icon;
   },
 };
 
@@ -38,5 +51,20 @@ export const actions = {
       email: payload.email,
     });
     commit('switchLogin');
+  },
+  async getUserInfo({ commit, state }) {
+    const userInfo = await firebase
+      .firestore()
+      .collection('users')
+      .doc(state.user.uid)
+      .get()
+      .then((doc) => {
+        const userData = {
+          name: doc.data().name,
+          icon: doc.data().icon,
+        };
+        return userData;
+      });
+    commit('setUserInfo', userInfo);
   },
 };

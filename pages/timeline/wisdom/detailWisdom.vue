@@ -143,9 +143,13 @@ export default {
     ...mapGetters({
       uid: 'user/uid',
       email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
     }),
   },
   created() {
+    console.log(this.icon);
+    console.log(this.name);
     const that = this;
     const docId = this.$route.query;
     const wisdoms = firebase.firestore().collection('wisdoms').doc(docId);
