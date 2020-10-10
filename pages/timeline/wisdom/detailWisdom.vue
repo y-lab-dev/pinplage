@@ -43,7 +43,8 @@
     </v-container>
     <v-divider></v-divider>
     <v-container fluid> </v-container>
-    <div v-if="!noReply">
+    <div v-if="noReply">かいとう</div>
+    <div v-else>
       <wisdom-thread
         v-for="(item, index) in answers"
         :key="item.wisdomId"
@@ -51,7 +52,6 @@
         :answer-display="true"
       />
     </div>
-    <div v-else></div>
     <v-footer app fixed color="white" class="text-area">
       <v-container class="pa-0">
         <v-row no-gutters>
@@ -115,7 +115,6 @@ export default {
       answers: [],
       posterIcon: null,
       posterName: null,
-      noReply: false,
       answerMessage: null,
       isTouch: false,
     };
@@ -124,6 +123,15 @@ export default {
     formatDay() {
       const formatDay = dayjs(this.question.createdDay).format('HH:mm  YYYY/MM/DD ');
       return formatDay;
+    },
+    noReply() {
+      if (this.answers.length === 0) {
+        console.log('true');
+        return true;
+      } else {
+        console.log('false');
+        return false;
+      }
     },
     answerCounter() {
       if (this.answerMessage === null) {
@@ -178,24 +186,23 @@ export default {
 
     wisdoms
       .collection('reply')
-      .orderBy('createdAt', 'desc')
+      .orderBy('createdAt')
       .get()
       .then((snapshot) => {
-        if (snapshot.size !== 0) {
-          snapshot.forEach((doc) => {
-            const answer = doc.data();
-            const answerDetail = {
-              wisdomId: doc.id,
-              poster: answer.replyer,
-              likeAmount: answer.like,
-              content: answer.content,
-              createdDay: answer.createdAt.toDate(),
-            };
-            that.answers.push(answerDetail);
-          });
-        } else {
-          that.noReply = true;
+        if (snapshot.size === 0) {
+          return;
         }
+        snapshot.forEach((doc) => {
+          const answer = doc.data();
+          const answerDetail = {
+            wisdomId: doc.id,
+            poster: answer.replyer,
+            likeAmount: answer.like,
+            content: answer.content,
+            createdDay: answer.createdAt.toDate(),
+          };
+          that.answers.push(answerDetail);
+        });
       });
   },
   methods: {
@@ -238,6 +245,7 @@ export default {
             createdDay: timestamp.toDate(),
           };
           that.answerMessage = '';
+
           window.scrollTo(0, 0);
           that.answers.unshift(newAnswer);
         });
