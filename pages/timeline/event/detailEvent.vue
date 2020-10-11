@@ -137,23 +137,29 @@
             eventObject.placeName
           }}</v-list-item-content>
           <google-map v-show="geometry" :geometry="geometry"></google-map>
-          <v-list-item-content class="font-weight-black">参加費</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">{{
-            eventDetailObject.fee
-          }}</v-list-item-content>
-          <v-list-item-content class="font-weight-black">定員</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">{{
-            eventDetailObject.capacity
-          }}</v-list-item-content>
-          <v-list-item-content v-if="eventDetailObject.hpUrl" class="font-weight-black"
-            >参考URL</v-list-item-content
-          >
-          <v-list-item-content
-            class="text-subtitle-2 content-url"
-            @click="toLink(eventDetailObject.hpUrl)"
-          >
-            {{ eventDetailObject.hpUrl }}
-          </v-list-item-content>
+          <div v-if="eventDetailObject.fee">
+            <v-list-item-content v-if="eventDetailObject.fee" class="font-weight-black"
+              >参加費</v-list-item-content
+            >
+            <v-list-item-content class="text-subtitle-2">{{
+              eventDetailObject.fee
+            }}</v-list-item-content>
+          </div>
+          <div v-if="eventDetailObject.capacity">
+            <v-list-item-content class="font-weight-black">定員</v-list-item-content>
+            <v-list-item-content class="text-subtitle-2">{{
+              eventDetailObject.capacity
+            }}</v-list-item-content>
+          </div>
+          <div v-if="eventDetailObject.hpUrl">
+            <v-list-item-content class="font-weight-black">参考URL</v-list-item-content>
+            <v-list-item-content
+              class="text-subtitle-2 content-url"
+              @click="toLink(eventDetailObject.hpUrl)"
+            >
+              {{ eventDetailObject.hpUrl }}
+            </v-list-item-content>
+          </div>
         </v-list>
         <nuxt-link to="/timeline/event/eventEdit">
           <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
