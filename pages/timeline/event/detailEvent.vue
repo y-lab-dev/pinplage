@@ -184,9 +184,13 @@
             :textarea-value="content"
             @input="content = $event"
           ></text-area>
-          <v-list-item-content class="caption mx-6"
-            >不適切な投稿をすると、利用規約の違反により投稿の削除や利用停止となる場合があります。</v-list-item-content
-          >
+          <v-list-item-content class="caption mx-8"
+            ><p class="mb-0">
+              不適切な投稿をすると、利用規約の違反により<span class="font-weight-bold"
+                >投稿の削除</span
+              >や<span class="font-weight-bold">利用停止</span>となる場合があります。
+            </p>
+          </v-list-item-content>
           <div class="post-button">
             <post-button
               class="mt-4"
@@ -294,7 +298,7 @@ export default {
           });
       });
     eventQuestion
-      .orderBy('createdAt', 'desc')
+      .orderBy('createdAt')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -449,6 +453,8 @@ export default {
 <style scoped>
 .top-img {
   width: 90vw;
+  height: 30vh;
+  object-fit: cover;
 }
 .content-divider {
   border-color: #61d4b3;
