@@ -4,7 +4,7 @@
       v-for="item in postedWisdoms"
       :key="item.wisdomId"
       :wisdom-id="item.wisdomId"
-      :poster="item.poster"
+      :poster="uid"
       :resolved="item.resolved"
       :content="item.content"
       :category="item.category"
@@ -15,6 +15,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
 
@@ -27,45 +28,44 @@ export default {
     };
   },
   computed: {
-    userEmail() {
-      return this.$store.getters['user/uid'];
-    },
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
+    }),
   },
   created() {
     const that = this;
     const wisdoms = firebase.firestore().collection('wisdoms');
-    // const users = firebase.firestore().collection('users');
-
-    async function getDetails() {
-      await wisdoms
-        .where('poster', '==', 'CMtv22qbuWNq2Gv1t9g7ryL3HL52')
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            const wisdom = doc.data();
-            const postedWisdom = {
-              wisdoeId: doc.id,
-              poster: wisdom.poster,
-              likeAmount: wisdom.like,
-              resolved: wisdom.resolved,
-              content: wisdom.content,
-              category: wisdom.category,
-              createdDay: wisdom.createdAt.toDate(),
-            };
-            wisdoms
-              .doc(doc.id)
-              .collection('reply')
-              .get()
-              .then((doc) => {
-                postedWisdom.replyAmount = doc.size;
-                that.postedWisdoms.push(postedWisdom);
-              });
-          });
+    wisdoms
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          if (doc.data().poster !== that.uid) {
+            return;
+          }
+          const wisdom = doc.data();
+          console.log(wisdom);
+          const postedWisdom = {
+            wisdomId: doc.id,
+            likeAmount: wisdom.like,
+            resolved: wisdom.resolved,
+            content: wisdom.content,
+            category: wisdom.category,
+            createdDay: wisdom.createdAt.toDate(),
+          };
+          wisdoms
+            .doc(doc.id)
+            .collection('reply')
+            .get()
+            .then((doc) => {
+              postedWisdom.replyAmount = doc.size;
+              that.postedWisdoms.push(postedWisdom);
+            });
         });
-    }
-    getDetails().then(() => {
-      console.log(123);
-    });
+      });
   },
 };
 </script>

@@ -48,6 +48,7 @@
       <wisdom-thread
         v-for="(item, index) in answers"
         :key="item.wisdomId"
+        :class="`index-${index}`"
         v-bind="answers[index]"
         :answer-display="true"
       />
@@ -113,6 +114,7 @@ export default {
     return {
       question: {},
       answers: [],
+      newAnswers: [],
       posterIcon: null,
       posterName: null,
       answerMessage: null,
@@ -126,10 +128,8 @@ export default {
     },
     noReply() {
       if (this.answers.length === 0) {
-        console.log('true');
         return true;
       } else {
-        console.log('false');
         return false;
       }
     },
@@ -217,10 +217,15 @@ export default {
     pushLike() {
       console.log('like');
     },
+    scrollToElement(index) {
+      this.$nextTick(() => {
+        const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
+        newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
+      });
+    },
     postReply() {
       const that = this;
       if (that.uid === '') {
-        console.log('no uid');
         return;
       }
       const timestamp = firebase.firestore.Timestamp.now();
@@ -246,8 +251,9 @@ export default {
           };
           that.answerMessage = '';
 
-          window.scrollTo(0, 0);
-          that.answers.unshift(newAnswer);
+          const newAnswers = [...that.answers, newAnswer];
+          that.answers = newAnswers;
+          this.scrollToElement(newAnswers.length - 1);
         });
     },
   },
