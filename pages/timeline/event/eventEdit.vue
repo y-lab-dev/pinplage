@@ -227,9 +227,10 @@ export default {
         },
         strictBounds: false,
       },
-      fiels: ['place_id', 'name', 'type'],
+      fiels: ['place_id', 'name', 'type', 'geometry'],
       placeId: '',
       placeName: '',
+      eometry: '',
     };
   },
   computed: {
@@ -295,8 +296,13 @@ export default {
   methods: {
     onClickLocation() {
       const place = this.mapAutoComplete.getPlace();
+      const geometry = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
       this.place = place.place_id;
       this.placeName = place.name;
+      this.geometry = geometry;
     },
     post() {
       const that = this;
@@ -310,6 +316,7 @@ export default {
           img: that.img,
           placeId: that.placeId,
           placeName: that.placeName,
+          geometry: this.geometry,
           date: that.date,
           updatedAt: timestamp,
           cancel: false,
@@ -325,7 +332,12 @@ export default {
           });
         })
         .then(() => {
-          this.$router.go(-1);
+          const that = this;
+          const obj = { id: that.id, geometry: that.geometry };
+          async function assignment() {
+            await that.$store.commit('event/getData', obj);
+          }
+          assignment().then(this.$router.go(-1));
         })
         .catch((err) => {
           alert(err);
