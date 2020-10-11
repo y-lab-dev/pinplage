@@ -36,7 +36,7 @@ export default {
 }
 .input-text {
   border: 1px solid #61d4b3;
-  width: 300px;
+  width: 80vw;
   outline: none;
 }
 </style>

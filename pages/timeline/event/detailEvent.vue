@@ -137,23 +137,29 @@
             eventObject.placeName
           }}</v-list-item-content>
           <google-map v-show="geometry" :geometry="geometry"></google-map>
-          <v-list-item-content class="font-weight-black">参加費</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">{{
-            eventDetailObject.fee
-          }}</v-list-item-content>
-          <v-list-item-content class="font-weight-black">定員</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">{{
-            eventDetailObject.capacity
-          }}</v-list-item-content>
-          <v-list-item-content v-if="eventDetailObject.hpUrl" class="font-weight-black"
-            >参考URL</v-list-item-content
-          >
-          <v-list-item-content
-            class="text-subtitle-2 content-url"
-            @click="toLink(eventDetailObject.hpUrl)"
-          >
-            {{ eventDetailObject.hpUrl }}
-          </v-list-item-content>
+          <div v-if="eventDetailObject.fee">
+            <v-list-item-content v-if="eventDetailObject.fee" class="font-weight-black"
+              >参加費</v-list-item-content
+            >
+            <v-list-item-content class="text-subtitle-2">{{
+              eventDetailObject.fee
+            }}</v-list-item-content>
+          </div>
+          <div v-if="eventDetailObject.capacity">
+            <v-list-item-content class="font-weight-black">定員</v-list-item-content>
+            <v-list-item-content class="text-subtitle-2">{{
+              eventDetailObject.capacity
+            }}</v-list-item-content>
+          </div>
+          <div v-if="eventDetailObject.hpUrl">
+            <v-list-item-content class="font-weight-black">参考URL</v-list-item-content>
+            <v-list-item-content
+              class="text-subtitle-2 content-url"
+              @click="toLink(eventDetailObject.hpUrl)"
+            >
+              {{ eventDetailObject.hpUrl }}
+            </v-list-item-content>
+          </div>
         </v-list>
         <nuxt-link to="/timeline/event/eventEdit">
           <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
@@ -184,9 +190,13 @@
             :textarea-value="content"
             @input="content = $event"
           ></text-area>
-          <v-list-item-content class="caption mx-6"
-            >不適切な投稿をすると、利用規約の違反により投稿の削除や利用停止となる場合があります。</v-list-item-content
-          >
+          <v-list-item-content class="caption mx-8"
+            ><p class="mb-0">
+              不適切な投稿をすると、利用規約の違反により<span class="font-weight-bold"
+                >投稿の削除</span
+              >や<span class="font-weight-bold">利用停止</span>となる場合があります。
+            </p>
+          </v-list-item-content>
           <div class="post-button">
             <post-button
               class="mt-4"
@@ -294,7 +304,7 @@ export default {
           });
       });
     eventQuestion
-      .orderBy('createdAt', 'desc')
+      .orderBy('createdAt')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -449,6 +459,8 @@ export default {
 <style scoped>
 .top-img {
   width: 90vw;
+  height: 30vh;
+  object-fit: cover;
 }
 .content-divider {
   border-color: #61d4b3;
