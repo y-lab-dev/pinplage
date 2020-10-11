@@ -1,7 +1,9 @@
 <template>
   <v-btn
     rounded
-    color-text="white"
+    color="teal accent-4"
+    class="white--text"
+    outlined
     :type="buttonType"
     :disabled="buttonDisabled"
     @click="buttonMethod"
