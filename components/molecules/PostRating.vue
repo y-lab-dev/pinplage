@@ -1,7 +1,7 @@
 <template>
   <div>
     <star-rating
-      :max-rating="3"
+      :max-rating="5"
       :show-rating="false"
       :star-size="starSize"
       @rating-selected="setRating"
