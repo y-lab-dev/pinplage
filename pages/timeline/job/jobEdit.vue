@@ -12,14 +12,14 @@
           color="#61d4b3"
           accept="image/png, image/jpeg, image/bmp"
           prepend-icon="mdi-camera"
-          label="画像"
+          label="※画像"
           :clearable="false"
           @change="imgAdd"
         ></v-file-input>
         <v-text-field
           v-model="name"
           color="#61d4b3"
-          label="店舗名/アルバイト名"
+          label="※店舗名/アルバイト名"
           prepend-icon="mdi-flag-variant"
         ></v-text-field>
         <div class="mt-1 pt-3">
@@ -32,13 +32,13 @@
           :items="genres"
           sv-model="genre"
           color="#61d4b3"
-          label="ジャンル"
+          label="※ジャンル"
           prepend-icon="mdi-content-copy"
         ></v-select>
         <v-text-field
           v-model="money"
           color="#61d4b3"
-          label="時給"
+          label="※時給"
           prepend-icon="mdi-currency-cny"
         ></v-text-field>
         <div style="display: inline-flex">
@@ -53,7 +53,7 @@
               <v-text-field
                 v-model="startTime"
                 color="#61d4b3"
-                label="勤務時間(始まり)"
+                label="※勤務時間(始まり)"
                 prepend-icon="mdi-clock"
                 readonly
                 class="mr-3"
@@ -77,7 +77,7 @@
               <v-text-field
                 v-model="endTime"
                 color="#61d4b3"
-                label="(終わり)"
+                label="※(終わり)"
                 prepend-icon
                 readonly
                 v-on="on"
@@ -90,16 +90,10 @@
             </v-time-picker>
           </v-dialog>
         </div>
-        <v-text-field
-          v-model="holiday"
-          color="#61d4b3"
-          label="休日"
-          prepend-icon="mdi-seat-individual-suite"
-        ></v-text-field>
         <v-textarea
           v-model="content"
           color="#61d4b3"
-          label="仕事内容"
+          label="※仕事内容"
           auto-grow
           rows="3"
           prepend-icon="mdi-pencil"
@@ -107,11 +101,23 @@
         <v-textarea
           v-model="shift"
           color="#61d4b3"
-          label="シフト詳細"
+          label="※シフト詳細"
           auto-grow
           rows="3"
           prepend-icon="mdi-calendar-clock"
         ></v-textarea>
+        <v-text-field
+          v-model="contactEmail"
+          color="#61d4b3"
+          label="※連絡先"
+          prepend-icon="mdi-email-multiple"
+        ></v-text-field>
+        <v-text-field
+          v-model="holiday"
+          color="#61d4b3"
+          label="休日"
+          prepend-icon="mdi-seat-individual-suite"
+        ></v-text-field>
         <v-textarea
           v-model="welfare"
           color="#61d4b3"
@@ -138,12 +144,6 @@
           label="ホームページなど（URL）"
           prepend-icon="mdi-home-circle-outline"
         ></v-text-field>
-        <v-text-field
-          v-model="contactEmail"
-          color="#61d4b3"
-          label="連絡先"
-          prepend-icon="mdi-email-multiple"
-        ></v-text-field>
         <v-textarea
           v-model="secret"
           color="#61d4b3"
@@ -164,14 +164,9 @@
             money == '' ||
             startTime == '' ||
             endTime == '' ||
-            holiday == '' ||
             content == '' ||
             shift == '' ||
-            welfare == '' ||
-            carfare == '' ||
-            refer == '' ||
-            contactEmail == '' ||
-            secret == ''
+            contactEmail == ''
           "
           >編集完了</post-button
         >
@@ -208,11 +203,13 @@ export default {
     return {
       inputType: 'text',
       buttonType: 'submit',
+      requiredText: 'この項目は必須です',
       startTimeModal: false,
       endTimeModal: false,
       genres: [
         '生協紹介',
         '大学紹介',
+        '実験・研究協力',
         '飲食/フード',
         'カフェ',
         '居酒屋',
@@ -233,6 +230,7 @@ export default {
         '軽作業',
         '工場・倉庫・建築・土木',
         '警備・清掃・ビル管理',
+        '誰か助けて！',
       ],
       name: '',
       genre: '',
