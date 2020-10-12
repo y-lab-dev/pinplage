@@ -1,29 +1,6 @@
 <template>
   <div style="margin-bottom: 60px">
-    <v-row align="center" justify="space-around">
-      <v-btn
-        v-show="!isKeep"
-        width="50vw"
-        bottom
-        left
-        fixed
-        rounded
-        color="success"
-        dark
-        class="bottom-button"
-        @click="keep"
-      >
-        <v-icon left>mdi-star</v-icon>
-        キープする
-      </v-btn>
-      <v-btn v-show="isKeep" bottom left fixed rounded color="success" dark @click="notKeep">
-        <v-icon left>mdi-star</v-icon>
-        キープ済み
-      </v-btn>
-      <v-btn width="40vw" bottom right fixed rounded color="primary" class="bottom-button" dark
-        >連絡してみる</v-btn
-      >
-    </v-row>
+    <div></div>
     <div>
       <viewer :images="jobObject.img">
         <template v-for="src in jobObject.img">
@@ -69,54 +46,66 @@
         <v-list-item-content class="text-subtitle-2">{{ jobObject.placeName }}</v-list-item-content>
       </v-list-item>
       <google-map v-show="geometry" :geometry="geometry" class="ml-4"></google-map>
-      <v-list-item>
-        <v-list-item-content class="font-weight-black">休日</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="text-subtitle-2">{{
-          jobDetailObject.holiday
-        }}</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="font-weight-black">交通費支給</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="text-subtitle-2">{{
-          jobDetailObject.carfare
-        }}</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="font-weight-black">待遇・福利厚生</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="text-subtitle-2">{{
-          jobDetailObject.welfare
-        }}</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="font-weight-black">紹介料</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="text-subtitle-2">{{
-          jobDetailObject.refer
-        }}</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="font-weight-black">公式HP</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="text-subtitle-2" @click="toLink(jobDetailObject.hp)">{{
-          jobDetailObject.hp
-        }}</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="font-weight-black">ここだけの話</v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content class="text-subtitle-2">{{
-          jobDetailObject.secret
-        }}</v-list-item-content>
-      </v-list-item>
+      <div v-if="jobDetailObject.holiday">
+        <v-list-item>
+          <v-list-item-content class="font-weight-black">休日</v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content class="text-subtitle-2">{{
+            jobDetailObject.holiday
+          }}</v-list-item-content>
+        </v-list-item>
+      </div>
+      <div v-if="jobDetailObject.carfare">
+        <v-list-item>
+          <v-list-item-content class="font-weight-black">交通費支給</v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content class="text-subtitle-2">{{
+            jobDetailObject.carfare
+          }}</v-list-item-content>
+        </v-list-item>
+      </div>
+      <div v-if="jobDetailObject.welfare">
+        <v-list-item>
+          <v-list-item-content class="font-weight-black">待遇・福利厚生</v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content class="text-subtitle-2">{{
+            jobDetailObject.welfare
+          }}</v-list-item-content>
+        </v-list-item>
+      </div>
+      <div v-if="jobDetailObject.refer">
+        <v-list-item>
+          <v-list-item-content class="font-weight-black">紹介料</v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content class="text-subtitle-2">{{
+            jobDetailObject.refer
+          }}</v-list-item-content>
+        </v-list-item>
+      </div>
+      <div v-if="jobDetailObject.hp">
+        <v-list-item>
+          <v-list-item-content class="font-weight-black">公式HP</v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content class="text-subtitle-2" @click="toLink(jobDetailObject.hp)">{{
+            jobDetailObject.hp
+          }}</v-list-item-content>
+        </v-list-item>
+      </div>
+      <div v-if="jobDetailObject.secret">
+        <v-list-item>
+          <v-list-item-content class="font-weight-black">ここだけの話</v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content class="text-subtitle-2">{{
+            jobDetailObject.secret
+          }}</v-list-item-content>
+        </v-list-item>
+      </div>
       <v-list-item>
         <v-list-item-content class="font-weight-black">連絡先</v-list-item-content>
       </v-list-item>
@@ -185,6 +174,44 @@
         >
       </div>
     </v-list>
+    <v-footer app fixed class="ma-0 py-3 buttom-button-bar">
+      <v-row no-gutters>
+        <v-col cols="7" class="text-center">
+          <v-btn
+            v-show="!isKeep"
+            width="52vw"
+            rounded
+            outlined
+            color="yellow darken-3"
+            dark
+            class="bottom-button-nokeep"
+            @click="keep"
+          >
+            <v-icon left>mdi-star</v-icon>
+            キープする
+          </v-btn>
+          <v-btn
+            v-show="isKeep"
+            width="52vw"
+            rounded
+            color="yellow darken-3"
+            dark
+            class="bottom-button-keep"
+            @click="notKeep"
+          >
+            <v-icon left>mdi-star</v-icon>
+            キープ済み
+          </v-btn>
+        </v-col>
+        <v-col cols="5" class="text-center">
+          <a :href="'mailto:' + jobDetailObject.contactEmail">
+            <v-btn width="33vw" rounded color="teal lighten-1" class="bottom-button" dark
+              >連絡してみる</v-btn
+            ></a
+          >
+        </v-col>
+      </v-row>
+    </v-footer>
   </div>
 </template>
 <script>
@@ -406,7 +433,14 @@ export default {
 .post-button {
   text-align: center;
 }
-.bottom-button {
+.bottom-button-nokeep {
   z-index: 1;
+  background-color: #fff;
+}
+.bottom-button-keep {
+  z-index: 1;
+}
+.buttom-button-bar {
+  background-color: rgba(255, 255, 255, 0.6);
 }
 </style>
