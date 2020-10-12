@@ -170,6 +170,14 @@
           "
           >編集完了</post-button
         >
+        <v-btn v-show="!isClose" rounded dark color="pink lighten-2" @click="close">
+          <v-icon left>mdi-emoticon-kiss-outline</v-icon>
+          募集を締め切る
+        </v-btn>
+        <v-btn v-show="isClose" rounded dark color="grey">
+          <v-icon left>mdi-check-circle-outline</v-icon>
+          募集を終了しました
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -206,6 +214,7 @@ export default {
       requiredText: 'この項目は必須です',
       startTimeModal: false,
       endTimeModal: false,
+      isClose: false,
       genres: [
         '生協紹介',
         '大学紹介',
@@ -281,11 +290,14 @@ export default {
       that.img = doc.data().img;
       that.placeId = doc.data().placeId;
       that.placeName = doc.data().placeName;
+      that.geometry = doc.data().geometry;
       that.money = doc.data().money;
       that.startTime = doc.data().startTime;
       that.endTime = doc.data().endTime;
       that.isRecruit = doc.data().isRecruit;
-
+      if (doc.data().isRecruit === false) {
+        that.isClose = true;
+      }
       job
         .collection('detail')
         .doc('browse')
@@ -376,8 +388,29 @@ export default {
               secret: that.secret,
             })
             .then(() => {
-              this.$router.go(-1);
+              const that = this;
+              const obj = { id: that.id, geometry: that.geometry };
+              async function assignment() {
+                await that.$store.commit('job/getData', obj);
+              }
+              assignment().then(this.$router.go(-1));
             });
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    close() {
+      const that = this;
+      const job = firebase.firestore().collection('jobs').doc(this.id);
+
+      job
+        .update({
+          isRecruit: false,
+        })
+        .then(() => {
+          alert('このアルバイトの募集を締め切りました');
+          that.isClose = true;
         })
         .catch((err) => {
           alert(err);
