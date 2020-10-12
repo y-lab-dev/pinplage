@@ -1,5 +1,5 @@
 <template>
-  <div ref="map" class="main" />
+  <div ref="map" class="google-map" />
 </template>
 <script>
 import loadGoogleMapsApi from 'load-google-maps-api';
@@ -47,8 +47,8 @@ export default {
 };
 </script>
 <style scoped>
-.main {
-  width: 90vw;
-  height: 20vh;
+.google-map {
+  width: 100%;
+  height: 24vh;
 }
 </style>

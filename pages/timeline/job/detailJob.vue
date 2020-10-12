@@ -47,7 +47,7 @@
               jobObject.placeName
             }}</v-list-item-content>
           </v-list-item>
-          <google-map v-show="geometry" :geometry="geometry" class="ml-4"></google-map>
+          <google-map v-show="geometry" :geometry="geometry"></google-map>
           <div v-if="jobDetailObject.holiday">
             <v-list-item>
               <v-list-item-content class="font-weight-black">休日</v-list-item-content>
