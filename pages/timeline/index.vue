@@ -23,7 +23,7 @@
         <event></event>
       </v-tab-item>
       <v-tab-item value="tab-6">
-        <article></article>
+        <TimelineArticle />
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -34,7 +34,7 @@ import Job from '~/components/Organisms/TimelineJob';
 import Wisdom from '~/components/Organisms/TimelineWisdom';
 import Place from '~/components/Organisms/TimelinePlace';
 import Event from '~/components/Organisms/TimelineEvent';
-import Article from '~/components/Organisms/TimelineArticle';
+import TimelineArticle from '~/components/Organisms/TimelineArticle';
 
 export default {
   layout: 'protected',
@@ -44,7 +44,7 @@ export default {
     Job,
     Wisdom,
     Event,
-    Article,
+    TimelineArticle,
   },
   data() {
     return {

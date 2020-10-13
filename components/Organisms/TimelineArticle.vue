@@ -1,24 +1,21 @@
 <template>
   <div>
     <v-card
-      class="rinrin-card"
       v-for="item in articleArray"
       :key="item.id"
+      class="mt-2 mx-2"
       :elevation="5"
       @click="toDetail(item)"
     >
       <v-img class="white--text align-end" height="200px" :src="item.mainImg"></v-img>
-      <v-card-title class="title" v-if="!alreadyRead">
-        {{ item.title }}
-      </v-card-title>
-      <v-card-title class="title already" v-if="alreadyRead">
+      <v-card-title class="font-weight-bold">
         {{ item.title }}
       </v-card-title>
       <v-card-subtitle>澤円/{{ item.provider }}</v-card-subtitle>
       <v-list-item>
         <v-chip class="label-view">{{ item.views }} views</v-chip>
-        <v-list-item-content class="date">
-          {{ item.date }}
+        <v-list-item-content class="ml-5">
+          <created-time-diff :previous-date="item.date" />
         </v-list-item-content>
         <v-row align="center" justify="end">
           <v-icon class="mr-1" style="color: #61d4b3">mdi-thumb-up</v-icon>
@@ -29,10 +26,13 @@
   </div>
 </template>
 <script>
-import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
+import CreatedTimeDiff from '~/components/molecules/TimeDiff';
 
 export default {
+  components: {
+    CreatedTimeDiff,
+  },
   data() {
     return {
       articleArray: [],
@@ -43,6 +43,7 @@ export default {
     const article = firebase.firestore().collection('articles');
 
     article
+      .orderBy('createdAt', 'desc')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -51,7 +52,7 @@ export default {
             {
               id: doc.id,
               title: doc.data().title,
-              date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD'),
+              date: doc.data().createdAt.toDate(),
               category: doc.data().category,
               canRead: doc.data().canRead,
               like: doc.data().like,
