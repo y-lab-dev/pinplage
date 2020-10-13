@@ -6,7 +6,7 @@
       <v-tab href="#tab-3">アルバイト</v-tab>
       <v-tab href="#tab-4">周辺施設</v-tab>
       <v-tab href="#tab-5">イベント</v-tab>
-      <v-tab href="#tab-6">鈴鈴</v-tab>
+      <v-tab href="#tab-6">学生記事</v-tab>
     </v-tabs>
     <v-tabs-items v-model="model">
       <v-tab-item value="tab-1">
@@ -22,7 +22,9 @@
       <v-tab-item value="tab-5">
         <event></event>
       </v-tab-item>
-      <v-tab-item value="tab-6"></v-tab-item>
+      <v-tab-item value="tab-6">
+        <article></article>
+      </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
@@ -32,6 +34,7 @@ import Job from '~/components/Organisms/TimelineJob';
 import Wisdom from '~/components/Organisms/TimelineWisdom';
 import Place from '~/components/Organisms/TimelinePlace';
 import Event from '~/components/Organisms/TimelineEvent';
+import Article from '~/components/Organisms/TimelineArticle';
 
 export default {
   layout: 'protected',
@@ -41,6 +44,7 @@ export default {
     Job,
     Wisdom,
     Event,
+    Article,
   },
   data() {
     return {
