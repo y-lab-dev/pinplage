@@ -41,6 +41,11 @@ export const mutations = {
     state.user.name = payload.name;
     state.user.icon = payload.icon;
   },
+  changeName(state, latestName) {
+    console.log(latestName);
+    console.log('run');
+    state.user.name = latestName;
+  },
 };
 
 export const actions = {
