@@ -42,9 +42,10 @@ export const mutations = {
     state.user.icon = payload.icon;
   },
   changeName(state, latestName) {
-    console.log(latestName);
-    console.log('run');
     state.user.name = latestName;
+  },
+  changeIcon(state, latestIcon) {
+    state.user.icon = latestIcon;
   },
 };
 

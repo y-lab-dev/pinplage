@@ -23,7 +23,7 @@
                 <div class="user-icon-back-back">
                   <div class="user-icon-back">
                     <v-avatar color="white" :size="iconSize">
-                      <v-img :src="userInfo.icon"></v-img>
+                      <v-img :src="icon"></v-img>
                     </v-avatar>
                   </div>
                 </div>
@@ -32,7 +32,7 @@
                 <v-row class="white--text mx-auto">
                   <v-col class="white--text text-center">
                     <p class="user-name bold mobile-font-size">
-                      {{ userInfo.name }}
+                      {{ name }}
                     </p>
                   </v-col>
                 </v-row>
@@ -136,8 +136,6 @@ export default {
   },
   created() {
     const that = this;
-    console.log(that.name);
-    console.log(that.icon);
     const userData = firebase.firestore().collection('users');
     userData
       .doc(that.uid)

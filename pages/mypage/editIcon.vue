@@ -16,31 +16,35 @@
       </v-form>
     </v-card>
     <v-avatar size="100px">
-      <img v-if="previousIcon" :src="previousIcon" />
+      <img v-if="previousIcon" ref="image" :src="previousIcon" />
     </v-avatar>
     <v-card v-if="previousIcon">
       <vue-cropper
         ref="cropper"
         :guides="false"
-        :view-mode="2"
-        drag-mode="crop"
+        :view-mode="1"
+        :high-light="false"
+        drag-mode="move"
         :auto-crop-area="1.0"
-        :min-container-width="300"
-        :min-container-height="300"
         :background="false"
-        :rotatable="false"
+        :rotatable="true"
+        :crop-box-resizable="false"
+        :crop-box-movable="false"
         :src="previousIcon"
-        :img-style="{ width: '90%', height: '90%' }"
-        :aspect-ratio="cropper.side / cropper.vertical"
+        :aspect-ratio="1 / 1"
+        :min-crop-box-height="300"
       ></vue-cropper>
-      <v-btn @click="cropImage"></v-btn>
+      <v-btn @click="cropImage">切り抜き</v-btn>
+      <v-btn @click="changeIcon">変更</v-btn>
     </v-card>
   </div>
 </template>
 
+// :
 <script>
 import { mapGetters } from 'vuex';
 import VueCropper from 'vue-cropperjs';
+import firebase from '~/plugins/firebase';
 import 'cropperjs/dist/cropper.css';
 
 export default {
@@ -49,7 +53,8 @@ export default {
   },
   data() {
     return {
-      previousIcon: null,
+      previousIcon: '',
+      imageType: '',
       cropper: {
         side: 1,
         vertical: 1,
@@ -69,36 +74,59 @@ export default {
       icon: 'user/icon',
     }),
   },
-  created() {},
   methods: {
     setImage(e) {
       console.log(e);
-      // const file = event.target.files[0];
       const reader = new FileReader();
-      console.log(reader);
+      this.imageType = e.type;
       reader.onload = (event) => {
         this.previousIcon = event.target.result;
       };
       reader.readAsDataURL(e);
     },
     cropImage() {
-      this.imageAfter.src = this.$refs.cropper.getCroppedCanvas().toDataURL();
-      // this.currenUser.icon = this.cropData.cropImg;
-      this.imageAfter.BlobFile = this.dataURLtoBlob(this.imageAfter.src);
+      console.log(this.$refs.cropper.getCroppedCanvas({ width: 100, height: 100 }));
+      this.previousIcon = this.$refs.cropper
+        .getCroppedCanvas({ width: 100, height: 100 })
+        .toDataURL(this.imageType);
+      this.imageAfter.BlobFile = this.dataURLtoBlob(this.previousIcon);
       console.log(this.imageAfter.BlobFile);
-      this.previousIcon = this.imageAfter.src;
     },
     dataURLtoBlob(dataURL) {
-      const byteString = atob(dataURL.split(',')[1]);
-      const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
+      const convert = require('dataurl-to-blob');
+      return convert(dataURL);
+    },
+    changeIcon() {
+      const that = this;
+      const image = this.imageAfter.BlobFile;
+      const users = firebase.firestore().collection('users').doc(this.uid);
+      const storageRef = firebase.storage().ref('user/icon/' + 'test3');
+      async function changeDatabase() {
+        await storageRef.put(image).then(() => {
+          storageRef.getDownloadURL().then((url) => {
+            that.$store.commit('user/changeIcon', url);
+            users.update({ icon: url });
+          });
+        });
       }
-      const blob = new Blob([ab], { type: mimeString });
-      return blob;
+      changeDatabase().then(() => {
+        this.$router.go(-1);
+      });
     },
   },
 };
 </script>
+
+<style scoped>
+.cropper-face {
+  top: 10%;
+  left: 15%;
+  height: 75%;
+  width: 70%;
+  opacity: 0.3;
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  background-color: #0089ff;
+}
+</style>
