@@ -1,46 +1,58 @@
 <template>
   <div>
-    <!-- <v-avatar><img :src="previousIcon" /></v-avatar> -->
-    <v-card>
-      <v-form>
-        <v-file-input
-          type="file"
-          accept="image/*"
-          placeholder="アイコン用の画像を選択してください"
-          prepend-icon="mdi-image-edit-outline"
-          label="アイコン編集"
-          show-size
-          counter
-          @change="setImage"
-        />
-      </v-form>
-    </v-card>
-    <v-avatar size="100px">
-      <img v-if="previousIcon" ref="image" :src="previousIcon" />
-    </v-avatar>
-    <v-card v-if="previousIcon">
-      <vue-cropper
-        ref="cropper"
-        :guides="false"
-        :view-mode="1"
-        :high-light="false"
-        drag-mode="move"
-        :auto-crop-area="1.0"
-        :background="false"
-        :rotatable="true"
-        :crop-box-resizable="false"
-        :crop-box-movable="false"
-        :src="previousIcon"
-        :aspect-ratio="1 / 1"
-        :min-crop-box-height="300"
-      ></vue-cropper>
-      <v-btn @click="cropImage">切り抜き</v-btn>
-      <v-btn @click="changeIcon">変更</v-btn>
-    </v-card>
+    <v-container>
+      <v-row justify="center">
+        <v-col>
+          <v-card v-if="!overlay" max-width="90vw" height="10vh">
+            <v-card-text>
+              <v-file-input
+                type="file"
+                accept="image/*"
+                outlined
+                placeholder="画像を選択してください"
+                prepend-icon="mdi-image-edit-outline"
+                label="アイコン編集"
+                @change="setImage"
+              />
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-overlay class="crop-card-card" :absolute="true" opacity="1" :value="overlay">
+      <v-card v-if="overlay" class="crop-card" height="100%">
+        <vue-cropper
+          ref="cropper"
+          class="crop"
+          :guides="false"
+          :view-mode="cropperViewMode"
+          :high-light="false"
+          drag-mode="move"
+          :auto-crop-area="1.0"
+          :background="false"
+          :rotatable="true"
+          :scalable="true"
+          :crop-box-resizable="false"
+          :crop-box-movable="false"
+          :src="previousIcon"
+          :aspect-ratio="1 / 1"
+          :min-crop-box-height="windowSize.width"
+          :min-crop-box-width="windowSize.width"
+          :min-canvas-height="windowSize.width"
+          :min-canvas-width="windowSize.width"
+          :min-container-height="windowSize.width"
+          :min-container-width="windowSize.width"
+          :modal="true"
+        ></vue-cropper>
+      </v-card>
+      <v-footer fixed>
+        <v-btn @click="rechooseImage">画像を選び直す</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn @click="cropImage">変更を保存する</v-btn>
+      </v-footer>
+    </v-overlay>
   </div>
 </template>
-
-// :
 <script>
 import { mapGetters } from 'vuex';
 import VueCropper from 'vue-cropperjs';
@@ -48,13 +60,20 @@ import firebase from '~/plugins/firebase';
 import 'cropperjs/dist/cropper.css';
 
 export default {
+  layout: 'onlyBack',
   components: {
     VueCropper,
   },
   data() {
     return {
+      overlay: false,
+      windowSize: {
+        height: '',
+        width: '',
+      },
       previousIcon: '',
       imageType: '',
+      imageName: '',
       cropper: {
         side: 1,
         vertical: 1,
@@ -64,6 +83,7 @@ export default {
         src: null,
         BlobFile: null,
       },
+      cropperViewMode: 0,
     };
   },
   computed: {
@@ -74,23 +94,47 @@ export default {
       icon: 'user/icon',
     }),
   },
+  created() {
+    this.windowSize = {
+      width: this.$vuetify.breakpoint.width * 0.95,
+    };
+  },
   methods: {
     setImage(e) {
-      console.log(e);
+      const img = new Image();
+      img.onload = () => {
+        const size = {
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+        };
+        URL.revokeObjectURL(img.src);
+        if (size.height > size.width) {
+          this.cropperViewMode = 2;
+          this.overlay = true;
+        } else {
+          this.cropperViewMode = 3;
+          this.overlay = true;
+        }
+      };
+      img.src = URL.createObjectURL(e);
+
       const reader = new FileReader();
       this.imageType = e.type;
+      this.imageName = e.name;
+      console.log(e);
+
       reader.onload = (event) => {
         this.previousIcon = event.target.result;
+        console.log(event);
       };
       reader.readAsDataURL(e);
     },
     cropImage() {
-      console.log(this.$refs.cropper.getCroppedCanvas({ width: 100, height: 100 }));
       this.previousIcon = this.$refs.cropper
         .getCroppedCanvas({ width: 100, height: 100 })
         .toDataURL(this.imageType);
       this.imageAfter.BlobFile = this.dataURLtoBlob(this.previousIcon);
-      console.log(this.imageAfter.BlobFile);
+      this.changeIcon();
     },
     dataURLtoBlob(dataURL) {
       const convert = require('dataurl-to-blob');
@@ -100,33 +144,45 @@ export default {
       const that = this;
       const image = this.imageAfter.BlobFile;
       const users = firebase.firestore().collection('users').doc(this.uid);
-      const storageRef = firebase.storage().ref('user/icon/' + 'test3');
-      async function changeDatabase() {
-        await storageRef.put(image).then(() => {
-          storageRef.getDownloadURL().then((url) => {
-            that.$store.commit('user/changeIcon', url);
-            users.update({ icon: url });
+      const storageRef = firebase.storage().ref(`user/icon/${this.uid}`).child(this.imageName);
+
+      storageRef.put(image).then(() => {
+        storageRef.getDownloadURL().then((url) => {
+          async function storeCommit() {
+            await that.$store.commit('user/changeIcon', url);
+          }
+          storeCommit().then(() => {
+            that.$router.go(-1);
           });
+          users.update({ icon: url });
         });
-      }
-      changeDatabase().then(() => {
-        this.$router.go(-1);
       });
+    },
+    rechooseImage() {
+      this.overlay = false;
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
+.cropper-view-box,
 .cropper-face {
-  top: 10%;
-  left: 15%;
-  height: 75%;
-  width: 70%;
-  opacity: 0.3;
-  border-radius: 100px;
-  -webkit-border-radius: 100px;
-  -moz-border-radius: 100px;
-  background-color: #0089ff;
+  border-radius: 50%;
+}
+.crop-card {
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.crop-card-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cropper-container {
+  overflow: hidden;
 }
 </style>

@@ -104,7 +104,7 @@
           >
         </v-list>
         <v-divider></v-divider>
-        <v-card flat v-for="item in articleSameCategoryArray" :key="item.id">
+        <v-card v-for="item in articleSameCategoryArray" :key="item.id" flat>
           <v-list-item class="px-3">
             <img width="70px" height="50px" :src="item.mainImg" />
             <v-list-item-content class="ml-2">
