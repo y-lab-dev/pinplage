@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="8" sm="6">
-        <div class="title">Pin Plage ログイン</div>
+        <div class="title">ログイン</div>
         <input-text
           :input-type="inputType"
           :input-placeholder="mailPlaceholder"
@@ -12,21 +12,26 @@
         <div class="validation-email">{{ emailValidation }}</div>
 
         <input-text
-          :input-type="inputType"
+          :input-type="passwordType"
           :input-placeholder="passwordPlaceholder"
           :input-value="password"
           @input="password = $event"
         ></input-text>
         <div class="validation-password">{{ passwordValidation }}</div>
-
-        <sign-in-button
-          :button-method="login"
-          :button-type="buttonType"
-          :button-disabled="loginValidation"
-          >ログイン</sign-in-button
-        >
-        <nuxt-link to="resetPassword">パスワードを忘れた方へ</nuxt-link>
-        <nuxt-link to="signUp">新規登録</nuxt-link>
+        <div class="login-button-place mt-8 mb-2">
+          <sign-in-button
+            :button-method="login"
+            :button-type="buttonType"
+            :button-disabled="loginValidation"
+            >ログインする</sign-in-button
+          >
+        </div>
+        <div class="password-forget text-caption mt-4">
+          <nuxt-link to="resetPassword">パスワードを忘れた方へ</nuxt-link>
+        </div>
+        <div class="sign-up">
+          <nuxt-link to="signUp">新規登録</nuxt-link>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -44,9 +49,10 @@ export default {
   data() {
     return {
       inputType: 'text',
+      passwordType: 'password',
       buttonType: 'submit',
-      mailPlaceholder: '静大メール',
-      passwordPlaceholder: 'パスワード',
+      mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
+      passwordPlaceholder: 'パスワード（英数字6文字以上）',
       email: '',
       password: '',
       emailValidation: '',
@@ -99,7 +105,6 @@ export default {
               alert('認証メールを確認してください');
             } else {
               const token = await firebase.auth().currentUser.getIdToken(true);
-              alert('ログイン成功');
               this.$store.dispatch('user/login', {
                 uid: user.uid,
                 email: user.email,
@@ -128,6 +133,7 @@ export default {
 <style scoped>
 .title {
   text-align: center;
+  margin-top: 65px;
 }
 .validation-email {
   text-align: center;
@@ -136,5 +142,17 @@ export default {
 .validation-password {
   text-align: center;
   color: red;
+}
+.login-button-place {
+  text-align: center;
+}
+.password-forget {
+  text-align: center;
+  text-decoration: underline;
+}
+.sign-up {
+  text-align: center;
+  margin-top: 200px;
+  text-decoration: underline;
 }
 </style>

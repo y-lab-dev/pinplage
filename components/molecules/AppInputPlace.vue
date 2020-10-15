@@ -1,14 +1,14 @@
 <template>
   <div class="mt-1 pt-3">
     <div ref="map" />
-    <v-icon> mdi-map-marker-radius </v-icon>
-    <input
+    <v-text-field
       ref="input"
       v-model="placeName"
-      class="input-text"
-      :type="inputType"
-      :placeholder="inputPlaceholder"
-    />
+      color="#61d4b3"
+      :label="label"
+      rows="1"
+      prepend-icon="mdi-map-marker-radius"
+    ></v-text-field>
   </div>
 </template>
 
@@ -25,12 +25,7 @@ async function initMap() {
 }
 export default {
   props: {
-    inputType: {
-      type: String,
-      required: true,
-      default: '',
-    },
-    inputPlaceholder: {
+    label: {
       type: String,
       required: true,
       default: '',
@@ -77,7 +72,9 @@ export default {
       types: ['establishment'],
       strictBounds: true,
     };
-    this.mapAutoComplete = new this.gmap.places.Autocomplete(this.$refs.input, searchOptions);
+    let element = this.$refs.input.$el;
+    element = element.querySelector('input');
+    this.mapAutoComplete = new this.gmap.places.Autocomplete(element, searchOptions);
     this.mapAutoComplete.setFields(this.fiels);
     this.mapAutoComplete.addListener('place_changed', () => {
       this.onClickLocation();
@@ -101,11 +98,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.input-text {
-  border-bottom: 1px solid rgb(134, 134, 134);
-  margin-bottom: 28px;
-  width: 300px;
-  outline: none;
-}
-</style>

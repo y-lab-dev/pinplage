@@ -1,7 +1,7 @@
 <template>
-  <div class="input-place">
+  <div class="input-place ma-2">
     <input
-      class="input-text"
+      class="input-text px-3 py-1"
       :type="inputType"
       :value="inputValue"
       :placeholder="inputPlaceholder"
@@ -36,6 +36,7 @@ export default {
 }
 .input-text {
   border: 1px solid #61d4b3;
+  border-radius: 25px;
   width: 80vw;
   outline: none;
 }

@@ -2,7 +2,7 @@
   <v-container>
     <v-row align-content="center">
       <v-col cols="12" md="8" sm="6">
-        <div class="title">Pin Plage 新規登録</div>
+        <div class="title">アカウント作成</div>
         <input-text
           :input-type="inputType"
           :input-placeholder="mailPlaceholder"
@@ -12,20 +12,23 @@
         <div class="validation-email">{{ emailValidation }}</div>
 
         <input-text
-          :input-type="inputType"
+          :input-type="passwordType"
           :input-placeholder="passwordPlaceholder"
           :input-value="password"
           @input="password = $event"
         ></input-text>
         <div class="validation-password">{{ passwordValidation }}</div>
-
-        <sign-up-button
-          :button-method="signUp"
-          :button-type="buttonType"
-          :button-disabled="loginValidation"
-          >新規登録</sign-up-button
-        >
-        <nuxt-link to="login">ログイン</nuxt-link>
+        <div class="sign-up-button-place mt-8">
+          <sign-up-button
+            :button-method="signUp"
+            :button-type="buttonType"
+            :button-disabled="loginValidation"
+            >新規登録する</sign-up-button
+          >
+        </div>
+        <div class="to-login">
+          <nuxt-link to="login">アカウントをお持ちの方</nuxt-link>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -43,9 +46,10 @@ export default {
   data() {
     return {
       inputType: 'text',
+      passwordType: 'password',
       buttonType: 'submit',
-      mailPlaceholder: '静大メール',
-      passwordPlaceholder: 'パスワード',
+      mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
+      passwordPlaceholder: 'パスワード（英数字6文字以上）',
       email: '',
       password: '',
       emailValidation: '',
@@ -135,6 +139,7 @@ export default {
 <style scoped>
 .title {
   text-align: center;
+  margin-top: 65px;
 }
 .validation-email {
   text-align: center;
@@ -143,5 +148,13 @@ export default {
 .validation-password {
   text-align: center;
   color: red;
+}
+.sign-up-button-place {
+  text-align: center;
+}
+.to-login {
+  text-align: center;
+  margin-top: 200px;
+  text-decoration: underline;
 }
 </style>

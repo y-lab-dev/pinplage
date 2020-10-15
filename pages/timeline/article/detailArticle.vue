@@ -42,7 +42,10 @@
               <v-list-item-subtitle>情報学部</v-list-item-subtitle>
             </v-list-item-content>
             <v-row align="center" justify="end">
-              <v-btn icon>
+              <v-btn v-show="isLiked" icon @click="notLike">
+                <v-icon color="#61d4b3">mdi-thumb-up</v-icon>
+              </v-btn>
+              <v-btn v-show="!isLiked" icon @click="like">
                 <v-icon>mdi-thumb-up</v-icon>
               </v-btn>
               <span class="subheading mr-7">{{ articleObject.like }}</span>
@@ -58,7 +61,12 @@
         </v-list>
         <v-divider></v-divider>
         <v-list two-line class="mb-6">
-          <v-card v-for="item in articleCommentArray" :key="item.index" :elevation="0">
+          <v-card
+            v-for="(item, index) in articleCommentArray"
+            :key="item.index"
+            :elevation="0"
+            :class="`index-${index}`"
+          >
             <v-list-item>
               <v-list-item-avatar>
                 <v-img :src="item.icon"></v-img>
@@ -142,15 +150,16 @@ export default {
       articleCommentArray: [],
       articleSameCategoryArray: [],
       commentPlaceholder: 'コメントしてみよう',
-      name: '',
-      icon: '',
       content: '',
+      isLiked: false,
     };
   },
   computed: {
     ...mapGetters({
       uid: 'user/uid',
       email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
       id: 'article/id',
       category: 'article/category',
     }),
@@ -162,6 +171,9 @@ export default {
     const articleDetail = thisArticle.collection('detail').doc('browse');
     const articleComment = thisArticle.collection('comment');
     const user = firebase.firestore().collection('users');
+    const userLikedArticle = user.doc(this.uid).collection('article').doc('favorite');
+    let userName = '';
+    let userIcon = '';
 
     thisArticle.get().then((doc) => {
       that.articleObject = {
@@ -184,7 +196,7 @@ export default {
     });
 
     articleComment
-      .orderBy('createdAt', 'desc')
+      .orderBy('createdAt')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -192,8 +204,8 @@ export default {
             .doc(doc.data().commenter)
             .get()
             .then((doc) => {
-              that.name = doc.data().name;
-              that.icon = doc.data().icon;
+              userName = doc.data().name;
+              userIcon = doc.data().icon;
             })
             .then(() => {
               that.articleCommentArray = [
@@ -203,8 +215,8 @@ export default {
                   createdAt: dayjs(doc.data().createdAt.toDate())
                     .locale('ja')
                     .format('YYYY/MM/DD HH:mm'),
-                  name: that.name,
-                  icon: that.icon,
+                  name: userName,
+                  icon: userIcon,
                 },
               ];
             });
@@ -237,8 +249,50 @@ export default {
       .catch((err) => {
         alert(err);
       });
+
+    userLikedArticle.get().then((doc) => {
+      that.isLiked = doc.data().id.find((val) => {
+        return val === that.id;
+      });
+    });
   },
   methods: {
+    scrollToElement(index) {
+      this.$nextTick(() => {
+        const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
+        newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
+      });
+    },
+    like() {
+      const that = this;
+      const loginUser = firebase.firestore().collection('users').doc(this.uid);
+
+      loginUser
+        .collection('article')
+        .doc('favorite')
+        .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
+        .then(() => {
+          that.isLiked = true;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    notLike() {
+      const that = this;
+      const loginUser = firebase.firestore().collection('users').doc(this.uid);
+
+      loginUser
+        .collection('article')
+        .doc('favorite')
+        .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
+        .then(() => {
+          that.isLiked = false;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
     post() {
       const that = this;
       const articleComment = firebase
@@ -246,8 +300,19 @@ export default {
         .collection('articles')
         .doc(this.id)
         .collection('comment');
+      const user = firebase
+        .firestore()
+        .collection('users')
+        .doc(this.uid)
+        .collection('article')
+        .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
-
+      const comment = {
+        content: that.content,
+        createdAt: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
+        name: that.name,
+        icon: that.icon,
+      };
       articleComment
         .add({
           commenter: that.uid,
@@ -255,9 +320,17 @@ export default {
           createdAt: timestamp,
           content: that.content,
         })
-        .then(() => {
-          alert('コメントが投稿されました');
-          this.$router.go(-1);
+        .then((doc) => {
+          that.content = '';
+          user
+            .update({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) })
+            .then(() => {
+              that.articleCommentArray = [...that.articleCommentArray, comment];
+              that.scrollToElement(that.articleCommentArray.length - 1);
+            })
+            .catch((err) => {
+              alert(err);
+            });
         });
     },
   },
