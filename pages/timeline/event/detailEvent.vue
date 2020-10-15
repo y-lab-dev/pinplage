@@ -172,7 +172,7 @@
                 <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item-content class="ml-4 pt-0" :key="item.content">
+            <v-list-item-content :key="item.content" class="ml-4 pt-0">
               {{ item.content }}
             </v-list-item-content>
             <v-divider :key="item.content"></v-divider>

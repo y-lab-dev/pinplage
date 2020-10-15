@@ -25,6 +25,7 @@
     "load-google-maps-api": "^2.0.2",
     "nuxt": "^2.14.0",
     "v-viewer": "^1.5.1",
+    "vue-cool-select": "^3.5.2",
     "vue-instantsearch": "^3.2.0",
     "vue-localstorage": "^0.6.2",
     "vue-star-rating": "^1.6.1"
