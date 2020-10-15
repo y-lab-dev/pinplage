@@ -1,11 +1,21 @@
 .page-enter-active,
 .page-leave-active {
-  transition: all 0.2s;
+  transition: all 0.2 ease-in;
 }
 
 .page-enter,
 .page-leave-to {
-  transform: translateX(-20px);
+  opacity: 0;
+  transition: all 0.2s ease-out;
+}
+
+
+.layout-enter-active,
+.layout-leave-active {
   opacity: 0;
   transition: all 0.2s;
+}
+.layout-enter,
+.layout-leave-active {
+  transition: all 0.3s;
 }

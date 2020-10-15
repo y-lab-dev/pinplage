@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <section id="user-top">
       <div class="granim-back">
         <granim
@@ -11,20 +11,28 @@
           class="granim-card d-flex justify-center"
           elevation="0"
           width="100vw"
+          height="30vh"
           color="rgba(255,255,255,0)"
         >
+          <v-btn icon dark class="user-settings" @click="pushPage('mypage/editAccount')">
+            <v-icon dark>mdi-account-edit-outline</v-icon>
+          </v-btn>
           <v-card-actions>
             <v-list color="rgba(0,0,0,0)">
               <v-list-item class="justify-center">
-                <v-list-item-avatar class="userIcon" :size="iconSize">
-                  <v-img :src="userInfo.userIcon"></v-img>
-                </v-list-item-avatar>
+                <div class="user-icon-back-back">
+                  <div class="user-icon-back">
+                    <v-avatar color="white" :size="iconSize">
+                      <v-img :src="icon"></v-img>
+                    </v-avatar>
+                  </div>
+                </div>
               </v-list-item>
               <v-list-item class="justify-center">
                 <v-row class="white--text mx-auto">
                   <v-col class="white--text text-center">
                     <p class="user-name bold mobile-font-size">
-                      {{ userInfo.userName }}
+                      {{ name }}
                     </p>
                   </v-col>
                 </v-row>
@@ -69,6 +77,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import granim from '~/components/Atoms/Granim';
 import MyAchievement from '~/components/organisms/MyPageAchievement';
@@ -91,8 +100,10 @@ export default {
         height: '30vh',
         width: '100vw',
         gradients: [
-          ['#85FFBD', '#FFFB7D'],
-          ['#FFFB7D', '#85FFBD'],
+          // ['#85FFBD', '#FFFB7D'],
+          // ['#FFFB7D', '#85FFBD'],
+          ['#F71810', '#FCCE22'],
+          ['#F4DD2E', '#F3EC0E'],
         ],
       },
       userTab: null,
@@ -116,23 +127,30 @@ export default {
         return 50;
       }
     },
-    userEmail() {
-      return this.$store.getters['user/email'];
-    },
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
+    }),
   },
   created() {
     const that = this;
-    const userData = firebase.firestore().collection('userData');
+    const userData = firebase.firestore().collection('users');
     userData
-      .doc(that.userEmail)
+      .doc(that.uid)
       .get()
       .then((doc) => {
         that.userInfo = doc.data();
-        console.log(that.userInfo);
       })
       .then(() => {
         that.isCreated = true;
       });
+  },
+  methods: {
+    pushPage(link) {
+      this.$router.push(link);
+    },
   },
 };
 </script>
@@ -149,6 +167,13 @@ export default {
 .granim-card {
   position: absolute;
 }
+.user-settings {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding-left: 2px;
+}
 .mobile-font-size {
   font-size: 1.3rem;
 }
@@ -163,6 +188,24 @@ export default {
   position: absolute;
   width: 100vw;
   top: 25.5vh;
+}
+.user-icon-back {
+  display: flex;
+  width: 86px;
+  height: 86px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+}
+.user-icon-back-back {
+  display: flex;
+  width: 94px;
+  height: 94px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #2cc45e, #e6f938);
 }
 .user-career {
   margin-top: 5vh;

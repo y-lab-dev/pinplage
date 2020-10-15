@@ -1,3 +1,167 @@
 <template>
-  <div>知恵袋投稿</div>
+  <div style="height: 100%">
+    <v-container class="post-wisdom-back" style="height: 100%" fluid>
+      <v-row justify="center">
+        <v-card width="90vw" color="white">
+          <v-container class="py-0">
+            <v-row justify="center">
+              <v-col cols="5">
+                <v-img height="auto" :src="require('~/assets/post/wisdomPost.png')"></v-img>
+              </v-col>
+              <v-col cols="6" align-self="center" class="pa-0 pr-5">
+                <v-row>
+                  <v-col cols="12" class="pa-0">
+                    <p class="catchphrase">静大生に</p>
+                  </v-col>
+                  <v-col cols="12" class="pa-0">
+                    <p class="catchphrase">気になること</p>
+                  </v-col>
+                  <v-col cols="12" class="pa-0">
+                    <p class="catchphrase">知りたいこと</p>
+                  </v-col>
+                  <v-col cols="12" class="pa-0">
+                    <p class="catchphrase">聞いてみませんか？</p>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-row>
+      <v-row class="mt-2" align="start" justify="center">
+        <v-col>
+          <v-card elevation="1">
+            <v-container>
+              <v-row class="px-4">
+                <v-col cols="2">
+                  <v-avatar><img :src="userIcon" /></v-avatar>
+                </v-col>
+                <v-col cols="9" align-self="center">
+                  {{ userName }}
+                </v-col>
+              </v-row>
+              <!-- <v-row justify="start" class="py-0">
+                <v-col cols="9">
+                  <v-list>
+                    <v-list-item>カテゴリその他のみ</v-list-item>
+                  </v-list>
+                </v-col>
+              </v-row> -->
+              <v-row dense>
+                <v-col cols="12">
+                  <v-textarea
+                    v-model="newQuestion"
+                    class="px-3"
+                    counter="300"
+                    placeholder="新規質問を作成する"
+                    :full-width="true"
+                    color="#61d4b3"
+                    outlined
+                    auto-grow
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+              <v-row justify="end">
+                <v-col v-if="overLimit" cols="9" align-self="center">
+                  <p class="mb-0 warning-message">
+                    <span class="over-message">
+                      {{ questionCounter - 300 }}
+                    </span>
+                    文字オーバーしています
+                  </p>
+                </v-col>
+                <v-col class="pa-1" cols="3">
+                  <v-btn
+                    v-if="newQuestion && !overLimit"
+                    elevation="5"
+                    fab
+                    color="#61d4b3"
+                    :disabled="overLimit"
+                    @click="postQuestion()"
+                  >
+                    <v-icon v-if="!overLimit" color="#fff"> mdi-send </v-icon>
+                  </v-btn>
+                  <v-icon v-if="overLimit" x-large color="#f00"> mdi-do-not-disturb </v-icon>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
+<script>
+import { mapGetters } from 'vuex';
+import firebase from '~/plugins/firebase';
+export default {
+  layout: 'protected',
+  data() {
+    return {
+      newQuestion: null,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+      userName: 'user/name',
+      userIcon: 'user/icon',
+    }),
+    questionCounter() {
+      if (this.newQuestion === null) {
+        return 0;
+      } else {
+        return this.newQuestion.length;
+      }
+    },
+    overLimit() {
+      if (this.questionCounter > 300) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  created() {
+    console.log(this.newQuestion === false);
+  },
+  methods: {
+    postQuestion() {
+      const that = this;
+      const timestamp = firebase.firestore.Timestamp.now();
+      const wisdoms = firebase.firestore().collection('wisdoms');
+      wisdoms.doc().set({
+        category: 'その他',
+        content: that.newQuestion,
+        createdAt: timestamp,
+        email: that.email,
+        like: 0,
+        poster: that.uid,
+        resolved: false,
+      });
+      that.newQuestion = null;
+      that.$router.go(-1);
+    },
+  },
+};
+</script>
+<style scoped>
+.post-wisdom-back {
+  background-color: #e7e7e75e;
+}
+.warning-message {
+  text-align: right;
+  opacity: 0.6;
+  font-size: 0.7rem;
+}
+.over-message {
+  color: red;
+  font-size: 0.9rem;
+}
+.catchphrase {
+  text-align: center;
+  margin-bottom: 0;
+  font-size: 0.8rem;
+}
+</style>

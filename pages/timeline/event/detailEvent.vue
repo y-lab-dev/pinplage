@@ -136,23 +136,30 @@
           <v-list-item-content class="text-subtitle-2">{{
             eventObject.placeName
           }}</v-list-item-content>
-          <v-list-item-content class="font-weight-black">参加費</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">{{
-            eventDetailObject.fee
-          }}</v-list-item-content>
-          <v-list-item-content class="font-weight-black">定員</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">{{
-            eventDetailObject.capacity
-          }}</v-list-item-content>
-          <v-list-item-content v-if="eventDetailObject.hpUrl" class="font-weight-black"
-            >参考URL</v-list-item-content
-          >
-          <v-list-item-content
-            class="text-subtitle-2 content-url"
-            @click="toLink(eventDetailObject.hpUrl)"
-          >
-            {{ eventDetailObject.hpUrl }}
-          </v-list-item-content>
+          <google-map v-show="geometry" :geometry="geometry"></google-map>
+          <div v-if="eventDetailObject.fee">
+            <v-list-item-content v-if="eventDetailObject.fee" class="font-weight-black"
+              >参加費</v-list-item-content
+            >
+            <v-list-item-content class="text-subtitle-2">{{
+              eventDetailObject.fee
+            }}</v-list-item-content>
+          </div>
+          <div v-if="eventDetailObject.capacity">
+            <v-list-item-content class="font-weight-black">定員</v-list-item-content>
+            <v-list-item-content class="text-subtitle-2">{{
+              eventDetailObject.capacity
+            }}</v-list-item-content>
+          </div>
+          <div v-if="eventDetailObject.hpUrl">
+            <v-list-item-content class="font-weight-black">参考URL</v-list-item-content>
+            <v-list-item-content
+              class="text-subtitle-2 content-url"
+              @click="toLink(eventDetailObject.hpUrl)"
+            >
+              {{ eventDetailObject.hpUrl }}
+            </v-list-item-content>
+          </div>
         </v-list>
         <nuxt-link to="/timeline/event/eventEdit">
           <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
@@ -162,8 +169,12 @@
         <v-divider class="mt-12 content-divider"></v-divider>
         <v-list two-line>
           <v-list-item-title class="content-title">質問リスト</v-list-item-title>
-          <template v-for="item in eventQuestionArray">
-            <v-list-item :key="item.name">
+          <div
+            v-for="(item, index) in eventQuestionArray"
+            :key="item.index"
+            :class="`index-${index}`"
+          >
+            <v-list-item>
               <v-list-item-avatar>
                 <v-img :src="item.icon"></v-img>
               </v-list-item-avatar>
@@ -172,20 +183,24 @@
                 <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item-content :key="item.content" class="ml-4 pt-0">
+            <v-list-item-content class="ml-4 pt-0">
               {{ item.content }}
             </v-list-item-content>
-            <v-divider :key="item.content"></v-divider>
-          </template>
+            <v-divider></v-divider>
+          </div>
           <text-area
             class="mt-4"
             :textarea-placeholder="contentPlaceholder"
             :textarea-value="content"
             @input="content = $event"
           ></text-area>
-          <v-list-item-content class="caption mx-6"
-            >不適切な投稿をすると、利用規約の違反により投稿の削除や利用停止となる場合があります。</v-list-item-content
-          >
+          <v-list-item-content class="caption mx-8"
+            ><p class="mb-0">
+              不適切な投稿をすると、利用規約の違反により<span class="font-weight-bold"
+                >投稿の削除</span
+              >や<span class="font-weight-bold">利用停止</span>となる場合があります。
+            </p>
+          </v-list-item-content>
           <div class="post-button">
             <post-button
               class="mt-4"
@@ -207,12 +222,14 @@ import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
+import GoogleMap from '~/components/Atoms/GoogleMap';
 
 export default {
   layout: 'onlyBack',
   components: {
     PostButton,
     TextArea,
+    GoogleMap,
   },
   data() {
     return {
@@ -228,13 +245,18 @@ export default {
       isCancel: false,
       joinDialog: false,
       cancelDialog: false,
-      name: '',
-      icon: '',
       userName: '',
     };
   },
   computed: {
-    ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'event/id' }),
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
+      id: 'event/id',
+      geometry: 'event/geometry',
+    }),
   },
   created() {
     const that = this;
@@ -246,6 +268,8 @@ export default {
     const userEvent = loginUser.collection('event');
     const userEventJoin = userEvent.doc('join');
     const userEventInterest = userEvent.doc('interest');
+    let userName = '';
+    let userIcon = '';
 
     event
       .get()
@@ -256,14 +280,14 @@ export default {
           img: [doc.data().img],
           placeId: doc.data().placeId,
           placeName: doc.data().placeName,
+          geometry: doc.data().geometry,
           date: doc.data().date,
           holdDate: doc.data().date,
           join: doc.data().join,
           interest: doc.data().interest,
         };
-        if (that.uid === doc.data().uid) {
+        if (that.uid === doc.data().poster) {
           that.isEdit = true;
-          console.log('that.isEdit: ', that.isEdit);
         }
         if (doc.data().isCancel === true) {
           that.isCancel = true;
@@ -285,7 +309,7 @@ export default {
           });
       });
     eventQuestion
-      .orderBy('createdAt', 'desc')
+      .orderBy('createdAt')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -293,8 +317,8 @@ export default {
             .doc(doc.data().questioner)
             .get()
             .then((doc) => {
-              that.name = doc.data().name;
-              that.icon = doc.data().icon;
+              userName = doc.data().name;
+              userIcon = doc.data().icon;
             })
             .then(() => {
               that.eventQuestionArray = [
@@ -304,11 +328,10 @@ export default {
                   createdAt: dayjs(doc.data().createdAt.toDate())
                     .locale('ja')
                     .format('YY/MM/DD HH:mm'),
-                  name: that.name,
-                  icon: that.icon,
+                  name: userName,
+                  icon: userIcon,
                 },
               ];
-              console.log(that.eventQuestionArray);
             });
         });
       });
@@ -341,7 +364,6 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
         .then(() => {
-          alert('このイベントに参加します');
           that.isJoin = true;
           that.joinDialog = false;
         })
@@ -361,7 +383,6 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
         .then(() => {
-          alert('イベント参加をキャンセルしました');
           that.isJoin = false;
           that.cancelDialog = false;
         })
@@ -381,7 +402,6 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
         .then(() => {
-          alert('このイベントにいいねしました');
           that.isInterest = true;
         })
         .catch((err) => {
@@ -400,12 +420,17 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
         .then(() => {
-          alert('このイベントのいいねをやめました');
           that.isInterest = false;
         })
         .catch((err) => {
           alert(err);
         });
+    },
+    scrollToElement(index) {
+      this.$nextTick(() => {
+        const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
+        newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
+      });
     },
     toLink(link) {
       if (link.match(/^http(s)?/)) {
@@ -421,7 +446,19 @@ export default {
         .collection('events')
         .doc(this.id)
         .collection('question');
+      const user = firebase
+        .firestore()
+        .collection('users')
+        .doc(this.uid)
+        .collection('event')
+        .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
+      const question = {
+        content: that.content,
+        createdAt: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
+        name: that.name,
+        icon: that.icon,
+      };
 
       eventQuestion
         .add({
@@ -430,9 +467,17 @@ export default {
           createdAt: timestamp,
           content: that.content,
         })
-        .then(() => {
-          alert('質問が投稿されました');
-          this.$router.go(-1);
+        .then((doc) => {
+          that.content = '';
+          user
+            .update({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) })
+            .then(() => {
+              that.eventQuestionArray = [...that.eventQuestionArray, question];
+              that.scrollToElement(that.eventQuestionArray.length - 1);
+            })
+            .catch((err) => {
+              alert(err);
+            });
         });
     },
   },
@@ -440,7 +485,9 @@ export default {
 </script>
 <style scoped>
 .top-img {
-  width: 90vw;
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
 }
 .content-divider {
   border-color: #61d4b3;

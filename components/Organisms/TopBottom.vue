@@ -12,10 +12,17 @@
       <span class="tab-name">{{ item.name }}</span>
       <v-icon>{{ item.icon }}</v-icon>
     </v-btn>
+    <v-btn nuxt :to="tabMypage.link" class="pa-0" max-width="15vw" :ripple="false">
+      <span class="tab-name">{{ tabMypage.name }}</span>
+      <v-avatar size="24px">
+        <img :src="tabMypage.src" />
+      </v-avatar>
+    </v-btn>
   </v-bottom-navigation>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'TopButom',
   data() {
@@ -25,9 +32,22 @@ export default {
         { name: '検索', link: '/search', icon: 'mdi-card-search-outline' },
         { name: '投稿', link: '/post', icon: 'mdi-plus-circle-outline' },
         { name: '時間割', link: '/timetable', icon: 'mdi-av-timer' },
-        { name: 'マイページ', link: '/mypage', icon: 'mdi-account-outline' },
+        // { name: 'マイページ', link: '/mypage', icon: 'mdi-account-outline' },
       ],
+      tabMypage: { name: 'マイページ', link: '/mypage', src: null },
     };
+  },
+  computed: {
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
+    }),
+  },
+  created() {
+    this.tabMypage.src = this.icon;
+    console.log(this.tabMypage.src);
   },
 };
 </script>

@@ -47,7 +47,7 @@ export default {
         },
         strictBounds: false,
       },
-      fiels: ['place_id', 'name', 'type'],
+      fiels: ['place_id', 'name', 'type', 'geometry'],
       placeName: '',
     };
   },
@@ -85,7 +85,15 @@ export default {
     onClickLocation() {
       const place = this.mapAutoComplete.getPlace();
       this.placeName = place.name;
-      this.$emit('place', { placeId: place.place_id, placeName: place.name });
+      const geometry = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+      this.$emit('place', {
+        placeId: place.place_id,
+        placeName: place.name,
+        geometry,
+      });
     },
   },
 };

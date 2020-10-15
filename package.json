@@ -17,8 +17,9 @@
     "@nuxtjs/dotenv": "^1.4.1",
     "algoliasearch": "^4.5.1",
     "cookieparser": "^0.1.0",
+    "dataurl-to-blob": "0.0.1",
     "dayjs": "^1.8.36",
-    "firebase": "^7.20.0",
+    "firebase": "^7.23.0",
     "granim": "^2.0.0",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^3.0.0-beta.2",
@@ -26,6 +27,7 @@
     "nuxt": "^2.14.0",
     "v-viewer": "^1.5.1",
     "vue-cool-select": "^3.5.2",
+    "vue-cropperjs": "^4.1.0",
     "vue-instantsearch": "^3.2.0",
     "vue-localstorage": "^0.6.2",
     "vue-star-rating": "^1.6.1"

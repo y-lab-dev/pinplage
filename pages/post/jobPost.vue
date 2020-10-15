@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <p class="required-phrase">※は必須項目です</p>
     <v-row justify="center">
       <v-col cols="12" md="8" sm="6">
         <div class="title">アルバイト投稿</div>
@@ -7,8 +8,10 @@
         <v-text-field
           v-model="name"
           color="#61d4b3"
-          label="店舗名/アルバイト名"
+          label="※店舗名/アルバイト名"
           prepend-icon="mdi-flag-variant"
+          :rules="[() => !!name || requiredText]"
+          required
         ></v-text-field>
         <input-place
           :input-type="inputType"
@@ -20,14 +23,18 @@
           :items="genres"
           sv-model="genre"
           color="#61d4b3"
-          label="ジャンル"
+          label="※ジャンル"
           prepend-icon="mdi-content-copy"
+          :rules="[() => !!genre || requiredText]"
+          required
         ></v-select>
         <v-text-field
           v-model="money"
           color="#61d4b3"
-          label="時給"
+          label="※時給"
           prepend-icon="mdi-currency-cny"
+          :rules="[() => !!money || requiredText]"
+          required
         ></v-text-field>
         <div style="display: inline-flex">
           <v-dialog
@@ -41,7 +48,7 @@
               <v-text-field
                 v-model="startTime"
                 color="#61d4b3"
-                label="勤務時間(始まり)"
+                label="※勤務時間(始まり)"
                 prepend-icon="mdi-clock"
                 readonly
                 class="mr-3"
@@ -65,7 +72,7 @@
               <v-text-field
                 v-model="endTime"
                 color="#61d4b3"
-                label="(終わり)"
+                label="※(終わり)"
                 prepend-icon
                 readonly
                 v-on="on"
@@ -78,28 +85,40 @@
             </v-time-picker>
           </v-dialog>
         </div>
-        <v-text-field
-          v-model="holiday"
-          color="#61d4b3"
-          label="休日"
-          prepend-icon="mdi-seat-individual-suite"
-        ></v-text-field>
         <v-textarea
           v-model="content"
           color="#61d4b3"
-          label="仕事内容"
+          label="※仕事内容"
           auto-grow
           rows="3"
           prepend-icon="mdi-pencil"
+          :rules="[() => !!content || requiredText]"
+          required
         ></v-textarea>
         <v-textarea
           v-model="shift"
           color="#61d4b3"
-          label="シフト詳細"
+          label="※シフト詳細"
           auto-grow
           rows="3"
           prepend-icon="mdi-calendar-clock"
+          :rules="[() => !!shift || requiredText]"
+          required
         ></v-textarea>
+        <v-text-field
+          v-model="contactEmail"
+          color="#61d4b3"
+          label="※連絡先"
+          prepend-icon="mdi-email-multiple"
+          :rules="[() => !!contactEmail || requiredText]"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="holiday"
+          color="#61d4b3"
+          label="定休日"
+          prepend-icon="mdi-seat-individual-suite"
+        ></v-text-field>
         <v-textarea
           v-model="welfare"
           color="#61d4b3"
@@ -126,12 +145,6 @@
           label="ホームページなど（URL）"
           prepend-icon="mdi-home-circle-outline"
         ></v-text-field>
-        <v-text-field
-          v-model="contactEmail"
-          color="#61d4b3"
-          label="連絡先"
-          prepend-icon="mdi-email-multiple"
-        ></v-text-field>
         <v-textarea
           v-model="secret"
           color="#61d4b3"
@@ -147,18 +160,14 @@
             img == '' ||
             name == '' ||
             genre == '' ||
-            place == '' ||
+            placeId == '' ||
+            placeName == '' ||
             money == '' ||
             startTime == '' ||
             endTime == '' ||
-            holiday == '' ||
             content == '' ||
             shift == '' ||
-            welfare == '' ||
-            carfare == '' ||
-            refer == '' ||
-            contactEmail == '' ||
-            secret == ''
+            contactEmail == ''
           "
           >投稿</post-button
         >
@@ -186,24 +195,42 @@ export default {
       buttonType: 'submit',
       imgPath: 'jobs/image/',
       placeholder: '場所',
+      requiredText: 'この項目は必須です',
       startTimeModal: false,
       endTimeModal: false,
       genres: [
+        '生協紹介',
+        '大学紹介',
+        '実験・研究協力',
         '飲食/フード',
+        'カフェ',
+        '居酒屋',
+        '販売・接客・サービス',
+        'アパレル・ファッション関連',
+        'レジャー・アミューズメント',
+        'クリエイティブ・編集',
+        'エンジニア・サポート・保守',
+        'イベント・キャンペーン',
         '教育',
-        '販売',
-        'アパレル',
-        'IT/コンピュータ',
-        '物流/配送',
-        '工場/製造',
-        'キャバクラ/クラブ',
-        '専門職/その他',
+        '塾講',
+        '家庭教師',
+        'エステ・理美容',
+        '医療・介護・保育',
+        'オフィスワーク',
+        '営業',
+        '配送・引越・ドライバー',
+        '軽作業',
+        '工場・倉庫・建築・土木',
+        '警備・清掃・ビル管理',
+        '誰か助けて！',
       ],
       img: '',
       name: '',
       genre: '',
-      place: '',
+      placeId: '',
+      placeName: '',
       money: '',
+      geometry: '',
       startTime: '',
       endTime: '',
       holiday: '',
@@ -233,12 +260,14 @@ export default {
           img: that.img,
           name: that.name,
           genre: that.genre,
-          place: that.place,
+          placeId: that.placeId,
+          placeName: that.placeName,
           money: that.money,
+          geometry: that.geometry,
           startTime: that.startTime,
           endTime: that.endTime,
           isRecruit: true,
-          uid: that.uid,
+          poster: that.uid,
           email: that.email,
           createdAt: timestamp,
           updatedAt: timestamp,
@@ -277,8 +306,10 @@ export default {
     imgAdd(url) {
       this.img = url;
     },
-    placeAdd(id) {
-      this.place = id;
+    placeAdd(val) {
+      this.placeId = val.placeId;
+      this.placeName = val.placeName;
+      this.geometry = val.geometry;
     },
   },
 };
@@ -286,5 +317,10 @@ export default {
 <style scoped>
 .title {
   text-align: center;
+}
+.required-phrase {
+  margin-bottom: 0;
+  margin-left: 4px;
+  font-size: 0.8rem;
 }
 </style>

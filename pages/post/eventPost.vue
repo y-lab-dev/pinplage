@@ -1,21 +1,26 @@
 <template>
   <v-container>
+    <p class="required-phrase">※は必須項目です</p>
     <v-row justify="center">
       <v-col cols="12" md="8" sm="6">
         <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
         <v-text-field
           v-model="title"
           color="#61d4b3"
-          label="イベント名"
+          label="※イベント名"
           prepend-icon="mdi-flag-variant"
+          :rules="[() => !!title || requiredText]"
+          required
         ></v-text-field>
         <v-select
           v-model="type"
           color="#61d4b3"
           :items="types"
           sv-model="Type"
-          label="イベントタイプ"
+          label="※イベントタイプ"
           prepend-icon="mdi-content-copy"
+          :rules="[() => !!type || requiredText]"
+          required
         ></v-select>
         <input-place
           :input-type="inputType"
@@ -33,7 +38,7 @@
             <v-text-field
               v-model="date"
               color="#61d4b3"
-              label="日程"
+              label="※日程"
               prepend-icon="mdi-calendar"
               readonly
               v-on="on"
@@ -57,7 +62,7 @@
               <v-text-field
                 v-model="startTime"
                 color="#61d4b3"
-                label="時間(始まり)"
+                label="※時間(始まり)"
                 prepend-icon="mdi-clock"
                 readonly
                 class="mr-3"
@@ -81,7 +86,7 @@
               <v-text-field
                 v-model="finishTime"
                 color="#61d4b3"
-                label="時間(終わり)"
+                label="※時間(終わり)"
                 prepend-icon
                 readonly
                 v-on="on"
@@ -117,9 +122,11 @@
           v-model="content"
           color="#61d4b3"
           auto-grow
-          label="詳細"
+          label="※詳細"
           rows="3"
           prepend-icon="mdi-pencil"
+          :rules="[() => !!content || requiredText]"
+          required
         ></v-textarea>
         <post-button
           :button-method="post"
@@ -133,8 +140,6 @@
             date == '' ||
             startTime == '' ||
             finishTime == '' ||
-            capacity == '' ||
-            entryFee == '' ||
             content == ''
           "
           >投稿</post-button
@@ -162,17 +167,19 @@ export default {
       inputType: 'text',
       buttonType: 'submit',
       imgPath: 'events/image/',
-      placeholder: '場所',
+      placeholder: '※場所',
+      requiredText: 'この項目は必須です',
       title: '',
       type: '新歓',
       placeId: '',
       placeName: '',
+      geometry: '',
       date: '',
       startTime: '',
       finishTime: '',
       capacity: '',
       img: '',
-      entryFee: '無料',
+      entryFee: '',
       hpUrl: '',
       content: '',
       types: ['フリーイベント', 'セミナー'],
@@ -201,6 +208,7 @@ export default {
           img: that.img,
           placeId: that.placeId,
           placeName: that.placeName,
+          geometry: that.geometry,
           date: that.date,
           createdAt: timestamp,
           updatedAt: timestamp,
@@ -233,7 +241,15 @@ export default {
     placeAdd(val) {
       this.placeId = val.placeId;
       this.placeName = val.placeName;
+      this.geometry = val.geometry;
     },
   },
 };
 </script>
+<style scoped>
+.required-phrase {
+  margin-bottom: 0;
+  margin-left: 4px;
+  font-size: 0.8rem;
+}
+</style>

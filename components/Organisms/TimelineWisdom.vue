@@ -1,39 +1,21 @@
 <template>
   <div>
     <wisdom-thread
-      v-for="item in postedWisdoms"
+      v-for="(item, index) in postedWisdoms"
       :key="item.wisdomId"
-      :wisdom-id="item.wisdomId"
-      :poster="uid"
-      :resolved="item.resolved"
-      :content="item.content"
-      :category="item.category"
-      :created-day="item.createdDay"
-      :like-amount="item.likeAmount"
-      :reply-amount="item.replyAmount"
+      v-bind="postedWisdoms[index]"
     />
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
-
 export default {
-  layout: 'onlyBack',
   components: WisdomThread,
   data() {
     return {
       postedWisdoms: [],
     };
-  },
-  computed: {
-    ...mapGetters({
-      uid: 'user/uid',
-      email: 'user/email',
-      name: 'user/name',
-      icon: 'user/icon',
-    }),
   },
   created() {
     const that = this;
@@ -43,13 +25,10 @@ export default {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          if (doc.data().poster !== that.uid) {
-            return;
-          }
           const wisdom = doc.data();
-          console.log(wisdom);
           const postedWisdom = {
             wisdomId: doc.id,
+            poster: wisdom.poster,
             likeAmount: wisdom.like,
             resolved: wisdom.resolved,
             content: wisdom.content,
@@ -60,8 +39,8 @@ export default {
             .doc(doc.id)
             .collection('reply')
             .get()
-            .then((doc) => {
-              postedWisdom.replyAmount = doc.size;
+            .then((snapshot) => {
+              postedWisdom.replyAmount = snapshot.size;
               that.postedWisdoms.push(postedWisdom);
             });
         });
