@@ -46,6 +46,8 @@ export default {
       mainImg: '',
       website: '',
       formatted_phone_number: '',
+      priceLevel: null,
+      reviews: [],
       lat: null,
       lng: null,
       radius: 50,
@@ -59,8 +61,6 @@ export default {
     start() {
       this.message = '処理中';
       const latLng = new this.gmap.LatLng(this.lat, this.lng);
-      const latLng = new this.gmap.LatLng(34.706396, 137.731436);
-
       const service = new this.gmap.places.PlacesService(this.$refs.map);
       const request = {
         location: latLng,
@@ -97,7 +97,14 @@ export default {
                     service.getDetails(
                       {
                         placeId: self.placesList[i].place_id,
-                        fields: ['formatted_phone_number', 'opening_hours', 'website', 'photos'],
+                        fields: [
+                          'formatted_phone_number',
+                          'opening_hours',
+                          'website',
+                          'photos',
+                          'price_level',
+                          'reviews',
+                        ],
                       },
                       function (place) {
                         self.details = place;
@@ -110,6 +117,17 @@ export default {
                         if (typeof place.formatted_phone_number !== 'undefined') {
                           self.formatted_phone_number = place.formatted_phone_number;
                         }
+                        if (typeof place.price_level !== 'undefined') {
+                          self.priceLevel = place.price_level;
+                        }
+                        if (typeof place.reviews !== 'undefined') {
+                          for (let i = 0; i < place.reviews.length; i++) {
+                            const reviewObj = {};
+                            reviewObj.rate = place.reviews[i].rating;
+                            reviewObj.content = place.reviews[i].text;
+                            self.reviews.push(reviewObj);
+                          }
+                        }
                       }
                     );
                     await _sleep(1000);
@@ -119,9 +137,21 @@ export default {
                       lng: self.placesList[i].geometry.location.lng(),
                     };
                     const imgUrls = [];
+                    let url = '';
+                    let str1 = [];
+                    let str2 = [];
+                    let photos = '';
                     if (typeof self.details.photos !== 'undefined') {
                       for (let i = 0; i < self.details.photos.length; i++) {
-                        imgUrls.push(self.details.photos[i].getUrl());
+                        url = self.details.photos[i].getUrl();
+                        str1 = url.split('?1s');
+                        str2 = str1[1].split('&');
+                        photos =
+                          'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' +
+                          str2[0] +
+                          '&' +
+                          str2[5];
+                        imgUrls.push(photos);
                       }
                       self.mainImg = imgUrls[0];
                     }
@@ -133,9 +163,8 @@ export default {
                         types: self.placesList[i].types,
                         mainImgUrl: self.mainImg,
                         rating: 0,
-                        hashtags: [],
-                        purposes: [],
-                        keywords: [],
+                        _tags: [],
+                        genre: [],
                       })
                       .then(() => {
                         self.array.push(self.placesList[i].place_id);
@@ -146,11 +175,12 @@ export default {
                             icon: self.placesList[i].icon,
                             geometry: self.geometry,
                             reviews: [],
+                            googleReviews: self.reviews,
                             imgUrls,
                             phoneNumber: self.formatted_phone_number,
                             openingHours: self.openingHours,
                             website: self.website,
-                            priceLevel: '',
+                            priceLevel: self.priceLevel,
                           })
                           .then(() => {})
                           .catch((err) => {
