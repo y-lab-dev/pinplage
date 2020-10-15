@@ -2,7 +2,7 @@
   <div>
     <star-rating
       v-model="ratingResult"
-      :max-rating="3"
+      :max-rating="5"
       :show-rating="false"
       :read-only="readOnly"
       :star-size="starSize"

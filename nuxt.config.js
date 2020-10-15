@@ -53,6 +53,7 @@ export default {
     '@/plugins/localstrage.js',
     '@/plugins/vue-instantsearch.js',
     '@/plugins/viewer.js',
+    '@/plugins/vue-cool-select.js',
   ],
   /*
    ** Auto import components
