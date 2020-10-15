@@ -32,17 +32,19 @@
                       {{ replyAmount }}
                     </span>
                   </v-col>
-                  <v-col class="pa-1 pr-0" cols="4">
+                  <v-col class="pa-1 pr-0" cols="4" align-self="center">
                     <v-icon small color="#f00">mdi-heart</v-icon>
                     <span class="posted-info">
                       {{ likeAmount }}
                     </span>
                   </v-col>
                   <v-col v-if="!answerDisplay" class="pa-1 pr-0" cols="4">
-                    <v-icon small color="yellow">mdi-file-outline</v-icon>
-                    <span class="posted-info">
-                      {{ category }}
-                    </span>
+                    <div v-if="!answerDisplay">
+                      <v-icon small color="yellow">mdi-file-outline</v-icon>
+                      <span class="posted-category">
+                        {{ category }}
+                      </span>
+                    </div>
                   </v-col>
                 </v-row>
               </v-col>
@@ -152,6 +154,9 @@ export default {
 }
 .posted-info {
   font-size: 0.7rem;
+}
+.posted-category {
+  font-size: 0.5rem;
 }
 .hide {
   display: none;
