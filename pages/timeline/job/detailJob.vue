@@ -128,7 +128,11 @@
         <v-divider class="mt-12 content-divider"></v-divider>
         <v-list two-line>
           <v-list-item-title class="content-title">質問リスト</v-list-item-title>
-          <div v-for="item in jobQuestionArray" :key="item.index">
+          <div
+            v-for="(item, index) in jobQuestionArray"
+            :key="item.index"
+            :class="`index-${index}`"
+          >
             <v-list-item>
               <v-list-item-avatar>
                 <v-img :src="item.icon"></v-img>
@@ -149,9 +153,13 @@
             :textarea-value="content"
             @input="content = $event"
           ></text-area>
-          <v-list-item-content class="caption mx-6"
-            >不適切な投稿をすると、利用規約の違反により投稿の削除や利用停止となる場合があります。</v-list-item-content
-          >
+          <v-list-item-content class="caption mx-8"
+            ><p class="mb-0">
+              不適切な投稿をすると、利用規約の違反により<span class="font-weight-bold"
+                >投稿の削除</span
+              >や<span class="font-weight-bold">利用停止</span>となる場合があります。
+            </p>
+          </v-list-item-content>
           <div class="post-button">
             <post-button
               class="mt-4"
@@ -235,6 +243,8 @@ export default {
     ...mapGetters({
       uid: 'user/uid',
       email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
       id: 'job/id',
       geometry: 'job/geometry',
     }),
@@ -246,6 +256,8 @@ export default {
     const jobQuestion = job.collection('question');
     const user = firebase.firestore().collection('users');
     const userJobKeep = user.doc(this.uid).collection('job').doc('keep');
+    let userName = '';
+    let userIcon = '';
 
     job.get().then((doc) => {
       that.jobObject = {
@@ -280,7 +292,7 @@ export default {
     });
 
     jobQuestion
-      .orderBy('createdAt', 'desc')
+      .orderBy('createdAt')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -288,8 +300,8 @@ export default {
             .doc(doc.data().questioner)
             .get()
             .then((doc) => {
-              that.name = doc.data().name;
-              that.icon = doc.data().icon;
+              userName = doc.data().name;
+              userIcon = doc.data().icon;
             })
             .then(() => {
               that.jobQuestionArray = [
@@ -299,8 +311,8 @@ export default {
                   createdAt: dayjs(doc.data().createdAt.toDate())
                     .locale('ja')
                     .format('YY/MM/DD HH:mm'),
-                  name: that.name,
-                  icon: that.icon,
+                  name: userName,
+                  icon: userIcon,
                 },
               ];
             });
@@ -326,7 +338,6 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
         .then(() => {
-          alert('キープしました');
           that.isKeep = true;
         })
         .catch((err) => {
@@ -345,12 +356,17 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
         .then(() => {
-          alert('キープを解除しました');
           that.isKeep = false;
         })
         .catch((err) => {
           alert(err);
         });
+    },
+    scrollToElement(index) {
+      this.$nextTick(() => {
+        const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
+        newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
+      });
     },
     toLink(link) {
       if (link.match(/^http(s)?/)) {
@@ -366,7 +382,19 @@ export default {
         .collection('jobs')
         .doc(this.id)
         .collection('question');
+      const user = firebase
+        .firestore()
+        .collection('users')
+        .doc(this.uid)
+        .collection('job')
+        .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
+      const question = {
+        content: that.content,
+        createdAt: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
+        name: that.name,
+        icon: that.icon,
+      };
 
       jobQuestion
         .add({
@@ -375,9 +403,17 @@ export default {
           createdAt: timestamp,
           content: that.content,
         })
-        .then(() => {
-          alert('質問が投稿されました');
-          this.$router.go(-1);
+        .then((doc) => {
+          that.content = '';
+          user
+            .update({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) })
+            .then(() => {
+              that.jobQuestionArray = [...that.jobQuestionArray, question];
+              that.scrollToElement(that.jobQuestionArray.length - 1);
+            })
+            .catch((err) => {
+              alert(err);
+            });
         });
     },
   },
