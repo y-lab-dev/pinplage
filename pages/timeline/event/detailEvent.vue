@@ -489,7 +489,7 @@ export default {
 </script>
 <style scoped>
 .top-img {
-  width: 90vw;
+  width: 100%;
   height: 30vh;
   object-fit: cover;
 }
