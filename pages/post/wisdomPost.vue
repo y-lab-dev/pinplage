@@ -40,13 +40,19 @@
                   {{ userName }}
                 </v-col>
               </v-row>
-              <!-- <v-row justify="start" class="py-0">
-                <v-col cols="9">
-                  <v-list>
-                    <v-list-item>カテゴリその他のみ</v-list-item>
-                  </v-list>
+              <v-row dense class="ma-2">
+                <v-col cols="12">
+                  カテゴリー:
+                  <v-btn
+                    :dark="category === selectCategory ? false : true"
+                    :rounded="category === selectCategory ? false : true"
+                    :outlined="category === selectCategory ? true : false"
+                    :color="category === selectCategory ? '' : '#61d4b3'"
+                    @click="categoryOverlay = true"
+                    >{{ category }}</v-btn
+                  >
                 </v-col>
-              </v-row> -->
+              </v-row>
               <v-row dense>
                 <v-col cols="12">
                   <v-textarea
@@ -72,14 +78,14 @@
                 </v-col>
                 <v-col class="pa-1" cols="3">
                   <v-btn
-                    v-if="newQuestion && !overLimit"
+                    v-if="!overLimit && canSend"
                     elevation="5"
                     fab
                     color="#61d4b3"
                     :disabled="overLimit"
                     @click="postQuestion()"
                   >
-                    <v-icon v-if="!overLimit" color="#fff"> mdi-send </v-icon>
+                    <v-icon v-if="!overLimit && canSend" color="#fff"> mdi-send </v-icon>
                   </v-btn>
                   <v-icon v-if="overLimit" x-large color="#f00"> mdi-do-not-disturb </v-icon>
                 </v-col>
@@ -89,16 +95,23 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-overlay class="overlay" :absolute="true" :value="categoryOverlay" opacity="0.2">
+      <wisdom-category @my-click="category = $event" @my-boolean="categoryOverlay = $event" />
+    </v-overlay>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
+import WisdomCategory from '~/components/Organisms/WisdomCategory';
 export default {
   layout: 'protected',
+  components: { WisdomCategory },
   data() {
     return {
       newQuestion: null,
+      categoryOverlay: false,
+      category: 'カテゴリを選択する',
     };
   },
   computed: {
@@ -122,6 +135,20 @@ export default {
         return false;
       }
     },
+    selectCategory() {
+      if (this.category === 'カテゴリを選択する') {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    canSend() {
+      if (this.selectCategory && this.newQuestion) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   created() {
     console.log(this.newQuestion === false);
@@ -132,7 +159,7 @@ export default {
       const timestamp = firebase.firestore.Timestamp.now();
       const wisdoms = firebase.firestore().collection('wisdoms');
       wisdoms.doc().set({
-        category: 'その他',
+        category: that.category,
         content: that.newQuestion,
         createdAt: timestamp,
         email: that.email,
@@ -163,5 +190,10 @@ export default {
   text-align: center;
   margin-bottom: 0;
   font-size: 0.8rem;
+}
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
