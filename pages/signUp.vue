@@ -12,7 +12,7 @@
         <div class="validation-email">{{ emailValidation }}</div>
 
         <input-text
-          :input-type="inputType"
+          :input-type="passwordType"
           :input-placeholder="passwordPlaceholder"
           :input-value="password"
           @input="password = $event"
@@ -23,7 +23,7 @@
             :button-method="signUp"
             :button-type="buttonType"
             :button-disabled="loginValidation"
-            >新規登録</sign-up-button
+            >新規登録する</sign-up-button
           >
         </div>
         <div class="to-login">
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       inputType: 'text',
+      passwordType: 'password',
       buttonType: 'submit',
       mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
       passwordPlaceholder: 'パスワード（英数字6文字以上）',

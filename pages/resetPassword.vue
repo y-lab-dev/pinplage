@@ -16,7 +16,7 @@
               :button-method="reset"
               :button-type="buttonType"
               :button-disabled="resetValidation"
-              >リセット</reset-button
+              >リセットする</reset-button
             >
           </div>
           <div class="to-login mt-4 font-subtitle-2">
