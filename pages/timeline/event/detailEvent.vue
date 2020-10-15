@@ -364,7 +364,6 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
         .then(() => {
-          alert('このイベントに参加します');
           that.isJoin = true;
           that.joinDialog = false;
         })
@@ -384,7 +383,6 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
         .then(() => {
-          alert('イベント参加をキャンセルしました');
           that.isJoin = false;
           that.cancelDialog = false;
         })
@@ -404,7 +402,6 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
         .then(() => {
-          alert('このイベントにいいねしました');
           that.isInterest = true;
         })
         .catch((err) => {
@@ -423,7 +420,6 @@ export default {
       user
         .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
         .then(() => {
-          alert('このイベントのいいねをやめました');
           that.isInterest = false;
         })
         .catch((err) => {
