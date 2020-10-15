@@ -42,7 +42,10 @@
               <v-list-item-subtitle>情報学部</v-list-item-subtitle>
             </v-list-item-content>
             <v-row align="center" justify="end">
-              <v-btn icon>
+              <v-btn icon v-show="isLiked" @click="notLike">
+                <v-icon color="#61d4b3">mdi-thumb-up</v-icon>
+              </v-btn>
+              <v-btn icon v-show="!isLiked" @click="like">
                 <v-icon>mdi-thumb-up</v-icon>
               </v-btn>
               <span class="subheading mr-7">{{ articleObject.like }}</span>
@@ -148,6 +151,7 @@ export default {
       articleSameCategoryArray: [],
       commentPlaceholder: 'コメントしてみよう',
       content: '',
+      isLiked: false,
     };
   },
   computed: {
@@ -167,6 +171,7 @@ export default {
     const articleDetail = thisArticle.collection('detail').doc('browse');
     const articleComment = thisArticle.collection('comment');
     const user = firebase.firestore().collection('users');
+    const userLikedArticle = user.doc(this.uid).collection('article').doc('favorite');
     let userName = '';
     let userIcon = '';
 
@@ -244,6 +249,12 @@ export default {
       .catch((err) => {
         alert(err);
       });
+
+    userLikedArticle.get().then((doc) => {
+      that.isLiked = doc.data().id.find((val) => {
+        return val === that.id;
+      });
+    });
   },
   methods: {
     scrollToElement(index) {
@@ -251,6 +262,36 @@ export default {
         const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
         newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
       });
+    },
+    like() {
+      const that = this;
+      const loginUser = firebase.firestore().collection('users').doc(this.uid);
+
+      loginUser
+        .collection('article')
+        .doc('favorite')
+        .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
+        .then(() => {
+          that.isLiked = true;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    notLike() {
+      const that = this;
+      const loginUser = firebase.firestore().collection('users').doc(this.uid);
+
+      loginUser
+        .collection('article')
+        .doc('favorite')
+        .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
+        .then(() => {
+          that.isLiked = false;
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
     post() {
       const that = this;
