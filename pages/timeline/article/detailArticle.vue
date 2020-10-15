@@ -42,10 +42,10 @@
               <v-list-item-subtitle>情報学部</v-list-item-subtitle>
             </v-list-item-content>
             <v-row align="center" justify="end">
-              <v-btn icon v-show="isLiked" @click="notLike">
+              <v-btn v-show="isLiked" icon @click="notLike">
                 <v-icon color="#61d4b3">mdi-thumb-up</v-icon>
               </v-btn>
-              <v-btn icon v-show="!isLiked" @click="like">
+              <v-btn v-show="!isLiked" icon @click="like">
                 <v-icon>mdi-thumb-up</v-icon>
               </v-btn>
               <span class="subheading mr-7">{{ articleObject.like }}</span>

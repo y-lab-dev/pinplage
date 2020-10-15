@@ -11,13 +11,17 @@
             @input="email = $event"
           ></input-text>
           <div class="validation-email">{{ emailValidation }}</div>
-          <reset-button
-            :button-method="reset"
-            :button-type="buttonType"
-            :button-disabled="resetValidation"
-            >リセット</reset-button
-          >
-          <nuxt-link to="login">ログイン</nuxt-link>
+          <div class="reset-button-place mt-4 mb-2">
+            <reset-button
+              :button-method="reset"
+              :button-type="buttonType"
+              :button-disabled="resetValidation"
+              >リセット</reset-button
+            >
+          </div>
+          <div class="to-login mt-4 font-subtitle-2">
+            <nuxt-link to="login">ログイン画面へ</nuxt-link>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -37,7 +41,7 @@ export default {
       email: '',
       inputType: 'text',
       buttonType: 'submit',
-      mailPlaceholder: '静大メール',
+      mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
       emailValidation: '',
       resetValidation: true,
     };
@@ -85,9 +89,16 @@ export default {
 <style scoped>
 .title {
   text-align: center;
+  margin-top: 65px;
 }
 .validation-email {
   text-align: center;
   color: red;
+}
+.reset-button-place {
+  text-align: center;
+}
+.to-login {
+  text-align: center;
 }
 </style>
