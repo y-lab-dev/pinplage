@@ -2,7 +2,7 @@
   <v-btn
     rounded
     color="teal accent-4"
-    class="white--text"
+    class="white--text button"
     outlined
     :type="buttonType"
     :disabled="buttonDisabled"
@@ -30,3 +30,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.button {
+  width: 80vw;
+}
+</style>
