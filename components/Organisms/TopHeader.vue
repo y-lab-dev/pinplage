@@ -14,7 +14,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" fixed temporary right>
+    <v-navigation-drawer v-model="drawer" class="drawer-menu" fixed temporary right>
       <v-list nav dense>
         <v-list-item
           class="pl-0"
@@ -146,5 +146,8 @@ export default {
 .header-title {
   font-size: 1rem;
   opacity: 0.8;
+}
+.drawer-menu {
+  z-index: 20;
 }
 </style>

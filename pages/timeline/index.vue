@@ -9,7 +9,7 @@
       <v-tab href="#tab-6" class="pa-0">学生記事</v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="model">
+    <v-tabs-items v-model="model" @change="pauseTab">
       <v-tab-item value="tab-1">
         <thread></thread>
       </v-tab-item>
@@ -74,7 +74,7 @@ export default {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  z-index: 200;
+  z-index: 10;
 }
 </style>
 <style>
