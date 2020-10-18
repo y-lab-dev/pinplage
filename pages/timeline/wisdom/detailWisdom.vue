@@ -113,7 +113,7 @@ import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
-import WisdomLike from '~/components/molecules/WisdomLike';
+import WisdomLike from '~/components/Organisms/WisdomLike';
 export default {
   layout: 'onlyBack',
   components: { WisdomThread, WisdomLike },
