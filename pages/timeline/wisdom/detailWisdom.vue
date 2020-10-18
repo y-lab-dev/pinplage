@@ -35,15 +35,21 @@
         <v-col cols="3" class="bar-item" align-self="start" @click="openMessage()">
           <v-icon class="mx-auto">mdi-message-outline</v-icon>
         </v-col>
-        <v-col cols="3" class="bar-item">
-          <v-icon class="mx-auto" @click="pushLike()">mdi-heart-outline</v-icon>
-        </v-col>
+        <v-col cols="3" class="bar-item"><wisdom-like :wisdom-id="$route.query" /></v-col>
       </v-row>
       <v-divider></v-divider>
     </v-container>
     <v-divider></v-divider>
-    <v-container fluid> </v-container>
-    <div v-if="noReply">かいとう</div>
+    <v-container v-if="noReply" fluid>
+      <v-row justify="center" align="center" no-gutters>
+        <v-col cols="12">
+          <p class="no-reply-message">現在、回答はありません。<br /></p>
+        </v-col>
+        <v-col cols="12">
+          <p class="no-reply-info">下のフォームから回答してみませんか？</p>
+        </v-col>
+      </v-row>
+    </v-container>
     <div v-else>
       <wisdom-thread
         v-for="(item, index) in answers"
@@ -107,9 +113,10 @@ import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
+import WisdomLike from '~/components/Organisms/WisdomLike';
 export default {
   layout: 'onlyBack',
-  components: WisdomThread,
+  components: { WisdomThread, WisdomLike },
   data() {
     return {
       question: {},
@@ -276,6 +283,26 @@ export default {
 }
 .over-characther {
   color: red;
+  font-size: 0.6rem;
+}
+.no-reply-block {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+.no-reply-block,
+.no-reply-info {
+  color: black;
+  opacity: 0.7;
+}
+.no-reply-message {
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.no-reply-info {
+  margin-bottom: 0;
+  text-align: center;
   font-size: 0.6rem;
 }
 </style>

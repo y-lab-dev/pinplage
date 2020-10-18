@@ -1,12 +1,24 @@
 <template>
   <div>
-    <v-container class="py-0" @click="wisdomDetail(wisdomId)">
+    <v-container class="py-0">
       <v-row>
         <v-col class="pa-0" cols="12">
           <v-divider></v-divider>
           <v-card tile elevation="0">
-            <v-row class="my-2" style="max-width: 100vw">
-              <v-col cols="3">
+            <v-row class="pt-2 chip-row" @click="wisdomDetail(wisdomId)">
+              <v-col class="py-2">
+                <v-chip
+                  v-if="!answerDisplay"
+                  class="ml-5"
+                  :color="resolved ? '#FFFCDB' : '#61D4B3'"
+                  small
+                  text-color="#fff"
+                  >{{ resolvedMessage }}</v-chip
+                >
+              </v-col>
+            </v-row>
+            <v-row class="my-2 pt-0" style="max-width: 100vw">
+              <v-col cols="3" class="pt-0" @click="wisdomDetail(wisdomId)">
                 <v-avatar class="ml-5 rounded-circle">
                   <img
                     :src="posterIcon"
@@ -15,8 +27,8 @@
                   />
                 </v-avatar>
               </v-col>
-              <v-col class="pa-0 pt-3" cols="9">
-                <v-row>
+              <v-col class="pa-0" cols="9">
+                <v-row @click="wisdomDetail(wisdomId)">
                   <v-col class="pa-0 pl-3" cols="7">
                     <span class="posted-user-name">{{ posterName }}</span>
                   </v-col>
@@ -24,21 +36,34 @@
                     <created-time-diff :previous-date="createdDay" />
                   </v-col>
                 </v-row>
-                <p class="posted-content">{{ content }}</p>
+                <p class="posted-content" @click="wisdomDetail(wisdomId)">{{ content }}</p>
                 <v-row no-gutters justify="end">
-                  <v-col v-if="!answerDisplay" class="pa-1" cols="4" align-self="center">
+                  <v-col
+                    v-if="!answerDisplay"
+                    class="pa-1"
+                    cols="4"
+                    align-self="center"
+                    @click="wisdomDetail(wisdomId)"
+                  >
                     <v-icon small color="#c8c8c8">mdi-message-outline</v-icon>
                     <span class="posted-info">
                       {{ replyAmount }}
                     </span>
                   </v-col>
+
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
-                    <v-icon small color="#f00">mdi-heart</v-icon>
+                    <wisdom-like :wisdom-id="wisdomId" />
                     <span class="posted-info">
                       {{ likeAmount }}
                     </span>
                   </v-col>
-                  <v-col v-if="!answerDisplay" class="pa-1 pr-0" cols="4">
+
+                  <v-col
+                    v-if="!answerDisplay"
+                    class="pa-1 pr-0"
+                    cols="4"
+                    @click="wisdomDetail(wisdomId)"
+                  >
                     <div v-if="!answerDisplay">
                       <v-icon small color="yellow">mdi-file-outline</v-icon>
                       <span class="posted-category">
@@ -47,6 +72,13 @@
                     </div>
                   </v-col>
                 </v-row>
+              </v-col>
+            </v-row>
+            <v-row v-if="answerDisplay" justify="center" class="pb-2 chip-row">
+              <v-col class="py-2" style="text-align: center" cols="12 chip-row">
+                <v-chip class="ma-auto" color="#61D4B3" small text-color="#fff">
+                  ベストアンサーに選ぶ
+                </v-chip>
               </v-col>
             </v-row>
           </v-card>
@@ -59,8 +91,9 @@
 <script>
 import firebase from '~/plugins/firebase';
 import CreatedTimeDiff from '~/components/molecules/TimeDiff';
+import WisdomLike from '~/components/Organisms/WisdomLike';
 export default {
-  components: { CreatedTimeDiff },
+  components: { CreatedTimeDiff, WisdomLike },
   props: {
     wisdomId: {
       required: true,
@@ -111,6 +144,15 @@ export default {
       isCreated: false,
     };
   },
+  computed: {
+    resolvedMessage() {
+      if (this.resolved) {
+        return '解決済み';
+      } else {
+        return '回答受付中';
+      }
+    },
+  },
   created() {
     const that = this;
     const posterInfo = firebase.firestore().collection('users').doc(this.poster);
@@ -160,5 +202,8 @@ export default {
 }
 .hide {
   display: none;
+}
+.chip-row {
+  max-width: 100vw;
 }
 </style>

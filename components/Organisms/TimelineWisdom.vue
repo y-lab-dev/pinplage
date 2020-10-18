@@ -15,13 +15,16 @@ export default {
   data() {
     return {
       postedWisdoms: [],
+      likedWisdoms: '',
     };
   },
   created() {
+    this.$store.dispatch('user/getUserWisdom');
     const that = this;
     const wisdoms = firebase.firestore().collection('wisdoms');
     wisdoms
       .orderBy('createdAt', 'desc')
+      .limit(10)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -29,8 +32,8 @@ export default {
           const postedWisdom = {
             wisdomId: doc.id,
             poster: wisdom.poster,
-            likeAmount: wisdom.like,
             resolved: wisdom.resolved,
+            likeAmount: wisdom.like,
             content: wisdom.content,
             category: wisdom.category,
             createdDay: wisdom.createdAt.toDate(),

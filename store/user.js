@@ -9,6 +9,9 @@ export const state = () => ({
     icon: '',
     name: '',
   },
+  wisdom: {
+    likedPost: '',
+  },
 });
 
 export const getters = {
@@ -27,6 +30,9 @@ export const getters = {
   icon(state) {
     return state.user.icon;
   },
+  likedPost(state) {
+    return state.wisdom.likedPost;
+  },
 };
 
 export const mutations = {
@@ -40,6 +46,10 @@ export const mutations = {
   setUserInfo(state, payload) {
     state.user.name = payload.name;
     state.user.icon = payload.icon;
+  },
+  setUserWisdom(state, payload) {
+    console.log(payload);
+    state.wisdom.likedPost = payload;
   },
   changeName(state, latestName) {
     state.user.name = latestName;
@@ -72,5 +82,18 @@ export const actions = {
         return userData;
       });
     commit('setUserInfo', userInfo);
+  },
+  async getUserWisdom({ commit, state }) {
+    const usersWisdoms = await firebase
+      .firestore()
+      .collection('users')
+      .doc(state.user.uid)
+      .collection('wisdom')
+      .doc('likedPost')
+      .get()
+      .then((doc) => {
+        return doc.data().id;
+      });
+    commit('setUserWisdom', usersWisdoms);
   },
 };
