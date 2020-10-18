@@ -91,7 +91,7 @@
 <script>
 import firebase from '~/plugins/firebase';
 import CreatedTimeDiff from '~/components/molecules/TimeDiff';
-import WisdomLike from '~/components/Oraganisms/WisdomLike';
+import WisdomLike from '~/components/Organisms/WisdomLike';
 export default {
   components: { CreatedTimeDiff, WisdomLike },
   props: {
