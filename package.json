@@ -3,14 +3,30 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "nuxt build --dest src-cordova/www",
+    "lint": "npm run lint:js && npm run lint:style",
+    "cordova-build-android": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-build-android",
+    "cordova-build-browser": "cross-env CORDOVA_PLATFORM=browser vue-cli-service cordova-build-browser",
+    "cordova-build-electron": "cross-env CORDOVA_PLATFORM=electron vue-cli-service cordova-build-electron",
+    "cordova-build-ios": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-build-ios",
+    "cordova-build-only-www-android": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-build-only-www-android",
+    "cordova-build-only-www-browser": "cross-env CORDOVA_PLATFORM=browser vue-cli-service cordova-build-only-www-browser",
+    "cordova-build-only-www-electron": "cross-env CORDOVA_PLATFORM=electron vue-cli-service cordova-build-only-www-electron",
+    "cordova-build-only-www-ios": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-build-only-www-ios",
+    "cordova-build-only-www-osx": "cross-env CORDOVA_PLATFORM=osx vue-cli-service cordova-build-only-www-osx",
+    "cordova-build-osx": "cross-env CORDOVA_PLATFORM=osx vue-cli-service cordova-build-osx",
+    "cordova-prepare": "vue-cli-service cordova-prepare",
+    "cordova-serve-android": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-serve-android",
+    "cordova-serve-browser": "cross-env CORDOVA_PLATFORM=browser vue-cli-service cordova-serve-browser",
+    "cordova-serve-electron": "cross-env CORDOVA_PLATFORM=electron vue-cli-service cordova-serve-electron",
+    "cordova-serve-ios": "cross-env CORDOVA_PLATFORM=ios vue-cli-service cordova-serve-ios",
+    "cordova-serve-osx": "cross-env CORDOVA_PLATFORM=osx vue-cli-service cordova-serve-osx",
     "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
+    "generate": "nuxt generate --dest && replace '/nuxt/' 'nuxt/' src-cordova/www -r",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
-    "lint": "npm run lint:js && npm run lint:style",
-    "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
+    "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "start": "nuxt start"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.0",
@@ -25,6 +41,7 @@
     "jwt-decode": "^3.0.0-beta.2",
     "load-google-maps-api": "^2.0.2",
     "nuxt": "^2.14.0",
+    "replace": "^1.2.0",
     "v-viewer": "^1.5.1",
     "vue-cool-select": "^3.5.2",
     "vue-cropperjs": "^4.1.0",
@@ -45,6 +62,7 @@
     "prettier": "^2.0.5",
     "stylelint": "^13.6.1",
     "stylelint-config-prettier": "^8.0.2",
-    "stylelint-config-standard": "^20.0.0"
+    "stylelint-config-standard": "^20.0.0",
+    "vue-cli-plugin-cordova": "~2.4.1"
   }
 }
