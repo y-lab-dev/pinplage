@@ -2,7 +2,7 @@
   <div class="textarea-place">
     <textarea
       color="#61d4b3"
-      class="textarea-text"
+      class="textarea-text px-3 py-1"
       :value="textareaValue"
       :placeholder="textareaPlaceholder"
       @input="$emit('input', $event.target.value)"

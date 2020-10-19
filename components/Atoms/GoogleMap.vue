@@ -49,6 +49,6 @@ export default {
 <style scoped>
 .google-map {
   width: 100%;
-  height: 24vh;
+  height: 28vh;
 }
 </style>

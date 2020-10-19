@@ -246,6 +246,7 @@ export default {
       joinDialog: false,
       cancelDialog: false,
       userName: '',
+      userIcon: '',
     };
   },
   computed: {
@@ -268,8 +269,6 @@ export default {
     const userEvent = loginUser.collection('event');
     const userEventJoin = userEvent.doc('join');
     const userEventInterest = userEvent.doc('interest');
-    let userName = '';
-    let userIcon = '';
 
     event
       .get()
@@ -313,12 +312,13 @@ export default {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
+          console.log(doc.data());
           user
             .doc(doc.data().questioner)
             .get()
             .then((doc) => {
-              userName = doc.data().name;
-              userIcon = doc.data().icon;
+              that.userName = doc.data().name;
+              that.userIcon = doc.data().icon;
             })
             .then(() => {
               that.eventQuestionArray = [
@@ -328,17 +328,18 @@ export default {
                   createdAt: dayjs(doc.data().createdAt.toDate())
                     .locale('ja')
                     .format('YY/MM/DD HH:mm'),
-                  name: userName,
-                  icon: userIcon,
+                  name: that.userName,
+                  icon: that.userIcon,
                 },
               ];
+              console.log('that.eventQuestionArray: ', that.eventQuestionArray);
             });
         });
       });
 
-    loginUser.get().then((doc) => {
-      that.userName = doc.data().name;
-    });
+    // loginUser.get().then((doc) => {
+    //   that.userName = doc.data().name;
+    // });
 
     userEventJoin.get().then((doc) => {
       that.isJoin = doc.data().id.find((val) => {

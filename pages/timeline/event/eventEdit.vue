@@ -34,11 +34,14 @@
           :rules="[() => !!type || requiredText]"
           required
         ></v-select>
-        <div class="mt-1 pt-3">
-          <div ref="map" />
-          <v-icon> mdi-map-marker-radius </v-icon>
-          <input ref="input" v-model="placeName" class="input-text" />
-        </div>
+        <div ref="map" />
+        <v-text-field
+          ref="input"
+          v-model="placeName"
+          color="#61d4b3"
+          label="※場所"
+          prepend-icon="mdi-map-marker-radius"
+        ></v-text-field>
         <v-dialog
           ref="dialogs"
           v-model="dateModal"
@@ -140,28 +143,35 @@
           :rules="[() => !!content || requiredText]"
           required
         ></v-textarea>
-        <post-button
-          :button-method="post"
-          :button-type="buttonType"
-          :button-disabled="
-            img == '' ||
-            title == '' ||
-            type == '' ||
-            placeId == '' ||
-            placeName == '' ||
-            date == '' ||
-            startTime == '' ||
-            finishTime == '' ||
-            content == ''
-          "
-          >投稿</post-button
-        >
-        <post-button
-          :button-method="eventCancel"
-          :button-type="buttonType"
-          :button-disabled="cancel == true"
-          >イベント中止</post-button
-        >
+        <div class="edit-button mb-3">
+          <post-button
+            :button-method="post"
+            :button-type="buttonType"
+            :button-disabled="
+              img == '' ||
+              title == '' ||
+              type == '' ||
+              placeId == '' ||
+              placeName == '' ||
+              date == '' ||
+              startTime == '' ||
+              finishTime == '' ||
+              content == ''
+            "
+            >編集完了</post-button
+          >
+        </div>
+        <div class="cancel-button">
+          <v-btn
+            rounded
+            width="80vw"
+            color="red lighten-3"
+            class="white--text"
+            :disabled="cancel == true"
+            @click="eventCancel"
+            >イベントを中止にする</v-btn
+          >
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -295,7 +305,9 @@ export default {
       types: ['establishment'],
       strictBounds: true,
     };
-    this.mapAutoComplete = new this.gmap.places.Autocomplete(this.$refs.input, searchOptions);
+    let element = this.$refs.input.$el;
+    element = element.querySelector('input');
+    this.mapAutoComplete = new this.gmap.places.Autocomplete(element, searchOptions);
     this.mapAutoComplete.setFields(this.fiels);
     this.mapAutoComplete.addListener('place_changed', () => {
       this.onClickLocation();
@@ -308,7 +320,7 @@ export default {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
       };
-      this.place = place.place_id;
+      this.placeId = place.place_id;
       this.placeName = place.name;
       this.geometry = geometry;
     },
@@ -396,5 +408,11 @@ export default {
   margin-bottom: 28px;
   width: 300px;
   outline: none;
+}
+.edit-button {
+  text-align: center;
+}
+.cancel-button {
+  text-align: center;
 }
 </style>

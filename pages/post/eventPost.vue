@@ -2,7 +2,7 @@
   <v-container>
     <p class="required-phrase">※は必須項目です</p>
     <v-row justify="center">
-      <v-col cols="12" md="8" sm="6">
+      <v-col cols="12">
         <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
         <v-text-field
           v-model="title"
@@ -22,11 +22,7 @@
           :rules="[() => !!type || requiredText]"
           required
         ></v-select>
-        <input-place
-          :input-type="inputType"
-          :input-placeholder="placeholder"
-          @place="placeAdd"
-        ></input-place>
+        <input-place :label="placeholder" @place="placeAdd"></input-place>
         <v-dialog
           ref="dialogs"
           v-model="dateModal"
@@ -128,22 +124,24 @@
           :rules="[() => !!content || requiredText]"
           required
         ></v-textarea>
-        <post-button
-          :button-method="post"
-          :button-type="buttonType"
-          :button-disabled="
-            img == '' ||
-            title == '' ||
-            type == '' ||
-            placeId == '' ||
-            placeName == '' ||
-            date == '' ||
-            startTime == '' ||
-            finishTime == '' ||
-            content == ''
-          "
-          >投稿</post-button
-        >
+        <div class="post-button">
+          <post-button
+            :button-method="post"
+            :button-type="buttonType"
+            :button-disabled="
+              img == '' ||
+              title == '' ||
+              type == '' ||
+              placeId == '' ||
+              placeName == '' ||
+              date == '' ||
+              startTime == '' ||
+              finishTime == '' ||
+              content == ''
+            "
+            >投稿</post-button
+          >
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -164,7 +162,6 @@ export default {
   },
   data() {
     return {
-      inputType: 'text',
       buttonType: 'submit',
       imgPath: 'events/image/',
       placeholder: '※場所',
@@ -251,5 +248,8 @@ export default {
   margin-bottom: 0;
   margin-left: 4px;
   font-size: 0.8rem;
+}
+.post-button {
+  text-align: center;
 }
 </style>
