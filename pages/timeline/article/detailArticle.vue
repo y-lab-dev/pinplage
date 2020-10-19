@@ -98,7 +98,12 @@
           >
         </v-list>
         <v-divider></v-divider>
-        <v-card v-for="item in articleSameCategoryArray" :key="item.id" flat>
+        <v-card
+          v-for="item in articleSameCategoryArray"
+          :key="item.id"
+          flat
+          @click="toDetail(item)"
+        >
           <v-list-item class="px-3">
             <img width="70px" height="50px" :src="item.mainImg" />
             <v-list-item-content class="ml-2">
@@ -153,87 +158,114 @@ export default {
     }),
   },
   created() {
-    const that = this;
-    const article = firebase.firestore().collection('articles');
-    const thisArticle = article.doc(this.id);
-    const articleDetail = thisArticle.collection('detail').doc('browse');
-    const articleComment = thisArticle.collection('comment');
-    const user = firebase.firestore().collection('users');
-    const userLikedArticle = user.doc(this.uid).collection('article').doc('favorite');
-
-    thisArticle.get().then((doc) => {
-      that.articleObject = {
-        id: doc.id,
-        title: doc.data().title,
-        date: doc.data().createdAt.toDate(),
-        category: doc.data().category,
-        canRead: doc.data().canRead,
-        like: doc.data().like,
-        mainImg: doc.data().mainImg,
-        provider: doc.data().provider,
-        range: doc.data().range,
-        views: doc.data().views,
-      };
-    });
-    articleDetail.get().then((doc) => {
-      that.articleDetailObject = {
-        mainArticle: doc.data().mainArticle,
-      };
-    });
-
-    articleComment
-      .orderBy('createdAt')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          that.articleCommentArray = [
-            ...that.articleCommentArray,
-            {
-              commentId: doc.id,
-              commenter: doc.data().commenter,
-              content: doc.data().content,
-              createdAt: dayjs(doc.data().createdAt.toDate())
-                .locale('ja')
-                .format('YYYY/MM/DD HH:mm'),
-            },
-          ];
-        });
-      });
-
-    article
-      .orderBy('createdAt', 'desc')
-      .where('category', '==', this.category)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          if (doc.id !== that.id) {
-            that.articleSameCategoryArray = [
-              ...that.articleSameCategoryArray,
-              {
-                id: doc.id,
-                title: doc.data().title,
-                date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD'),
-                category: doc.data().category,
-                canRead: doc.data().canRead,
-                mainImg: doc.data().mainImg,
-                provider: doc.data().provider,
-                range: doc.data().range,
-              },
-            ];
-          }
-        });
-      })
-      .catch((err) => {
-        alert(err);
-      });
-
-    userLikedArticle.get().then((doc) => {
-      that.isLiked = doc.data().id.find((val) => {
-        return val === that.id;
-      });
-    });
+    this.getArticleContent();
   },
   methods: {
+    getArticleContent() {
+      const that = this;
+      const article = firebase.firestore().collection('articles');
+      const thisArticle = article.doc(this.id);
+      const articleDetail = thisArticle.collection('detail').doc('browse');
+      const articleComment = thisArticle.collection('comment');
+      const user = firebase.firestore().collection('users');
+      const userLikedArticle = user.doc(this.uid).collection('article').doc('favorite');
+
+      const getArticleData = new Promise((resolve) => {
+        thisArticle.get().then((doc) => {
+          that.articleObject = {
+            id: doc.id,
+            title: doc.data().title,
+            date: doc.data().createdAt.toDate(),
+            category: doc.data().category,
+            canRead: doc.data().canRead,
+            like: doc.data().like,
+            mainImg: doc.data().mainImg,
+            provider: doc.data().provider,
+            range: doc.data().range,
+            views: doc.data().views,
+          };
+        });
+        resolve();
+      });
+
+      const getArticleDetailData = new Promise((resolve) => {
+        articleDetail.get().then((doc) => {
+          that.articleDetailObject = {
+            mainArticle: doc.data().mainArticle,
+          };
+        });
+        resolve();
+      });
+
+      const getArticleComment = new Promise((resolve) => {
+        articleComment
+          .orderBy('createdAt')
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              that.articleCommentArray = [
+                ...that.articleCommentArray,
+                {
+                  commentId: doc.id,
+                  commenter: doc.data().commenter,
+                  content: doc.data().content,
+                  createdAt: dayjs(doc.data().createdAt.toDate())
+                    .locale('ja')
+                    .format('YYYY/MM/DD HH:mm'),
+                },
+              ];
+            });
+          });
+        resolve();
+      });
+
+      const getSameCategoryArticleData = new Promise((resolve) => {
+        article
+          .orderBy('createdAt', 'desc')
+          .where('category', '==', this.category)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              if (doc.id !== that.id) {
+                that.articleSameCategoryArray = [
+                  ...that.articleSameCategoryArray,
+                  {
+                    id: doc.id,
+                    title: doc.data().title,
+                    date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD'),
+                    category: doc.data().category,
+                    canRead: doc.data().canRead,
+                    mainImg: doc.data().mainImg,
+                    provider: doc.data().provider,
+                    range: doc.data().range,
+                  },
+                ];
+              }
+            });
+          });
+        resolve();
+      });
+
+      const getArticleLikedData = new Promise((resolve) => {
+        userLikedArticle.get().then((doc) => {
+          that.isLiked = doc.data().id.find((val) => {
+            return val === that.id;
+          });
+        });
+        resolve();
+      });
+
+      // HACK
+      Promise.all([
+        getArticleData,
+        getArticleDetailData,
+        getArticleComment,
+        getSameCategoryArticleData,
+        getArticleLikedData,
+      ]).then(() => {
+        window.scroll(0, 0);
+      });
+    },
     scrollToElement(index) {
       this.$nextTick(() => {
         const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
@@ -309,6 +341,15 @@ export default {
               alert(err);
             });
         });
+    },
+    toDetail(obj) {
+      const that = this;
+      async function assignment() {
+        await that.$store.commit('article/getData', obj);
+        that.articleCommentArray = [];
+        that.articleSameCategoryArray = [];
+      }
+      assignment().then(this.getArticleContent);
     },
   },
 };
