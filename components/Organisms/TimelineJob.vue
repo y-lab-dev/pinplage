@@ -33,7 +33,7 @@
       <div class="d-flex justify-space-around">
         <v-img
           v-show="item.img"
-          height="14vh"
+          height="16vh"
           width="44vw"
           class="ml-3 mb-3"
           :src="item.img"
