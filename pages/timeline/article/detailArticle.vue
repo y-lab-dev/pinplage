@@ -61,26 +61,12 @@
         </v-list>
         <v-divider></v-divider>
         <v-list two-line class="mb-6">
-          <v-card
+          <comment-thread
             v-for="(item, index) in articleCommentArray"
-            :key="item.index"
-            :elevation="0"
+            :key="item.commentId"
+            v-bind="articleCommentArray[index]"
             :class="`index-${index}`"
-          >
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-img :src="item.icon"></v-img>
-              </v-list-item-avatar>
-              <v-list-item-content class="py-0">
-                <v-list-item-title v-text="item.name"></v-list-item-title>
-                <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item-content class="ml-4 pt-0">
-              {{ item.content }}
-            </v-list-item-content>
-            <v-divider></v-divider>
-          </v-card>
+          ></comment-thread>
           <text-area
             class="mt-4"
             :textarea-placeholder="commentPlaceholder"
@@ -134,6 +120,7 @@ import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
 import CreatedTimeDiff from '~/components/molecules/TimeDiff';
+import CommentThread from '~/components/molecules/CommentThread';
 
 export default {
   layout: 'onlyBack',
@@ -141,6 +128,7 @@ export default {
     PostButton,
     TextArea,
     CreatedTimeDiff,
+    CommentThread,
   },
   data() {
     return {
@@ -172,8 +160,6 @@ export default {
     const articleComment = thisArticle.collection('comment');
     const user = firebase.firestore().collection('users');
     const userLikedArticle = user.doc(this.uid).collection('article').doc('favorite');
-    let userName = '';
-    let userIcon = '';
 
     thisArticle.get().then((doc) => {
       that.articleObject = {
@@ -200,26 +186,17 @@ export default {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          user
-            .doc(doc.data().commenter)
-            .get()
-            .then((doc) => {
-              userName = doc.data().name;
-              userIcon = doc.data().icon;
-            })
-            .then(() => {
-              that.articleCommentArray = [
-                ...that.articleCommentArray,
-                {
-                  content: doc.data().content,
-                  createdAt: dayjs(doc.data().createdAt.toDate())
-                    .locale('ja')
-                    .format('YYYY/MM/DD HH:mm'),
-                  name: userName,
-                  icon: userIcon,
-                },
-              ];
-            });
+          that.articleCommentArray = [
+            ...that.articleCommentArray,
+            {
+              commentId: doc.id,
+              commenter: doc.data().commenter,
+              content: doc.data().content,
+              createdAt: dayjs(doc.data().createdAt.toDate())
+                .locale('ja')
+                .format('YYYY/MM/DD HH:mm'),
+            },
+          ];
         });
       });
 
@@ -308,10 +285,10 @@ export default {
         .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
       const comment = {
+        commentId: timestamp.toDate().toString(),
         content: that.content,
         createdAt: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
-        name: that.name,
-        icon: that.icon,
+        commenter: that.uid,
       };
       articleComment
         .add({
