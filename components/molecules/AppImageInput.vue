@@ -9,8 +9,10 @@
       color="#61d4b3"
       accept="image/png, image/jpeg, image/bmp"
       prepend-icon="mdi-camera"
-      label="画像"
+      label="※画像"
       :clearable="false"
+      :rules="[() => !!img.name || requiredText]"
+      required
       @change="imgAdd"
     ></v-file-input>
   </div>
@@ -37,6 +39,7 @@ export default {
         name: '',
         url: '',
       },
+      requiredText: 'この項目は必須です',
     };
   },
   methods: {

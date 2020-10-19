@@ -2,8 +2,7 @@
   <v-container>
     <p class="required-phrase">※は必須項目です</p>
     <v-row justify="center">
-      <v-col cols="12" md="8" sm="6">
-        <div class="title">アルバイト投稿</div>
+      <v-col cols="12">
         <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
         <v-text-field
           v-model="name"
@@ -13,11 +12,7 @@
           :rules="[() => !!name || requiredText]"
           required
         ></v-text-field>
-        <input-place
-          :input-type="inputType"
-          :input-placeholder="placeholder"
-          @place="placeAdd"
-        ></input-place>
+        <input-place :label="placeholder" @place="placeAdd"></input-place>
         <v-select
           v-model="genre"
           :items="genres"
@@ -108,7 +103,7 @@
         <v-text-field
           v-model="contactEmail"
           color="#61d4b3"
-          label="※連絡先"
+          label="※連絡先(メールアドレス)"
           prepend-icon="mdi-email-multiple"
           :rules="[() => !!contactEmail || requiredText]"
           required
@@ -153,24 +148,26 @@
           rows="3"
           prepend-icon="mdi-lock"
         ></v-textarea>
-        <post-button
-          :button-method="post"
-          :button-type="buttonType"
-          :button-disabled="
-            img == '' ||
-            name == '' ||
-            genre == '' ||
-            placeId == '' ||
-            placeName == '' ||
-            money == '' ||
-            startTime == '' ||
-            endTime == '' ||
-            content == '' ||
-            shift == '' ||
-            contactEmail == ''
-          "
-          >投稿</post-button
-        >
+        <div class="post-button">
+          <post-button
+            :button-method="post"
+            :button-type="buttonType"
+            :button-disabled="
+              img == '' ||
+              name == '' ||
+              genre == '' ||
+              placeId == '' ||
+              placeName == '' ||
+              money == '' ||
+              startTime == '' ||
+              endTime == '' ||
+              content == '' ||
+              shift == '' ||
+              contactEmail == ''
+            "
+            >投稿</post-button
+          >
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -194,7 +191,7 @@ export default {
       inputType: 'text',
       buttonType: 'submit',
       imgPath: 'jobs/image/',
-      placeholder: '場所',
+      placeholder: '※場所',
       requiredText: 'この項目は必須です',
       startTimeModal: false,
       endTimeModal: false,
@@ -208,12 +205,17 @@ export default {
         '販売・接客・サービス',
         'アパレル・ファッション関連',
         'レジャー・アミューズメント',
+        'モデル・俳優・エキストラ',
         'クリエイティブ・編集',
+        'マスコミ・出版',
+        'ラジオ・テレビ局',
+        'カメラマン',
         'エンジニア・サポート・保守',
         'イベント・キャンペーン',
         '教育',
         '塾講',
         '家庭教師',
+        '試験監督',
         'エステ・理美容',
         '医療・介護・保育',
         'オフィスワーク',
@@ -222,6 +224,7 @@ export default {
         '軽作業',
         '工場・倉庫・建築・土木',
         '警備・清掃・ビル管理',
+        'その他',
         '誰か助けて！',
       ],
       img: '',
@@ -315,12 +318,12 @@ export default {
 };
 </script>
 <style scoped>
-.title {
-  text-align: center;
-}
 .required-phrase {
   margin-bottom: 0;
   margin-left: 4px;
   font-size: 0.8rem;
+}
+.post-button {
+  text-align: center;
 }
 </style>
