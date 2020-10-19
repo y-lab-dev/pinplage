@@ -108,7 +108,7 @@
         <v-list-item>
           <v-icon size="25" left>mdi-account-check</v-icon>
           <v-list-item-content class="text-subtitle-2"
-            >{{ userName }}さんの公開イベント</v-list-item-content
+            >{{ poster }}さんの公開イベント</v-list-item-content
           >
         </v-list-item>
         <v-list-item>
@@ -169,25 +169,12 @@
         <v-divider class="mt-12 content-divider"></v-divider>
         <v-list two-line>
           <v-list-item-title class="content-title">質問リスト</v-list-item-title>
-          <div
+          <question-thread
             v-for="(item, index) in eventQuestionArray"
-            :key="item.index"
+            :key="item.questionId"
+            v-bind="eventQuestionArray[index]"
             :class="`index-${index}`"
-          >
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-img :src="item.icon"></v-img>
-              </v-list-item-avatar>
-              <v-list-item-content class="py-0">
-                <v-list-item-title v-text="item.name"></v-list-item-title>
-                <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item-content class="ml-4 pt-0">
-              {{ item.content }}
-            </v-list-item-content>
-            <v-divider></v-divider>
-          </div>
+          ></question-thread>
           <text-area
             class="mt-4"
             :textarea-placeholder="contentPlaceholder"
@@ -223,6 +210,7 @@ import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
 import GoogleMap from '~/components/Atoms/GoogleMap';
+import QuestionThread from '~/components/molecules/QuestionThread';
 
 export default {
   layout: 'onlyBack',
@@ -230,6 +218,7 @@ export default {
     PostButton,
     TextArea,
     GoogleMap,
+    QuestionThread,
   },
   data() {
     return {
@@ -247,6 +236,7 @@ export default {
       cancelDialog: false,
       userName: '',
       userIcon: '',
+      poster: '',
     };
   },
   computed: {
@@ -285,6 +275,14 @@ export default {
           join: doc.data().join,
           interest: doc.data().interest,
         };
+
+        user
+          .doc(doc.data().poster)
+          .get()
+          .then((doc) => {
+            that.poster = doc.data().name;
+          });
+
         if (that.uid === doc.data().poster) {
           that.isEdit = true;
         }
@@ -312,34 +310,17 @@ export default {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          console.log(doc.data());
-          user
-            .doc(doc.data().questioner)
-            .get()
-            .then((doc) => {
-              that.userName = doc.data().name;
-              that.userIcon = doc.data().icon;
-            })
-            .then(() => {
-              that.eventQuestionArray = [
-                ...that.eventQuestionArray,
-                {
-                  content: doc.data().content,
-                  createdAt: dayjs(doc.data().createdAt.toDate())
-                    .locale('ja')
-                    .format('YY/MM/DD HH:mm'),
-                  name: that.userName,
-                  icon: that.userIcon,
-                },
-              ];
-              console.log('that.eventQuestionArray: ', that.eventQuestionArray);
-            });
+          that.eventQuestionArray = [
+            ...that.eventQuestionArray,
+            {
+              questionId: doc.id,
+              content: doc.data().content,
+              createdAt: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
+              questioner: doc.data().questioner,
+            },
+          ];
         });
       });
-
-    // loginUser.get().then((doc) => {
-    //   that.userName = doc.data().name;
-    // });
 
     userEventJoin.get().then((doc) => {
       that.isJoin = doc.data().id.find((val) => {
@@ -455,10 +436,10 @@ export default {
         .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
       const question = {
+        questionId: timestamp.toDate().toString(),
         content: that.content,
         createdAt: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
-        name: that.name,
-        icon: that.icon,
+        questioner: that.uid,
       };
 
       eventQuestion
