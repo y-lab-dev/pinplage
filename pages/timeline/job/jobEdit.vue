@@ -1,8 +1,8 @@
 <template>
   <v-container>
+    <p class="required-phrase">※は必須項目です</p>
     <v-row justify="center">
-      <v-col cols="12" md="8" sm="6">
-        <div class="title">アルバイト編集</div>
+      <v-col cols="12">
         <v-img v-show="img" :src="img" height="200px"></v-img>
         <v-btn v-show="img" class="ml-2" style="float: right" @click="imgDelete">
           <v-icon>mdi-delete-empty</v-icon>
@@ -22,11 +22,16 @@
           label="※店舗名/アルバイト名"
           prepend-icon="mdi-flag-variant"
         ></v-text-field>
-        <div class="mt-1 pt-3">
-          <div ref="map" />
-          <v-icon> mdi-map-marker-radius </v-icon>
-          <input ref="input" v-model="placeName" class="input-text" />
-        </div>
+        <div ref="map" />
+        <v-text-field
+          ref="input"
+          v-model="placeName"
+          color="#61d4b3"
+          label="※場所"
+          prepend-icon="mdi-map-marker-radius"
+          :rules="[() => !!placeName || requiredText]"
+          required
+        ></v-text-field>
         <v-select
           v-model="genre"
           :items="genres"
@@ -152,32 +157,36 @@
           rows="3"
           prepend-icon="mdi-lock"
         ></v-textarea>
-        <post-button
-          :button-method="post"
-          :button-type="buttonType"
-          :button-disabled="
-            img == '' ||
-            name == '' ||
-            genre == '' ||
-            placeId == '' ||
-            placeName == '' ||
-            money == '' ||
-            startTime == '' ||
-            endTime == '' ||
-            content == '' ||
-            shift == '' ||
-            contactEmail == ''
-          "
-          >編集完了</post-button
-        >
-        <v-btn v-show="!isClose" rounded dark color="pink lighten-2" @click="close">
-          <v-icon left>mdi-emoticon-kiss-outline</v-icon>
-          募集を締め切る
-        </v-btn>
-        <v-btn v-show="isClose" rounded dark color="grey">
-          <v-icon left>mdi-check-circle-outline</v-icon>
-          募集を終了しました
-        </v-btn>
+        <div class="edit-button mb-3">
+          <post-button
+            :button-method="post"
+            :button-type="buttonType"
+            :button-disabled="
+              img == '' ||
+              name == '' ||
+              genre == '' ||
+              placeId == '' ||
+              placeName == '' ||
+              money == '' ||
+              startTime == '' ||
+              endTime == '' ||
+              content == '' ||
+              shift == '' ||
+              contactEmail == ''
+            "
+            >編集完了</post-button
+          >
+        </div>
+        <div class="close-button">
+          <v-btn v-show="!isClose" width="80vw" rounded dark color="pink lighten-2" @click="close">
+            <v-icon left>mdi-emoticon-kiss-outline</v-icon>
+            募集を締め切る
+          </v-btn>
+          <v-btn v-show="isClose" width="80vw" rounded dark color="grey">
+            <v-icon left>mdi-check-circle-outline</v-icon>
+            募集を終了しました
+          </v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -317,8 +326,6 @@ export default {
   },
   async mounted() {
     this.gmap = await initMap();
-    console.log(this.$refs);
-
     this.map = new this.gmap.Map(this.$refs.map, {
       center: new this.gmap.LatLng(this.coord.lat, this.coord.lng),
       zoom: this.defaultZoom,
@@ -336,7 +343,9 @@ export default {
       types: ['establishment'],
       strictBounds: true,
     };
-    this.mapAutoComplete = new this.gmap.places.Autocomplete(this.$refs.input, searchOptions);
+    let element = this.$refs.input.$el;
+    element = element.querySelector('input');
+    this.mapAutoComplete = new this.gmap.places.Autocomplete(element, searchOptions);
     this.mapAutoComplete.setFields(this.fiels);
     this.mapAutoComplete.addListener('place_changed', () => {
       this.onClickLocation();
@@ -409,8 +418,8 @@ export default {
           isRecruit: false,
         })
         .then(() => {
-          alert('このアルバイトの募集を締め切りました');
           that.isClose = true;
+          that.$router.push({ name: 'timeline' });
         })
         .catch((err) => {
           alert(err);
@@ -437,13 +446,21 @@ export default {
 };
 </script>
 <style scoped>
-.title {
-  text-align: center;
+.required-phrase {
+  margin-bottom: 0;
+  margin-left: 4px;
+  font-size: 0.8rem;
 }
 .input-text {
   border-bottom: 1px solid rgb(134, 134, 134);
   margin-bottom: 28px;
   width: 300px;
   outline: none;
+}
+.edit-button {
+  text-align: center;
+}
+.close-button {
+  text-align: center;
 }
 </style>
