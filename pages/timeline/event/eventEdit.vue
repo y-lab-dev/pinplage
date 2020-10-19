@@ -41,6 +41,8 @@
           color="#61d4b3"
           label="※場所"
           prepend-icon="mdi-map-marker-radius"
+          :rules="[() => !!placeName || requiredText]"
+          required
         ></v-text-field>
         <v-dialog
           ref="dialogs"

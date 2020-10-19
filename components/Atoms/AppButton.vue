@@ -33,6 +33,6 @@ export default {
 <style scoped>
 .button-color {
   background: linear-gradient(to right, #36aa37 0%, #2da8aa 50%);
-  opacity: 0.5;
+  opacity: 0.6;
 }
 </style>
