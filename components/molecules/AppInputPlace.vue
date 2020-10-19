@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-1 pt-3">
+  <div>
     <div ref="map" />
     <v-text-field
       ref="input"
@@ -8,6 +8,8 @@
       :label="label"
       rows="1"
       prepend-icon="mdi-map-marker-radius"
+      :rules="[() => !!placeName || requiredText]"
+      required
     ></v-text-field>
   </div>
 </template>
@@ -49,6 +51,7 @@ export default {
       },
       fiels: ['place_id', 'name', 'type', 'geometry'],
       placeName: '',
+      requiredText: 'この項目は必須です',
     };
   },
   async mounted() {

@@ -1,8 +1,8 @@
 <template>
   <v-btn
     rounded
-    color="teal accent-4"
-    class="white--text button"
+    width="80vw"
+    class="white--text button-color"
     outlined
     :type="buttonType"
     :disabled="buttonDisabled"
@@ -31,7 +31,8 @@ export default {
 };
 </script>
 <style scoped>
-.button {
-  width: 80vw;
+.button-color {
+  background: linear-gradient(to right, #36aa37 0%, #2da8aa 50%);
+  opacity: 0.6;
 }
 </style>
