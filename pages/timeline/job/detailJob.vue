@@ -128,25 +128,12 @@
         <v-divider class="mt-12 content-divider"></v-divider>
         <v-list two-line>
           <v-list-item-title class="content-title">質問リスト</v-list-item-title>
-          <div
+          <question-thread
             v-for="(item, index) in jobQuestionArray"
-            :key="item.index"
+            :key="item.questionId"
+            v-bind="jobQuestionArray[index]"
             :class="`index-${index}`"
-          >
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-img :src="item.icon"></v-img>
-              </v-list-item-avatar>
-              <v-list-item-content class="py-0">
-                <v-list-item-title v-text="item.name"></v-list-item-title>
-                <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item-content class="ml-4 pt-0">
-              {{ item.content }}
-            </v-list-item-content>
-            <v-divider></v-divider>
-          </div>
+          ></question-thread>
           <text-area
             class="mt-4"
             :textarea-placeholder="contentPlaceholder"
@@ -201,8 +188,8 @@
             </v-col>
             <v-col cols="5" class="text-center">
               <a :href="'mailto:' + jobDetailObject.contactEmail">
-                <v-btn width="33vw" rounded color="teal lighten-1" class="bottom-button" dark
-                  >連絡してみる</v-btn
+                <v-btn width="33vw" rounded color="teal lighten-1" class="bottom-button" dark>
+                  <v-icon left>mdi-email-outline</v-icon>連絡する</v-btn
                 ></a
               >
             </v-col>
@@ -219,6 +206,7 @@ import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
 import GoogleMap from '~/components/Atoms/GoogleMap';
+import QuestionThread from '~/components/molecules/QuestionThread';
 
 export default {
   layout: 'onlyBack',
@@ -226,6 +214,7 @@ export default {
     PostButton,
     TextArea,
     GoogleMap,
+    QuestionThread,
   },
   data() {
     return {
@@ -233,7 +222,7 @@ export default {
       jobObject: {},
       jobDetailObject: {},
       jobQuestionArray: [],
-      contentPlaceholder: 'アルバイトについて気になったことなど',
+      contentPlaceholder: 'バイトについて気になったことなど',
       content: '',
       isKeep: false,
       isEdit: false,
@@ -256,8 +245,6 @@ export default {
     const jobQuestion = job.collection('question');
     const user = firebase.firestore().collection('users');
     const userJobKeep = user.doc(this.uid).collection('job').doc('keep');
-    let userName = '';
-    let userIcon = '';
 
     job.get().then((doc) => {
       that.jobObject = {
@@ -296,26 +283,15 @@ export default {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          user
-            .doc(doc.data().questioner)
-            .get()
-            .then((doc) => {
-              userName = doc.data().name;
-              userIcon = doc.data().icon;
-            })
-            .then(() => {
-              that.jobQuestionArray = [
-                ...that.jobQuestionArray,
-                {
-                  content: doc.data().content,
-                  createdAt: dayjs(doc.data().createdAt.toDate())
-                    .locale('ja')
-                    .format('YY/MM/DD HH:mm'),
-                  name: userName,
-                  icon: userIcon,
-                },
-              ];
-            });
+          that.jobQuestionArray = [
+            ...that.jobQuestionArray,
+            {
+              questionId: doc.id,
+              questioner: doc.data().questioner,
+              content: doc.data().content,
+              createdAt: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
+            },
+          ];
         });
       });
 
@@ -390,10 +366,10 @@ export default {
         .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
       const question = {
+        questionId: timestamp.toDate().toString(),
         content: that.content,
         createdAt: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
-        name: that.name,
-        icon: that.icon,
+        questioner: that.uid,
       };
 
       jobQuestion
