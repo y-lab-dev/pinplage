@@ -61,26 +61,12 @@
         </v-list>
         <v-divider></v-divider>
         <v-list two-line class="mb-6">
-          <v-card
+          <comment-thread
             v-for="(item, index) in articleCommentArray"
-            :key="item.index"
-            :elevation="0"
+            :key="item.commentId"
+            v-bind="articleCommentArray[index]"
             :class="`index-${index}`"
-          >
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-img :src="item.icon"></v-img>
-              </v-list-item-avatar>
-              <v-list-item-content class="py-0">
-                <v-list-item-title v-text="item.name"></v-list-item-title>
-                <v-list-item-subtitle v-text="item.createdAt"></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item-content class="ml-4 pt-0">
-              {{ item.content }}
-            </v-list-item-content>
-            <v-divider></v-divider>
-          </v-card>
+          ></comment-thread>
           <text-area
             class="mt-4"
             :textarea-placeholder="commentPlaceholder"
@@ -112,7 +98,12 @@
           >
         </v-list>
         <v-divider></v-divider>
-        <v-card v-for="item in articleSameCategoryArray" :key="item.id" flat>
+        <v-card
+          v-for="item in articleSameCategoryArray"
+          :key="item.id"
+          flat
+          @click="toDetail(item)"
+        >
           <v-list-item class="px-3">
             <img width="70px" height="50px" :src="item.mainImg" />
             <v-list-item-content class="ml-2">
@@ -134,6 +125,7 @@ import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
 import CreatedTimeDiff from '~/components/molecules/TimeDiff';
+import CommentThread from '~/components/molecules/CommentThread';
 
 export default {
   layout: 'onlyBack',
@@ -141,6 +133,7 @@ export default {
     PostButton,
     TextArea,
     CreatedTimeDiff,
+    CommentThread,
   },
   data() {
     return {
@@ -165,98 +158,114 @@ export default {
     }),
   },
   created() {
-    const that = this;
-    const article = firebase.firestore().collection('articles');
-    const thisArticle = article.doc(this.id);
-    const articleDetail = thisArticle.collection('detail').doc('browse');
-    const articleComment = thisArticle.collection('comment');
-    const user = firebase.firestore().collection('users');
-    const userLikedArticle = user.doc(this.uid).collection('article').doc('favorite');
-    let userName = '';
-    let userIcon = '';
+    this.getArticleContent();
+  },
+  methods: {
+    getArticleContent() {
+      const that = this;
+      const article = firebase.firestore().collection('articles');
+      const thisArticle = article.doc(this.id);
+      const articleDetail = thisArticle.collection('detail').doc('browse');
+      const articleComment = thisArticle.collection('comment');
+      const user = firebase.firestore().collection('users');
+      const userLikedArticle = user.doc(this.uid).collection('article').doc('favorite');
 
-    thisArticle.get().then((doc) => {
-      that.articleObject = {
-        id: doc.id,
-        title: doc.data().title,
-        date: doc.data().createdAt.toDate(),
-        category: doc.data().category,
-        canRead: doc.data().canRead,
-        like: doc.data().like,
-        mainImg: doc.data().mainImg,
-        provider: doc.data().provider,
-        range: doc.data().range,
-        views: doc.data().views,
-      };
-    });
-    articleDetail.get().then((doc) => {
-      that.articleDetailObject = {
-        mainArticle: doc.data().mainArticle,
-      };
-    });
+      const getArticleData = new Promise((resolve) => {
+        thisArticle.get().then((doc) => {
+          that.articleObject = {
+            id: doc.id,
+            title: doc.data().title,
+            date: doc.data().createdAt.toDate(),
+            category: doc.data().category,
+            canRead: doc.data().canRead,
+            like: doc.data().like,
+            mainImg: doc.data().mainImg,
+            provider: doc.data().provider,
+            range: doc.data().range,
+            views: doc.data().views,
+          };
+        });
+        resolve();
+      });
 
-    articleComment
-      .orderBy('createdAt')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          user
-            .doc(doc.data().commenter)
-            .get()
-            .then((doc) => {
-              userName = doc.data().name;
-              userIcon = doc.data().icon;
-            })
-            .then(() => {
+      const getArticleDetailData = new Promise((resolve) => {
+        articleDetail.get().then((doc) => {
+          that.articleDetailObject = {
+            mainArticle: doc.data().mainArticle,
+          };
+        });
+        resolve();
+      });
+
+      const getArticleComment = new Promise((resolve) => {
+        articleComment
+          .orderBy('createdAt')
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
               that.articleCommentArray = [
                 ...that.articleCommentArray,
                 {
+                  commentId: doc.id,
+                  commenter: doc.data().commenter,
                   content: doc.data().content,
                   createdAt: dayjs(doc.data().createdAt.toDate())
                     .locale('ja')
                     .format('YYYY/MM/DD HH:mm'),
-                  name: userName,
-                  icon: userIcon,
                 },
               ];
             });
-        });
+          });
+        resolve();
       });
 
-    article
-      .orderBy('createdAt', 'desc')
-      .where('category', '==', this.category)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          if (doc.id !== that.id) {
-            that.articleSameCategoryArray = [
-              ...that.articleSameCategoryArray,
-              {
-                id: doc.id,
-                title: doc.data().title,
-                date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD'),
-                category: doc.data().category,
-                canRead: doc.data().canRead,
-                mainImg: doc.data().mainImg,
-                provider: doc.data().provider,
-                range: doc.data().range,
-              },
-            ];
-          }
-        });
-      })
-      .catch((err) => {
-        alert(err);
+      const getSameCategoryArticleData = new Promise((resolve) => {
+        article
+          .orderBy('createdAt', 'desc')
+          .where('category', '==', this.category)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              if (doc.id !== that.id) {
+                that.articleSameCategoryArray = [
+                  ...that.articleSameCategoryArray,
+                  {
+                    id: doc.id,
+                    title: doc.data().title,
+                    date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD'),
+                    category: doc.data().category,
+                    canRead: doc.data().canRead,
+                    mainImg: doc.data().mainImg,
+                    provider: doc.data().provider,
+                    range: doc.data().range,
+                  },
+                ];
+              }
+            });
+          });
+        resolve();
       });
 
-    userLikedArticle.get().then((doc) => {
-      that.isLiked = doc.data().id.find((val) => {
-        return val === that.id;
+      const getArticleLikedData = new Promise((resolve) => {
+        userLikedArticle.get().then((doc) => {
+          that.isLiked = doc.data().id.find((val) => {
+            return val === that.id;
+          });
+        });
+        resolve();
       });
-    });
-  },
-  methods: {
+
+      // HACK
+      Promise.all([
+        getArticleData,
+        getArticleDetailData,
+        getArticleComment,
+        getSameCategoryArticleData,
+        getArticleLikedData,
+      ]).then(() => {
+        window.scroll(0, 0);
+      });
+    },
     scrollToElement(index) {
       this.$nextTick(() => {
         const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
@@ -308,10 +317,10 @@ export default {
         .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
       const comment = {
+        commentId: timestamp.toDate().toString(),
         content: that.content,
         createdAt: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
-        name: that.name,
-        icon: that.icon,
+        commenter: that.uid,
       };
       articleComment
         .add({
@@ -332,6 +341,15 @@ export default {
               alert(err);
             });
         });
+    },
+    toDetail(obj) {
+      const that = this;
+      async function assignment() {
+        await that.$store.commit('article/getData', obj);
+        that.articleCommentArray = [];
+        that.articleSameCategoryArray = [];
+      }
+      assignment().then(this.getArticleContent);
     },
   },
 };
