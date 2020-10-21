@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row align-content="center">
-      <v-col cols="12" md="8" sm="6">
+      <v-col cols="12">
         <div class="title">アカウント作成</div>
         <input-text
           :input-type="inputType"

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" md="8" sm="6">
+      <v-col cols="12">
         <div class="title">ログイン</div>
         <input-text
           :input-type="inputType"
@@ -37,6 +37,7 @@
   </v-container>
 </template>
 <script>
+import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignInButton from '~/components/Atoms/AppButton';
 import firebase from '~/plugins/firebase';
@@ -94,6 +95,12 @@ export default {
       }
     },
   },
+  created() {
+    if (Boolean(Cookies.get('email')) && Boolean(Cookies.get('password'))) {
+      this.email = Cookies.get('email');
+      this.password = Cookies.get('password');
+    }
+  },
   methods: {
     login() {
       firebase
@@ -108,6 +115,7 @@ export default {
               this.$store.dispatch('user/login', {
                 uid: user.uid,
                 email: user.email,
+                password: this.password,
                 token,
               });
               this.$store.dispatch('user/getUserInfo');
