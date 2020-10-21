@@ -62,6 +62,8 @@ export const mutations = {
 export const actions = {
   login({ commit }, payload) {
     Cookies.set('accessToken', payload.token, { expires: 365 });
+    Cookies.set('email', payload.email, { expires: 365 });
+    Cookies.set('password', payload.password, { expires: 365 });
     commit('getData', {
       uid: payload.uid,
       email: payload.email,

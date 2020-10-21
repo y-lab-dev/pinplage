@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="12" md="8" sm="6">
+      <v-col cols="12">
         <div>
           <div class="title">パスワード再設定</div>
           <input-text
