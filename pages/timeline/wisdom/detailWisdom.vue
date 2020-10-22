@@ -57,6 +57,7 @@
         :class="`index-${index}`"
         v-bind="answers[index]"
         :answer-display="true"
+        :self-wisdom="true"
       />
     </div>
     <v-footer app fixed color="white" class="text-area">
@@ -230,7 +231,15 @@ export default {
         newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
       });
     },
+    checkSelfWisdom(wisdomId) {
+      if (this.uid === wisdomId) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     postReply() {
+      this.$refs.answer.blur();
       const that = this;
       if (that.uid === '') {
         return;
@@ -260,7 +269,7 @@ export default {
 
           const newAnswers = [...that.answers, newAnswer];
           that.answers = newAnswers;
-          this.scrollToElement(newAnswers.length - 1);
+          that.scrollToElement(newAnswers.length - 1);
         });
     },
   },

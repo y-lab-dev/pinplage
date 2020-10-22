@@ -1,9 +1,11 @@
 <template>
-  <v-app>
+  <v-app class="overflow-hidden">
     <top-header />
-    <v-main class="main-layout-styles">
-      <nuxt />
-    </v-main>
+    <v-sheet refs="maincontents">
+      <v-main class="main-layout-styles">
+        <nuxt />
+      </v-main>
+    </v-sheet>
     <bottom-tab />
   </v-app>
 </template>

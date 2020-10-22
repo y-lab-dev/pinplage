@@ -52,10 +52,12 @@
                   </v-col>
 
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
-                    <wisdom-like :wisdom-id="wisdomId" />
-                    <span class="posted-info">
-                      {{ likeAmount }}
-                    </span>
+                    <div v-if="selfWisdom">
+                      <wisdom-like :wisdom-id="wisdomId" />
+                      <span class="posted-info">
+                        {{ likeAmount }}
+                      </span>
+                    </div>
                   </v-col>
 
                   <v-col
@@ -132,6 +134,11 @@ export default {
       default: 0,
     },
     answerDisplay: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
+    selfWisdom: {
       required: false,
       type: Boolean,
       default: false,

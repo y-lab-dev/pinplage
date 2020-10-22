@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="overflow-hidden">
     <v-app-bar app color="#fff" style="max-width: 100vw">
       <v-btn icon :ripple="false" @click="backPage()">
         <v-icon color="#78dabe">mdi-arrow-left-bold-outline</v-icon>

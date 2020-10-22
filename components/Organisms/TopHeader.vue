@@ -1,6 +1,12 @@
 <template>
   <div app>
-    <v-app-bar app color="#fff" elevation="1">
+    <v-app-bar
+      app
+      color="#fff"
+      :elevation="isTimeline ? 0 : 1"
+      :hide-on-scroll="isTimeline ? true : false"
+      :scroll-target="$refs.maincontents"
+    >
       <v-btn icon :ripple="false" :disabled="!isHide" @click="backPage()">
         <v-icon v-show="isHide" color="#78dabe">mdi-arrow-left-bold-outline</v-icon>
       </v-btn>
@@ -99,10 +105,16 @@ export default {
         return true;
       }
     },
+    isTimeline() {
+      const pageName = this.$route.path;
+      if (pageName === '/timeline') {
+        return true;
+      } else {
+        return false;
+      }
+    },
     headerName() {
       let pageName = this.$route.path;
-      console.log(this.$route.path.includes('mypage'));
-      console.log(pageName);
       if (pageName === '/timeline') {
         pageName = 'タイムライン';
         return pageName;

@@ -24,7 +24,6 @@ export default {
     const wisdoms = firebase.firestore().collection('wisdoms');
     wisdoms
       .orderBy('createdAt', 'desc')
-      .limit(10)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
