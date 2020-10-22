@@ -48,7 +48,7 @@
               rows="1"
               class="budget"
             ></v-textarea>
-            <h3 class="float">～&nbsp;</h3>
+            <h3 class="float">円～&nbsp;</h3>
             <v-textarea
               v-model="budgetHigh"
               color="#61d4b3"
@@ -57,6 +57,7 @@
               rows="1"
               class="budget"
             ></v-textarea>
+            <h3 class="float">円&nbsp;</h3>
             <div class="cb"></div>
             <v-textarea
               v-model="genre"
@@ -190,9 +191,7 @@ export default {
           comment: self.content,
           rating: self.rating,
           scene: self.scene,
-          budgetLow: self.budgetLow,
-          budgetHigh: self.budgetHigh,
-          hashtags: self.hashtags,
+          hashtags: tags,
           genre: self.genre,
           createdAt: timestamp,
           uid: self.uid,
@@ -205,11 +204,15 @@ export default {
             .collection('detail')
             .doc('browse')
             .set({
+              budgetLow: self.budgetLow,
+              budgetHigh: self.budgetHigh,
               imgUrl: self.subImg,
               updatedAt: timestamp,
             })
             .then(() => {
               // self.$router.push({ name: 'timeline' });
+              alert('コメントが投稿されました');
+              this.$router.go(-1);
             })
             .catch((err) => {
               alert(err);

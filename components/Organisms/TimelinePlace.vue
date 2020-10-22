@@ -52,7 +52,7 @@
                 </v-col>
                 <v-col class="pa-0" cols="6">
                   <v-list-item-subtitle v-if="item.genre" align="center"
-                    >ジャンル:{{ item.genre }}</v-list-item-subtitle
+                    >:{{ item.genre }}</v-list-item-subtitle
                   >
                 </v-col>
               </v-row>
