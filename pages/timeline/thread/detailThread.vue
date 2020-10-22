@@ -162,7 +162,6 @@ export default {
             that.commentNumber++;
           }
         });
-        console.log(that.replyArray);
       })
       .catch((err) => {
         alert(err);
