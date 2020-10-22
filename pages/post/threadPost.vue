@@ -1,10 +1,31 @@
 <template>
-  <v-container>
+  <v-container class="post-thread-back" style="height: 100%" fluid>
     <v-row justify="center">
-      <v-col cols="12" md="8" sm="6">
+      <v-card width="90vw" color="white">
+        <v-container class="py-0">
+          <v-row justify="center">
+            <v-col cols="5">
+              <v-img height="auto" :src="require('~/assets/post/threadPost.png')"></v-img>
+            </v-col>
+            <v-col cols="6" align-self="center">
+              <v-row>
+                <v-col cols="12" class="pa-0">
+                  <p class="catchphrase">静大生に好きに自由に</p>
+                </v-col>
+                <v-col cols="12" class="pa-0">
+                  <p class="catchphrase">情報発信してみよう！</p>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-row>
+    <v-row class="mt-2" align="start" justify="center">
+      <v-col cols="12">
         <v-card>
           <v-card-text>
-            <div class="title">スレッド</div>
+            <p class="required-phrase">※は必須項目です</p>
             <input-text
               :input-type="inputType"
               :input-placeholder="namePlaceholder"
@@ -16,13 +37,15 @@
               :textarea-value="content"
               @input="content = $event"
             ></input-textarea>
-            <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
-            <post-button
-              :button-method="post"
-              :button-type="buttonType"
-              :button-disabled="postValidation"
-              >投稿</post-button
-            >
+            <input-image :img-path="imgPath" :label="imgLabel" @imgSubmit="imgAdd"></input-image>
+            <div class="post-button">
+              <post-button
+                :button-method="post"
+                :button-type="buttonType"
+                :button-disabled="postValidation"
+                >投稿</post-button
+              >
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -51,9 +74,9 @@ export default {
       inputType: 'text',
       buttonType: 'submit',
       imgPath: 'threads/image',
-      namePlaceholder: '名前（匿名）',
-      contentPlaceholder: '内容',
-      imgPlaceholder: '画像',
+      namePlaceholder: '※名前',
+      contentPlaceholder: '※テキストを入力',
+      imgLabel: '画像',
       name: '',
       content: '',
       img: '',
@@ -122,7 +145,15 @@ export default {
 };
 </script>
 <style scoped>
-.title {
+.post-thread-back {
+  background-color: #e7e7e75e;
+}
+.required-phrase {
+  margin-bottom: 0;
+  margin-left: 4px;
+  font-size: 0.8rem;
+}
+.post-button {
   text-align: center;
 }
 </style>

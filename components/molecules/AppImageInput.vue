@@ -9,7 +9,7 @@
       color="#61d4b3"
       accept="image/png, image/jpeg, image/bmp"
       prepend-icon="mdi-camera"
-      label="※画像"
+      :label="label"
       :clearable="false"
       :rules="[() => !!img.name || requiredText]"
       required
@@ -29,6 +29,10 @@ function md5hex(str /*: string */) {
 export default {
   props: {
     imgPath: {
+      type: String,
+      required: true,
+    },
+    label: {
       type: String,
       required: true,
     },
