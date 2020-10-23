@@ -151,8 +151,8 @@ export default {
             that.replyArray = [
               ...that.replyArray,
               {
-                id: doc.id,
-                number: that.commentNumber,
+                commentId: doc.id,
+                commentNumber: that.commentNumber,
                 name: doc.data().name,
                 content: doc.data().content,
                 date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
@@ -184,7 +184,7 @@ export default {
         .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
       const comment = {
-        id: timestamp.toDate().toString(),
+        commentId: timestamp.toDate().toString(),
         name: that.name,
         commentNumber: that.commentNumber++,
         content: that.content,
