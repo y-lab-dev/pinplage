@@ -1,18 +1,29 @@
 <template>
   <div>
-    <v-card v-for="item in threadArray" :key="item.id" :elevation="2">
-      <viewer :images="item.img">
-        <template v-for="src in item.img">
-          <img :key="src" class="top-img" :src="src" />
+    <v-card tile :elevation="1" class="mb-2">
+      <viewer :images="threadObject.img">
+        <template v-for="src in threadObject.img">
+          <img v-show="src" :key="src" class="top-img" :src="src" />
         </template>
       </viewer>
-      <v-card-title>{{ item.content }} </v-card-title>
-      <v-card-subtitle>{{ item.name }}</v-card-subtitle>
+      <v-card-title
+        ><p>
+          名前：<span class="teal--text text--darken-1 font-weight-bold"
+            >{{ threadObject.name }}
+          </span>
+        </p></v-card-title
+      >
+      <v-card-subtitle>{{ threadObject.date }}</v-card-subtitle>
       <v-list-item>
-        <v-list-item-content class="date">
-          {{ item.date }}
-        </v-list-item-content>
+        <v-list-item-content>{{ threadObject.content }}</v-list-item-content>
       </v-list-item>
+    </v-card>
+    <div class="pb-6">
+      <v-list>
+        <v-list-item-title class="font-weight-bold ml-3"
+          ><v-icon class="mr-2">mdi-comment-plus</v-icon>コメント投稿</v-list-item-title
+        >
+      </v-list>
       <input-text
         :input-type="inputType"
         :input-placeholder="namePlaceholder"
@@ -24,23 +35,31 @@
         :textarea-value="content"
         @input="content = $event"
       ></input-textarea>
-      <post-button
-        :button-method="reply"
-        :button-type="buttonType"
-        :button-disabled="postValidation"
-        >返信</post-button
+      <div class="reply-button mt-2">
+        <post-button
+          :button-method="reply"
+          :button-type="buttonType"
+          :button-disabled="postValidation"
+          >投稿</post-button
+        >
+      </div>
+    </div>
+    <v-divider></v-divider>
+    <v-list>
+      <v-list-item-title class="font-weight-bold ml-3 mt-2"
+        ><v-icon class="mr-2">mdi-comment-multiple</v-icon>コメント</v-list-item-title
       >
-    </v-card>
+    </v-list>
     <template v-if="isReply">
-      <v-card v-for="item in replyArray" :key="item.id" :elevation="1">
-        <v-card-title class="text-subtitle-2"> {{ item.number }}:{{ item.content }} </v-card-title>
-        <v-card-subtitle>{{ item.name }}</v-card-subtitle>
-        <v-list-item>
-          <v-list-item-content class="date">
-            {{ item.date }}
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
+      <thread-comment
+        v-for="(item, index) in replyArray"
+        :key="item.commentId"
+        v-bind="replyArray[index]"
+        :class="`index-${index}`"
+      ></thread-comment>
+    </template>
+    <template v-if="!isReply"
+      ><p class="ml-3">このスレッドにまだコメントはありません。</p>
     </template>
   </div>
 </template>
@@ -51,6 +70,7 @@ import firebase from '~/plugins/firebase';
 import InputText from '~/components/Atoms/AppInput';
 import InputTextarea from '~/components/Atoms/AppTextarea';
 import PostButton from '~/components/Atoms/AppButton';
+import ThreadComment from '~/components/Organisms/ThreadComment';
 
 const threads = firebase.firestore().collection('threads');
 
@@ -60,21 +80,23 @@ export default {
     InputText,
     InputTextarea,
     PostButton,
+    ThreadComment,
   },
   data() {
     return {
       inputType: 'text',
       buttonType: 'submit',
-      namePlaceholder: '名前（匿名）',
-      contentPlaceholder: '内容',
+      namePlaceholder: '名前',
+      contentPlaceholder: 'テキストを入力',
       isReply: false,
-      threadArray: [],
+      threadObject: [],
       replyArray: [],
       name: '',
       content: '',
       nameCompleted: false,
       contentCompleted: false,
       postValidation: true,
+      commentNumber: 1,
     };
   },
   computed: {
@@ -106,23 +128,18 @@ export default {
       .doc(this.id)
       .get()
       .then((doc) => {
-        that.threadArray = [
-          ...that.threadArray,
-          {
-            id: doc.id,
-            name: doc.data().name,
-            content: doc.data().content,
-            img: [doc.data().img],
-            date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
-          },
-        ];
-        console.log('that.threadArray: ', that.threadArray);
+        that.threadObject = {
+          id: doc.id,
+          name: doc.data().name,
+          content: doc.data().content,
+          img: [doc.data().img],
+          date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
+        };
       })
       .catch((err) => {
         alert(err);
       });
 
-    let i = 1;
     threads
       .doc(this.id)
       .collection('reply')
@@ -134,15 +151,15 @@ export default {
             that.replyArray = [
               ...that.replyArray,
               {
-                id: doc.id,
-                number: i,
+                commentId: doc.id,
+                commentNumber: that.commentNumber,
                 name: doc.data().name,
                 content: doc.data().content,
                 date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
               },
             ];
             that.isReply = true;
-            i++;
+            that.commentNumber++;
           }
         });
       })
@@ -151,15 +168,33 @@ export default {
       });
   },
   methods: {
+    scrollToElement(index) {
+      this.$nextTick(() => {
+        const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
+        newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
+      });
+    },
     reply() {
       const that = this;
+      const user = firebase
+        .firestore()
+        .collection('users')
+        .doc(this.uid)
+        .collection('thread')
+        .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
+      const comment = {
+        commentId: timestamp.toDate().toString(),
+        name: that.name,
+        commentNumber: that.commentNumber++,
+        content: that.content,
+        date: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
+      };
 
       threads
         .doc(this.id)
         .collection('reply')
-        .doc()
-        .set({
+        .add({
           name: that.name,
           content: that.content,
           createdAt: timestamp,
@@ -167,8 +202,19 @@ export default {
           uid: that.uid,
           email: that.email,
         })
-        .then(() => {
-          that.$router.push('/timeline');
+        .then((doc) => {
+          that.name = '';
+          that.content = '';
+          that.isReply = true;
+          user
+            .update({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) })
+            .then(() => {
+              that.replyArray = [...that.replyArray, comment];
+              that.scrollToElement(that.replyArray.length - 1);
+            })
+            .catch((err) => {
+              alert(err);
+            });
         })
         .catch((err) => {
           alert(err);
@@ -186,6 +232,14 @@ export default {
 </script>
 <style scoped>
 .top-img {
-  width: 100vw;
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+}
+.reply-button {
+  text-align: center;
+}
+.content-textarea {
+  border-radius: 25px;
 }
 </style>

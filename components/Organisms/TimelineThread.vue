@@ -1,11 +1,21 @@
 <template>
   <div>
-    <v-card v-for="item in threadArray" :key="item.id" :elevation="2" @click="toThreadDetail(item)">
-      <v-img v-show="item.img" :src="item.img"></v-img>
-      <v-card-title>{{ item.content }}</v-card-title>
-      <v-card-subtitle>{{ item.name }}</v-card-subtitle>
+    <v-card
+      v-for="item in threadArray"
+      :key="item.id"
+      tile
+      :elevation="2"
+      @click="toThreadDetail(item)"
+    >
+      <v-img v-show="item.img" :src="item.img" height="200px"></v-img>
+      <v-card-title
+        ><p>
+          名前：<span class="teal--text text--darken-1 font-weight-bold">{{ item.name }} </span>
+        </p></v-card-title
+      >
+      <v-card-subtitle>{{ item.date }}</v-card-subtitle>
       <v-list-item>
-        <v-list-item-content class="date">{{ item.date }}</v-list-item-content>
+        <v-list-item-content>{{ item.content }}</v-list-item-content>
       </v-list-item>
     </v-card>
   </div>

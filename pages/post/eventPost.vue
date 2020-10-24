@@ -3,7 +3,7 @@
     <p class="required-phrase">※は必須項目です</p>
     <v-row justify="center">
       <v-col cols="12">
-        <input-image :img-path="imgPath" @imgSubmit="imgAdd"></input-image>
+        <input-image :img-path="imgPath" :label="imgLabel" @imgSubmit="imgAdd"></input-image>
         <v-text-field
           v-model="title"
           color="#61d4b3"
@@ -129,7 +129,6 @@
             :button-method="post"
             :button-type="buttonType"
             :button-disabled="
-              img == '' ||
               title == '' ||
               type == '' ||
               placeId == '' ||
@@ -165,6 +164,7 @@ export default {
       buttonType: 'submit',
       imgPath: 'events/image/',
       placeholder: '※場所',
+      imgLabel: '画像',
       requiredText: 'この項目は必須です',
       title: '',
       type: '新歓',
