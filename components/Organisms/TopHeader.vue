@@ -28,11 +28,9 @@
           @click.stop="pushPage('mypage')"
         >
           <v-list-item-avatar>
-            <v-img
-              src="https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/user%2Ficon%2FdefaultIcon%2Ftest%2FS__46522415_200x200.jpg?alt=media&token=c541794a-a096-451d-b021-29662c353550"
-            ></v-img>
+            <v-img :src="icon"></v-img>
           </v-list-item-avatar>
-          <span>user Name</span>
+          <span>{{ name }}</span>
         </v-list-item>
         <v-divider class="my-3"></v-divider>
         <v-list-item
@@ -73,6 +71,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -95,6 +94,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      name: 'user/name',
+      icon: 'user/icon',
+    }),
     isHide() {
       const pageName = this.$route.path;
       const slashCount = (pageName.match(/\//g) || []).length;

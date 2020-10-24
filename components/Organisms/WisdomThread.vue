@@ -52,7 +52,7 @@
                   </v-col>
 
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
-                    <div v-if="selfWisdom">
+                    <div v-if="!selfWisdom">
                       <wisdom-like :wisdom-id="wisdomId" />
                       <span class="posted-info">
                         {{ likeAmount }}
@@ -76,7 +76,7 @@
                 </v-row>
               </v-col>
             </v-row>
-            <v-row v-if="answerDisplay" justify="center" class="pb-2 chip-row">
+            <v-row v-if="answerDisplay && !selfWisdom" justify="center" class="pb-2 chip-row">
               <v-col class="py-2" style="text-align: center" cols="12 chip-row">
                 <v-chip class="ma-auto" color="#61D4B3" small text-color="#fff">
                   ベストアンサーに選ぶ
@@ -91,6 +91,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import CreatedTimeDiff from '~/components/molecules/TimeDiff';
 import WisdomLike from '~/components/Organisms/WisdomLike';
@@ -138,11 +139,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    selfWisdom: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
@@ -157,6 +153,17 @@ export default {
         return '解決済み';
       } else {
         return '回答受付中';
+      }
+    },
+    ...mapGetters({
+      uid: 'user/uid',
+      likedWisdoms: 'user/likedPost',
+    }),
+    selfWisdom() {
+      if (this.uid === this.poster) {
+        return true;
+      } else {
+        return false;
       }
     },
   },

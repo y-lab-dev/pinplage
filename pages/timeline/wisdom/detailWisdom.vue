@@ -57,7 +57,6 @@
         :class="`index-${index}`"
         v-bind="answers[index]"
         :answer-display="true"
-        :self-wisdom="true"
       />
     </div>
     <v-footer app fixed color="white" class="text-area">
