@@ -33,13 +33,11 @@
         <v-list class="mb-4">
           <v-list-item>
             <v-list-item-avatar>
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/user%2Ficon%2FdefaultIcon%2FS__46522416.jpg?alt=media&token=f1abc803-995b-49e7-863b-265110ad7972"
-              />
+              <img :src="authorIcon" @click="toAuthorArticle" />
             </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>ちょまど</v-list-item-title>
-              <v-list-item-subtitle>情報学部</v-list-item-subtitle>
+            <v-list-item-content @click="toAuthorArticle">
+              <v-list-item-title>{{ authorName }}</v-list-item-title>
+              <v-list-item-subtitle class="to-author">著者関連記事へ</v-list-item-subtitle>
             </v-list-item-content>
             <v-row align="center" justify="end">
               <v-btn v-show="isLiked" icon @click="notLike">
@@ -91,7 +89,7 @@
           </div>
         </v-list>
         <v-divider></v-divider>
-        <v-list>
+        <v-list v-if="isSameCategory">
           <v-list-item-title class="text-subtitle-2"
             ><v-icon size="18" color="#61d4b3" class="mr-1 pb-1">mdi-book-open-page-variant</v-icon
             >こんな記事も</v-list-item-title
@@ -142,9 +140,12 @@ export default {
       articleDetailObject: {},
       articleCommentArray: [],
       articleSameCategoryArray: [],
+      authorName: '',
+      authorIcon: '',
       commentPlaceholder: 'コメントしてみよう',
       content: '',
       isLiked: false,
+      isSameCategory: false,
     };
   },
   computed: {
@@ -156,6 +157,13 @@ export default {
       id: 'article/id',
       category: 'article/category',
     }),
+  },
+  watch: {
+    articleSameCategoryArray(val) {
+      if (val.length !== 0) {
+        this.isSameCategory = true;
+      }
+    },
   },
   created() {
     this.getArticleContent();
@@ -184,6 +192,15 @@ export default {
             range: doc.data().range,
             views: doc.data().views,
           };
+          that.author = doc.data().author;
+
+          user
+            .doc(that.author)
+            .get()
+            .then((doc) => {
+              that.authorName = doc.data().name;
+              that.authorIcon = doc.data().icon;
+            });
         });
         resolve();
       });
@@ -351,10 +368,20 @@ export default {
       }
       assignment().then(this.getArticleContent);
     },
+    toAuthorArticle() {
+      const that = this;
+      async function assignment() {
+        await that.$store.commit('article/getAuthorData', that.author);
+      }
+      assignment().then(this.$router.push('authorArticle'));
+    },
   },
 };
 </script>
 <style scoped>
+.to-author {
+  text-decoration: underline;
+}
 .post-button {
   text-align: center;
 }
