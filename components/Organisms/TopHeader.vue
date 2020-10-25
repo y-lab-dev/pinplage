@@ -78,7 +78,7 @@ export default {
       group: null,
       drawer: null,
       subPages: [
-        { name: '部活・サークル', icon: 'mdi-run', link: 'clubs' },
+        { name: '部活・サークル', icon: 'mdi-run', link: 'club' },
         { name: '設定', icon: 'mdi-account-settings-outline', link: 'settings' },
         { name: '利用規約', icon: 'mdi-file-outline', link: 'apprule' },
         {
