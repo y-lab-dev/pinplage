@@ -15,7 +15,7 @@
     <v-btn nuxt :to="tabMypage.link" class="pa-0" max-width="15vw" :ripple="false">
       <span class="tab-name">{{ tabMypage.name }}</span>
       <v-avatar size="24px">
-        <img :src="tabMypage.src" />
+        <img v-show="isLoaded" :src="icon" @load="isLoaded = true" />
       </v-avatar>
     </v-btn>
   </v-bottom-navigation>
@@ -34,7 +34,8 @@ export default {
         { name: '時間割', link: '/timetable', icon: 'mdi-av-timer' },
         // { name: 'マイページ', link: '/mypage', icon: 'mdi-account-outline' },
       ],
-      tabMypage: { name: 'マイページ', link: '/mypage', src: null },
+      tabMypage: { name: 'マイページ', link: '/mypage' },
+      isLoaded: false,
     };
   },
   computed: {
@@ -44,10 +45,6 @@ export default {
       name: 'user/name',
       icon: 'user/icon',
     }),
-  },
-  created() {
-    this.tabMypage.src = this.icon;
-    console.log(this.tabMypage.src);
   },
 };
 </script>
