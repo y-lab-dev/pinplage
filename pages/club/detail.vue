@@ -1,4 +1,4 @@
-<template>
+<template v-cloak>
   <div>
     <v-carousel cycle height="200" hide-delimiters show-arrows-on-hover class="club-carousel">
       <p class="club-name">
@@ -137,5 +137,8 @@ export default {
   position: relative;
   background: -webkit-linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat !important;
   background: linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat !important;
+}
+[v-cloal] {
+  display: none;
 }
 </style>
