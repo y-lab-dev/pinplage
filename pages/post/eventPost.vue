@@ -197,6 +197,8 @@ export default {
       const that = this;
       const event = firebase.firestore().collection('events');
       const timestamp = firebase.firestore.Timestamp.now();
+      const db = firebase.firestore();
+      const user = db.collection('users');
 
       event
         .add({
@@ -225,8 +227,20 @@ export default {
             content: that.content,
           });
         })
-        .then(() => {
-          that.$router.push({ name: 'timeline' });
+        .then((doc) => {
+          user
+            .doc(this.uid)
+            .collection('event')
+            .doc('post')
+            .update({
+              id: firebase.firestore.FieldValue.arrayUnion(doc.id),
+            })
+            .then(() => {
+              that.$router.push({ name: 'timeline' });
+            })
+            .catch((err) => {
+              alert(err);
+            });
         })
         .catch((err) => {
           alert(err);

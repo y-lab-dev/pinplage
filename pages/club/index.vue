@@ -59,6 +59,7 @@ export default {
     firebase
       .firestore()
       .collection('circles')
+      .orderBy('name')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {

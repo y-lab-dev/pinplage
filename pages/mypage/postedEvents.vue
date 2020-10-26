@@ -20,7 +20,7 @@ export default {
     const userUid = this.uid;
     const userInfo = firebase.firestore().collection('users').doc(userUid);
     userInfo
-      .collection('place')
+      .collection('event')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {

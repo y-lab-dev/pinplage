@@ -112,10 +112,11 @@ export default {
     post() {
       const that = this;
       const timestamp = firebase.firestore.Timestamp.now();
+      const db = firebase.firestore();
+      const user = db.collection('users');
 
       threads
-        .doc()
-        .set({
+        .add({
           name: that.name,
           content: that.content,
           img: that.img,
@@ -124,8 +125,20 @@ export default {
           uid: that.uid,
           email: that.email,
         })
-        .then(() => {
-          that.$router.push({ name: 'timeline' });
+        .then((doc) => {
+          user
+            .doc(this.uid)
+            .collection('thread')
+            .doc('post')
+            .update({
+              id: firebase.firestore.FieldValue.arrayUnion(doc.id),
+            })
+            .then(() => {
+              that.$router.push({ name: 'timeline' });
+            })
+            .catch((err) => {
+              alert(err);
+            });
         })
         .catch((err) => {
           alert(err);

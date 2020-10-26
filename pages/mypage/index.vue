@@ -63,11 +63,6 @@
         </v-tab-item>
         <v-tab-item>
           <v-card>
-            <user-favorites />
-          </v-card>
-        </v-tab-item>
-        <v-tab-item>
-          <v-card>
             <user-point-log></user-point-log>
           </v-card>
         </v-tab-item>
@@ -82,7 +77,6 @@ import firebase from '~/plugins/firebase';
 import granim from '~/components/Atoms/Granim';
 import MyAchievement from '~/components/organisms/MyPageAchievement';
 import UserPostedContents from '~/components/Organisms/MyPagePostedContents';
-import UserFavorites from '~/components/Organisms/MyPageFavoriteItems';
 import UserPointLog from '~/components/Organisms/MyPagePointLog';
 export default {
   layout: 'protected',
@@ -90,7 +84,6 @@ export default {
     granim,
     MyAchievement,
     UserPostedContents,
-    UserFavorites,
     UserPointLog,
   },
   data() {
@@ -100,14 +93,16 @@ export default {
         height: '30vh',
         width: '100vw',
         gradients: [
+          // for spring
           // ['#85FFBD', '#FFFB7D'],
           // ['#FFFB7D', '#85FFBD'],
+          // for Autumn
           ['#F71810', '#FCCE22'],
           ['#F4DD2E', '#F3EC0E'],
         ],
       },
       userTab: null,
-      items: ['投稿一覧', 'pp獲得履歴'],
+      items: ['投稿履歴', 'pp獲得履歴'],
       text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     };
