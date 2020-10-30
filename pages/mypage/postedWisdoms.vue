@@ -36,16 +36,15 @@ export default {
     }),
   },
   created() {
+    this.$store.dispatch('user/getUserWisdom');
     const that = this;
     const wisdoms = firebase.firestore().collection('wisdoms');
     wisdoms
       .orderBy('createdAt', 'desc')
+      .where('poster', '==', this.uid)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          if (doc.data().poster !== that.uid) {
-            return;
-          }
           const wisdom = doc.data();
           console.log(wisdom);
           const postedWisdom = {

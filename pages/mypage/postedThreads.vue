@@ -7,17 +7,19 @@
     </v-tabs>
 
     <v-tabs-items v-model="postedTab">
-      <v-tab-item>{{ post }}</v-tab-item>
-      <v-tab-item>{{ reply }}</v-tab-item>
+      <v-tab-item><thread-card v-for="item in post" :key="item.id" v-bind="item" /></v-tab-item>
+      <v-tab-item></v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import ThreadCard from '~/components/molecules/ThreadCard';
 import firebase from '~/plugins/firebase';
 export default {
   layout: 'onlyBack',
+  components: { ThreadCard },
   data() {
     return {
       postedTab: '',
@@ -31,26 +33,55 @@ export default {
     }),
   },
   created() {
-    this.getUserThread('post').then((value) => {
-      this.post = value;
-    });
-    this.getUserThread('reply').then((value) => {
-      this.reply = value;
-    });
+    this.getUserThread();
+    this.getUserThreadReply();
   },
   methods: {
-    async getUserThread(docId) {
-      const userThread = await firebase
-        .firestore()
-        .collection('users')
-        .doc(this.uid)
-        .collection('thread')
-        .doc(docId)
+    async getUserThread() {
+      const that = this;
+      const threads = firebase.firestore().collection('threads');
+      await threads
+        .orderBy('createdAt', 'desc')
+        .where('uid', '==', this.uid)
         .get()
-        .then((doc) => {
-          return doc.data().id;
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            that.post = [
+              ...that.post,
+              {
+                id: doc.id,
+                name: doc.data().name,
+                content: doc.data().content,
+                img: doc.data().img,
+                date: doc.data().createdAt.toDate(),
+              },
+            ];
+          });
         });
-      return userThread;
+    },
+    async getUserThreadReply() {
+      // const that = this;
+      const threads = firebase.firestore();
+      await threads
+        .collectionGroup('reply')
+        // .orderBy('createdAt', 'desc')
+        .where('uid', '==', this.uid)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // that.post = [
+            //   ...that.reply,
+            //   {
+            //     id: doc.id,
+            //     name: doc.data().name,
+            //     content: doc.data().content,
+            //     img: doc.data().img,
+            //     date: doc.data().createdAt.toDate(),
+            //   },
+            // ];
+            console.log(doc.data());
+          });
+        });
     },
   },
 };
