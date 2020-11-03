@@ -16,7 +16,7 @@
 export default {
   data() {
     return {
-      cardInfo: [{ title: 'ポイント', amount: '1231pp' }],
+      cardInfo: [{ title: 'プラージュ', amount: '250pp' }],
     };
   },
   computed: {

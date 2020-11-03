@@ -75,7 +75,7 @@
 import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import granim from '~/components/Atoms/Granim';
-import MyAchievement from '~/components/organisms/MyPageAchievement';
+import MyAchievement from '~/components/Organisms/MyPageAchievement';
 import UserPostedContents from '~/components/Organisms/MyPagePostedContents';
 import UserPointLog from '~/components/Organisms/MyPagePointLog';
 export default {
