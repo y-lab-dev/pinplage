@@ -230,17 +230,25 @@ export default {
         newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
       });
     },
+    checkSelfWisdom(wisdomId) {
+      if (this.uid === wisdomId) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     postReply() {
+      this.$refs.answer.blur();
       const that = this;
       if (that.uid === '') {
         return;
       }
       const timestamp = firebase.firestore.Timestamp.now();
       const wisdoms = firebase.firestore().collection('wisdoms').doc(this.$route.query);
+      const users = firebase.firestore().collection('users').doc(this.uid);
       wisdoms
         .collection('reply')
-        .doc()
-        .set({
+        .add({
           content: that.answerMessage,
           bestAnswer: false,
           createdAt: timestamp,
@@ -248,7 +256,7 @@ export default {
           like: 0,
           replyer: that.uid,
         })
-        .then(() => {
+        .then((doc) => {
           const newAnswer = {
             wisdomId: timestamp.toDate().toString(),
             poster: that.uid,
@@ -257,10 +265,13 @@ export default {
             createdDay: timestamp.toDate(),
           };
           that.answerMessage = '';
-
           const newAnswers = [...that.answers, newAnswer];
           that.answers = newAnswers;
-          this.scrollToElement(newAnswers.length - 1);
+          that.scrollToElement(newAnswers.length - 1);
+          users
+            .collection('wisdom')
+            .doc('reply')
+            .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true });
         });
     },
   },

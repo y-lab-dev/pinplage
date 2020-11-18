@@ -155,15 +155,25 @@ export default {
       const that = this;
       const timestamp = firebase.firestore.Timestamp.now();
       const wisdoms = firebase.firestore().collection('wisdoms');
-      wisdoms.doc().set({
-        category: that.category,
-        content: that.newQuestion,
-        createdAt: timestamp,
-        email: that.email,
-        like: 0,
-        poster: that.uid,
-        resolved: false,
-      });
+      const users = firebase.firestore().collection('users');
+      wisdoms
+        .add({
+          category: that.category,
+          content: that.newQuestion,
+          createdAt: timestamp,
+          email: that.email,
+          like: 0,
+          read: false,
+          poster: that.uid,
+          resolved: false,
+        })
+        .then((doc) => {
+          users
+            .doc(that.uid)
+            .collection('wisdom')
+            .doc('reply')
+            .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true });
+        });
       that.newQuestion = null;
       that.$router.go(-1);
     },

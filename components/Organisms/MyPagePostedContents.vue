@@ -38,10 +38,10 @@ export default {
           link: '/mypage/postedThreads',
         },
         {
-          name: '鈴鈴(仮)',
+          name: '学生記事',
           icon: 'mdi-book-outline',
           iconColor: '#7883FF',
-          link: '/mypage/postedRinrin',
+          link: '/mypage/postedArticle',
         },
         {
           name: '知恵袋',

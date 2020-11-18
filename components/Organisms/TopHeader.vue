@@ -1,6 +1,12 @@
 <template>
   <div app>
-    <v-app-bar app color="#fff" elevation="1">
+    <v-app-bar
+      app
+      color="#fff"
+      :elevation="isTimeline ? 0 : 1"
+      :hide-on-scroll="isTimeline ? true : false"
+      :scroll-target="$refs.maincontents"
+    >
       <v-btn icon :ripple="false" :disabled="!isHide" @click="backPage()">
         <v-icon v-show="isHide" color="#78dabe">mdi-arrow-left-bold-outline</v-icon>
       </v-btn>
@@ -22,11 +28,9 @@
           @click.stop="pushPage('mypage')"
         >
           <v-list-item-avatar>
-            <v-img
-              src="https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/user%2Ficon%2FdefaultIcon%2Ftest%2FS__46522415_200x200.jpg?alt=media&token=c541794a-a096-451d-b021-29662c353550"
-            ></v-img>
+            <v-img :src="icon"></v-img>
           </v-list-item-avatar>
-          <span>user Name</span>
+          <span>{{ name }}</span>
         </v-list-item>
         <v-divider class="my-3"></v-divider>
         <v-list-item
@@ -67,13 +71,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
       group: null,
       drawer: null,
       subPages: [
-        { name: '部活・サークル', icon: 'mdi-run', link: 'clubs' },
+        { name: '部活・サークル', icon: 'mdi-run', link: 'club' },
         { name: '設定', icon: 'mdi-account-settings-outline', link: 'settings' },
         { name: '利用規約', icon: 'mdi-file-outline', link: 'apprule' },
         {
@@ -89,6 +94,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      name: 'user/name',
+      icon: 'user/icon',
+    }),
     isHide() {
       const pageName = this.$route.path;
       const slashCount = (pageName.match(/\//g) || []).length;
@@ -99,10 +108,16 @@ export default {
         return true;
       }
     },
+    isTimeline() {
+      const pageName = this.$route.path;
+      if (pageName === '/timeline') {
+        return true;
+      } else {
+        return false;
+      }
+    },
     headerName() {
       let pageName = this.$route.path;
-      console.log(this.$route.path.includes('mypage'));
-      console.log(pageName);
       if (pageName === '/timeline') {
         pageName = 'タイムライン';
         return pageName;

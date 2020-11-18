@@ -9,7 +9,7 @@
       color="#61d4b3"
       accept="image/png, image/jpeg, image/bmp"
       prepend-icon="mdi-camera"
-      :label="lavel"
+      :label="label"
       :clearable="false"
       :rules="[() => !!img.name || requiredText]"
       required
@@ -32,7 +32,7 @@ export default {
       type: String,
       required: true,
     },
-    lavel: {
+    label: {
       type: String,
       required: true,
       default: '※画像',
