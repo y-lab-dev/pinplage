@@ -1,0 +1,11 @@
+runtime: nodejs10
+
+handlers:
+  - url: /_nuxt
+    static_dir: .nuxt/dist/client
+  - url: /.*
+    script: auto
+
+env_variables:
+  NUXT_HOST: '0.0.0.0'
+  NUXT_PORT: '8080'
