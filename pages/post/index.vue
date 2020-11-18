@@ -8,10 +8,8 @@
               <v-img
                 class="white--text"
                 height="24vh"
-                :src="require('~/assets/post/eventPost.png')"
-              >
-                <v-card-title class="text-subtitle-1 pt-3">イベント</v-card-title>
-              </v-img>
+                :src="require('~/assets/post/eventPost.jpg')"
+              ></v-img>
             </v-card>
           </nuxt-link>
         </v-col>
@@ -21,45 +19,48 @@
               <v-img
                 class="white--text"
                 height="24vh"
-                :src="require('~/assets/post/wisdomPost.png')"
-              >
-                <v-card-title class="text-subtitle-1 pt-3">知恵袋</v-card-title>
-              </v-img>
+                :src="require('~/assets/post/wisdomPost.jpg')"
+              ></v-img>
             </v-card>
           </nuxt-link>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="6">
           <nuxt-link to="post/threadPost" class="card-title">
             <v-card>
               <v-img
                 class="white--text"
                 height="24vh"
-                :src="require('~/assets/post/threadPost.png')"
-              >
-                <v-card-title class="text-subtitle-1 pt-2">スレッド</v-card-title>
-              </v-img>
+                :src="require('~/assets/post/threadPost.jpg')"
+              ></v-img>
+            </v-card>
+          </nuxt-link>
+        </v-col>
+        <v-col cols="6">
+          <nuxt-link to="post/circlePost" class="card-title">
+            <v-card>
+              <v-img
+                class="white--text"
+                height="24vh"
+                :src="require('~/assets/post/circlePost.jpg')"
+              ></v-img>
             </v-card>
           </nuxt-link>
         </v-col>
         <v-col cols="6">
           <nuxt-link to="post/jobPost" class="card-title">
             <v-card>
-              <v-img class="white--text" height="24vh" :src="require('~/assets/post/jobPost.png')">
-                <v-card-title class="text-subtitle-1 pt-3">アルバイト</v-card-title>
-              </v-img>
+              <v-img class="white--text" height="24vh" :src="require('~/assets/post/jobPost.jpg')"></v-img>
             </v-card>
           </nuxt-link>
         </v-col>
         <v-col cols="6">
           <nuxt-link to="post/reviewPost" class="card-title">
-            <v-card>
+            <v-card @click="$store.commit('place/getId', '')">
               <v-img
                 class="white--text"
                 height="24vh"
-                :src="require('~/assets/post/placePost.png')"
-              >
-                <v-card-title class="text-subtitle-1 pt-3">周辺施設</v-card-title>
-              </v-img>
+                :src="require('~/assets/post/reviewPost.jpg')"
+              ></v-img>
             </v-card>
           </nuxt-link>
         </v-col>
