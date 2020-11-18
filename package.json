@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "nuxt build --dest src-cordova/www",
+    "build": "nuxt build && npm run build:copy:ssr",
+    "build:copy:ssr": "rimraf functions/ssr && mkdirp functions/ssr && cp -R .nuxt/dist functions/ssr/dist",
     "lint": "npm run lint:js && npm run lint:style",
     "cordova-build-android": "cross-env CORDOVA_PLATFORM=android vue-cli-service cordova-build-android",
     "cordova-build-browser": "cross-env CORDOVA_PLATFORM=browser vue-cli-service cordova-build-browser",
@@ -31,6 +32,8 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/pwa": "^3.2.2",
+    "@nuxtjs/vuetify": "^1.11.2",
     "algoliasearch": "^4.5.1",
     "cookieparser": "^0.1.0",
     "dataurl-to-blob": "0.0.1",
@@ -53,7 +56,6 @@
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
-    "@nuxtjs/vuetify": "^1.11.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
