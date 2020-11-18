@@ -13,11 +13,12 @@
                 <v-row justify="center" align="center">
                   <v-col cols="4">※おすすめ度</v-col>
                   <v-col cols="8">
-                    <rating
-                      :star-size="30"
-                      @rating-selected="rating = $event"
-                      @input="star"
-                    ></rating>
+                    <star-rating
+                      v-model="rating"
+                      :show-rating="showRating"
+                      :star-size="starSize"
+                      @rating-selected="setRating"
+                    ></star-rating>
                   </v-col>
                 </v-row>
                 <v-row justify="center" align-content="center">
@@ -64,12 +65,15 @@
                     </dl>
                   </v-col>
                 </v-row>
-                <input-image
-                  :img-path="imgPath"
-                  :lavel="imgLavel"
-                  :required-text="imgText"
-                  @imgSubmit="imgAdd"
-                ></input-image>
+                <v-file-input
+                  v-show="!img"
+                  color="#61d4b3"
+                  accept="image/png, image/jpeg, image/bmp"
+                  prepend-icon="mdi-camera"
+                  label="※画像"
+                  :clearable="false"
+                  @change="imgAdd"
+                ></v-file-input>
                 <v-textarea
                   v-model="content"
                   color="#61d4b3"
@@ -131,26 +135,66 @@
                             :type="buttonType"
                             :disabled="rating == 0 || placeName == ''"
                             v-on="on"
-                            >投稿</v-btn
+                            >編集完了</v-btn
                           >
                         </div>
                       </template>
                       <v-card>
-                        <v-card-title>投稿しますか？</v-card-title>
+                        <v-card-title>編集内容を保存しますか？</v-card-title>
                         <v-card-actions>
                           <v-spacer></v-spacer>
                           <v-btn color="pink darken-1" text @click="postDialog = false"
                             >キャンセル</v-btn
                           >
                           <v-btn class="white--text button-color" tile @click="post()"
-                            >投稿する</v-btn
+                            >保存する</v-btn
                           >
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
                     <v-dialog v-model="finishedDialog" persistent max-width="290">
                       <v-card>
-                        <v-card-title>投稿しました。</v-card-title>
+                        <v-card-title>{{ comment }}</v-card-title>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="pink darken-1" text @click="finish()">閉じる</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-col>
+                </v-row>
+                <v-row align="center">
+                  <v-col cols="12" align="center">
+                    <v-dialog v-model="deleteDialog" persistent max-width="290">
+                      <template v-slot:activator="{ on, attrs }">
+                        <div style="padding: 10px 9px">
+                          <v-btn
+                            rounded
+                            width="80vw"
+                            color="error"
+                            outlined
+                            v-bind="attrs"
+                            v-on="on"
+                            >削除する</v-btn
+                          >
+                        </div>
+                      </template>
+                      <v-card>
+                        <v-card-title>このクチコミを削除しますか？</v-card-title>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="pink darken-1" text @click="deleteDialog = false"
+                            >キャンセル</v-btn
+                          >
+                          <v-btn class="white--text button-color" tile @click="notRead()"
+                            >削除する</v-btn
+                          >
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                    <v-dialog v-model="deletedDialog" persistent max-width="290">
+                      <v-card>
+                        <v-card-title>削除しました。</v-card-title>
                         <v-card-actions>
                           <v-spacer></v-spacer>
                           <v-btn color="pink darken-1" text @click="finish()">閉じる</v-btn>
@@ -171,8 +215,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { CoolSelect } from 'vue-cool-select';
-import Rating from '~/components/molecules/PostRating';
-import InputImage from '~/components/Molecules/AppImageInput';
+import StarRating from 'vue-star-rating';
 import InputPlace from '~/components/Molecules/AppInputPlace';
 import firebase from '~/plugins/firebase';
 
@@ -182,8 +225,7 @@ export default {
   layout: 'onlyBack',
   components: {
     CoolSelect,
-    Rating,
-    InputImage,
+    StarRating,
     InputPlace,
   },
   data() {
@@ -198,6 +240,8 @@ export default {
       subImg: [],
       content: '',
       rating: 0,
+      showRating: false,
+      starSize: 30,
       budget: null,
       scene: [],
       hashtags: [],
@@ -212,8 +256,12 @@ export default {
       imgText: '画像が選択されていません',
       selected: null,
       remove: 0,
+      reviewId: '',
       postDialog: false,
       finishedDialog: false,
+      deleteDialog: false,
+      deletedDialog: false,
+      comment: '',
     };
   },
   computed: {
@@ -242,16 +290,37 @@ export default {
       }
     },
   },
-  created() {
-    if (this.id) {
-      this.placeId = this.id;
-      this.placeName = this.pname;
-      this.placeholder = this.pname;
-      this.$store.commit('place/getName', '');
-    }
-  },
   mounted() {
     const self = this;
+    const reviews = firebase.firestore().collection('reviews');
+    reviews
+      .doc(self.$store.state.review.reviewId)
+      .get()
+      .then((doc) => {
+        self.reviewId = doc.id;
+        self.placeName = doc.data().name;
+        self.placeholder = doc.data().name;
+        self.rating = doc.data().rating;
+        self.content = doc.data().comment;
+        self.placeId = doc.data().placeId;
+        self.genre = doc.data().genre;
+        self.img = doc.data().mainImgUrl;
+        self.scene = doc.data().scene;
+      })
+      .catch((err) => {
+        alert('エラー' + err);
+      });
+    reviews
+      .doc(self.$store.state.review.reviewId)
+      .collection('detail')
+      .doc('browse')
+      .get()
+      .then((doc) => {
+        self.budget = doc.data().budget;
+      })
+      .catch((err) => {
+        alert('エラー' + err);
+      });
     reviewTags
       .doc('hashtags')
       .get()
@@ -279,8 +348,8 @@ export default {
       this.placeId = place.place_id;
       this.placeName = place.name;
     },
-    star(star) {
-      this.rating = star;
+    setRating(rating) {
+      this.rating = rating;
     },
     imgAdd(url) {
       this.img = url;
@@ -303,13 +372,10 @@ export default {
       let tags = [];
       if (this.content !== '') {
         str = this.content.replace('＃', '#');
-        console.log(str);
         tags = str.match(/[#＃][Ａ-Ｚａ-ｚA-Za-z一-鿆0-9０-９ぁ-ヶｦ-ﾟー._-]+/gm);
         if (tags) {
           const tags2 = tags.filter((n) => n !== '#');
-          console.log(tags2);
           const arr = this.hashtags.concat(tags2);
-          console.log(arr);
           let newHashtags = this.hashtags;
           newHashtags = [...new Set(arr)];
           if (this.hashtags !== newHashtags) {
@@ -327,10 +393,13 @@ export default {
         });
       }
 
-      const review = firebase.firestore().collection('reviews');
+      const review = firebase
+        .firestore()
+        .collection('reviews')
+        .doc(this.$store.state.review.reviewId);
       const timestamp = firebase.firestore.Timestamp.now();
       review
-        .add({
+        .update({
           placeId: self.placeId,
           name: self.placeName,
           mainImgUrl: self.img,
@@ -339,17 +408,15 @@ export default {
           scene: self.scene,
           hashtags: tags,
           genre: self.genre,
-          createdAt: timestamp,
           uid: self.uid,
           email: self.email,
           isRead: true,
         })
         .then((doc) => {
           review
-            .doc(doc.id)
             .collection('detail')
             .doc('browse')
-            .set({
+            .update({
               budget: self.budget,
               imgUrl: self.subImg,
               updatedAt: timestamp,
@@ -357,6 +424,7 @@ export default {
             .then(() => {
               self.postDialog = false;
               self.finishedDialog = true;
+              self.comment = '編集を保存しました。';
             })
             .catch((err) => {
               alert(err);
@@ -368,7 +436,26 @@ export default {
     },
     finish() {
       this.finishedDialog = false;
-      this.$router.push({ name: 'timeline' });
+      this.$router.go(-1);
+    },
+    notRead() {
+      const self = this;
+      const review = firebase
+        .firestore()
+        .collection('reviews')
+        .doc(this.$store.state.review.reviewId);
+      review
+        .update({
+          isRead: false,
+        })
+        .then((doc) => {
+          self.comment = '削除しました。';
+          self.deleteDialog = false;
+          self.deletedDialog = true;
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
 };

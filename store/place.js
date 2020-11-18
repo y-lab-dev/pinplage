@@ -1,15 +1,24 @@
 export const state = () => ({
-  placeId: '',
+  place: {
+    placeId: '',
+    pname: '',
+  },
 });
 
 export const getters = {
   id(state) {
-    return state.placeId;
+    return state.place.placeId;
+  },
+  pname(state) {
+    return state.place.pname;
   },
 };
 
 export const mutations = {
   getId(state, payload) {
-    state.placeId = payload;
+    state.place.placeId = payload;
+  },
+  getName(state, payload) {
+    state.place.pname = payload;
   },
 };

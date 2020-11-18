@@ -3,8 +3,8 @@
     <star-rating
       v-model="ratingResult"
       :max-rating="5"
-      :show-rating="false"
-      :read-only="readOnly"
+      :show-rating="showRating"
+      :read-only="true"
       :star-size="starSize"
       :increment="increment"
       @rating-selected="setRating"
@@ -19,7 +19,7 @@ export default {
     StarRating,
   },
   props: {
-    readOnly: {
+    showRating: {
       type: Boolean,
       required: true,
       default: false,

@@ -35,6 +35,12 @@ export default {
     label: {
       type: String,
       required: true,
+      default: '※画像',
+    },
+    requiredText: {
+      type: String,
+      required: true,
+      default: 'この項目は必須です',
     },
   },
   data() {
@@ -43,7 +49,6 @@ export default {
         name: '',
         url: '',
       },
-      requiredText: 'この項目は必須です',
     };
   },
   methods: {
