@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <v-container class="py-0">
-      <v-row>
-        <v-col class="pa-0" cols="12">
+  <div style="height: 100%">
+    <v-container style="height: 100%" fluid>
+      <v-row justify="center" align-content="center" style="height: 100%" fluid>
+        <v-col>
           <v-card>
-            <v-row align="center">
-              <v-col class="pa-0" cols="8">
-                <v-card-title>
-                  <img class="icon" :src="placeDetail.icon" />
-                  {{ place.name }}
-                </v-card-title>
-              </v-col>
-              <v-col class="pa-0" cols="4">
-                <rating
-                  :read-only="true"
-                  :star-size="20"
-                  :rating-result="place.rating"
-                  :increment="0.1"
-                  class="rating"
-                ></rating>
-              </v-col>
-            </v-row>
+            <v-card-title>
+              <img class="icon" :src="placeDetail.icon" />
+              {{ place.name }}
+            </v-card-title>
+            <div class="px-4">
+              <rating
+                :show-rating="true"
+                :star-size="20"
+                :rating-result="place.rating"
+                :increment="0.1"
+              ></rating>
+            </div>
+            <template v-for="(item, index) in place.genres">
+              <v-chip v-show="item" :key="index" color="orange" small outlined class="ml-3 mt-3">{{
+                item
+              }}</v-chip>
+            </template>
             <v-card-subtitle>{{ place.vincinty }}</v-card-subtitle>
 
             <div class="photo">
@@ -38,7 +38,7 @@
               <v-divider inset></v-divider>
               <v-list-item>
                 <v-list-item-icon>
-                  <v-icon class="calendar" color="indigo">mdi-calendar</v-icon>
+                  <v-icon class="calendar" color="orange">mdi-calendar</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-subtitle>{{ placeDetail.openingHours[0] }}</v-list-item-subtitle>
@@ -53,26 +53,27 @@
               <v-divider inset></v-divider>
               <v-list-item>
                 <v-list-item-icon>
-                  <v-icon color="indigo">mdi-web</v-icon>
+                  <v-icon color="orange">mdi-web</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-btn
-                    :href="placeDetail.website"
                     text
                     color="link"
                     min-height="20"
                     class="x-small post-link align-center py-1 px-2"
                   >
-                    <v-list-item-subtitle class="text-left post-link">
-                      {{ placeDetail.website }}
-                    </v-list-item-subtitle>
+                    <v-list-item-subtitle
+                      class="text-left post-link"
+                      @click="moveLink(placeDetail.website)"
+                      >{{ placeDetail.website }}</v-list-item-subtitle
+                    >
                   </v-btn>
                 </v-list-item-content>
               </v-list-item>
               <v-divider inset></v-divider>
               <v-list-item>
                 <v-list-item-icon>
-                  <v-icon color="indigo">mdi-phone</v-icon>
+                  <v-icon color="orange">mdi-phone</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-subtitle>{{ placeDetail.phoneNumber }}</v-list-item-subtitle>
@@ -84,47 +85,79 @@
             <v-divider inset></v-divider>
             <v-list>
               <v-list-item-title>
-                <v-icon color="indigo">mdi-chat-outline</v-icon>クチコミ
+                <v-icon color="orange">mdi-chat-outline</v-icon>静大生のクチコミ
               </v-list-item-title>
               <v-divider inset></v-divider>
-              <template v-for="(item, i) in reviews">
-                <v-list-item :key="i" @click="toReviewDetail(item)">
-                  <v-list-item-content>
-                    <rating
-                      :read-only="true"
-                      :star-size="12"
-                      :rating-result="item.rating"
-                      :increment="0.1"
-                      class="rating"
-                    ></rating>
-                    <v-list-item-content>{{ item.content }}</v-list-item-content>
-                    <v-img max-width="100%" max-height="240px" :src="item.img"></v-img>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-divider v-if="i < reviews.length" :key="i"></v-divider>
-              </template>
+              <place-reviews
+                v-for="(item, i) in reviews"
+                :key="`reviews${i}`"
+                v-bind="reviews[i]"
+              />
             </v-list>
             <v-list>
               <v-list-item-title>
-                <v-icon color="indigo">mdi-chat-outline</v-icon>Googleレビュー
+                <v-icon color="orange">mdi-chat-outline</v-icon>Googleレビューのクチコミ
               </v-list-item-title>
               <v-divider inset></v-divider>
-              <template v-for="(item, j) in placeDetail.googleReviews">
-                <v-list-item :key="j">
+              <template v-for="(item2, j) in placeDetail.googleReviews">
+                <v-list-item :key="`second-${j}`">
                   <v-list-item-content>
                     <rating
-                      :read-only="true"
+                      :show-rating="false"
                       :star-size="12"
-                      :rating-result="item.rate"
+                      :rating-result="item2.rate"
                       :increment="0.1"
-                      class="rating"
+                      class="pl-4"
                     ></rating>
-                    <v-list-item-content>{{ item.content }}</v-list-item-content>
+                    <div class="chatting">
+                      <div class="say">{{ item2.content }}</div>
+                    </div>
                   </v-list-item-content>
                 </v-list-item>
                 <v-divider v-if="j < placeDetail.googleReviews.length - 1" :key="j"></v-divider>
               </template>
             </v-list>
+            <v-footer app fixed class="ma-0 py-3 buttom-button-bar">
+              <v-row no-gutters>
+                <v-col cols="7" class="text-center">
+                  <v-btn
+                    v-show="!isKeep"
+                    width="52vw"
+                    rounded
+                    outlined
+                    color="yellow darken-3"
+                    dark
+                    class="bottom-button-nokeep"
+                    @click="keep"
+                  >
+                    <v-icon left>mdi-heart</v-icon>行きたい
+                  </v-btn>
+                  <v-btn
+                    v-show="isKeep"
+                    width="52vw"
+                    rounded
+                    color="yellow darken-3"
+                    dark
+                    class="bottom-button-keep"
+                    @click="notKeep"
+                  >
+                    <v-icon left>mdi-heart</v-icon>行きたい
+                  </v-btn>
+                </v-col>
+                <v-col cols="5" class="text-center">
+                  <v-btn
+                    width="33vw"
+                    rounded
+                    color="orange"
+                    class="bottom-button"
+                    dark
+                    @click="postReview(place)"
+                  >
+                    <v-icon left>mdi-pencil</v-icon>行った
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-footer>
           </v-card>
         </v-col>
       </v-row>
@@ -133,9 +166,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import loadGoogleMapsApi from 'load-google-maps-api';
 import firebase from '~/plugins/firebase';
 import Rating from '~/components/molecules/Rating';
+import PlaceReviews from '~/components/Organisms/PlaceReviews';
 const db = firebase.firestore().collection('places');
 const reviewdb = firebase.firestore().collection('reviews');
 
@@ -148,9 +183,10 @@ async function initMap() {
 }
 
 export default {
-  layout: 'protected',
+  layout: 'onlyBack',
   components: {
     Rating,
+    PlaceReviews,
   },
   data() {
     return {
@@ -164,12 +200,32 @@ export default {
       defaultZoom: 15.0,
       reviews: [],
       urls: [],
+      isKeep: false,
     };
+  },
+  computed: {
+    ...mapGetters({
+      uid: 'user/uid',
+      email: 'user/email',
+      name: 'user/name',
+      icon: 'user/icon',
+      id: 'place/id',
+    }),
+  },
+  created() {
+    const self = this;
+    const user = firebase.firestore().collection('users');
+    const userPlaceFavorite = user.doc(this.uid).collection('place').doc('favorite');
+    userPlaceFavorite.get().then((doc) => {
+      self.isKeep = doc.data().id.find((val) => {
+        return val === self.id;
+      });
+    });
   },
   async mounted() {
     const self = this;
     await db
-      .doc(self.$store.state.place.placeId)
+      .doc(this.id)
       .get()
       .then((doc) => {
         this.place = {
@@ -178,7 +234,7 @@ export default {
           vincinty: doc.data().vincinty,
           types: doc.data().types,
           rating: doc.data().rating,
-          genre: doc.data().genre,
+          genres: doc.data().genres,
           tags: doc.data()._tags,
           mainImgUrl: doc.data().mainImgUrl,
         };
@@ -188,7 +244,7 @@ export default {
         console.log(err);
       });
     await db
-      .doc(self.$store.state.place.placeId)
+      .doc(self.id)
       .collection('detail')
       .doc('browse')
       .get()
@@ -227,7 +283,6 @@ export default {
       map: this.map,
     });
     marker.setMap(this.map);
-
     for (let i = 0; i < this.placeDetail.reviews.length; i++) {
       reviewdb
         .doc(this.placeDetail.reviews[i])
@@ -238,8 +293,8 @@ export default {
             content: doc.data().comment,
             rating: doc.data().rating,
             img: doc.data().mainImgUrl,
+            poster: doc.data().uid,
           });
-          console.log(doc.data().mainImgUrl);
         })
         .catch((err) => {
           alert(err);
@@ -248,12 +303,52 @@ export default {
     }
   },
   methods: {
-    toReviewDetail(obj) {
+    moveLink(url) {
+      window.open(url, '_blank');
+    },
+    keep() {
+      const that = this;
+      const user = firebase
+        .firestore()
+        .collection('users')
+        .doc(this.uid)
+        .collection('place')
+        .doc('favorite');
+
+      user
+        .set({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
+        .then(() => {
+          that.isKeep = true;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    notKeep() {
+      const that = this;
+      const user = firebase
+        .firestore()
+        .collection('users')
+        .doc(this.uid)
+        .collection('place')
+        .doc('favorite');
+
+      user
+        .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
+        .then(() => {
+          that.isKeep = false;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    postReview(obj) {
       const self = this;
       async function assignment() {
-        await self.$store.commit('review/getId', obj.id);
+        await self.$store.commit('place/getId', obj.id);
+        await self.$store.commit('place/getName', obj.name);
       }
-      assignment().then(this.$router.push({ name: 'timeline-review-detailReview' }));
+      assignment().then(this.$router.push({ name: 'post-reviewPost' }));
     },
   },
 };
@@ -285,5 +380,43 @@ export default {
   white-space: normal;
   max-width: calc(100% - 20px);
   height: inherit !important;
+}
+.chatting {
+  width: 100%;
+  text-align: left;
+}
+.say {
+  display: inline-block;
+  position: relative;
+  margin: 0 0 0 20px;
+  padding: 10px;
+  border-radius: 12px;
+  background: aliceblue;
+}
+.say::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 3px;
+  left: -19px;
+  border: 8px solid transparent;
+  border-right: 18px solid aliceblue;
+  -webkit-transform: rotate(35deg);
+  transform: rotate(35deg);
+}
+.bottom-button-nokeep {
+  z-index: 1;
+  background-color: #fff;
+}
+.bottom-button-keep {
+  z-index: 1;
+}
+.buttom-button-bar {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+</style>
+<style>
+.vue-star-rating-rating-text {
+  margin: 1px !important;
 }
 </style>
