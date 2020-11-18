@@ -4,7 +4,7 @@
       <v-tab href="#tab-1" class="pa-0">スレッド</v-tab>
       <v-tab href="#tab-2" class="pa-0">知恵袋</v-tab>
       <v-tab href="#tab-3" class="pa-0">アルバイト</v-tab>
-      <v-tab href="#tab-4" class="pa-0">周辺施設</v-tab>
+      <v-tab href="#tab-4" class="pa-0">クチコミ</v-tab>
       <v-tab href="#tab-5" class="pa-0">イベント</v-tab>
       <v-tab href="#tab-6" class="pa-0">学生記事</v-tab>
     </v-tabs>
@@ -13,7 +13,9 @@
       <v-tab-item value="tab-1">
         <thread></thread>
       </v-tab-item>
-      <v-tab-item value="tab-2"><wisdom /></v-tab-item>
+      <v-tab-item value="tab-2">
+        <wisdom />
+      </v-tab-item>
       <v-tab-item value="tab-3">
         <job></job>
       </v-tab-item>

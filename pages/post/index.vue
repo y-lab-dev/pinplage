@@ -49,7 +49,11 @@
         <v-col cols="6">
           <nuxt-link to="post/jobPost" class="card-title">
             <v-card>
-              <v-img class="white--text" height="24vh" :src="require('~/assets/post/jobPost.jpg')"></v-img>
+              <v-img
+                class="white--text"
+                height="24vh"
+                :src="require('~/assets/post/jobPost.jpg')"
+              ></v-img>
             </v-card>
           </nuxt-link>
         </v-col>
