@@ -77,7 +77,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
   ],
   /*
    ** Axios module configuration
@@ -111,10 +111,15 @@ export default {
    */
   build: {
     transpile: ['vue-instantsearch', 'instantsearch.js/es'],
+    extend(config, ctx) {
+      config.node = {
+        fs: 'empty',
+      };
+    },
   },
   manifest: {
-    name: "Pin Plage",
-    title: "Pin Plage",
+    name: 'Pin Plage',
+    title: 'Pin Plage',
     lang: 'ja',
-  }
+  },
 };

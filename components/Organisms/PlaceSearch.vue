@@ -80,6 +80,7 @@
 import algoliasearch from 'algoliasearch';
 import Rating from '~/components/molecules/Rating';
 import firebase from '~/plugins/firebase';
+require('dotenv').config();
 
 export default {
   layout: 'protected',
@@ -88,7 +89,7 @@ export default {
   },
   data() {
     return {
-      searchClient: algoliasearch('ZI3A3BYLFT', 'dd660cd8b43da0cc68310ac6a365438b'),
+      searchClient: algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_SEARCH_APIKEY),
       hashtags: [],
       selectHashtag: '',
       genres: [],

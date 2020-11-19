@@ -16,10 +16,11 @@
 
 <script>
 import loadGoogleMapsApi from 'load-google-maps-api';
+require('dotenv').config();
 
 async function initMap() {
   const gmap = await loadGoogleMapsApi({
-    key: 'AIzaSyCkPkussjC7YNEMi8dY9jwWy-XXZK9-SmA',
+    key: process.env.GOOGLEMAPS_APIKEY,
     libraries: ['places'],
     language: 'ja',
   });

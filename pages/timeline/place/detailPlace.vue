@@ -173,10 +173,11 @@ import Rating from '~/components/molecules/Rating';
 import PlaceReviews from '~/components/Organisms/PlaceReviews';
 const db = firebase.firestore().collection('places');
 const reviewdb = firebase.firestore().collection('reviews');
+require('dotenv').config();
 
 async function initMap() {
   const gmap = await loadGoogleMapsApi({
-    key: 'AIzaSyCkPkussjC7YNEMi8dY9jwWy-XXZK9-SmA',
+    key: process.env.GOOGLEMAPS_APIKEY,
     libraries: ['places'],
   });
   return gmap;
