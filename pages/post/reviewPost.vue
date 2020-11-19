@@ -66,7 +66,7 @@
                 </v-row>
                 <input-image
                   :img-path="imgPath"
-                  :lavel="imgLavel"
+                  :label="imgLabel"
                   :required-text="imgText"
                   @imgSubmit="imgAdd"
                 ></input-image>
@@ -208,7 +208,7 @@ export default {
       postValidation: false,
       fiels: ['place_id', 'name', 'type'],
       imgPath: 'reviews/image/',
-      imgLavel: '画像',
+      imgLabel: '画像',
       imgText: '画像が選択されていません',
       selected: null,
       remove: 0,

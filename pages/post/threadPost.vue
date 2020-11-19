@@ -5,7 +5,7 @@
         <v-container class="py-0">
           <v-row justify="center">
             <v-col cols="5">
-              <v-img height="auto" :src="require('~/assets/post/threadPost.png')"></v-img>
+              <v-img height="auto" :src="require('~/assets/post/threadPost.jpg')"></v-img>
             </v-col>
             <v-col cols="6" align-self="center">
               <v-row>

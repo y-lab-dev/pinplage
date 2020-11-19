@@ -49,7 +49,8 @@
                     :outlined="category === selectCategory ? true : false"
                     :color="category === selectCategory ? '' : '#61d4b3'"
                     @click="categoryOverlay = true"
-                  >{{ category }}</v-btn>
+                    >{{ category }}</v-btn
+                  >
                 </v-col>
               </v-row>
               <v-row dense>
