@@ -361,6 +361,14 @@ export default {
             .catch((err) => {
               alert(err);
             });
+          const user = firebase.firestore().collection('users');
+          user
+            .doc(self.uid)
+            .collection('review')
+            .doc('post')
+            .update({
+              id: firebase.firestore.FieldValue.arrayUnion(doc.id),
+            });
         })
         .catch((err) => {
           alert(err);
