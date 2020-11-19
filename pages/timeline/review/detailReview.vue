@@ -265,6 +265,13 @@ export default {
           ];
         });
       });
+    const user = firebase.firestore().collection('users');
+    const userPlaceFavorite = user.doc(this.uid).collection('place').doc('favorite');
+    userPlaceFavorite.get().then((doc) => {
+      self.isKeep = doc.data().id.find((val) => {
+        return val === self.placeId;
+      });
+    });
   },
   methods: {
     toPlaceDetail(obj) {
@@ -302,7 +309,7 @@ export default {
         .doc('favorite');
 
       user
-        .set({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
+        .set({ id: firebase.firestore.FieldValue.arrayUnion(that.placeId) })
         .then(() => {
           that.isKeep = true;
         })
@@ -320,7 +327,7 @@ export default {
         .doc('favorite');
 
       user
-        .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
+        .update({ id: firebase.firestore.FieldValue.arrayRemove(that.placeId) })
         .then(() => {
           that.isKeep = false;
         })
