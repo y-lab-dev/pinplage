@@ -103,7 +103,7 @@ export default {
       },
       userTab: null,
       userPoint: 0,
-      items: ['投稿履歴', 'pp獲得履歴'],
+      items: ['ユーザー履歴'],
       text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     };
