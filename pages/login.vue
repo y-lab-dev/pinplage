@@ -123,9 +123,8 @@ export default {
             }
           });
         })
-        .catch((error) => {
+        .catch(() => {
           alert('メールアドレスまたはパスワードが違います');
-          console.log(error);
         });
     },
     check() {
@@ -141,7 +140,7 @@ export default {
 <style scoped>
 .title {
   text-align: center;
-  margin-top: 65px;
+  margin-top: 85px;
 }
 .validation-email {
   text-align: center;

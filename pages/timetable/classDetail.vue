@@ -184,12 +184,12 @@
       <v-btn x-small outlined color="error" dark class="mt-3" @click="classDelete"
         >この授業を削除する</v-btn
       >
-      <Modal
-        :modal-title="'授業情報削除'"
-        :modal-text="'この授業を削除して宜しいですか？'"
-        :modal-button="'削除'"
-        :modal-cancel="'削除しない'"
-        :modal-toggle="dialog"
+      <Dialog
+        :dialog-title="'授業情報削除'"
+        :dialog-text="'この授業を削除して宜しいですか？'"
+        :dialog-button="'削除'"
+        :dialog-cancel="'削除しない'"
+        :dialog-toggle="dialog"
         @changeValue="deleteDecide('Y')"
         @changeSelect="dialog = !dialog"
       />
@@ -211,7 +211,7 @@
 <script>
 import classDatas from './classData.json';
 import ButtonComponent from '~/components/Atoms/AppButton';
-import Modal from '~/components/Molecules/AppModal';
+import Dialog from '~/components/Molecules/AppDialog';
 
 export default {
   filters: {
@@ -224,7 +224,7 @@ export default {
     },
   },
   components: {
-    Modal,
+    Dialog,
     ButtonComponent,
   },
   props: {
