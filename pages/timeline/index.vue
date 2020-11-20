@@ -11,7 +11,7 @@
       <v-tab class="pa-0">スレッド</v-tab>
       <v-tab class="pa-0">知恵袋</v-tab>
       <v-tab class="pa-0">アルバイト</v-tab>
-      <v-tab class="pa-0">周辺施設</v-tab>
+      <v-tab class="pa-0">クチコミ</v-tab>
       <v-tab class="pa-0">イベント</v-tab>
       <v-tab class="pa-0">学生記事</v-tab>
     </v-tabs>

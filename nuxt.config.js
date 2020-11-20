@@ -16,8 +16,8 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: 'パンプラージュ',
+    title: 'パンプラージュ' || '',
     meta: [
       {
         charset: 'utf-8',
@@ -51,6 +51,7 @@ export default {
   plugins: [
     '@/plugins/firebase.js',
     '@/plugins/localstrage.js',
+    '@/plugins/vue-directive-tooltip.js',
     '@/plugins/vue-instantsearch.js',
     '@/plugins/viewer.js',
     '@/plugins/vue-cool-select.js',
@@ -77,6 +78,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
+    '@nuxtjs/pwa',
   ],
   /*
    ** Axios module configuration
@@ -110,5 +112,15 @@ export default {
    */
   build: {
     transpile: ['vue-instantsearch', 'instantsearch.js/es'],
+    extend(config, ctx) {
+      config.node = {
+        fs: 'empty',
+      };
+    },
+  },
+  manifest: {
+    name: 'Pin Plage',
+    title: 'Pin Plage',
+    lang: 'ja',
   },
 };

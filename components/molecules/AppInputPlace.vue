@@ -9,6 +9,7 @@
       rows="1"
       prepend-icon="mdi-map-marker-radius"
       :rules="[() => !!placeName || requiredText]"
+      :disabled="readonly"
       required
     ></v-text-field>
   </div>
@@ -16,10 +17,11 @@
 
 <script>
 import loadGoogleMapsApi from 'load-google-maps-api';
+require('dotenv').config();
 
 async function initMap() {
   const gmap = await loadGoogleMapsApi({
-    key: 'AIzaSyCkPkussjC7YNEMi8dY9jwWy-XXZK9-SmA',
+    key: process.env.GOOGLEMAPS_APIKEY,
     libraries: ['places'],
     language: 'ja',
   });
@@ -31,6 +33,10 @@ export default {
       type: String,
       required: true,
       default: '',
+    },
+    readonly: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -56,8 +62,6 @@ export default {
   },
   async mounted() {
     this.gmap = await initMap();
-    console.log(this.$refs);
-
     this.map = new this.gmap.Map(this.$refs.map, {
       center: new this.gmap.LatLng(this.coord.lat, this.coord.lng),
       zoom: this.defaultZoom,
@@ -101,3 +105,8 @@ export default {
   },
 };
 </script>
+<style>
+.pac-target-input::placeholder {
+  color: rgba(255, 255, 255, 0) !important;
+}
+</style>

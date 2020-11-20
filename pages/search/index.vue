@@ -1,8 +1,12 @@
 <template>
-  <div>search</div>
+  <div>
+    <search-place />
+  </div>
 </template>
 <script>
+import searchPlace from '~/components/organisms/SearchPlace';
 export default {
   layout: 'protected',
+  components: searchPlace,
 };
 </script>

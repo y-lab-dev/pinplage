@@ -34,11 +34,11 @@
             <v-container>
               <v-row class="px-4">
                 <v-col cols="2">
-                  <v-avatar><img :src="userIcon" /></v-avatar>
+                  <v-avatar>
+                    <img :src="userIcon" />
+                  </v-avatar>
                 </v-col>
-                <v-col cols="9" align-self="center">
-                  {{ userName }}
-                </v-col>
+                <v-col cols="9" align-self="center">{{ userName }}</v-col>
               </v-row>
               <v-row dense class="ma-2">
                 <v-col cols="12">
@@ -70,9 +70,7 @@
               <v-row justify="end">
                 <v-col v-if="overLimit" cols="9" align-self="center">
                   <p class="mb-0 warning-message">
-                    <span class="over-message">
-                      {{ questionCounter - 300 }}
-                    </span>
+                    <span class="over-message">{{ questionCounter - 300 }}</span>
                     文字オーバーしています
                   </p>
                 </v-col>
@@ -85,9 +83,9 @@
                     :disabled="overLimit"
                     @click="postQuestion()"
                   >
-                    <v-icon v-if="!overLimit && canSend" color="#fff"> mdi-send </v-icon>
+                    <v-icon v-if="!overLimit && canSend" color="#fff">mdi-send</v-icon>
                   </v-btn>
-                  <v-icon v-if="overLimit" x-large color="#f00"> mdi-do-not-disturb </v-icon>
+                  <v-icon v-if="overLimit" x-large color="#f00">mdi-do-not-disturb</v-icon>
                 </v-col>
               </v-row>
             </v-container>

@@ -196,10 +196,11 @@ import { mapGetters } from 'vuex';
 import loadGoogleMapsApi from 'load-google-maps-api';
 import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
+require('dotenv').config();
 
 async function initMap() {
   const gmap = await loadGoogleMapsApi({
-    key: 'AIzaSyCkPkussjC7YNEMi8dY9jwWy-XXZK9-SmA',
+    key: process.env.GOOGLEMAPS_APIKEY,
     libraries: ['places'],
     language: 'ja',
   });
