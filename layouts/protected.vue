@@ -1,5 +1,6 @@
 <template>
-  <v-app class="overflow-hidden">
+  <!-- class="overflow-hidden" -->
+  <v-app>
     <top-header />
     <v-sheet refs="maincontents">
       <v-main class="main-layout-styles">

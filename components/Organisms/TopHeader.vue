@@ -1,12 +1,7 @@
 <template>
   <div app>
-    <v-app-bar
-      app
-      color="#fff"
-      :elevation="isTimeline ? 0 : 1"
-      :hide-on-scroll="isTimeline ? true : false"
-      :scroll-target="$refs.maincontents"
-    >
+    <v-app-bar app color="#fff" :elevation="isTimeline ? 0 : 1" :scroll-target="$refs.maincontents">
+      <!-- :hide-on-scroll="isTimeline ? true : false" -->
       <v-btn icon :ripple="false" :disabled="!isHide" @click="backPage()">
         <v-icon v-show="isHide" color="#78dabe">mdi-arrow-left-bold-outline</v-icon>
       </v-btn>
