@@ -16,8 +16,8 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: 'パンプラージュ',
+    title: 'パンプラージュ' || '',
     meta: [
       {
         charset: 'utf-8',
@@ -77,7 +77,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
   ],
   /*
    ** Axios module configuration
@@ -113,8 +113,8 @@ export default {
     transpile: ['vue-instantsearch', 'instantsearch.js/es'],
   },
   manifest: {
-    name: "Pin Plage",
-    title: "Pin Plage",
+    name: 'Pin Plage',
+    title: 'Pin Plage',
     lang: 'ja',
-  }
+  },
 };
