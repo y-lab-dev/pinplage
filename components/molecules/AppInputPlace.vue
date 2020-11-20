@@ -105,3 +105,8 @@ export default {
   },
 };
 </script>
+<style>
+.pac-target-input::placeholder {
+  color: rgba(255, 255, 255, 0) !important;
+}
+</style>
