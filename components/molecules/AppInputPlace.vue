@@ -9,6 +9,7 @@
       rows="1"
       prepend-icon="mdi-map-marker-radius"
       :rules="[() => !!placeName || requiredText]"
+      :disabled="readonly"
       required
     ></v-text-field>
   </div>
@@ -32,6 +33,10 @@ export default {
       type: String,
       required: true,
       default: '',
+    },
+    readonly: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -57,8 +62,6 @@ export default {
   },
   async mounted() {
     this.gmap = await initMap();
-    console.log(this.$refs);
-
     this.map = new this.gmap.Map(this.$refs.map, {
       center: new this.gmap.LatLng(this.coord.lat, this.coord.lng),
       zoom: this.defaultZoom,
