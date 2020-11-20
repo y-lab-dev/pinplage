@@ -17,11 +17,11 @@
         </v-btn>
       </v-card-actions>
 
-      <v-container style="padding: 5px 2px 0 2px" fluid>
+      <v-container style="padding: 5px 2px 0 2px">
         <v-window v-model="onboarding">
           <v-window-item v-for="n in length" :key="`card-${n}`">
             <v-card>
-              <table v-resize="onResize" :style="style">
+              <table>
                 <tr class="weeks">
                   <th>{{ term }}</th>
                   <th>月</th>
@@ -131,16 +131,7 @@ export default {
     isDetail: false,
     timeTable: {},
     color: '',
-    windowSize: {
-      x: 0,
-      y: 0,
-    },
   }),
-  computed: {
-    style() {
-      return 'height: ' + this.windowSize.y * 0.1 + 'px;';
-    },
-  },
   watch: {
     onboarding() {
       this.onboarding === 0 ? (this.term = '前期') : (this.term = '後期');
@@ -180,10 +171,6 @@ export default {
       this.$store.state.zikanwariStore = this.timeTable;
     }
   },
-  mounted() {
-    this.onResize();
-    console.log(this.windowSize);
-  },
   methods: {
     next() {
       this.onboarding = this.onboarding + 1 === this.length ? 0 : this.onboarding + 1;
@@ -199,9 +186,6 @@ export default {
     },
     close() {
       this.isDetail = false;
-    },
-    onResize() {
-      this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
     change(value) {
       this.timeTable[this.term][this.targetTime][this.targetDay].code = value.classDatas.code;
