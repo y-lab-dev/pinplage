@@ -51,6 +51,7 @@ export default {
   plugins: [
     '@/plugins/firebase.js',
     '@/plugins/localstrage.js',
+    '@/plugins/vue-directive-tooltip.js',
     '@/plugins/vue-instantsearch.js',
     '@/plugins/viewer.js',
     '@/plugins/vue-cool-select.js',
