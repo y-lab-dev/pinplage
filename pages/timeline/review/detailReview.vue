@@ -286,6 +286,12 @@ export default {
       const timestamp = firebase.firestore.Timestamp.now();
       const reviews = firebase.firestore().collection('reviews');
       const reviewComments = reviews.doc(this.id).collection('comment');
+      const user = firebase
+        .firestore()
+        .collection('users')
+        .doc(this.uid)
+        .collection('review')
+        .doc('comment');
 
       reviewComments
         .add({
@@ -293,11 +299,32 @@ export default {
           email: self.email,
           createdAt: timestamp,
           content: self.content,
+          read: true,
         })
-        .then(() => {
-          alert('コメントが投稿されました');
-          this.$router.go(-1);
+        .then((doc) => {
+          const comment = {
+            commentId: doc.id,
+            commenter: self.uid,
+            content: self.content,
+            createdAt: dayjs(timestamp.toDate()).locale('ja').format('YY/MM/DD HH:mm'),
+          };
+          self.content = '';
+          user
+            .update({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) })
+            .then(() => {
+              self.reviewCommentArray = [...self.reviewCommentArray, comment];
+              self.scrollToElement(self.reviewCommentArray.length - 1);
+            })
+            .catch((err) => {
+              alert(err);
+            });
         });
+    },
+    scrollToElement(index) {
+      this.$nextTick(() => {
+        const newAnswerDOM = this.$el.getElementsByClassName(`index-${index}`)[0];
+        newAnswerDOM.scrollIntoView({ behavior: 'smooth' });
+      });
     },
     keep() {
       const that = this;

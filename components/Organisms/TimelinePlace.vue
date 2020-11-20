@@ -12,11 +12,11 @@
               :elevation="2"
               @click="toReviewDetail(item)"
             >
-              <v-row align-content="center">
+              <v-row justify="center" align-content="center">
                 <v-col class="pl-5 pr-0" cols="7">
-                  <v-card-title class="pa-0" style="color: #1976d2" @click="toPlaceDetail(item)">{{
+                  <v-card-text class="pa-0" style="color: #1976d2" @click="toPlaceDetail(item)">{{
                     item.name
-                  }}</v-card-title>
+                  }}</v-card-text>
                 </v-col>
                 <v-col cols="5" class="px-0">
                   <div class="px-1 pt-1">

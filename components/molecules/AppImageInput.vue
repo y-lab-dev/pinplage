@@ -12,7 +12,7 @@
       :label="label"
       :clearable="false"
       :rules="[() => !!img.name || requiredText]"
-      required
+      :required="required"
       @change="imgAdd"
     ></v-file-input>
   </div>
@@ -39,8 +39,11 @@ export default {
     },
     requiredText: {
       type: String,
-      required: true,
       default: 'この項目は必須です',
+    },
+    required: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

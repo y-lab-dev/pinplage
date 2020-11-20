@@ -9,7 +9,11 @@
               <v-col align-content="center">
                 <h3 align="center">クチコミ</h3>
                 <v-card-subtitle align="center">※は必須項目です</v-card-subtitle>
-                <input-place :label="placeholder" @place="placeAdd"></input-place>
+                <input-place
+                  :label="placeholder"
+                  :readonly="readonly"
+                  @place="placeAdd"
+                ></input-place>
                 <v-row justify="center" align="center">
                   <v-col cols="4">※おすすめ度</v-col>
                   <v-col cols="8">
@@ -68,6 +72,7 @@
                   :img-path="imgPath"
                   :label="imgLabel"
                   :required-text="imgText"
+                  :required="required"
                   @imgSubmit="imgAdd"
                 ></input-image>
                 <v-textarea
@@ -190,6 +195,7 @@ export default {
     return {
       placeholder: '※場所を入力',
       inputType: 'text',
+      readonly: false,
       buttonType: 'submit',
       contentPlaceholder: '内容',
       placeId: '',
@@ -210,6 +216,7 @@ export default {
       imgPath: 'reviews/image/',
       imgLabel: '画像',
       imgText: '画像が選択されていません',
+      required: false,
       selected: null,
       remove: 0,
       postDialog: false,
@@ -247,6 +254,7 @@ export default {
       this.placeId = this.id;
       this.placeName = this.pname;
       this.placeholder = this.pname;
+      this.readonly = true;
       this.$store.commit('place/getName', '');
     }
   },

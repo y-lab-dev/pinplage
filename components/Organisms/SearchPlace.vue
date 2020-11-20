@@ -5,31 +5,31 @@
         <v-row justify="center" align-content="center" style="height: 100%">
           <v-col class="pa-0">
             <div class="searchbox">
-              <v-row justify="center" align-content="center">
-                <v-col cols="1"></v-col>
-                <v-col class="pa-0">
-                  <div class="px-0 py-2">
-                    <ais-search-box v-model="all" align="center" placeholder="店名・ジャンル" />
-                  </div>
-                </v-col>
-                <v-col cols="1"></v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="1"></v-col>
-                <v-col class="px-2 py-0">
-                  <v-autocomplete
-                    v-model="selectHashtag"
-                    :items="hashtags"
-                    color="orange"
-                    outlined
-                    dense
-                    chips
-                    small-chips
-                    label="#ハッシュタグ"
-                  ></v-autocomplete>
-                </v-col>
-                <v-col cols="1"></v-col>
-              </v-row>
+              <div class="searchboxback">
+                <v-row justify="center" align-content="center">
+                  <v-col cols="1"></v-col>
+                  <v-col class="pa-0">
+                    <div class="px-0 pt-4 pb-1">
+                      <ais-search-box v-model="all" align="center" placeholder="店名・ジャンル" />
+                    </div>
+                  </v-col>
+                  <v-col cols="1"></v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="px-2 py-0">
+                    <v-autocomplete
+                      v-model="selectHashtag"
+                      :items="hashtags"
+                      color="orange"
+                      outlined
+                      dense
+                      chips
+                      small-chips
+                      label="#ハッシュタグ"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </div>
             </div>
             <div class="searchresult">
               <ais-hits>
@@ -158,6 +158,14 @@ export default {
   max-height: 240px;
   margin: auto;
 }
+.searchboxback {
+  margin-top: -1vh;
+  margin-left: -2vw;
+  margin-right: -2vw;
+  margin-bottom: -1vw;
+  width: 100vw;
+  background-color: rgba(255, 255, 255, 0.6);
+}
 .searchbox {
   margin-top: 1vh;
   margin-left: 2vw;
@@ -186,7 +194,7 @@ input::placeholder {
 }
 .ais-SearchBox-input {
   padding: 2px;
-  border: 1px solid lightgray;
+  border: 1px solid gray;
   border-radius: 5px 5px;
   width: 90%;
 }
@@ -199,7 +207,9 @@ input::placeholder {
 .v-text-field__details {
   display: none !important;
 }
-.v-input .v-label {
-  font-size: 0.8em;
+.v-input__slot {
+  transform: scale(0.75);
+  margin-left: -4%;
+  width: 104%;
 }
 </style>
