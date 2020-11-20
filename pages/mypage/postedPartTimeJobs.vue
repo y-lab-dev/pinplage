@@ -207,7 +207,6 @@ export default {
                     isNew,
                   },
                 ];
-                console.log(doc.data());
               });
           });
         });
