@@ -228,6 +228,7 @@ export default {
           });
         })
         .then((doc) => {
+          console.log(doc.id);
           user
             .doc(this.uid)
             .collection('event')

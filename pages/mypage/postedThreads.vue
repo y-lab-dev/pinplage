@@ -9,7 +9,7 @@
     <v-tabs-items v-model="postedTab">
       <v-tab-item><thread-card v-for="item in post" :key="item.id" v-bind="item" /></v-tab-item>
       <v-tab-item>
-        <div v-for="(item, index) in reply" :key="index" @click="test()">
+        <div v-for="(item, index) in reply" :key="index" @click="pushParentPage(item.parentId)">
           <thread-comment v-bind="reply[index]"></thread-comment>
         </div>
       </v-tab-item>
@@ -31,6 +31,7 @@ export default {
       postedTab: '',
       post: [],
       reply: [],
+      parentThread: {},
     };
   },
   computed: {
@@ -71,9 +72,11 @@ export default {
         .firestore()
         .collectionGroup('reply')
         .where('uid', '==', this.uid)
+        .orderBy('createdAt', 'desc')
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
+            // console.log(doc.ref.parent.parent.id);
             that.reply = [
               ...that.reply,
               {
@@ -81,13 +84,37 @@ export default {
                 name: doc.data().name,
                 content: doc.data().content,
                 date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
+                parentId: doc.ref.parent.parent.id,
               },
             ];
           });
         });
     },
-    test() {
-      console.log('abc');
+    async getParentThread(threadId) {
+      const that = this;
+      await firebase
+        .firestore()
+        .collection('threads')
+        .doc(threadId)
+        .get()
+        .then((doc) => {
+          that.parentThread = {
+            id: doc.id,
+            name: doc.data().name,
+            content: doc.data().content,
+            img: doc.data().img,
+            date: dayjs(doc.data().createdAt.toDate()).locale('ja').format('YY/MM/DD HH:mm:ss'),
+          };
+        });
+    },
+    pushParentPage(parentId) {
+      this.getParentThread(parentId)
+        .then(() => {
+          this.$store.commit('thread/getId', this.parentThread);
+        })
+        .then(() => {
+          this.$router.push({ name: 'timeline-thread-detailThread' });
+        });
     },
   },
 };

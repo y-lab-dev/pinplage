@@ -51,7 +51,7 @@
       </v-row>
     </v-container>
     <div v-else>
-      <wisdom-thread
+      <wisdom-reply
         v-for="(item, index) in answers"
         :key="item.wisdomId"
         :class="`index-${index}`"
@@ -112,11 +112,11 @@
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
-import WisdomThread from '~/components/Organisms/WisdomThread';
+import WisdomReply from '~/components/Organisms/WisdomReply';
 import WisdomLike from '~/components/Organisms/WisdomLike';
 export default {
   layout: 'onlyBack',
-  components: { WisdomThread, WisdomLike },
+  components: { WisdomLike, WisdomReply },
   data() {
     return {
       question: {},
@@ -130,7 +130,7 @@ export default {
   },
   computed: {
     formatDay() {
-      const formatDay = dayjs(this.question.createdDay).format('HH:mm  YYYY/MM/DD ');
+      const formatDay = dayjs(this.question.createdAt).format('HH:mm  YYYY/MM/DD ');
       return formatDay;
     },
     noReply() {
@@ -176,7 +176,7 @@ export default {
           resolved: wisdom.resolved,
           content: wisdom.content,
           category: wisdom.category,
-          createdDay: wisdom.createdAt.toDate(),
+          createdAt: wisdom.createdAt.toDate(),
         };
       });
     }
@@ -206,7 +206,7 @@ export default {
             poster: answer.replyer,
             likeAmount: answer.like,
             content: answer.content,
-            createdDay: answer.createdAt.toDate(),
+            createdAt: answer.createdAt.toDate(),
           };
           that.answers.push(answerDetail);
         });
@@ -262,7 +262,7 @@ export default {
             poster: that.uid,
             likeAmount: 0,
             content: that.answerMessage,
-            createdDay: timestamp.toDate(),
+            createdAt: timestamp.toDate(),
           };
           that.answerMessage = '';
           const newAnswers = [...that.answers, newAnswer];
