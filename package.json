@@ -49,6 +49,7 @@
     "v-viewer": "^1.5.1",
     "vue-cool-select": "^3.5.2",
     "vue-cropperjs": "^4.1.0",
+    "vue-directive-tooltip": "^1.6.3",
     "vue-instantsearch": "^3.2.0",
     "vue-localstorage": "^0.6.2",
     "vue-star-rating": "^1.6.1"
