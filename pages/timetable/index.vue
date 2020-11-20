@@ -142,33 +142,35 @@ export default {
   },
   created() {
     // 時間割の元データが無い時に空の配列を定義
-    if (!localStorage.getItem('timeTable')) {
-      ['前期', '後期'].forEach((term) => {
-        this.timeTable[term] = [];
-        for (let i = 0; i < 5; i++) {
-          this.timeTable[term][i] = {};
-          this.weekNames.forEach((point) => {
-            const obje = {
-              code: '',
-              title: '',
-              room: '',
-              teacher: '',
-              color: '',
-              late: 0,
-              absence: 0,
-              attend: 0,
-              memo: '',
-              edited: false,
-              time: '',
-            };
-            this.timeTable[term][i][point] = obje;
-          });
-        }
-      });
-      localStorage.setItem('timeTable', JSON.stringify(this.timeTable));
-    } else {
-      this.timeTable = JSON.parse(localStorage.getItem('timeTable'));
-      this.$store.state.zikanwariStore = this.timeTable;
+    if (process.client) {
+      if (!localStorage.getItem('timeTable')) {
+        ['前期', '後期'].forEach((term) => {
+          this.timeTable[term] = [];
+          for (let i = 0; i < 5; i++) {
+            this.timeTable[term][i] = {};
+            this.weekNames.forEach((point) => {
+              const obje = {
+                code: '',
+                title: '',
+                room: '',
+                teacher: '',
+                color: '',
+                late: 0,
+                absence: 0,
+                attend: 0,
+                memo: '',
+                edited: false,
+                time: '',
+              };
+              this.timeTable[term][i][point] = obje;
+            });
+          }
+        });
+        localStorage.setItem('timeTable', JSON.stringify(this.timeTable));
+      } else {
+        this.timeTable = JSON.parse(localStorage.getItem('timeTable'));
+        this.$store.state.zikanwariStore = this.timeTable;
+      }
     }
   },
   methods: {
