@@ -13,6 +13,11 @@ export default {
       required: true,
       type: String,
     },
+    type: {
+      required: false,
+      type: String,
+      default: 'likedPost',
+    },
   },
   data() {
     return {

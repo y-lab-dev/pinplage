@@ -1,7 +1,14 @@
 <template>
   <div>
-    <comment-thread v-for="(item, index) in comments" :key="index" v-bind="item" />
-    <!-- <div v-for="(item, index) in comments" :key="index">{{ item }}</div> -->
+    <v-tabs v-model="postedTab" grow color="#61d4b3">
+      <v-tab>記事へのコメント</v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="postedTab">
+      <v-tab-item>
+        <comment-thread v-for="(item, index) in comments" :key="index" v-bind="item" />
+      </v-tab-item>
+    </v-tabs-items>
   </div>
 </template>
 
@@ -18,6 +25,7 @@ export default {
   data() {
     return {
       comments: [],
+      postedTab: '',
     };
   },
   computed: {
@@ -29,18 +37,6 @@ export default {
     }),
   },
   created() {
-    // const that =this;
-    // const userUid = this.uid;
-    // const userInfo = firebase.firestore().collection('users').doc(userUid);
-    // userInfo
-    //   .collection('article')
-    //   .get()
-    //   .then((snapshot) => {
-    //     snapshot.forEach((doc) => {
-    //       // console.log(doc.id);
-    //       // console.log(doc.data());
-    //     });
-    //   });
     this.getUserArticleComment();
   },
   methods: {

@@ -41,7 +41,7 @@
           </v-card-actions>
         </v-card>
         <div class="user-info">
-          <my-achievement></my-achievement>
+          <my-achievement :point="userPoint" />
         </div>
       </div>
     </section>
@@ -102,6 +102,7 @@ export default {
         ],
       },
       userTab: null,
+      userPoint: 0,
       items: ['投稿履歴', 'pp獲得履歴'],
       text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
@@ -131,12 +132,12 @@ export default {
   },
   created() {
     const that = this;
-    const userData = firebase.firestore().collection('users');
-    userData
+    const users = firebase.firestore().collection('users');
+    users
       .doc(that.uid)
       .get()
       .then((doc) => {
-        that.userInfo = doc.data();
+        that.userPoint = doc.data().point;
       })
       .then(() => {
         that.isCreated = true;

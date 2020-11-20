@@ -3,8 +3,6 @@
     <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
       <v-tab>投稿した知恵袋</v-tab>
       <v-tab>あなたの返信</v-tab>
-      <v-tab>いいねした返信</v-tab>
-      <v-tab>いいねした投稿</v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="postedTab">
@@ -17,18 +15,18 @@
           :resolved="item.resolved"
           :content="item.content"
           :category="item.category"
-          :created-day="item.createdDay"
+          :created-at="item.createdAt"
           :like-amount="item.likeAmount"
-          :reply-amount="item.replyAmount"
       /></v-tab-item>
-      <v-tab-item>
-        <wisdom-thread
-          v-for="(item, index) in postedReplies"
-          :key="item.wisdomId"
-          :class="`index-${index}`"
-          v-bind="item"
-          :answer-display="true"
-      /></v-tab-item>
+      <div>
+        <v-tab-item>
+          <wisdom-reply
+            v-for="(item, index) in postedReplies"
+            :key="item.wisdomId"
+            :class="`index-${index}`"
+            v-bind="item"
+        /></v-tab-item>
+      </div>
     </v-tabs-items>
   </div>
 </template>
@@ -36,10 +34,11 @@
 import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
+import WisdomReply from '~/components/Organisms/WisdomReply';
 
 export default {
   layout: 'onlyBack',
-  components: WisdomThread,
+  components: { WisdomThread, WisdomReply },
   data() {
     return {
       postedWisdoms: [],
@@ -50,7 +49,6 @@ export default {
   computed: {
     ...mapGetters({
       uid: 'user/uid',
-      email: 'user/email',
       name: 'user/name',
       icon: 'user/icon',
     }),
@@ -67,14 +65,13 @@ export default {
       .then((snapshot) => {
         snapshot.forEach((doc) => {
           const wisdom = doc.data();
-          console.log(wisdom);
           const postedWisdom = {
             wisdomId: doc.id,
             likeAmount: wisdom.like,
             resolved: wisdom.resolved,
             content: wisdom.content,
             category: wisdom.category,
-            createdDay: wisdom.createdAt.toDate(),
+            createdAt: wisdom.createdAt.toDate(),
           };
           wisdoms
             .doc(doc.id)
@@ -86,7 +83,6 @@ export default {
             });
         });
       });
-    // db.collectionGroup('reply').
     this.getUserWisdomReply();
   },
   methods: {
@@ -100,15 +96,14 @@ export default {
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
-            console.log(doc.data());
             that.postedReplies = [
               ...that.postedReplies,
               {
                 wisdomId: doc.id,
                 poster: doc.data().replyer,
-                likeAmount: doc.data().like,
+                likeAmount: Number(doc.data().like),
                 content: doc.data().content,
-                createdDay: doc.data().createdAt.toDate(),
+                createdAt: doc.data().createdAt.toDate(),
               },
             ];
           });

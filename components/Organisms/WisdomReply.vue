@@ -27,7 +27,7 @@
                 <p class="posted-content">{{ content }}</p>
                 <v-row no-gutters justify="end">
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
-                    <div v-if="!selfWisdom">
+                    <div v-if="!selfAnswer">
                       <wisdom-like :wisdom-id="wisdomId" />
                       <span class="posted-info">
                         {{ likeAmount }}
@@ -105,7 +105,6 @@ export default {
   },
   created() {
     const that = this;
-    console.log(this.likedWisdoms);
     const posterInfo = firebase.firestore().collection('users').doc(this.poster);
     posterInfo.get().then((doc) => {
       const userData = doc.data();
