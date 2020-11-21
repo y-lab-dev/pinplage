@@ -50,6 +50,9 @@ export default {
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {
+            if (doc.ref.parent.parent.parent.id === 'reviews') {
+              return;
+            }
             that.comments = [
               ...that.comments,
               {
