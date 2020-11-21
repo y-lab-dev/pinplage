@@ -172,7 +172,7 @@ export default {
           users
             .doc(that.uid)
             .collection('wisdom')
-            .doc('reply')
+            .doc('post')
             .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true });
         });
       that.newQuestion = null;

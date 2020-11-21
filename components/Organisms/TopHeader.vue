@@ -1,12 +1,7 @@
 <template>
   <div app>
-    <v-app-bar
-      app
-      color="#fff"
-      :elevation="isTimeline ? 0 : 1"
-      :hide-on-scroll="isTimeline ? true : false"
-      :scroll-target="$refs.maincontents"
-    >
+    <v-app-bar app color="#fff" :elevation="isTimeline ? 0 : 1" :scroll-target="$refs.maincontents">
+      <!-- :hide-on-scroll="isTimeline ? true : false" -->
       <v-btn icon :ripple="false" :disabled="!isHide" @click="backPage()">
         <v-icon v-show="isHide" color="#78dabe">mdi-arrow-left-bold-outline</v-icon>
       </v-btn>
@@ -54,7 +49,7 @@
           v-for="(item, index) in contacts"
           :key="item.name"
           class="my-1"
-          @click.stop="pushPage(contacts[index].name)"
+          @click.stop="pushPage(contacts[index].link)"
         >
           <v-list-item-icon class="ml-3">
             <v-icon :color="item.color" v-text="item.icon"></v-icon>
@@ -79,8 +74,8 @@ export default {
       drawer: null,
       subPages: [
         { name: '部活・サークル', icon: 'mdi-run', link: 'club' },
-        { name: '設定', icon: 'mdi-account-settings-outline', link: 'settings' },
-        { name: '利用規約', icon: 'mdi-file-outline', link: 'apprule' },
+        // { name: '設定', icon: 'mdi-account-settings-outline', link: 'settings' },
+        // { name: '利用規約', icon: 'mdi-file-outline', link: 'apprule' },
         {
           name: 'お問い合わせ',
           icon: 'mdi-account-heart-outline',
@@ -88,8 +83,13 @@ export default {
         },
       ],
       contacts: [
-        { name: 'パンプラweb版', icon: 'mdi-web', link: 'webplage' },
-        { name: 'twitter', icon: 'mdi-twitter', link: 'twitter', color: '#1DA1F2' },
+        // { name: 'パンプラweb版', icon: 'mdi-web', link: 'webplage' },
+        {
+          name: 'twitter',
+          icon: 'mdi-twitter',
+          link: 'https://twitter.com/pin__plage',
+          color: '#1DA1F2',
+        },
       ],
     };
   },
@@ -101,7 +101,7 @@ export default {
     isHide() {
       const pageName = this.$route.path;
       const slashCount = (pageName.match(/\//g) || []).length;
-      console.log(slashCount);
+      // console.log(slashCount);
       if (slashCount === 1) {
         return false;
       } else {
@@ -143,8 +143,10 @@ export default {
       this.$router.go(-1);
     },
     pushPage(link) {
-      console.log(link);
-      if (link === 'https://forms.gle/n7ejy3uWDJsJBoP89') {
+      if (
+        link === 'https://forms.gle/n7ejy3uWDJsJBoP89' ||
+        link === 'https://twitter.com/pin__plage'
+      ) {
         location.href = link;
       } else {
         this.$router.push({ name: link });

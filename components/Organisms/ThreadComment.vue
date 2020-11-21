@@ -39,8 +39,9 @@ export default {
       default: null,
     },
     commentNumber: {
-      required: true,
+      required: false,
       type: Number,
+      default: null,
     },
   },
 };

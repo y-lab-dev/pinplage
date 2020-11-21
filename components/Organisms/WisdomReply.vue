@@ -5,20 +5,8 @@
         <v-col class="pa-0" cols="12">
           <v-divider></v-divider>
           <v-card tile elevation="0">
-            <v-row class="pt-2 chip-row" @click="wisdomDetail(wisdomId)">
-              <v-col class="py-2">
-                <v-chip
-                  v-if="!answerDisplay"
-                  class="ml-5"
-                  :color="resolved ? '#FFFCDB' : '#61D4B3'"
-                  small
-                  text-color="#fff"
-                  >{{ resolvedMessage }}</v-chip
-                >
-              </v-col>
-            </v-row>
             <v-row class="my-2 pt-0" style="max-width: 100vw">
-              <v-col cols="3" class="pt-0" @click="wisdomDetail(wisdomId)">
+              <v-col cols="3" class="pt-0">
                 <v-avatar class="ml-5 rounded-circle">
                   <img
                     :src="posterIcon"
@@ -28,7 +16,7 @@
                 </v-avatar>
               </v-col>
               <v-col class="pa-0" cols="9">
-                <v-row @click="wisdomDetail(wisdomId)">
+                <v-row>
                   <v-col class="pa-0 pl-3" cols="7">
                     <span class="posted-user-name">{{ posterName }}</span>
                   </v-col>
@@ -36,47 +24,20 @@
                     <created-time-diff :previous-date="createdAt" />
                   </v-col>
                 </v-row>
-                <p class="posted-content" @click="wisdomDetail(wisdomId)">{{ content }}</p>
+                <p class="posted-content">{{ content }}</p>
                 <v-row no-gutters justify="end">
-                  <v-col
-                    v-if="!answerDisplay"
-                    class="pa-1"
-                    cols="4"
-                    align-self="center"
-                    @click="wisdomDetail(wisdomId)"
-                  >
-                    <v-icon small color="#c8c8c8">mdi-message-outline</v-icon>
-                    <span class="posted-info">
-                      {{ replyAmount }}
-                    </span>
-                  </v-col>
-
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
-                    <div v-if="!selfWisdom">
+                    <div v-if="!selfAnswer">
                       <wisdom-like :wisdom-id="wisdomId" />
                       <span class="posted-info">
                         {{ likeAmount }}
                       </span>
                     </div>
                   </v-col>
-
-                  <v-col
-                    v-if="!answerDisplay"
-                    class="pa-1 pr-0"
-                    cols="4"
-                    @click="wisdomDetail(wisdomId)"
-                  >
-                    <div v-if="!answerDisplay">
-                      <v-icon small color="yellow">mdi-file-outline</v-icon>
-                      <span class="posted-category">
-                        {{ category }}
-                      </span>
-                    </div>
-                  </v-col>
                 </v-row>
               </v-col>
             </v-row>
-            <v-row v-if="answerDisplay && !selfWisdom" justify="center" class="pb-2 chip-row">
+            <v-row v-if="!selfAnswer" justify="center" class="pb-2 chip-row">
               <v-col class="py-2" style="text-align: center" cols="12 chip-row">
                 <v-chip class="ma-auto" color="#61D4B3" small text-color="#fff">
                   ベストアンサーに選ぶ
@@ -106,18 +67,9 @@ export default {
       required: true,
       type: String,
     },
-    resolved: {
-      required: false,
-      type: Boolean,
-    },
     content: {
       required: true,
       type: String,
-    },
-    category: {
-      required: false,
-      type: String,
-      default: null,
     },
     createdAt: {
       required: false,
@@ -129,16 +81,6 @@ export default {
       type: Number,
       default: 0,
     },
-    replyAmount: {
-      required: false,
-      type: Number,
-      default: 0,
-    },
-    answerDisplay: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
@@ -148,18 +90,12 @@ export default {
     };
   },
   computed: {
-    resolvedMessage() {
-      if (this.resolved) {
-        return '解決済み';
-      } else {
-        return '回答受付中';
-      }
-    },
     ...mapGetters({
       uid: 'user/uid',
       likedWisdoms: 'user/likedPost',
+      postedWisdoms: 'user/postedWisdom',
     }),
-    selfWisdom() {
+    selfAnswer() {
       if (this.uid === this.poster) {
         return true;
       } else {
@@ -175,11 +111,6 @@ export default {
       that.posterName = userData.name;
       that.posterIcon = userData.icon;
     });
-  },
-  methods: {
-    wisdomDetail(wisdomId) {
-      this.$router.push({ name: 'timeline-wisdom-detailWisdom', query: wisdomId });
-    },
   },
 };
 </script>

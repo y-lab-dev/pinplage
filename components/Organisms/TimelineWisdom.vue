@@ -11,7 +11,7 @@
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
 export default {
-  components: WisdomThread,
+  components: { WisdomThread },
   data() {
     return {
       postedWisdoms: [],
@@ -20,6 +20,7 @@ export default {
   },
   created() {
     this.$store.dispatch('user/getUserWisdom');
+    this.$store.dispatch('user/getPostedWisdom');
     const that = this;
     const wisdoms = firebase.firestore().collection('wisdoms');
     wisdoms
@@ -35,7 +36,7 @@ export default {
             likeAmount: wisdom.like,
             content: wisdom.content,
             category: wisdom.category,
-            createdDay: wisdom.createdAt.toDate(),
+            createdAt: wisdom.createdAt.toDate(),
           };
           wisdoms
             .doc(doc.id)

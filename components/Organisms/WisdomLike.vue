@@ -1,7 +1,7 @@
 <template>
-  <v-icon dark small :color="alreadyLiked ? '#f00' : '#E6E6E6'" @click="addWisdomLike"
-    >mdi-heart</v-icon
-  >
+  <v-icon dark small :color="alreadyLiked ? '#f00' : '#E6E6E6'" @click="addWisdomLike">
+    mdi-heart
+  </v-icon>
 </template>
 
 <script>
@@ -12,6 +12,11 @@ export default {
     wisdomId: {
       required: true,
       type: String,
+    },
+    type: {
+      required: false,
+      type: String,
+      default: 'likedPost',
     },
   },
   data() {

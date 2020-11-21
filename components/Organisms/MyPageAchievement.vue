@@ -4,7 +4,7 @@
       <v-container>
         <v-row class="justify-center" no-gutters>
           <v-col v-for="item in cardInfo" :key="item.name" cols="4">
-            <p class="ma-0 card-info-amount">{{ item.amount }}</p>
+            <p class="ma-0 card-info-amount">{{ point }}</p>
             <p class="ma-0 card-info-title">{{ item.title }}</p>
           </v-col>
         </v-row>
@@ -14,9 +14,15 @@
 </template>
 <script>
 export default {
+  props: {
+    point: {
+      required: true,
+      type: Number,
+    },
+  },
   data() {
     return {
-      cardInfo: [{ title: 'ポイント', amount: '1231pp' }],
+      cardInfo: [{ title: 'プラージュ' }],
     };
   },
   computed: {

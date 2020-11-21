@@ -1,12 +1,33 @@
 <template>
-  <div></div>
+  <div>
+    <v-tabs v-model="postedTab" grow color="#61d4b3">
+      <v-tab>記事へのコメント</v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="postedTab">
+      <v-tab-item>
+        <comment-thread v-for="(item, index) in comments" :key="index" v-bind="item" />
+      </v-tab-item>
+    </v-tabs-items>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
+import CommentThread from '~/components/molecules/CommentThread';
 export default {
   layout: 'onlyBack',
+  components: {
+    CommentThread,
+  },
+  data() {
+    return {
+      comments: [],
+      postedTab: '',
+    };
+  },
   computed: {
     ...mapGetters({
       uid: 'user/uid',
@@ -16,18 +37,33 @@ export default {
     }),
   },
   created() {
-    // const that =this;
-    const userUid = this.uid;
-    const userInfo = firebase.firestore().collection('users').doc(userUid);
-    userInfo
-      .collection('article')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          console.log(doc.id);
-          console.log(doc.data());
+    this.getUserArticleComment();
+  },
+  methods: {
+    async getUserArticleComment() {
+      const that = this;
+      await firebase
+        .firestore()
+        .collectionGroup('comment')
+        .where('commenter', '==', this.uid)
+        .orderBy('createdAt', 'desc')
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            that.comments = [
+              ...that.comments,
+              {
+                commentId: doc.id,
+                commenter: doc.data().commenter,
+                content: doc.data().content,
+                createdAt: dayjs(doc.data().createdAt.toDate())
+                  .locale('ja')
+                  .format('YY/MM/DD HH:mm:ss'),
+              },
+            ];
+          });
         });
-      });
+    },
   },
 };
 </script>
