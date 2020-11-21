@@ -4,6 +4,15 @@
       <v-col cols="12">
         <div>
           <div class="title">パスワード再設定</div>
+          <template>
+            <Modal
+              :modal-title="modalTitle"
+              :modal-text="modalText"
+              :modal-button="buttonText"
+              :modal-toggle="modal"
+              @changeValue="clickModal()"
+            />
+          </template>
           <input-text
             :input-type="inputType"
             :input-placeholder="mailPlaceholder"
@@ -30,11 +39,13 @@
 <script>
 import InputText from '~/components/Atoms/AppInput';
 import ResetButton from '~/components/Atoms/AppButton';
+import Modal from '~/components/Molecules/AppModal';
 import firebase from '~/plugins/firebase';
 export default {
   components: {
     InputText,
     ResetButton,
+    Modal,
   },
   data() {
     return {
@@ -44,6 +55,10 @@ export default {
       mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
       emailValidation: '',
       resetValidation: true,
+      modal: false,
+      modalTitle: '',
+      modalText: '',
+      buttonText: '',
     };
   },
   watch: {
@@ -74,7 +89,10 @@ export default {
       auth
         .sendPasswordResetEmail(emailAddress)
         .then(() => {
-          alert('パスワードの再設定メールを送信しました');
+          this.modal = !this.modal;
+          this.modalTitle = 'パスワード再設定';
+          this.modalText = 'パスワードの再設定メールを送信しました';
+          this.buttonText = 'Ok';
         })
         .then(function () {
           that.$router.push({ name: 'login' });
@@ -82,6 +100,9 @@ export default {
         .catch((err) => {
           alert(err);
         });
+    },
+    clickModal() {
+      this.modal = !this.modal;
     },
   },
 };

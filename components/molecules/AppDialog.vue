@@ -1,20 +1,23 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="modalToggle" persistent width="400">
+    <v-dialog v-model="dialogToggle" persistent width="400">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
-          {{ modalTitle }}
+          {{ dialogTitle }}
         </v-card-title>
 
         <v-card-text style="margin-top: 20px; padding: 0 20px 20px; text-align: center">
-          {{ modalText }}
+          {{ dialogText }}
         </v-card-text>
         <v-divider></v-divider>
 
         <v-card-actions>
+          <v-btn color="#61d4b3" text @click="cancelDelete()">
+            {{ dialogCancel }}
+          </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="red" text @click="changeModalValue()">
-            {{ modalButton }}
+          <v-btn color="red" text @click="changeDialogValue()">
+            {{ dialogButton }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -25,26 +28,33 @@
 <script>
 export default {
   props: {
-    modalTitle: {
+    dialogTitle: {
       type: String,
       required: true,
     },
-    modalText: {
+    dialogText: {
       type: String,
       required: true,
     },
-    modalButton: {
+    dialogButton: {
       type: String,
       required: true,
     },
-    modalToggle: {
+    dialogCancel: {
+      type: String,
+      required: true,
+    },
+    dialogToggle: {
       type: Boolean,
       required: false,
     },
   },
   methods: {
-    changeModalValue() {
+    changeDialogValue() {
       this.$emit('changeValue');
+    },
+    cancelDelete() {
+      this.$emit('changeSelect');
     },
   },
 };

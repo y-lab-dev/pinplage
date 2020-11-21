@@ -3,6 +3,15 @@
     <v-row align-content="center">
       <v-col cols="12">
         <div class="title">アカウント作成</div>
+        <template>
+          <Modal
+            :modal-title="modalTitle"
+            :modal-text="modalText"
+            :modal-button="buttonText"
+            :modal-toggle="modal"
+            @changeValue="clickModal()"
+          />
+        </template>
         <input-text
           :input-type="inputType"
           :input-placeholder="mailPlaceholder"
@@ -36,12 +45,14 @@
 <script>
 import InputText from '~/components/Atoms/AppInput';
 import SignUpButton from '~/components/Atoms/AppButton';
+import Modal from '~/components/Molecules/AppModal';
 import firebase from '~/plugins/firebase';
 
 export default {
   components: {
     InputText,
     SignUpButton,
+    Modal,
   },
   data() {
     return {
@@ -57,6 +68,10 @@ export default {
       completedEmail: false,
       completedPassword: false,
       loginValidation: true,
+      modal: false,
+      modalTitle: '',
+      modalText: '',
+      buttonText: '',
     };
   },
   watch: {
@@ -115,16 +130,55 @@ export default {
         .catch((error) => {
           alert(error.message);
         });
+      this.dialog = !this.dialog;
+      this.modalTitle = '登録完了';
+      this.modalText =
+        '登録したメールアドレスに認証メールを送信しました。ログインするために認証してください。';
+      this.buttonText = 'Ok';
     },
     saveUserData(val) {
-      const user = firebase.firestore().collection('users');
+      const db = firebase.firestore();
+      const user = db.collection('users');
 
-      user.doc(val.uid).set({
-        email: val.email,
-        name: '',
-        icon: '',
-        userToken: '',
-      });
+      user
+        .doc(val.uid)
+        .set({
+          email: val.email,
+          name: '',
+          icon:
+            'https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/user%2Ficon%2FdefaultIcon%2FS__46546947.jpg?alt=media&token=872c7955-4673-472f-a184-5c51717dcee1',
+          userToken: '',
+          point: 0,
+        })
+        .then(() => {
+          db.collection('users').doc(val.uid).collection('job').doc('post').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('job').doc('reply').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('job').doc('keep').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('review').doc('post').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('review').doc('reply').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('event').doc('post').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('event').doc('reply').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('event').doc('join').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('event').doc('interest').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('article').doc('post').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('article').doc('reply').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('article').doc('favorite').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('thread').doc('post').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('thread').doc('reply').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('wisdom').doc('post').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('wisdom').doc('reply').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('wisdom').doc('likedPost').set({ id: [] });
+          db.collection('users')
+            .doc(val.uid)
+            .collection('wisdom')
+            .doc('likedReply')
+            .set({ id: [] });
+          db.collection('users').doc(val.uid).collection('place').doc('favorite').set({ id: [] });
+          db.collection('users').doc(val.uid).collection('point').doc('log').set({ point: [] });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     check() {
       if (this.completedEmail === true && this.completedPassword === true) {
@@ -132,6 +186,9 @@ export default {
       } else {
         this.loginValidation = true;
       }
+    },
+    clickModal() {
+      this.modal = !this.modal;
     },
   },
 };
