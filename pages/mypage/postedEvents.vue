@@ -1,6 +1,15 @@
 <template>
   <div>
-    <event-card v-for="(item, index) in postedEvents" v-cloak :key="index" v-bind="item" />
+    <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
+      <v-tab>投稿したイベント</v-tab>
+      <!-- <v-tab></v-tab> -->
+    </v-tabs>
+
+    <v-tabs-items v-model="postedTab">
+      <v-tab-item>
+        <event-card v-for="(item, index) in postedEvents" v-cloak :key="index" v-bind="item" />
+      </v-tab-item>
+    </v-tabs-items>
   </div>
 </template>
 
@@ -15,6 +24,7 @@ export default {
   },
   data() {
     return {
+      postedTab: '',
       postedEvents: [],
     };
   },
