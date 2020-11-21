@@ -3,6 +3,15 @@
     <v-row>
       <v-col cols="12">
         <div class="title">ログイン</div>
+        <template>
+          <Modal
+            :modal-title="modalTitle"
+            :modal-text="modalText"
+            :modal-button="buttonText"
+            :modal-toggle="modal"
+            @changeValue="clickModal()"
+          />
+        </template>
         <input-text
           :input-type="inputType"
           :input-placeholder="mailPlaceholder"
@@ -40,12 +49,14 @@
 import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignInButton from '~/components/Atoms/AppButton';
+import Modal from '~/components/Molecules/AppModal';
 import firebase from '~/plugins/firebase';
 
 export default {
   components: {
     InputText,
     SignInButton,
+    Modal,
   },
   data() {
     return {
@@ -61,6 +72,10 @@ export default {
       completedEmail: false,
       completedPassword: false,
       loginValidation: true,
+      modal: false,
+      modalTitle: '',
+      modalText: '',
+      buttonText: '',
     };
   },
   watch: {
@@ -109,7 +124,10 @@ export default {
         .then(() => {
           firebase.auth().onAuthStateChanged(async (user) => {
             if (!user.emailVerified) {
-              alert('認証メールを確認してください');
+              this.modal = !this.modal;
+              this.modalTitle = '認証エラー';
+              this.modalText = '認証メールを確認してください';
+              this.buttonText = 'Ok';
             } else {
               const token = await firebase.auth().currentUser.getIdToken(true);
               this.$store.dispatch('user/login', {
@@ -124,7 +142,10 @@ export default {
           });
         })
         .catch(() => {
-          alert('メールアドレスまたはパスワードが違います');
+          this.modal = !this.modal;
+          this.modalTitle = 'エラー';
+          this.modalText = 'メールアドレスまたはパスワードが違います';
+          this.buttonText = 'Ok';
         });
     },
     check() {
@@ -133,6 +154,9 @@ export default {
       } else {
         this.loginValidation = true;
       }
+    },
+    clickModal() {
+      this.modal = !this.modal;
     },
   },
 };
