@@ -68,6 +68,10 @@ export default {
       completedEmail: false,
       completedPassword: false,
       loginValidation: true,
+      modal: false,
+      modalTitle: '',
+      modalText: '',
+      buttonText: '',
     };
   },
   watch: {
