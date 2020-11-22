@@ -10,10 +10,10 @@
     >
       <v-tab class="pa-0">スレッド</v-tab>
       <v-tab class="pa-0">知恵袋</v-tab>
-      <v-tab class="pa-0">アルバイト</v-tab>
       <v-tab class="pa-0">クチコミ</v-tab>
-      <v-tab class="pa-0">イベント</v-tab>
       <v-tab class="pa-0">学生記事</v-tab>
+      <v-tab class="pa-0">イベント</v-tab>
+      <v-tab class="pa-0">アルバイト</v-tab>
     </v-tabs>
 
     <v-tabs-items v-cloak v-model="model" @change="pauseTab">
@@ -22,16 +22,16 @@
       </v-tab-item>
       <v-tab-item><wisdom /></v-tab-item>
       <v-tab-item>
-        <job></job>
+        <place></place>
       </v-tab-item>
       <v-tab-item>
-        <place></place>
+        <TimelineArticle />
       </v-tab-item>
       <v-tab-item>
         <event></event>
       </v-tab-item>
       <v-tab-item>
-        <TimelineArticle />
+        <job></job>
       </v-tab-item>
     </v-tabs-items>
   </div>
