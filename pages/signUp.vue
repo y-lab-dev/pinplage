@@ -35,6 +35,16 @@
           @input="password = $event"
         ></input-text>
         <div class="validation-password">{{ passwordValidation }}</div>
+        <template v-if="modalAgreement">
+          <Agreement class="agree-modal" />
+        </template>
+        <div class="checkbox">
+          <v-checkbox v-model="checkbox" color="#61d4b3"></v-checkbox>
+          <div class="agreement-text" @click="pushAgreement()">
+            <span class="important">{{ agreement }}</span>
+            に同意する
+          </div>
+        </div>
         <div class="sign-up-button-place mt-8">
           <sign-up-button
             :button-method="signUp"
@@ -54,6 +64,7 @@
 import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignUpButton from '~/components/Atoms/AppButton';
+import Agreement from '~/components/Molecules/Agreement';
 import Modal from '~/components/Molecules/AppModal';
 import firebase from '~/plugins/firebase';
 
@@ -61,6 +72,7 @@ export default {
   components: {
     InputText,
     SignUpButton,
+    Agreement,
     Modal,
   },
   data() {
@@ -86,6 +98,9 @@ export default {
       modalTitle: '',
       modalText: '',
       buttonText: '',
+      modalAgreement: false,
+      checkbox: false,
+      agreement: '利用規約',
     };
   },
   watch: {
@@ -127,6 +142,13 @@ export default {
       } else {
         this.passwordValidation = '英数字６文字以上で入力してください';
         this.completedPassword = false;
+        this.check();
+      }
+    },
+    checkbox(value) {
+      if (value) {
+        this.check();
+      } else {
         this.check();
       }
     },
@@ -207,7 +229,8 @@ export default {
       if (
         this.completedName === true &&
         this.completedEmail === true &&
-        this.completedPassword === true
+        this.completedPassword === true &&
+        this.checkbox
       ) {
         this.loginValidation = false;
       } else {
@@ -217,6 +240,9 @@ export default {
     clickModal() {
       this.modal = !this.modal;
       this.$router.push({ name: 'login' });
+    },
+    pushAgreement() {
+      this.modalAgreement = !this.modalAgreement;
     },
   },
 };
@@ -241,5 +267,21 @@ export default {
   text-align: center;
   margin-top: 200px;
   text-decoration: underline;
+}
+.agree-modal {
+  width: 90%;
+}
+.checkbox {
+  margin-left: 70px;
+  margin-top: 40px;
+  display: flex;
+}
+.agreement-text {
+  margin-top: 20px;
+}
+.important {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #61d4b3;
 }
 </style>
