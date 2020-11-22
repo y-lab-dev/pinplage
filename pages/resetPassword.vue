@@ -37,6 +37,7 @@
   </v-container>
 </template>
 <script>
+import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import ResetButton from '~/components/Atoms/AppButton';
 import Modal from '~/components/Molecules/AppModal';
@@ -68,7 +69,7 @@ export default {
         this.resetValidation = true;
       } else if (
         !new RegExp(
-          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com/
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com/
         ).test(val)
       ) {
         this.emailValidation = '静大メールのみ可能です';
@@ -89,13 +90,11 @@ export default {
       auth
         .sendPasswordResetEmail(emailAddress)
         .then(() => {
-          this.modal = !this.modal;
-          this.modalTitle = 'パスワード再設定';
-          this.modalText = 'パスワードの再設定メールを送信しました';
-          this.buttonText = 'Ok';
-        })
-        .then(function () {
-          that.$router.push({ name: 'login' });
+          Cookies.remove('password');
+          that.modal = !that.modal;
+          that.modalTitle = 'パスワード再設定';
+          that.modalText = 'パスワードの再設定メールを送信しました';
+          that.buttonText = 'Ok';
         })
         .catch((err) => {
           alert(err);
@@ -103,6 +102,7 @@ export default {
     },
     clickModal() {
       this.modal = !this.modal;
+      this.$router.push({ name: 'login' });
     },
   },
 };

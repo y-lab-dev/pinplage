@@ -86,7 +86,7 @@ export default {
         this.check();
       } else if (
         !new RegExp(
-          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com/
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com/
         ).test(val)
       ) {
         this.emailValidation = '静大メールを入力してください';
@@ -111,9 +111,11 @@ export default {
     },
   },
   created() {
-    if (Boolean(Cookies.get('email')) && Boolean(Cookies.get('password'))) {
+    if (Cookies.get('email') && Cookies.get('password')) {
       this.email = Cookies.get('email');
       this.password = Cookies.get('password');
+    } else if (Cookies.get('email')) {
+      this.email = Cookies.get('email');
     }
   },
   methods: {

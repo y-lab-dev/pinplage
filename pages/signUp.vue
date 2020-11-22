@@ -13,6 +13,14 @@
           />
         </template>
         <input-text
+          :input-type="nameType"
+          :input-placeholder="namePlaceholder"
+          :input-value="name"
+          @input="name = $event"
+        ></input-text>
+        <div class="validation-email">{{ nameValidation }}</div>
+
+        <input-text
           :input-type="inputType"
           :input-placeholder="mailPlaceholder"
           :input-value="email"
@@ -27,6 +35,16 @@
           @input="password = $event"
         ></input-text>
         <div class="validation-password">{{ passwordValidation }}</div>
+        <template v-if="modalAgreement">
+          <Agreement class="agree-modal" />
+        </template>
+        <div class="checkbox">
+          <v-checkbox v-model="checkbox" color="#61d4b3"></v-checkbox>
+          <div class="agreement-text" @click="pushAgreement()">
+            <span class="important">{{ agreement }}</span>
+            に同意する
+          </div>
+        </div>
         <div class="sign-up-button-place mt-8">
           <sign-up-button
             :button-method="signUp"
@@ -43,8 +61,10 @@
   </v-container>
 </template>
 <script>
+import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignUpButton from '~/components/Atoms/AppButton';
+import Agreement from '~/components/Molecules/Agreement';
 import Modal from '~/components/Molecules/AppModal';
 import firebase from '~/plugins/firebase';
 
@@ -52,19 +72,25 @@ export default {
   components: {
     InputText,
     SignUpButton,
+    Agreement,
     Modal,
   },
   data() {
     return {
+      nameType: 'text',
       inputType: 'text',
       passwordType: 'password',
       buttonType: 'submit',
+      namePlaceholder: 'ユーザ名',
       mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
       passwordPlaceholder: 'パスワード（英数字6文字以上）',
+      name: '',
       email: '',
       password: '',
+      nameValidation: '',
       emailValidation: '',
       passwordValidation: '',
+      completedName: false,
       completedEmail: false,
       completedPassword: false,
       loginValidation: true,
@@ -72,9 +98,23 @@ export default {
       modalTitle: '',
       modalText: '',
       buttonText: '',
+      modalAgreement: false,
+      checkbox: false,
+      agreement: '利用規約',
     };
   },
   watch: {
+    name(val) {
+      if (val.length >= 1) {
+        this.nameValidation = '';
+        this.completedName = true;
+        this.check();
+      } else {
+        this.nameValidation = '1文字以上を入力してください';
+        this.completedName = false;
+        this.check();
+      }
+    },
     email(val) {
       if (val.length === 0) {
         this.emailValidation = 'メールアドレスを入力してください';
@@ -82,7 +122,7 @@ export default {
         this.check();
       } else if (
         !new RegExp(
-          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com/
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com/
         ).test(val)
       ) {
         this.emailValidation = '静大メールを入力してください';
@@ -105,6 +145,13 @@ export default {
         this.check();
       }
     },
+    checkbox(value) {
+      if (value) {
+        this.check();
+      } else {
+        this.check();
+      }
+    },
   },
   methods: {
     signUp() {
@@ -113,28 +160,26 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
         .then((user) => {
+          user = firebase.auth().currentUser;
           firebase.auth().languageCode = 'ja';
-          user.user.sendEmailVerification().then(() => {
-            firebase
-              .auth()
-              .onAuthStateChanged((user) => {
-                if (user) {
-                  that.saveUserData(user);
-                }
-              })
-              .then(() => {
-                that.$router.push({ name: 'timeline' });
-              });
+          user.sendEmailVerification().then(async function () {
+            await firebase.auth().onAuthStateChanged((user) => {
+              if (user) {
+                that.saveUserData(user);
+                Cookies.set('email', that.email, { expires: 365 });
+                Cookies.set('password', that.password, { expires: 365 });
+              }
+              that.modal = !that.modal;
+              that.modalTitle = '登録完了';
+              that.modalText =
+                '登録したメールアドレスに認証メールを送信しました。ログインするために認証してください。';
+              that.buttonText = 'Ok';
+            });
           });
         })
         .catch((error) => {
           alert(error.message);
         });
-      this.dialog = !this.dialog;
-      this.modalTitle = '登録完了';
-      this.modalText =
-        '登録したメールアドレスに認証メールを送信しました。ログインするために認証してください。';
-      this.buttonText = 'Ok';
     },
     saveUserData(val) {
       const db = firebase.firestore();
@@ -144,7 +189,7 @@ export default {
         .doc(val.uid)
         .set({
           email: val.email,
-          name: '',
+          name: this.name,
           icon:
             'https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/user%2Ficon%2FdefaultIcon%2FS__46546947.jpg?alt=media&token=872c7955-4673-472f-a184-5c51717dcee1',
           userToken: '',
@@ -181,7 +226,12 @@ export default {
         });
     },
     check() {
-      if (this.completedEmail === true && this.completedPassword === true) {
+      if (
+        this.completedName === true &&
+        this.completedEmail === true &&
+        this.completedPassword === true &&
+        this.checkbox
+      ) {
         this.loginValidation = false;
       } else {
         this.loginValidation = true;
@@ -189,6 +239,10 @@ export default {
     },
     clickModal() {
       this.modal = !this.modal;
+      this.$router.push({ name: 'login' });
+    },
+    pushAgreement() {
+      this.modalAgreement = !this.modalAgreement;
     },
   },
 };
@@ -213,5 +267,21 @@ export default {
   text-align: center;
   margin-top: 200px;
   text-decoration: underline;
+}
+.agree-modal {
+  width: 90%;
+}
+.checkbox {
+  margin-left: 70px;
+  margin-top: 40px;
+  display: flex;
+}
+.agreement-text {
+  margin-top: 20px;
+}
+.important {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #61d4b3;
 }
 </style>
