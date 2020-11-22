@@ -13,7 +13,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="changeModalValue()">
+          <v-btn color="#61d4b3" text @click="changeModalValue()">
             {{ modalButton }}
           </v-btn>
         </v-card-actions>
