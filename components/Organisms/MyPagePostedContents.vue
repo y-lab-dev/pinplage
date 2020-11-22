@@ -56,7 +56,7 @@ export default {
           link: '/mypage/postedPartTimeJobs',
         },
         {
-          name: '口コミ',
+          name: 'クチコミ',
           icon: 'mdi-store-outline',
           iconColor: '#61D4B3',
           link: '/mypage/postedSurroundingFacilities',
