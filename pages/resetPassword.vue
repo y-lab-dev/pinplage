@@ -37,6 +37,7 @@
   </v-container>
 </template>
 <script>
+import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import ResetButton from '~/components/Atoms/AppButton';
 import Modal from '~/components/Molecules/AppModal';
@@ -89,14 +90,11 @@ export default {
       auth
         .sendPasswordResetEmail(emailAddress)
         .then(() => {
-          alert('パスワードの再設定メールを送信しました');
-          this.modal = !this.modal;
-          this.modalTitle = 'パスワード再設定';
-          this.modalText = 'パスワードの再設定メールを送信しました';
-          this.buttonText = 'Ok';
-        })
-        .then(function () {
-          that.$router.push({ name: 'login' });
+          Cookies.remove('password');
+          that.modal = !that.modal;
+          that.modalTitle = 'パスワード再設定';
+          that.modalText = 'パスワードの再設定メールを送信しました';
+          that.buttonText = 'Ok';
         })
         .catch((err) => {
           alert(err);
@@ -104,6 +102,7 @@ export default {
     },
     clickModal() {
       this.modal = !this.modal;
+      this.$router.push({ name: 'login' });
     },
   },
 };

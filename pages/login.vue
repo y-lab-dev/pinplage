@@ -111,9 +111,11 @@ export default {
     },
   },
   created() {
-    if (Boolean(Cookies.get('email')) && Boolean(Cookies.get('password'))) {
+    if (Cookies.get('email') && Cookies.get('password')) {
       this.email = Cookies.get('email');
       this.password = Cookies.get('password');
+    } else if (Cookies.get('email')) {
+      this.email = Cookies.get('email');
     }
   },
   methods: {
