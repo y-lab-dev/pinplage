@@ -13,6 +13,14 @@
           />
         </template>
         <input-text
+          :input-type="nameType"
+          :input-placeholder="namePlaceholder"
+          :input-value="name"
+          @input="name = $event"
+        ></input-text>
+        <div class="validation-email">{{ nameValidation }}</div>
+
+        <input-text
           :input-type="inputType"
           :input-placeholder="mailPlaceholder"
           :input-value="email"
@@ -56,15 +64,20 @@ export default {
   },
   data() {
     return {
+      nameType: 'text',
       inputType: 'text',
       passwordType: 'password',
       buttonType: 'submit',
+      namePlaceholder: 'ユーザ名',
       mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
       passwordPlaceholder: 'パスワード（英数字6文字以上）',
+      name: '',
       email: '',
       password: '',
+      nameValidation: '',
       emailValidation: '',
       passwordValidation: '',
+      completedName: false,
       completedEmail: false,
       completedPassword: false,
       loginValidation: true,
@@ -75,6 +88,17 @@ export default {
     };
   },
   watch: {
+    name(val) {
+      if (val.length >= 1) {
+        this.nameValidation = '';
+        this.completedName = true;
+        this.check();
+      } else {
+        this.nameValidation = '1文字以上を入力してください';
+        this.completedName = false;
+        this.check();
+      }
+    },
     email(val) {
       if (val.length === 0) {
         this.emailValidation = 'メールアドレスを入力してください';
@@ -123,18 +147,18 @@ export default {
                 }
               })
               .then(() => {
-                that.$router.push({ name: 'timeline' });
+                this.dialog = !this.dialog;
+                this.modalTitle = '登録完了';
+                this.modalText =
+                  '登録したメールアドレスに認証メールを送信しました。ログインするために認証してください。';
+                this.buttonText = 'Ok';
+                that.$router.push({ name: 'login' });
               });
           });
         })
         .catch((error) => {
           alert(error.message);
         });
-      this.dialog = !this.dialog;
-      this.modalTitle = '登録完了';
-      this.modalText =
-        '登録したメールアドレスに認証メールを送信しました。ログインするために認証してください。';
-      this.buttonText = 'Ok';
     },
     saveUserData(val) {
       const db = firebase.firestore();
@@ -144,7 +168,7 @@ export default {
         .doc(val.uid)
         .set({
           email: val.email,
-          name: '',
+          name: this.name,
           icon:
             'https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/user%2Ficon%2FdefaultIcon%2FS__46546947.jpg?alt=media&token=872c7955-4673-472f-a184-5c51717dcee1',
           userToken: '',
@@ -181,7 +205,11 @@ export default {
         });
     },
     check() {
-      if (this.completedEmail === true && this.completedPassword === true) {
+      if (
+        this.completedName === true &&
+        this.completedEmail === true &&
+        this.completedPassword === true
+      ) {
         this.loginValidation = false;
       } else {
         this.loginValidation = true;
