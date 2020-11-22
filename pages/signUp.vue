@@ -51,6 +51,7 @@
   </v-container>
 </template>
 <script>
+import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignUpButton from '~/components/Atoms/AppButton';
 import Modal from '~/components/Molecules/AppModal';
@@ -137,23 +138,21 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
         .then((user) => {
+          user = firebase.auth().currentUser;
           firebase.auth().languageCode = 'ja';
-          user.user.sendEmailVerification().then(() => {
-            firebase
-              .auth()
-              .onAuthStateChanged((user) => {
-                if (user) {
-                  that.saveUserData(user);
-                }
-              })
-              .then(() => {
-                this.dialog = !this.dialog;
-                this.modalTitle = '登録完了';
-                this.modalText =
-                  '登録したメールアドレスに認証メールを送信しました。ログインするために認証してください。';
-                this.buttonText = 'Ok';
-                that.$router.push({ name: 'login' });
-              });
+          user.sendEmailVerification().then(async function () {
+            await firebase.auth().onAuthStateChanged((user) => {
+              if (user) {
+                that.saveUserData(user);
+                Cookies.set('email', that.email, { expires: 365 });
+                Cookies.set('password', that.password, { expires: 365 });
+              }
+              that.modal = !that.modal;
+              that.modalTitle = '登録完了';
+              that.modalText =
+                '登録したメールアドレスに認証メールを送信しました。ログインするために認証してください。';
+              that.buttonText = 'Ok';
+            });
           });
         })
         .catch((error) => {
@@ -217,6 +216,7 @@ export default {
     },
     clickModal() {
       this.modal = !this.modal;
+      this.$router.push({ name: 'login' });
     },
   },
 };
