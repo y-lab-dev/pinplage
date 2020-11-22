@@ -89,6 +89,7 @@ export default {
       auth
         .sendPasswordResetEmail(emailAddress)
         .then(() => {
+          alert('パスワードの再設定メールを送信しました');
           this.modal = !this.modal;
           this.modalTitle = 'パスワード再設定';
           this.modalText = 'パスワードの再設定メールを送信しました';
