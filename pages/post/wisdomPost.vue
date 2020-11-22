@@ -176,7 +176,7 @@ export default {
             .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true });
         });
       that.newQuestion = null;
-      that.$router.go(-1);
+      that.$router.push({ name: 'timeline' });
     },
   },
 };
