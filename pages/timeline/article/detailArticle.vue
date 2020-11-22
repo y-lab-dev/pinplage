@@ -331,7 +331,7 @@ export default {
         .collection('users')
         .doc(this.uid)
         .collection('article')
-        .doc('reply');
+        .doc('comment');
       const timestamp = firebase.firestore.Timestamp.now();
       const comment = {
         commentId: timestamp.toDate().toString(),
@@ -349,7 +349,7 @@ export default {
         .then((doc) => {
           that.content = '';
           user
-            .update({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) })
+            .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true })
             .then(() => {
               that.articleCommentArray = [...that.articleCommentArray, comment];
               that.scrollToElement(that.articleCommentArray.length - 1);
