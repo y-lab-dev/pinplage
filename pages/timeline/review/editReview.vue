@@ -11,8 +11,8 @@
                 <v-card-subtitle align="center">※は必須項目です</v-card-subtitle>
                 <input-place :label="placeholder" @place="placeAdd"></input-place>
                 <v-row justify="center" align="center">
-                  <v-col cols="4">※おすすめ度</v-col>
-                  <v-col cols="8">
+                  <v-col cols="5">※おすすめ度</v-col>
+                  <v-col cols="7">
                     <star-rating
                       v-model="rating"
                       :show-rating="showRating"
