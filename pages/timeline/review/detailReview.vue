@@ -179,10 +179,10 @@
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
-import Rating from '~/components/molecules/Rating';
+import Rating from '~/components/Molecules/Rating';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
-import CommentThread from '~/components/molecules/CommentThread';
+import CommentThread from '~/components/Molecules/CommentThread';
 const reviews = firebase.firestore().collection('reviews');
 
 export default {

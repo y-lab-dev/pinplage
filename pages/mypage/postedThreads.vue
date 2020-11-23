@@ -20,7 +20,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
-import ThreadCard from '~/components/molecules/ThreadCard';
+import ThreadCard from '~/components/Molecules/ThreadCard';
 import ThreadComment from '~/components/Organisms/ThreadComment';
 import firebase from '~/plugins/firebase';
 export default {

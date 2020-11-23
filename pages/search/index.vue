@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import searchPlace from '~/components/organisms/SearchPlace';
+import searchPlace from '~/components/Organisms/SearchPlace';
 export default {
   layout: 'protected',
   components: searchPlace,

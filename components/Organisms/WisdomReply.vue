@@ -54,7 +54,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
-import CreatedTimeDiff from '~/components/molecules/TimeDiff';
+import CreatedTimeDiff from '~/components/Molecules/TimeDiff';
 import WisdomLike from '~/components/Organisms/WisdomLike';
 export default {
   components: { CreatedTimeDiff, WisdomLike },

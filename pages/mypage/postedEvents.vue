@@ -16,7 +16,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
-import EventCard from '~/components/molecules/EventCard';
+import EventCard from '~/components/Molecules/EventCard';
 export default {
   layout: 'onlyBack',
   components: {

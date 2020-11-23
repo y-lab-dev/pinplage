@@ -169,7 +169,7 @@
 import { mapGetters } from 'vuex';
 import loadGoogleMapsApi from 'load-google-maps-api';
 import firebase from '~/plugins/firebase';
-import Rating from '~/components/molecules/Rating';
+import Rating from '~/components/Molecules/Rating';
 import PlaceReviews from '~/components/Organisms/PlaceReviews';
 const db = firebase.firestore().collection('places');
 const reviewdb = firebase.firestore().collection('reviews');

@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import ThreadCard from '~/components/molecules/ThreadCard';
+import ThreadCard from '~/components/Molecules/ThreadCard';
 import firebase from '~/plugins/firebase';
 
 const threads = firebase.firestore().collection('threads');

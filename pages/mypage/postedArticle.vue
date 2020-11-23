@@ -16,7 +16,7 @@
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
-import CommentThread from '~/components/molecules/CommentThread';
+import CommentThread from '~/components/Molecules/CommentThread';
 export default {
   layout: 'onlyBack',
   components: {

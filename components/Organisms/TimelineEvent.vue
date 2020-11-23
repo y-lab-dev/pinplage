@@ -6,7 +6,7 @@
 
 <script>
 import firebase from '~/plugins/firebase';
-import EventCard from '~/components/molecules/EventCard';
+import EventCard from '~/components/Molecules/EventCard';
 
 const event = firebase.firestore().collection('events');
 export default {

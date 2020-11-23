@@ -206,7 +206,7 @@ import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
 import GoogleMap from '~/components/Atoms/GoogleMap';
-import QuestionThread from '~/components/molecules/QuestionThread';
+import QuestionThread from '~/components/Molecules/QuestionThread';
 
 export default {
   layout: 'onlyBack',

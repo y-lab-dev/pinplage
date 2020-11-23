@@ -176,7 +176,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { CoolSelect } from 'vue-cool-select';
-import Rating from '~/components/molecules/PostRating';
+import Rating from '~/components/Molecules/PostRating';
 import InputImage from '~/components/Molecules/AppImageInput';
 import InputPlace from '~/components/Molecules/AppInputPlace';
 import firebase from '~/plugins/firebase';

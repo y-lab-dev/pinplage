@@ -122,8 +122,8 @@ import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import TextArea from '~/components/Atoms/AppTextarea';
-import CreatedTimeDiff from '~/components/molecules/TimeDiff';
-import CommentThread from '~/components/molecules/CommentThread';
+import CreatedTimeDiff from '~/components/Molecules/TimeDiff';
+import CommentThread from '~/components/Molecules/CommentThread';
 
 export default {
   layout: 'onlyBack',

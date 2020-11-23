@@ -76,7 +76,7 @@
 <script>
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
-import Rating from '~/components/molecules/Rating';
+import Rating from '~/components/Molecules/Rating';
 
 export default {
   layout: 'protected',

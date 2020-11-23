@@ -78,7 +78,7 @@
 
 <script>
 import algoliasearch from 'algoliasearch';
-import Rating from '~/components/molecules/Rating';
+import Rating from '~/components/Molecules/Rating';
 import firebase from '~/plugins/firebase';
 require('dotenv').config();
 
