@@ -114,10 +114,10 @@
           </v-list>
           <v-footer app fixed class="ma-0 py-3 buttom-button-bar">
             <v-row no-gutters>
-              <v-col cols="7" class="text-center">
+              <v-col cols="5" class="text-center">
                 <v-btn
                   v-show="!isKeep"
-                  width="52vw"
+                  width="33vw"
                   rounded
                   outlined
                   color="yellow darken-3"
@@ -129,7 +129,7 @@
                 </v-btn>
                 <v-btn
                   v-show="isKeep"
-                  width="52vw"
+                  width="33vw"
                   rounded
                   color="yellow darken-3"
                   dark
@@ -139,16 +139,16 @@
                   <v-icon left>mdi-heart</v-icon>行きたい
                 </v-btn>
               </v-col>
-              <v-col cols="5" class="text-center">
+              <v-col cols="7" class="text-center">
                 <v-btn
-                  width="33vw"
+                  width="52vw"
                   rounded
                   color="orange"
                   class="bottom-button"
                   dark
                   @click="postReview(reviewArray)"
                 >
-                  <v-icon left>mdi-pencil</v-icon>行った
+                  <v-icon left>mdi-pencil</v-icon>クチコミをかく
                 </v-btn>
               </v-col>
             </v-row>
@@ -310,7 +310,7 @@ export default {
           };
           self.content = '';
           user
-            .update({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) })
+            .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true })
             .then(() => {
               self.reviewCommentArray = [...self.reviewCommentArray, comment];
               self.scrollToElement(self.reviewCommentArray.length - 1);
@@ -336,7 +336,7 @@ export default {
         .doc('favorite');
 
       user
-        .set({ id: firebase.firestore.FieldValue.arrayUnion(that.placeId) })
+        .set({ id: firebase.firestore.FieldValue.arrayUnion(that.placeId) }, { merge: true })
         .then(() => {
           that.isKeep = true;
         })
@@ -354,7 +354,7 @@ export default {
         .doc('favorite');
 
       user
-        .update({ id: firebase.firestore.FieldValue.arrayRemove(that.placeId) })
+        .set({ id: firebase.firestore.FieldValue.arrayRemove(that.placeId) }, { merge: true })
         .then(() => {
           that.isKeep = false;
         })
