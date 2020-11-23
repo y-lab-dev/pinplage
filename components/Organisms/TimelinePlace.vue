@@ -13,10 +13,12 @@
               @click="toReviewDetail(item)"
             >
               <v-row justify="center" align-content="center">
-                <v-col class="pl-5 pr-0" cols="7">
-                  <v-card-text class="pa-0" style="color: #1976d2" @click="toPlaceDetail(item)">{{
-                    item.name
-                  }}</v-card-text>
+                <v-col class="title pl-5 pr-0" cols="7">
+                  <div>
+                    <v-card-text class="pa-0" style="color: #1976d2" @click="toPlaceDetail(item)">{{
+                      item.name
+                    }}</v-card-text>
+                  </div>
                 </v-col>
                 <v-col cols="5" class="px-0">
                   <div class="px-1 pt-1">
@@ -126,6 +128,7 @@ export default {
       const self = this;
       async function assignment() {
         await self.$store.commit('review/getId', obj.id);
+        await self.$store.commit('place/getId', obj.placeId);
       }
       assignment().then(this.$router.push({ name: 'timeline-review-detailReview' }));
     },
@@ -139,5 +142,9 @@ export default {
   padding: 10px;
   border-radius: 6px;
   background: seashell;
+}
+.title {
+  display: flex;
+  align-items: center;
 }
 </style>

@@ -17,9 +17,9 @@
               ></rating>
             </div>
             <template v-for="(item, index) in place.genres">
-              <v-chip v-show="item" :key="index" color="orange" small outlined class="ml-3 mt-3">{{
-                item
-              }}</v-chip>
+              <v-chip v-show="item" :key="index" color="orange" small outlined class="ml-3 mt-3">
+                {{ item }}
+              </v-chip>
             </template>
             <v-card-subtitle>{{ place.vincinty }}</v-card-subtitle>
 
@@ -317,7 +317,7 @@ export default {
         .doc('favorite');
 
       user
-        .set({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
+        .set({ id: firebase.firestore.FieldValue.arrayUnion(that.id) }, { merge: true })
         .then(() => {
           that.isKeep = true;
         })
@@ -335,7 +335,7 @@ export default {
         .doc('favorite');
 
       user
-        .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
+        .set({ id: firebase.firestore.FieldValue.arrayRemove(that.id) }, { merge: true })
         .then(() => {
           that.isKeep = false;
         })
