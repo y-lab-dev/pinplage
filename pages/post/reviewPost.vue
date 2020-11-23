@@ -15,8 +15,8 @@
                   @place="placeAdd"
                 ></input-place>
                 <v-row justify="center" align="center">
-                  <v-col cols="4">※おすすめ度</v-col>
-                  <v-col cols="8">
+                  <v-col cols="5">※おすすめ度</v-col>
+                  <v-col cols="7">
                     <rating
                       :star-size="30"
                       @rating-selected="rating = $event"

@@ -40,9 +40,9 @@
             </v-row>
             <v-row align="center">
               <v-col class="px-8 py-0" cols="8">
-                <v-chip v-show="reviewArray.genre" color="orange" small outlined>{{
-                  reviewArray.genre
-                }}</v-chip>
+                <v-chip v-show="reviewArray.genre" color="orange" small outlined>
+                  {{ reviewArray.genre }}
+                </v-chip>
               </v-col>
               <v-col class="pa-0" cols="4">
                 <div v-for="scene in reviewArray.scene" :key="scene">
@@ -115,41 +115,57 @@
           <v-footer app fixed class="ma-0 py-3 buttom-button-bar">
             <v-row no-gutters>
               <v-col cols="5" class="text-center">
-                <v-btn
-                  v-show="!isKeep"
-                  width="33vw"
-                  rounded
-                  outlined
-                  color="yellow darken-3"
-                  dark
-                  class="bottom-button-nokeep"
-                  @click="keep"
-                >
-                  <v-icon left>mdi-heart</v-icon>行きたい
-                </v-btn>
-                <v-btn
-                  v-show="isKeep"
-                  width="33vw"
-                  rounded
-                  color="yellow darken-3"
-                  dark
-                  class="bottom-button-keep"
-                  @click="notKeep"
-                >
-                  <v-icon left>mdi-heart</v-icon>行きたい
-                </v-btn>
+                <div v-if="!editor">
+                  <v-btn
+                    v-show="!isKeep"
+                    width="33vw"
+                    rounded
+                    outlined
+                    color="yellow darken-3"
+                    dark
+                    class="bottom-button-nokeep"
+                    @click="keep"
+                  >
+                    <v-icon left>mdi-heart</v-icon>行きたい
+                  </v-btn>
+                  <v-btn
+                    v-show="isKeep"
+                    width="33vw"
+                    rounded
+                    color="yellow darken-3"
+                    dark
+                    class="bottom-button-keep"
+                    @click="notKeep"
+                  >
+                    <v-icon left>mdi-heart</v-icon>行きたい
+                  </v-btn>
+                </div>
               </v-col>
               <v-col cols="7" class="text-center">
-                <v-btn
-                  width="52vw"
-                  rounded
-                  color="orange"
-                  class="bottom-button"
-                  dark
-                  @click="postReview(reviewArray)"
-                >
-                  <v-icon left>mdi-pencil</v-icon>クチコミをかく
-                </v-btn>
+                <div v-if="editor">
+                  <v-btn
+                    width="52vw"
+                    rounded
+                    color="orange"
+                    class="bottom-button"
+                    dark
+                    @click="editReview(reviewArray)"
+                  >
+                    <v-icon left>mdi-pencil</v-icon>クチコミを編集
+                  </v-btn>
+                </div>
+                <div v-else>
+                  <v-btn
+                    width="52vw"
+                    rounded
+                    color="orange"
+                    class="bottom-button"
+                    dark
+                    @click="postReview(reviewArray)"
+                  >
+                    <v-icon left>mdi-pencil</v-icon>クチコミをかく
+                  </v-btn>
+                </div>
               </v-col>
             </v-row>
           </v-footer>
@@ -192,6 +208,7 @@ export default {
       posterIcon: '',
       isCreated: false,
       isKeep: false,
+      editor: false,
     };
   },
   computed: {
@@ -228,6 +245,9 @@ export default {
           const userData = doc.data();
           self.posterName = userData.name;
           self.posterIcon = userData.icon;
+          if (self.uid === self.reviewArray.uid) {
+            self.editor = true;
+          }
         });
       })
       .catch((err) => {
@@ -369,6 +389,9 @@ export default {
         await self.$store.commit('place/getName', obj.name);
       }
       assignment().then(this.$router.push({ name: 'post-reviewPost' }));
+    },
+    editReview(obj) {
+      this.$router.push({ name: 'timeline-review-editReview' });
     },
   },
 };
