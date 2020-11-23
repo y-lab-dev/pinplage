@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
-      <v-tab>投稿した口コミ</v-tab>
+      <v-tab>投稿したクチコミ</v-tab>
       <!-- <v-tab></v-tab> -->
     </v-tabs>
 
@@ -18,9 +18,9 @@
           >
             <v-row justify="center" align-content="center">
               <v-col class="pl-5 pr-0" cols="7">
-                <v-card-text class="pa-0" style="color: #1976d2" @click="toPlaceDetail(item)">{{
-                  item.name
-                }}</v-card-text>
+                <v-card-text class="pa-0" style="color: #1976d2" @click="toPlaceDetail(item)">
+                  {{ item.name }}
+                </v-card-text>
               </v-col>
               <v-col cols="5" class="px-0">
                 <div class="px-1 pt-1">
