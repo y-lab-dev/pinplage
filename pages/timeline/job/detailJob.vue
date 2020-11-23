@@ -363,7 +363,7 @@ export default {
         .collection('users')
         .doc(this.uid)
         .collection('job')
-        .doc('reply');
+        .doc('question');
       const timestamp = firebase.firestore.Timestamp.now();
       const question = {
         questionId: timestamp.toDate().toString(),
@@ -382,7 +382,7 @@ export default {
         .then((doc) => {
           that.content = '';
           user
-            .update({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) })
+            .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true })
             .then(() => {
               that.jobQuestionArray = [...that.jobQuestionArray, question];
               that.scrollToElement(that.jobQuestionArray.length - 1);
