@@ -17,9 +17,9 @@
               ></rating>
             </div>
             <template v-for="(item, index) in place.genres">
-              <v-chip v-show="item" :key="index" color="orange" small outlined class="ml-3 mt-3">
-                {{ item }}
-              </v-chip>
+              <v-chip v-show="item" :key="index" color="orange" small outlined class="ml-3 mt-3">{{
+                item
+              }}</v-chip>
             </template>
             <v-card-subtitle>{{ place.vincinty }}</v-card-subtitle>
 
@@ -119,10 +119,10 @@
             </v-list>
             <v-footer app fixed class="ma-0 py-3 buttom-button-bar">
               <v-row no-gutters>
-                <v-col cols="7" class="text-center">
+                <v-col cols="5" class="text-center">
                   <v-btn
                     v-show="!isKeep"
-                    width="52vw"
+                    width="33vw"
                     rounded
                     outlined
                     color="yellow darken-3"
@@ -134,7 +134,7 @@
                   </v-btn>
                   <v-btn
                     v-show="isKeep"
-                    width="52vw"
+                    width="33vw"
                     rounded
                     color="yellow darken-3"
                     dark
@@ -144,16 +144,16 @@
                     <v-icon left>mdi-heart</v-icon>行きたい
                   </v-btn>
                 </v-col>
-                <v-col cols="5" class="text-center">
+                <v-col cols="7" class="text-center">
                   <v-btn
-                    width="33vw"
+                    width="52vw"
                     rounded
                     color="orange"
                     class="bottom-button"
                     dark
                     @click="postReview(place)"
                   >
-                    <v-icon left>mdi-pencil</v-icon>行った
+                    <v-icon left>mdi-pencil</v-icon>クチコミをかく
                   </v-btn>
                 </v-col>
               </v-row>
