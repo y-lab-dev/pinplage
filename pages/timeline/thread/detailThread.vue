@@ -75,7 +75,7 @@ import ThreadComment from '~/components/Organisms/ThreadComment';
 const threads = firebase.firestore().collection('threads');
 
 export default {
-  layout: 'protected',
+  layout: 'onlyBack',
   components: {
     InputText,
     InputTextarea,
