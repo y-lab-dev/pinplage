@@ -8,12 +8,36 @@
       height="57px"
       @change="pauseTab"
     >
-      <v-tab class="pa-0">スレッド</v-tab>
-      <v-tab class="pa-0">知恵袋</v-tab>
-      <v-tab class="pa-0">クチコミ</v-tab>
-      <v-tab class="pa-0">学生記事</v-tab>
-      <v-tab class="pa-0">イベント</v-tab>
-      <v-tab class="pa-0">アルバイト</v-tab>
+      <v-tab
+        ><v-avatar rounded tile size="30"
+          ><img :src="require('~/assets/timeline/thread.png')" /></v-avatar
+        ><span class="ml-2">スレッド</span></v-tab
+      >
+      <v-tab
+        ><v-avatar rounded tile size="30"
+          ><img :src="require('~/assets/timeline/wisdom.png')" /></v-avatar
+        ><span class="ml-2">知恵袋</span></v-tab
+      >
+      <v-tab
+        ><v-avatar rounded tile size="30"
+          ><img :src="require('~/assets/timeline/review.png')" /></v-avatar
+        ><span class="ml-2">クチコミ</span></v-tab
+      >
+      <v-tab
+        ><v-avatar rounded tile size="30"
+          ><img :src="require('~/assets/timeline/article.png')" /></v-avatar
+        ><span class="ml-2">学生記事</span></v-tab
+      >
+      <v-tab
+        ><v-avatar rounded tile size="30"
+          ><img :src="require('~/assets/timeline/event.png')" /></v-avatar
+        ><span class="ml-2">イベント</span></v-tab
+      >
+      <v-tab
+        ><v-avatar rounded tile size="30"
+          ><img :src="require('~/assets/timeline/job.png')" /></v-avatar
+        ><span class="ml-2">アルバイト</span></v-tab
+      >
     </v-tabs>
 
     <v-tabs-items v-cloak v-model="model" @change="pauseTab">
