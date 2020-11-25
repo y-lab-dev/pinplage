@@ -7,6 +7,6 @@
 import searchPlace from '~/components/Organisms/SearchPlace';
 export default {
   layout: 'protected',
-  components: searchPlace,
+  components: { searchPlace },
 };
 </script>
