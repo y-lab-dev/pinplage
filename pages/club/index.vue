@@ -52,7 +52,6 @@ export default {
     }),
   },
   created() {
-    console.log(this.tab);
     this.clubTab = this.tab;
     const that = this;
     // const circles =
@@ -86,7 +85,6 @@ export default {
       this.$router.push({ name: 'club-detail', query: clubId });
     },
     pauseTab() {
-      console.log(this.clubTab);
       this.$store.commit('club/pauseTab', this.clubTab);
     },
   },
