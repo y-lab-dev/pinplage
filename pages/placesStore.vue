@@ -164,7 +164,7 @@ export default {
                         mainImgUrl: self.mainImg,
                         rating: 0,
                         _tags: [],
-                        genre: [],
+                        genres: [],
                       })
                       .then(() => {
                         self.array.push(self.placesList[i].place_id);

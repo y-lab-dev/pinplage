@@ -135,20 +135,15 @@
                             :type="buttonType"
                             :disabled="rating == 0 || placeName == ''"
                             v-on="on"
-                            >編集完了</v-btn
-                          >
+                          >編集完了</v-btn>
                         </div>
                       </template>
                       <v-card>
                         <v-card-title>編集内容を保存しますか？</v-card-title>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="pink darken-1" text @click="postDialog = false"
-                            >キャンセル</v-btn
-                          >
-                          <v-btn class="white--text button-color" tile @click="post()"
-                            >保存する</v-btn
-                          >
+                          <v-btn color="pink darken-1" text @click="postDialog = false">キャンセル</v-btn>
+                          <v-btn class="white--text button-color" tile @click.once="post()">保存する</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -157,7 +152,7 @@
                         <v-card-title>{{ comment }}</v-card-title>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="pink darken-1" text @click="finish()">閉じる</v-btn>
+                          <v-btn color="pink darken-1" text @click.once="finish()">閉じる</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -175,20 +170,15 @@
                             outlined
                             v-bind="attrs"
                             v-on="on"
-                            >削除する</v-btn
-                          >
+                          >削除する</v-btn>
                         </div>
                       </template>
                       <v-card>
                         <v-card-title>このクチコミを削除しますか？</v-card-title>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="pink darken-1" text @click="deleteDialog = false"
-                            >キャンセル</v-btn
-                          >
-                          <v-btn class="white--text button-color" tile @click="notRead()"
-                            >削除する</v-btn
-                          >
+                          <v-btn color="pink darken-1" text @click="deleteDialog = false">キャンセル</v-btn>
+                          <v-btn class="white--text button-color" tile @click="notRead()">削除する</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
