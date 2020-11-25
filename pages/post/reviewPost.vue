@@ -147,7 +147,7 @@
                           <v-btn color="pink darken-1" text @click="postDialog = false"
                             >キャンセル</v-btn
                           >
-                          <v-btn class="white--text button-color" tile @click="post()"
+                          <v-btn class="white--text button-color" tile @click.once="post()"
                             >投稿する</v-btn
                           >
                         </v-card-actions>
@@ -158,7 +158,7 @@
                         <v-card-title>投稿しました。</v-card-title>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="pink darken-1" text @click="finish()">閉じる</v-btn>
+                          <v-btn color="pink darken-1" text @click.once="finish()">閉じる</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
