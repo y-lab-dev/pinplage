@@ -2,6 +2,7 @@
   <div>
     <v-tabs
       v-model="model"
+      fixed-tabs
       color="#61d4b3"
       class="tabs"
       center-active

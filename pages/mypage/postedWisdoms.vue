@@ -20,12 +20,14 @@
       /></v-tab-item>
       <div>
         <v-tab-item>
-          <wisdom-reply
+          <div
             v-for="(item, index) in postedReplies"
             :key="item.wisdomId"
-            :class="`index-${index}`"
-            v-bind="item"
-        /></v-tab-item>
+            @click="toParentWisdom(item.parentWisdomId)"
+          >
+            <wisdom-reply :key="item.wisdomId" :class="`index-${index}`" v-bind="item" />
+          </div>
+        </v-tab-item>
       </div>
     </v-tabs-items>
   </div>
@@ -104,10 +106,14 @@ export default {
                 likeAmount: Number(doc.data().like),
                 content: doc.data().content,
                 createdAt: doc.data().createdAt.toDate(),
+                parentWisdomId: doc.ref.parent.parent.id,
               },
             ];
           });
         });
+    },
+    toParentWisdom(wisdomId) {
+      this.$router.push({ name: 'timeline-wisdom-detailWisdom', query: wisdomId });
     },
   },
 };

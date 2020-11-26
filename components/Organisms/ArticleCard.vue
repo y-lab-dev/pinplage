@@ -94,7 +94,7 @@ export default {
       async function assignment() {
         await that.$store.commit('article/getData', obj);
       }
-      assignment().then(this.$router.push('timeline/article/detailArticle'));
+      assignment().then(this.$router.push({ name: 'timeline-article-detailArticle' }));
     },
   },
 };
