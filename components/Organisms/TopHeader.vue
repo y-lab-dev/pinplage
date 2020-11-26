@@ -74,13 +74,12 @@ export default {
       drawer: null,
       subPages: [
         { name: '部活・サークル', icon: 'mdi-run', link: 'club' },
-        // { name: '設定', icon: 'mdi-account-settings-outline', link: 'settings' },
-        // { name: '利用規約', icon: 'mdi-file-outline', link: 'apprule' },
         {
           name: 'お問い合わせ',
           icon: 'mdi-account-heart-outline',
           link: 'https://forms.gle/n7ejy3uWDJsJBoP89',
         },
+        { name: '設定', icon: 'mdi-cog-outline', link: 'setting' },
       ],
       contacts: [
         // { name: 'パンプラweb版', icon: 'mdi-web', link: 'webplage' },
@@ -132,6 +131,12 @@ export default {
         return pageName;
       } else if (pageName === '/mypage') {
         pageName = 'マイページ';
+        return pageName;
+      } else if (pageName === '/club') {
+        pageName = '部活・サークル';
+        return pageName;
+      } else if (pageName === '/setting') {
+        pageName = '設定';
         return pageName;
       } else {
         return '';

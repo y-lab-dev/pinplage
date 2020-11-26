@@ -30,7 +30,6 @@ export default {
   },
   async mounted() {
     this.coord = { lat: this.geometry.lat, lng: this.geometry.lng };
-    console.log(this.coord);
     this.gmap = await initMap();
     this.map = new this.gmap.Map(this.$refs.map, {
       center: this.coord,

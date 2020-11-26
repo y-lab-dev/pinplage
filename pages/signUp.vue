@@ -35,13 +35,13 @@
           @input="password = $event"
         ></input-text>
         <div class="validation-password">{{ passwordValidation }}</div>
-        <template v-if="modalAgreement">
-          <Agreement class="agree-modal" />
+        <template v-if="modalAppRule">
+          <AppRule class="app-rule-modal" />
         </template>
         <div class="checkbox">
           <v-checkbox v-model="checkbox" color="#61d4b3"></v-checkbox>
-          <div class="agreement-text" @click="pushAgreement()">
-            <span class="important">{{ agreement }}</span>
+          <div class="app-rule-text" @click="pushAppRule()">
+            <span class="important">{{ appRule }}</span>
             に同意する
           </div>
         </div>
@@ -64,7 +64,7 @@
 import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignUpButton from '~/components/Atoms/AppButton';
-import Agreement from '~/components/Molecules/Agreement';
+import AppRule from '~/components/Molecules/AppRule';
 import Modal from '~/components/Molecules/AppModal';
 import firebase from '~/plugins/firebase';
 
@@ -72,7 +72,7 @@ export default {
   components: {
     InputText,
     SignUpButton,
-    Agreement,
+    AppRule,
     Modal,
   },
   data() {
@@ -98,9 +98,9 @@ export default {
       modalTitle: '',
       modalText: '',
       buttonText: '',
-      modalAgreement: false,
+      modalAppRule: false,
       checkbox: false,
-      agreement: '利用規約',
+      appRule: '利用規約',
     };
   },
   watch: {
@@ -241,8 +241,8 @@ export default {
       this.modal = !this.modal;
       this.$router.push({ name: 'login' });
     },
-    pushAgreement() {
-      this.modalAgreement = !this.modalAgreement;
+    pushAppRule() {
+      this.modalAppRule = !this.modalAppRule;
     },
   },
 };
@@ -268,7 +268,7 @@ export default {
   margin-top: 200px;
   text-decoration: underline;
 }
-.agree-modal {
+.app-rule-modal {
   width: 90%;
 }
 .checkbox {
@@ -276,7 +276,7 @@ export default {
   margin-top: 40px;
   display: flex;
 }
-.agreement-text {
+.app-rule-text {
   margin-top: 20px;
 }
 .important {

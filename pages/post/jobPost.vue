@@ -180,7 +180,7 @@ import InputImage from '~/components/Molecules/AppImageInput';
 import InputPlace from '~/components/Molecules/AppInputPlace';
 
 export default {
-  layout: 'protected',
+  layout: 'onlyBack',
   components: {
     PostButton,
     InputImage,

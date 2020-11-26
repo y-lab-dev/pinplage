@@ -14,6 +14,7 @@
 import TopHeader from '~/components/Organisms/TopHeader';
 import BottomTab from '~/components/Organisms/TopBottom';
 export default {
+  middleware: 'authenticated',
   components: {
     BottomTab,
     TopHeader,

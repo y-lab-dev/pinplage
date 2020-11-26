@@ -10,6 +10,6 @@
 </template>
 <script>
 export default {
-  middleware: 'authenticated',
+  middleware: 'autoLogin',
 };
 </script>

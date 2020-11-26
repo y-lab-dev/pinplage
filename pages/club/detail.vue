@@ -73,7 +73,6 @@ export default {
     const that = this;
     const clubData = firebase.firestore().collection('circles').doc(that.$route.query);
     clubData.get().then((doc) => {
-      console.log(doc.data());
       that.clubIcon = doc.data().icon;
       that.clubName = doc.data().name;
     });

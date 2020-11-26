@@ -42,7 +42,7 @@
 import firebase from '~/plugins/firebase';
 import Rating from '~/components/Molecules/Rating';
 export default {
-  components: Rating,
+  components: { Rating },
   props: {
     id: {
       required: true,
