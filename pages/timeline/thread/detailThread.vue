@@ -6,18 +6,30 @@
           <img v-show="src" :key="src" class="top-img" :src="src" />
         </template>
       </viewer>
-      <v-card-title
-        ><p>
-          名前：<span class="teal--text text--darken-1 font-weight-bold"
-            >{{ threadObject.name }}
-          </span>
-        </p></v-card-title
+      <v-card-title class="teal--text text--darken-1 font-weight-bold text-subtitle-1 px-2 py-3">
+        {{ threadObject.content }}</v-card-title
       >
-      <v-card-subtitle>{{ threadObject.date }}</v-card-subtitle>
-      <v-list-item>
-        <v-list-item-content>{{ threadObject.content }}</v-list-item-content>
-      </v-list-item>
+      <v-card-subtitle class="pa-0 py-3 text-caption px-2"
+        >{{ threadObject.name }}さん：{{ threadObject.date }}</v-card-subtitle
+      >
     </v-card>
+    <v-list class="pt-0">
+      <v-list-item-title class="font-weight-bold ml-3"
+        ><v-icon class="mr-2">mdi-comment-multiple</v-icon>コメント</v-list-item-title
+      >
+    </v-list>
+    <template v-if="isReply">
+      <thread-comment
+        v-for="(item, index) in replyArray"
+        :key="item.commentId"
+        v-bind="replyArray[index]"
+        :class="`index-${index}`"
+      ></thread-comment>
+    </template>
+    <template v-if="!isReply"
+      ><p class="ml-3">このスレッドにまだコメントはありません。</p>
+    </template>
+    <v-divider></v-divider>
     <div class="pb-6">
       <v-list>
         <v-list-item-title class="font-weight-bold ml-3"
@@ -44,23 +56,6 @@
         >
       </div>
     </div>
-    <v-divider></v-divider>
-    <v-list>
-      <v-list-item-title class="font-weight-bold ml-3 mt-2"
-        ><v-icon class="mr-2">mdi-comment-multiple</v-icon>コメント</v-list-item-title
-      >
-    </v-list>
-    <template v-if="isReply">
-      <thread-comment
-        v-for="(item, index) in replyArray"
-        :key="item.commentId"
-        v-bind="replyArray[index]"
-        :class="`index-${index}`"
-      ></thread-comment>
-    </template>
-    <template v-if="!isReply"
-      ><p class="ml-3">このスレッドにまだコメントはありません。</p>
-    </template>
   </div>
 </template>
 <script>

@@ -1,15 +1,29 @@
 <template>
-  <v-card tile :elevation="2" @click="toThreadDetail()">
-    <v-img v-show="img" :src="img" height="200px"></v-img>
-    <v-card-title>
-      <p>
-        名前：<span class="teal--text text--darken-1 font-weight-bold">{{ name }} </span>
-      </p>
-    </v-card-title>
-    <v-card-subtitle>{{ formatedDay }}</v-card-subtitle>
-    <v-list-item>
-      <v-list-item-content>{{ content }}</v-list-item-content>
-    </v-list-item>
+  <v-card tile class="ma-2" :elevation="2" @click="toThreadDetail()">
+    <v-container class="py-0">
+      <v-row v-if="img">
+        <v-col cols="3">
+          <v-avatar class="ma-3" size="60" tile>
+            <v-img :src="img"></v-img>
+          </v-avatar>
+        </v-col>
+        <v-col cols="9">
+          <v-card-title class="teal--text text--darken-1 font-weight-bold text-subtitle-1 pa-0">
+            {{ content }}
+          </v-card-title>
+          <v-card-subtitle class="pa-0 pt-3 text-caption">{{ formatedDay }}</v-card-subtitle>
+        </v-col>
+      </v-row>
+      <v-row v-if="!img">
+        <v-col cols="12">
+          <v-card-title class="teal--text text--darken-1 font-weight-bold text-subtitle-1 pa-0">
+            {{ content }}
+          </v-card-title>
+          <v-card-subtitle class="pa-0 pt-3 text-caption">{{ formatedDay }}</v-card-subtitle>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!-- <v-img v-show="img" :src="img" height="200px"></v-img> -->
   </v-card>
 </template>
 

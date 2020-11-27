@@ -10,7 +10,7 @@
             <v-col cols="6" align-self="center">
               <v-row>
                 <v-col cols="12" class="pa-0">
-                  <p class="catchphrase">静大生に好きに自由に</p>
+                  <p class="catchphrase">静大生に自由に</p>
                 </v-col>
                 <v-col cols="12" class="pa-0">
                   <p class="catchphrase">情報発信してみよう！</p>
