@@ -291,8 +291,12 @@ export default {
     },
     like() {
       const that = this;
+      const article = firebase.firestore().collection('articles');
+      const thisArticle = article.doc(this.id);
       const loginUser = firebase.firestore().collection('users').doc(this.uid);
 
+      this.articleObject.like++;
+      thisArticle.update({ like: that.articleObject.like });
       loginUser
         .collection('article')
         .doc('favorite')
@@ -306,8 +310,12 @@ export default {
     },
     notLike() {
       const that = this;
+      const article = firebase.firestore().collection('articles');
+      const thisArticle = article.doc(this.id);
       const loginUser = firebase.firestore().collection('users').doc(this.uid);
 
+      this.articleObject.like--;
+      thisArticle.update({ like: that.articleObject.like });
       loginUser
         .collection('article')
         .doc('favorite')

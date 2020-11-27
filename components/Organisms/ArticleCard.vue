@@ -87,6 +87,8 @@ export default {
   methods: {
     toDetail() {
       const that = this;
+      const article = firebase.firestore().collection('articles').doc(this.id);
+
       const obj = {
         id: that.id,
         category: that.category,
@@ -95,6 +97,12 @@ export default {
         await that.$store.commit('article/getData', obj);
       }
       assignment().then(this.$router.push({ name: 'timeline-article-detailArticle' }));
+      const viewsUp = function () {
+        that.views++;
+        article.update({ views: that.views });
+      };
+
+      setTimeout(viewsUp, 1000);
     },
   },
 };
