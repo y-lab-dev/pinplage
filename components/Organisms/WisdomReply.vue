@@ -4,6 +4,15 @@
       <v-row>
         <v-col class="pa-0" cols="12">
           <v-divider></v-divider>
+          <v-row>
+            <v-col>
+              <v-chip v-if="bestAnswer" text-color="#fff" class="ml-3" color="#DE237C">
+                <v-icon color="#DBDE23">mdi-crown</v-icon>
+                <div class="mx-1">ベストアンサー</div>
+                <v-icon color="#DBDE23">mdi-crown</v-icon>
+              </v-chip>
+            </v-col>
+          </v-row>
           <v-card tile elevation="0">
             <v-row class="my-2 pt-0" style="max-width: 100vw">
               <v-col cols="3" class="pt-0">
@@ -28,7 +37,7 @@
                 <v-row no-gutters justify="end">
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
                     <div v-if="!selfAnswer">
-                      <wisdom-like :wisdom-id="wisdomId" />
+                      <wisdom-like :wisdom-id="wisdomId" :type="'likedReply'" />
                       <span class="posted-info">
                         {{ likeAmount }}
                       </span>
@@ -37,13 +46,13 @@
                 </v-row>
               </v-col>
             </v-row>
-            <v-row v-if="!selfAnswer" justify="center" class="pb-2 chip-row">
-              <v-col class="py-2" style="text-align: center" cols="12 chip-row">
-                <v-chip class="ma-auto" color="#61D4B3" small text-color="#fff">
-                  ベストアンサーに選ぶ
-                </v-chip>
-              </v-col>
-            </v-row>
+            <wisdom-best-answer
+              :wisdom-id="wisdomId"
+              :replyer="replyer"
+              :resolved="resolved"
+              :poster="poster"
+              :source-wisdom-id="sourceWisdomId"
+            />
           </v-card>
           <v-divider></v-divider>
         </v-col>
@@ -56,14 +65,19 @@ import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import CreatedTimeDiff from '~/components/Molecules/TimeDiff';
 import WisdomLike from '~/components/Organisms/WisdomLike';
+import WisdomBestAnswer from '~/components/Organisms/WisdomBestAnswer';
 export default {
-  components: { CreatedTimeDiff, WisdomLike },
+  components: { CreatedTimeDiff, WisdomLike, WisdomBestAnswer },
   props: {
     wisdomId: {
       required: true,
       type: String,
     },
     poster: {
+      required: true,
+      type: String,
+    },
+    replyer: {
       required: true,
       type: String,
     },
@@ -81,6 +95,18 @@ export default {
       type: Number,
       default: 0,
     },
+    resolved: {
+      required: true,
+      type: Boolean,
+    },
+    sourceWisdomId: {
+      required: true,
+      type: String,
+    },
+    bestAnswer: {
+      required: true,
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -96,7 +122,7 @@ export default {
       postedWisdoms: 'user/postedWisdom',
     }),
     selfAnswer() {
-      if (this.uid === this.poster) {
+      if (this.uid === this.replyer) {
         return true;
       } else {
         return false;
@@ -105,7 +131,7 @@ export default {
   },
   created() {
     const that = this;
-    const posterInfo = firebase.firestore().collection('users').doc(this.poster);
+    const posterInfo = firebase.firestore().collection('users').doc(this.replyer);
     posterInfo.get().then((doc) => {
       const userData = doc.data();
       that.posterName = userData.name;

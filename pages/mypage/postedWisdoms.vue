@@ -1,11 +1,16 @@
 <template>
   <div>
     <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
+      <v-tab>いいねした知恵袋</v-tab>
       <v-tab>投稿した知恵袋</v-tab>
       <v-tab>あなたの返信</v-tab>
+      <!-- <v-tab>いいねした返信</v-tab> -->
     </v-tabs>
 
     <v-tabs-items v-model="postedTab">
+      <v-tab-item>
+        <wisdom-thread v-for="item in likedWisdoms" :key="item.wisdomId" v-bind="item" />
+      </v-tab-item>
       <v-tab-item>
         <wisdom-thread
           v-for="item in postedWisdoms"
@@ -18,17 +23,24 @@
           :created-at="item.createdAt"
           :like-amount="item.likeAmount"
       /></v-tab-item>
-      <div>
-        <v-tab-item>
-          <div
-            v-for="(item, index) in postedReplies"
-            :key="item.wisdomId"
-            @click="toParentWisdom(item.parentWisdomId)"
-          >
-            <wisdom-reply :key="item.wisdomId" :class="`index-${index}`" v-bind="item" />
-          </div>
-        </v-tab-item>
-      </div>
+      <v-tab-item>
+        <div
+          v-for="item in postedReplies"
+          :key="item.wisdomId"
+          @click="toParentWisdom(item.parentWisdomId)"
+        >
+          <wisdom-reply :key="item.wisdomId" v-bind="item" />
+        </div>
+      </v-tab-item>
+      <v-tab-item>
+        <div
+          v-for="item in likedReplies"
+          :key="item.wisdomId"
+          @click="toParentWisdom(item.parentWisdomId)"
+        >
+          <wisdom-reply :key="item.wisdomId" v-bind="item" />
+        </div>
+      </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
@@ -37,7 +49,7 @@ import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
 import WisdomReply from '~/components/Organisms/WisdomReply';
-
+const db = firebase.firestore();
 export default {
   layout: 'onlyBack',
   components: { WisdomThread, WisdomReply },
@@ -45,6 +57,8 @@ export default {
     return {
       postedWisdoms: [],
       postedReplies: [],
+      likedWisdoms: [],
+      likedReplies: [],
       postedTab: '',
     };
   },
@@ -58,7 +72,6 @@ export default {
   created() {
     this.$store.dispatch('user/getUserWisdom');
     const that = this;
-    const db = firebase.firestore();
     const wisdoms = db.collection('wisdoms');
     wisdoms
       .orderBy('createdAt', 'desc')
@@ -86,12 +99,51 @@ export default {
         });
       });
     this.getUserWisdomReply();
+    this.getUserLikedPost().then((idArr) => {
+      idArr.forEach((id) => {
+        db.collection('wisdoms')
+          .doc(id)
+          .get()
+          .then((doc) => {
+            const wisdom = doc.data();
+            const likedWisdom = {
+              wisdomId: doc.id,
+              poster: wisdom.poster,
+              resolved: wisdom.resolved,
+              likeAmount: wisdom.like,
+              content: wisdom.content,
+              category: wisdom.category,
+              createdAt: wisdom.createdAt.toDate(),
+            };
+
+            db.collection('wisdoms')
+              .doc(doc.id)
+              .collection('reply')
+              .get()
+              .then((doc) => {
+                likedWisdom.replyAmount = doc.size;
+                that.likedWisdoms = [...that.likedWisdoms, likedWisdom];
+              });
+          });
+      });
+    });
+    // this.getUserLikedReply().then((idArr) => {
+    //   idArr.forEach((id) => {
+    //     db.collectionGroup('reply')
+    //       .whereEquals('id', id)
+    //       .get()
+    //       .then((snapshot) => {
+    //         snapshot.forEach((doc) => {
+    //           console.log(doc.data());
+    //         });
+    //       });
+    //   });
+    // });
   },
   methods: {
     async getUserWisdomReply() {
       const that = this;
-      await firebase
-        .firestore()
+      await db
         .collectionGroup('reply')
         .where('replyer', '==', this.uid)
         .orderBy('createdAt', 'desc')
@@ -111,6 +163,30 @@ export default {
             ];
           });
         });
+    },
+    async getUserLikedPost() {
+      const likedPost = await db
+        .collection('users')
+        .doc(this.uid)
+        .collection('wisdom')
+        .doc('likedPost')
+        .get()
+        .then((doc) => {
+          return doc.data().id;
+        });
+      return likedPost;
+    },
+    async getUserLikedReply() {
+      const likedReply = await db
+        .collection('users')
+        .doc(this.uid)
+        .collection('wisdom')
+        .doc('likedReply')
+        .get()
+        .then((doc) => {
+          return doc.data().id;
+        });
+      return likedReply;
     },
     toParentWisdom(wisdomId) {
       this.$router.push({ name: 'timeline-wisdom-detailWisdom', query: wisdomId });

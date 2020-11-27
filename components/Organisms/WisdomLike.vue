@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      alreadyLiked: '',
+      alreadyLiked: false,
     };
   },
   computed: {
@@ -43,7 +43,7 @@ export default {
         .collection('users')
         .doc(this.uid)
         .collection('wisdom')
-        .doc('likedPost');
+        .doc(this.type);
       if (!this.alreadyLiked) {
         userWisdomLikedPost
           .set(
