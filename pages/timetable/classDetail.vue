@@ -82,9 +82,7 @@
       <ButtonComponent
         :button-type="addButton"
         :button-method="manualSetData"
-        :button-disabled="
-          editedInfo.title == '' || editedInfo.teacher == '' || editedInfo.room == ''
-        "
+        :button-disabled="editedInfo.title == ''"
         style="margin: 0 auto; color: white; width: 100%"
         >授業を追加する</ButtonComponent
       >

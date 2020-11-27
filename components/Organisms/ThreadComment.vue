@@ -1,20 +1,16 @@
 <template>
   <div>
-    <v-card tile :elevation="1">
-      <v-card-title class="text-subtitle-2">
+    <v-card tile :elevation="0" class="py-3">
+      <v-card-title class="text-subtitle-2 pa-0 pl-2">
         <p>
-          {{ commentNumber }} 名前：<span class="teal--text text--darken-1 font-weight-bold"
-            >{{ name }}
-          </span>
+          {{ commentNumber }}:
+          <span class="teal--text text--darken-1 font-weight-bold">{{ name }}</span
+          >さん:{{ date }}
         </p></v-card-title
       >
-      <v-card-subtitle>{{ date }}</v-card-subtitle>
-      <v-list-item>
-        <v-list-item-content>
-          {{ content }}
-        </v-list-item-content>
-      </v-list-item>
+      <v-card-subtitle class="font-weight-bold pa-0 pt-3 px-2">{{ content }}</v-card-subtitle>
     </v-card>
+    <v-divider></v-divider>
   </div>
 </template>
 
