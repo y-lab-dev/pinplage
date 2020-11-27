@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-container>
-      <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
-        <v-tab>行きたいリスト</v-tab>
-        <v-tab>投稿したクチコミ</v-tab>
-      </v-tabs>
+    <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
+      <v-tab>行きたいリスト</v-tab>
+      <v-tab>投稿したクチコミ</v-tab>
+    </v-tabs>
 
+    <v-container>
       <v-tabs-items v-model="postedTab">
         <v-tab-item>
           <div v-for="item in keptPlaces" :key="item.id">

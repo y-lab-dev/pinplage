@@ -4,7 +4,7 @@
       <v-row align-content="center">
         <v-col cols="4">
           <v-chip v-if="!question.resolved" color="#61d4b3" dark>回答受付中</v-chip>
-          <v-chip v-if="question.resolved" color="#DE237C" dark>解決済み！</v-chip>
+          <v-chip v-else color="#DE237C" dark>解決済み</v-chip>
         </v-col>
         <v-col cols="8" align-self="center">
           <span class="category">カテゴリ:{{ question.category }}</span>
@@ -56,7 +56,9 @@
         :key="item.wisdomId"
         :class="`index-${index}`"
         v-bind="answers[index]"
-        :answer-display="true"
+        :resolved="question.resolved"
+        :poster="question.poster"
+        :source-wisdom-id="question.wisdomId"
       />
     </div>
     <v-footer app fixed color="white" class="text-area">
@@ -203,12 +205,17 @@ export default {
           const answer = doc.data();
           const answerDetail = {
             wisdomId: doc.id,
-            poster: answer.replyer,
+            replyer: answer.replyer,
             likeAmount: answer.like,
             content: answer.content,
             createdAt: answer.createdAt.toDate(),
+            bestAnswer: answer.bestAnswer,
           };
-          that.answers.push(answerDetail);
+          if (answer.bestAnswer === true) {
+            that.answers = [answerDetail, ...that.answers];
+          } else {
+            that.answers = [...that.answers, answerDetail];
+          }
         });
       });
   },

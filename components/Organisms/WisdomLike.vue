@@ -18,22 +18,34 @@ export default {
       type: String,
       default: 'likedPost',
     },
+    parentId: {
+      required: false,
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
-      alreadyLiked: '',
+      alreadyLiked: false,
     };
   },
   computed: {
     ...mapGetters({
       uid: 'user/uid',
       likedWisdoms: 'user/likedPost',
+      likedReply: 'user/likedReply',
     }),
   },
   created() {
-    this.alreadyLiked = this.likedWisdoms.some((value) => {
-      return value === this.wisdomId;
-    });
+    if (this.type === 'likedPost') {
+      this.alreadyLiked = this.likedWisdoms.some((value) => {
+        return value === this.wisdomId;
+      });
+    } else {
+      this.alreadyLiked = this.likedReply.some((value) => {
+        return value === this.wisdomId;
+      });
+    }
   },
   methods: {
     addWisdomLike() {
@@ -43,7 +55,7 @@ export default {
         .collection('users')
         .doc(this.uid)
         .collection('wisdom')
-        .doc('likedPost');
+        .doc(this.type);
       if (!this.alreadyLiked) {
         userWisdomLikedPost
           .set(
@@ -53,8 +65,7 @@ export default {
             { merge: true }
           )
           .then(() => {
-            that.alreadyLiked = true;
-            that.$store.dispatch('user/getUserWisdom');
+            that.incrementWisdomLike();
           });
       } else {
         userWisdomLikedPost
@@ -62,9 +73,40 @@ export default {
             id: firebase.firestore.FieldValue.arrayRemove(that.wisdomId),
           })
           .then(() => {
-            that.alreadyLiked = false;
-            that.$store.dispatch('user/getUserWisdom');
+            that.incrementWisdomLike();
           });
+      }
+    },
+    async incrementWisdomLike() {
+      const that = this;
+      if (this.type === 'likedPost') {
+        const targetWisdom = await firebase.firestore().collection('wisdoms').doc(this.wisdomId);
+        if (!this.alreadyLiked) {
+          targetWisdom.update({ like: firebase.firestore.FieldValue.increment(1) });
+          that.alreadyLiked = true;
+          that.$store.dispatch('user/getUserWisdom');
+        } else {
+          targetWisdom.update({ like: firebase.firestore.FieldValue.increment(-1) });
+          that.alreadyLiked = false;
+          that.$store.dispatch('user/getUserWisdom');
+        }
+      } else if (this.type === 'likedReply') {
+        const targetReply = await firebase
+          .firestore()
+          .collection('wisdoms')
+          .doc(this.parentId)
+          .collection('reply')
+          .doc(this.wisdomId);
+
+        if (!this.alreadyLiked) {
+          targetReply.update({ like: firebase.firestore.FieldValue.increment(1) });
+          that.alreadyLiked = true;
+          that.$store.dispatch('user/getUserLikedWisdomReply');
+        } else {
+          targetReply.update({ like: firebase.firestore.FieldValue.increment(-1) });
+          that.alreadyLiked = false;
+          that.$store.dispatch('user/getUserLikedWisdomReply');
+        }
       }
     },
   },

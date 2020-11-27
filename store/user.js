@@ -11,6 +11,7 @@ export const state = () => ({
   },
   wisdom: {
     likedPost: '',
+    likedReply: [],
     posted: [],
   },
 });
@@ -34,6 +35,9 @@ export const getters = {
   likedPost(state) {
     return state.wisdom.likedPost;
   },
+  likedReply(state) {
+    return state.wisdom.likedReply;
+  },
   postedWisdom(state) {
     return state.wisdom.posted;
   },
@@ -53,6 +57,9 @@ export const mutations = {
   },
   setUserWisdom(state, payload) {
     state.wisdom.likedPost = payload;
+  },
+  setUserLikedWisdomReply(state, payload) {
+    state.wisdom.likedReply = payload;
   },
   setPostedWisdom(state, payload) {
     state.wisdom.posted = payload;
@@ -103,6 +110,19 @@ export const actions = {
         return doc.data().id;
       });
     commit('setUserWisdom', usersWisdoms);
+  },
+  async getUserLikedWisdomReply({ commit, state }) {
+    const usersWisdoms = await firebase
+      .firestore()
+      .collection('users')
+      .doc(state.user.uid)
+      .collection('wisdom')
+      .doc('likedReply')
+      .get()
+      .then((doc) => {
+        return doc.data().id;
+      });
+    commit('setUserLikedWisdomReply', usersWisdoms);
   },
   async getPostedWisdom({ commit, state }) {
     const postedWisdom = await firebase
