@@ -10,7 +10,7 @@
                 <v-chip
                   v-if="!answerDisplay"
                   class="ml-5"
-                  :color="resolved ? '#FFFCDB' : '#61D4B3'"
+                  :color="resolved ? '#DE237C' : '#61D4B3'"
                   small
                   text-color="#fff"
                   >{{ resolvedMessage }}</v-chip
@@ -74,13 +74,6 @@
                     </div>
                   </v-col>
                 </v-row>
-              </v-col>
-            </v-row>
-            <v-row v-if="answerDisplay && !selfWisdom" justify="center" class="pb-2 chip-row">
-              <v-col class="py-2" style="text-align: center" cols="12 chip-row">
-                <v-chip class="ma-auto" color="#61D4B3" small text-color="#fff">
-                  ベストアンサーに選ぶ
-                </v-chip>
               </v-col>
             </v-row>
           </v-card>
