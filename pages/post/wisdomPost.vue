@@ -1,12 +1,12 @@
 <template>
-  <div style="height: 100%">
-    <v-container class="post-wisdom-back" style="height: 100%" fluid>
+  <div class="post-wisdom-back" style="height: 100vh">
+    <v-container style="height: 100%" fluid>
       <v-row justify="center">
         <v-card width="90vw" color="white">
           <v-container class="py-0">
             <v-row justify="center">
               <v-col cols="5">
-                <v-img height="auto" :src="require('~/assets/post/wisdomPost.png')"></v-img>
+                <v-img height="auto" :src="require('~/assets/timeline/wisdom.png')"></v-img>
               </v-col>
               <v-col cols="6" align-self="center" class="pa-0 pr-5">
                 <v-row>
@@ -184,6 +184,7 @@ export default {
 <style scoped>
 .post-wisdom-back {
   background-color: #e7e7e75e;
+  height: 100vh;
 }
 .warning-message {
   text-align: right;

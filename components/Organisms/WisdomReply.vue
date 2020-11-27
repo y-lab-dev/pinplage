@@ -36,16 +36,14 @@
                 <p class="posted-content">{{ content }}</p>
                 <v-row no-gutters justify="end">
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
-                    <div v-if="!selfAnswer">
-                      <wisdom-like
-                        :wisdom-id="wisdomId"
-                        :type="'likedReply'"
-                        :parent-id="sourceWisdomId"
-                      />
-                      <span class="posted-info">
-                        {{ likeAmount }}
-                      </span>
-                    </div>
+                    <wisdom-like
+                      :wisdom-id="wisdomId"
+                      :type="'likedReply'"
+                      :parent-id="sourceWisdomId"
+                    />
+                    <span class="posted-info">
+                      {{ likeAmount }}
+                    </span>
                   </v-col>
                 </v-row>
               </v-col>
@@ -78,8 +76,9 @@ export default {
       type: String,
     },
     poster: {
-      required: true,
+      required: false,
       type: String,
+      default: '',
     },
     replyer: {
       required: true,
@@ -100,15 +99,16 @@ export default {
       default: 0,
     },
     resolved: {
-      required: true,
+      required: false,
       type: Boolean,
     },
     sourceWisdomId: {
-      required: true,
+      required: false,
       type: String,
+      default: '',
     },
     bestAnswer: {
-      required: true,
+      required: false,
       type: Boolean,
     },
   },
@@ -125,13 +125,6 @@ export default {
       likedWisdoms: 'user/likedPost',
       postedWisdoms: 'user/postedWisdom',
     }),
-    selfAnswer() {
-      if (this.uid === this.replyer) {
-        return true;
-      } else {
-        return false;
-      }
-    },
   },
   created() {
     const that = this;

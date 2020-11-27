@@ -12,7 +12,7 @@
             :to="content.link"
             :color="content.iconColor"
           >
-            <v-icon dark v-text="content.icon"></v-icon>
+            <v-avatar rounded tile size="30"><img :src="content.src" /></v-avatar>
             <v-spacer></v-spacer>
             {{ content.name }}
             <v-spacer></v-spacer>
@@ -33,41 +33,41 @@ export default {
       contentsList: [
         {
           name: 'スレッド',
-          icon: 'mdi-message-text-outline',
+          src: require('~/assets/timeline/thread.png'),
           iconColor: '#61D4B3',
           link: '/mypage/postedThreads',
         },
         {
           name: '学生記事',
-          icon: 'mdi-book-outline',
+          src: require('~/assets/timeline/article.png'),
           iconColor: '#61D4B3',
           link: '/mypage/postedArticle',
         },
         {
           name: '知恵袋',
-          icon: 'mdi-head-question-outline',
+          src: require('~/assets/timeline/wisdom.png'),
           iconColor: '#61D4B3',
           link: '/mypage/postedWisdoms',
         },
         {
           name: 'アルバイト',
-          icon: 'mdi-food',
+          src: require('~/assets/timeline/job.png'),
           iconColor: '#61D4B3',
           link: '/mypage/postedPartTimeJobs',
         },
         {
           name: 'クチコミ',
-          icon: 'mdi-store-outline',
+          src: require('~/assets/timeline/review.png'),
           iconColor: '#61D4B3',
           link: '/mypage/postedSurroundingFacilities',
         },
         {
           name: 'イベント',
-          icon: 'mdi-flag-variant-outline',
+          src: require('~/assets/timeline/event.png'),
           iconColor: '#61D4B3',
           link: '/mypage/postedEvents',
         },
-        // { name: , icon: 'mdi-message-text-outline', iconColor: '#F9BF4B', link: '#' },
+        // { name: , src:: 'mdi-message-text-outline', iconColor: '#F9BF4B', link: '#' },
       ],
     };
   },

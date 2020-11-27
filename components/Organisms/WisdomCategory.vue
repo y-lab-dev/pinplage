@@ -35,10 +35,6 @@ export default {
       categoryList,
     };
   },
-  created() {
-    console.log('run');
-    console.log(this.categoryList);
-  },
   methods: {
     sendCategory(category) {
       this.$emit('my-click', category);

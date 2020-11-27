@@ -52,12 +52,10 @@
                   </v-col>
 
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
-                    <div v-if="!selfWisdom">
-                      <wisdom-like :wisdom-id="wisdomId" />
-                      <span class="posted-info">
-                        {{ likeAmount }}
-                      </span>
-                    </div>
+                    <wisdom-like :wisdom-id="wisdomId" />
+                    <span class="posted-info">
+                      {{ likeAmount }}
+                    </span>
                   </v-col>
 
                   <v-col
@@ -152,13 +150,6 @@ export default {
       uid: 'user/uid',
       likedWisdoms: 'user/likedPost',
     }),
-    selfWisdom() {
-      if (this.uid === this.poster) {
-        return true;
-      } else {
-        return false;
-      }
-    },
   },
   created() {
     const that = this;
