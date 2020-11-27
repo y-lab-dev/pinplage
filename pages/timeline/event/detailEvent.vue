@@ -336,6 +336,7 @@ export default {
   methods: {
     join() {
       const that = this;
+      const event = firebase.firestore().collection('events').doc(this.id);
       const user = firebase
         .firestore()
         .collection('users')
@@ -343,6 +344,8 @@ export default {
         .collection('event')
         .doc('join');
 
+      this.eventObject.join++;
+      event.update({ join: that.eventObject.join });
       user
         .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
         .then(() => {
@@ -355,6 +358,7 @@ export default {
     },
     notJoin() {
       const that = this;
+      const event = firebase.firestore().collection('events').doc(this.id);
       const user = firebase
         .firestore()
         .collection('users')
@@ -362,6 +366,8 @@ export default {
         .collection('event')
         .doc('join');
 
+      this.eventObject.join--;
+      event.update({ join: that.eventObject.join });
       user
         .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
         .then(() => {
@@ -374,6 +380,7 @@ export default {
     },
     interest() {
       const that = this;
+      const event = firebase.firestore().collection('events').doc(this.id);
       const user = firebase
         .firestore()
         .collection('users')
@@ -381,6 +388,8 @@ export default {
         .collection('event')
         .doc('interest');
 
+      this.eventObject.interest++;
+      event.update({ interest: that.eventObject.interest });
       user
         .update({ id: firebase.firestore.FieldValue.arrayUnion(that.id) })
         .then(() => {
@@ -392,6 +401,7 @@ export default {
     },
     notInterest() {
       const that = this;
+      const event = firebase.firestore().collection('events').doc(this.id);
       const user = firebase
         .firestore()
         .collection('users')
@@ -399,6 +409,8 @@ export default {
         .collection('event')
         .doc('interest');
 
+      this.eventObject.interest--;
+      event.update({ interest: that.eventObject.interest });
       user
         .update({ id: firebase.firestore.FieldValue.arrayRemove(that.id) })
         .then(() => {
