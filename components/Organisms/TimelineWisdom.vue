@@ -21,6 +21,7 @@ export default {
   created() {
     this.$store.dispatch('user/getUserWisdom');
     this.$store.dispatch('user/getPostedWisdom');
+    this.$store.dispatch('user/getUserLikedWisdomReply');
     const that = this;
     const wisdoms = firebase.firestore().collection('wisdoms');
     wisdoms

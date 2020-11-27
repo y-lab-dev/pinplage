@@ -37,7 +37,11 @@
                 <v-row no-gutters justify="end">
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
                     <div v-if="!selfAnswer">
-                      <wisdom-like :wisdom-id="wisdomId" :type="'likedReply'" />
+                      <wisdom-like
+                        :wisdom-id="wisdomId"
+                        :type="'likedReply'"
+                        :parent-id="sourceWisdomId"
+                      />
                       <span class="posted-info">
                         {{ likeAmount }}
                       </span>
