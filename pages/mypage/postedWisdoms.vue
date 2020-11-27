@@ -3,15 +3,29 @@
     <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
       <v-tab>いいねした知恵袋</v-tab>
       <v-tab>投稿した知恵袋</v-tab>
-      <v-tab>あなたの返信</v-tab>
-      <!-- <v-tab>いいねした返信</v-tab> -->
+      <v-tab>あなたの回答</v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="postedTab">
       <v-tab-item>
+        <div v-if="!likedWisdoms.length">
+          <prompt-card
+            :link="'timeline'"
+            :image="require('~/assets/timeline/wisdom.png')"
+            :message="'みんなの知恵袋を見てみませんか？'"
+            :timeline-tab="1"
+          />
+        </div>
         <wisdom-thread v-for="item in likedWisdoms" :key="item.wisdomId" v-bind="item" />
       </v-tab-item>
       <v-tab-item>
+        <div v-if="!postedWisdoms.length">
+          <prompt-card
+            :link="'post-wisdomPost'"
+            :image="require('~/assets/timeline/wisdom.png')"
+            :message="'初めての知恵袋を投稿してみませんか？'"
+          />
+        </div>
         <wisdom-thread
           v-for="item in postedWisdoms"
           :key="item.wisdomId"
@@ -24,6 +38,14 @@
           :like-amount="item.likeAmount"
       /></v-tab-item>
       <v-tab-item>
+        <div v-if="!postedReplies.length">
+          <prompt-card
+            :link="'timeline'"
+            :image="require('~/assets/timeline/wisdom.png')"
+            :message="'知恵袋に回答してみませんか？'"
+            :timeline-tab="1"
+          />
+        </div>
         <div
           v-for="item in postedReplies"
           :key="item.wisdomId"
@@ -49,10 +71,11 @@ import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import WisdomThread from '~/components/Organisms/WisdomThread';
 import WisdomReply from '~/components/Organisms/WisdomReply';
+import PromptCard from '~/components/Molecules/PromptCard';
 const db = firebase.firestore();
 export default {
   layout: 'onlyBack',
-  components: { WisdomThread, WisdomReply },
+  components: { WisdomThread, WisdomReply, PromptCard },
   data() {
     return {
       postedWisdoms: [],

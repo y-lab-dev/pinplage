@@ -7,6 +7,13 @@
 
     <v-tabs-items v-model="postedTab">
       <v-tab-item>
+        <div v-if="!post.length">
+          <prompt-card
+            :link="'post-jobPost'"
+            :image="require('~/assets/timeline/job.png')"
+            :message="'アルバイトをみんなに紹介してみませんか？'"
+          />
+        </div>
         <v-card
           v-for="item in post"
           :key="item.id"
@@ -60,6 +67,14 @@
         </v-card>
       </v-tab-item>
       <v-tab-item>
+        <div v-if="!keep.length">
+          <prompt-card
+            :link="'timeline'"
+            :image="require('~/assets/timeline/job.png')"
+            :message="'どんなアルバイトがあるか覗いてみませんか？'"
+            :timeline-tab="5"
+          />
+        </div>
         <v-card
           v-for="item in keep"
           :key="item.id"
@@ -120,11 +135,15 @@
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
+import PromptCard from '~/components/Molecules/PromptCard';
 const users = firebase.firestore().collection('users');
 const jobs = firebase.firestore().collection('jobs');
 
 export default {
   layout: 'onlyBack',
+  components: {
+    PromptCard,
+  },
   data() {
     return {
       post: [],

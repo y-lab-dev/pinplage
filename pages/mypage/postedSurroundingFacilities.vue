@@ -8,6 +8,14 @@
     <v-container>
       <v-tabs-items v-model="postedTab">
         <v-tab-item>
+          <div v-if="!keptPlaces.length">
+            <prompt-card
+              :link="'timeline'"
+              :image="require('~/assets/timeline/review.png')"
+              :message="'静大生の口コミがどんな感じか見てみますか？'"
+              :timeline-tab="2"
+            />
+          </div>
           <div v-for="item in keptPlaces" :key="item.id">
             <v-card nuxt outlined tile :elevation="2" @click="toPlaceDetail(item)">
               <v-container>
@@ -49,6 +57,13 @@
           </div>
         </v-tab-item>
         <v-tab-item>
+          <div v-if="!post.length">
+            <prompt-card
+              :link="'post-reviewPost'"
+              :image="require('~/assets/timeline/review.png')"
+              :message="'初めての口コミを投稿してみませんか？'"
+            />
+          </div>
           <v-container>
             <div v-for="item in post" :key="item.id">
               <v-card
@@ -123,9 +138,13 @@
 import { mapGetters } from 'vuex';
 import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
+import PromptCard from '~/components/Molecules/PromptCard';
 const reviews = firebase.firestore().collection('reviews');
 export default {
   layout: 'onlyBack',
+  components: {
+    PromptCard,
+  },
   data() {
     return {
       postedTab: '',

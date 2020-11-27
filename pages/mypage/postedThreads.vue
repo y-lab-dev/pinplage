@@ -1,5 +1,4 @@
 <template>
-  <!-- <div>{{ post }}{{ reply }} -->
   <div>
     <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
       <v-tab>投稿したスレッド</v-tab>
@@ -7,8 +6,25 @@
     </v-tabs>
 
     <v-tabs-items v-model="postedTab">
-      <v-tab-item><thread-card v-for="item in post" :key="item.id" v-bind="item" /></v-tab-item>
       <v-tab-item>
+        <div v-if="!post.length">
+          <prompt-card
+            :link="'post-threadPost'"
+            :image="require('~/assets/timeline/thread.png')"
+            :message="'初めてのスレッドを投稿してみませんか？'"
+          />
+        </div>
+        <thread-card v-for="item in post" :key="item.id" v-bind="item" />
+      </v-tab-item>
+      <v-tab-item>
+        <div v-if="!reply.length">
+          <prompt-card
+            :link="'timeline'"
+            :image="require('~/assets/timeline/thread.png')"
+            :message="'スレッドに返信してみませんか？'"
+            :timeline-tab="0"
+          />
+        </div>
         <div v-for="(item, index) in reply" :key="index" @click="pushParentPage(item.parentId)">
           <thread-comment v-bind="reply[index]"></thread-comment>
         </div>
@@ -23,9 +39,10 @@ import dayjs from 'dayjs';
 import ThreadCard from '~/components/Molecules/ThreadCard';
 import ThreadComment from '~/components/Organisms/ThreadComment';
 import firebase from '~/plugins/firebase';
+import PromptCard from '~/components/Molecules/PromptCard';
 export default {
   layout: 'onlyBack',
-  components: { ThreadCard, ThreadComment },
+  components: { ThreadCard, ThreadComment, PromptCard },
   data() {
     return {
       postedTab: '',
