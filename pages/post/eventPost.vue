@@ -226,9 +226,6 @@ export default {
             hpUrl: that.hpUrl,
             content: that.content,
           });
-        })
-        .then((doc) => {
-          console.log(doc.id);
           user
             .doc(this.uid)
             .collection('event')
