@@ -126,7 +126,6 @@ export default {
       })
       .catch((err) => {
         alert(err);
-        console.log(err);
       });
 
     reviewTags
@@ -137,7 +136,6 @@ export default {
       })
       .catch((err) => {
         alert(err);
-        console.log(err);
       });
   },
   methods: {

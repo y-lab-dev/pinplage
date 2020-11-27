@@ -32,7 +32,7 @@
           <wisdom-reply :key="item.wisdomId" v-bind="item" />
         </div>
       </v-tab-item>
-      <v-tab-item>
+      <!-- <v-tab-item>
         <div
           v-for="item in likedReplies"
           :key="item.wisdomId"
@@ -40,7 +40,7 @@
         >
           <wisdom-reply :key="item.wisdomId" v-bind="item" />
         </div>
-      </v-tab-item>
+      </v-tab-item> -->
     </v-tabs-items>
   </div>
 </template>
@@ -127,18 +127,6 @@ export default {
           });
       });
     });
-    // this.getUserLikedReply().then((idArr) => {
-    //   idArr.forEach((id) => {
-    //     db.collectionGroup('reply')
-    //       .whereEquals('id', id)
-    //       .get()
-    //       .then((snapshot) => {
-    //         snapshot.forEach((doc) => {
-    //           console.log(doc.data());
-    //         });
-    //       });
-    //   });
-    // });
   },
   methods: {
     async getUserWisdomReply() {
@@ -154,7 +142,7 @@ export default {
               ...that.postedReplies,
               {
                 wisdomId: doc.id,
-                poster: doc.data().replyer,
+                replyer: doc.data().replyer,
                 likeAmount: Number(doc.data().like),
                 content: doc.data().content,
                 createdAt: doc.data().createdAt.toDate(),
@@ -176,18 +164,18 @@ export default {
         });
       return likedPost;
     },
-    async getUserLikedReply() {
-      const likedReply = await db
-        .collection('users')
-        .doc(this.uid)
-        .collection('wisdom')
-        .doc('likedReply')
-        .get()
-        .then((doc) => {
-          return doc.data().id;
-        });
-      return likedReply;
-    },
+    // async getUserLikedReply() {
+    //   const likedReply = await db
+    //     .collection('users')
+    //     .doc(this.uid)
+    //     .collection('wisdom')
+    //     .doc('likedReply')
+    //     .get()
+    //     .then((doc) => {
+    //       return doc.data().id;
+    //     });
+    //   return likedReply;
+    // },
     toParentWisdom(wisdomId) {
       this.$router.push({ name: 'timeline-wisdom-detailWisdom', query: wisdomId });
     },

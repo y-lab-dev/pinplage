@@ -100,7 +100,6 @@ export default {
     isHide() {
       const pageName = this.$route.path;
       const slashCount = (pageName.match(/\//g) || []).length;
-      // console.log(slashCount);
       if (slashCount === 1) {
         return false;
       } else {
