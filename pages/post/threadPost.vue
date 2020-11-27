@@ -42,7 +42,7 @@
               <post-button
                 :button-method="post"
                 :button-type="buttonType"
-                :button-disabled="postValidation"
+                :button-disabled="content == ''"
                 >投稿</post-button
               >
             </div>
@@ -74,39 +74,16 @@ export default {
       inputType: 'text',
       buttonType: 'submit',
       imgPath: 'threads/image',
-      namePlaceholder: '※名前',
+      namePlaceholder: '名前',
       contentPlaceholder: '※テキストを入力',
       imgLabel: '画像',
       name: '',
       content: '',
       img: '',
-      nameCompleted: false,
-      contentCompleted: false,
-      postValidation: true,
     };
   },
   computed: {
     ...mapGetters({ uid: 'user/uid', email: 'user/email' }),
-  },
-  watch: {
-    name(val) {
-      if (val.length === 0) {
-        this.nameCompleted = false;
-        this.check();
-      } else {
-        this.nameCompleted = true;
-        this.check();
-      }
-    },
-    content(val) {
-      if (val.length === 0) {
-        this.contentCompleted = false;
-        this.check();
-      } else {
-        this.contentCompleted = true;
-        this.check();
-      }
-    },
   },
   methods: {
     post() {
@@ -114,6 +91,9 @@ export default {
       const timestamp = firebase.firestore.Timestamp.now();
       const db = firebase.firestore();
       const user = db.collection('users');
+      if (this.name === '') {
+        this.name = '名無し';
+      }
 
       threads
         .add({
@@ -143,13 +123,6 @@ export default {
         .catch((err) => {
           alert(err);
         });
-    },
-    check() {
-      if (this.nameCompleted === true && this.contentCompleted === true) {
-        this.postValidation = false;
-      } else {
-        this.postValidation = true;
-      }
     },
     imgAdd(url) {
       this.img = url;

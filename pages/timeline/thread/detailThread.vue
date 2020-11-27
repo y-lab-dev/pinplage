@@ -51,7 +51,7 @@
         <post-button
           :button-method="reply"
           :button-type="buttonType"
-          :button-disabled="postValidation"
+          :button-disabled="content == ''"
           >投稿</post-button
         >
       </div>
@@ -88,34 +88,11 @@ export default {
       replyArray: [],
       name: '',
       content: '',
-      nameCompleted: false,
-      contentCompleted: false,
-      postValidation: true,
       commentNumber: 1,
     };
   },
   computed: {
     ...mapGetters({ uid: 'user/uid', email: 'user/email', id: 'thread/id' }),
-  },
-  watch: {
-    name(val) {
-      if (val.length === 0) {
-        this.nameCompleted = false;
-        this.check();
-      } else {
-        this.nameCompleted = true;
-        this.check();
-      }
-    },
-    content(val) {
-      if (val.length === 0) {
-        this.contentCompleted = false;
-        this.check();
-      } else {
-        this.contentCompleted = true;
-        this.check();
-      }
-    },
   },
   created() {
     const that = this;
@@ -178,6 +155,10 @@ export default {
         .collection('thread')
         .doc('reply');
       const timestamp = firebase.firestore.Timestamp.now();
+      if (this.name === '') {
+        this.name = '名無し';
+      }
+
       const comment = {
         commentId: timestamp.toDate().toString(),
         name: that.name,
@@ -214,13 +195,6 @@ export default {
         .catch((err) => {
           alert(err);
         });
-    },
-    check() {
-      if (this.nameCompleted === true && this.contentCompleted === true) {
-        this.postValidation = false;
-      } else {
-        this.postValidation = true;
-      }
     },
   },
 };
