@@ -80,6 +80,7 @@ export default {
       name: '',
       content: '',
       img: '',
+      type: 'スレッド',
     };
   },
   computed: {
@@ -104,6 +105,7 @@ export default {
           read: true,
           uid: that.uid,
           email: that.email,
+          type: that.type,
         })
         .then((doc) => {
           user
