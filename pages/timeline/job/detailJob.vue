@@ -27,7 +27,7 @@
             <v-list-item-content class="font-weight-black">仕事内容</v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-list-item-content class="text-subtitle-2">{{
+            <v-list-item-content class="text-subtitle-2 content-newline">{{
               jobDetailObject.content
             }}</v-list-item-content>
           </v-list-item>
@@ -35,7 +35,7 @@
             <v-list-item-content class="font-weight-black">シフト詳細</v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-list-item-content class="text-subtitle-2">{{
+            <v-list-item-content class="text-subtitle-2 content-newline">{{
               jobDetailObject.shift
             }}</v-list-item-content>
           </v-list-item>
@@ -53,7 +53,7 @@
               <v-list-item-content class="font-weight-black">休日</v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content class="text-subtitle-2">{{
+              <v-list-item-content class="text-subtitle-2 content-newline">{{
                 jobDetailObject.holiday
               }}</v-list-item-content>
             </v-list-item>
@@ -63,7 +63,7 @@
               <v-list-item-content class="font-weight-black">交通費支給</v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content class="text-subtitle-2">{{
+              <v-list-item-content class="text-subtitle-2 content-newline">{{
                 jobDetailObject.carfare
               }}</v-list-item-content>
             </v-list-item>
@@ -73,7 +73,7 @@
               <v-list-item-content class="font-weight-black">待遇・福利厚生</v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content class="text-subtitle-2">{{
+              <v-list-item-content class="text-subtitle-2 content-newline">{{
                 jobDetailObject.welfare
               }}</v-list-item-content>
             </v-list-item>
@@ -83,7 +83,7 @@
               <v-list-item-content class="font-weight-black">紹介料</v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content class="text-subtitle-2">{{
+              <v-list-item-content class="text-subtitle-2 content-newline">{{
                 jobDetailObject.refer
               }}</v-list-item-content>
             </v-list-item>
@@ -103,7 +103,7 @@
               <v-list-item-content class="font-weight-black">ここだけの話</v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content class="text-subtitle-2">{{
+              <v-list-item-content class="text-subtitle-2 content-newline">{{
                 jobDetailObject.secret
               }}</v-list-item-content>
             </v-list-item>
@@ -407,6 +407,10 @@ export default {
 .content-title {
   color: #61d4b3;
   text-align: center;
+}
+.content-newline {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 .content-url {
   color: #00f;
