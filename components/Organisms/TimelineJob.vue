@@ -30,25 +30,27 @@
         item.name
       }}</v-card-title>
       <v-card-subtitle class="pl-3 pb-3 text-caption">{{ item.genre }}</v-card-subtitle>
-      <div class="d-flex justify-space-around">
-        <v-img
-          v-show="item.img"
-          height="16vh"
-          width="44vw"
-          class="ml-3 mb-3"
-          :src="item.img"
-        ></v-img>
-        <div>
-          <v-list-item>
+      <v-row>
+        <v-col class="py-0">
+          <v-img
+            v-show="item.img"
+            height="16vh"
+            width="44vw"
+            class="ml-3 mb-3"
+            :src="item.img"
+          ></v-img>
+        </v-col>
+        <v-col class="py-0">
+          <v-list-item class="pl-0">
             <v-icon size="20" left>mdi-currency-cny</v-icon>
             <v-list-item-content class="caption py-0">{{ item.money }}</v-list-item-content>
           </v-list-item>
-          <v-list-item>
+          <v-list-item class="pl-0">
             <v-icon size="20" left>mdi-map-marker</v-icon>
             <v-list-item-content class="caption">{{ item.placeName }}</v-list-item-content>
           </v-list-item>
-        </div>
-      </div>
+        </v-col>
+      </v-row>
     </v-card>
   </div>
 </template>
