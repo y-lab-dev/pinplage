@@ -90,7 +90,7 @@ export default {
       auth
         .sendPasswordResetEmail(emailAddress)
         .then(() => {
-          Cookies.remove('password');
+          Cookies.remove('pass');
           that.modal = !that.modal;
           that.modalTitle = 'パスワード再設定';
           that.modalText = 'パスワードの再設定メールを送信しました';

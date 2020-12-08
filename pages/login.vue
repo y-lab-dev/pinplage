@@ -111,9 +111,9 @@ export default {
     },
   },
   created() {
-    if (Cookies.get('email') && Cookies.get('password')) {
+    if (Cookies.get('email') && Cookies.get('pass')) {
       this.email = Cookies.get('email');
-      this.password = Cookies.get('password');
+      this.password = Cookies.get('pass');
     } else if (Cookies.get('email')) {
       this.email = Cookies.get('email');
     }
