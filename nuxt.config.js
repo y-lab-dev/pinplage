@@ -118,17 +118,19 @@ export default {
       };
     },
   },
-  manifest: {
-    name: 'Pin Plage',
-    shortname: 'パンプラージュ',
-    description:
-      '静岡大学生向けアプリ「Pin Plage」、静大生の快適なキャンパスライフを支援するサービスです。',
-    title: 'Pin Plage',
-    lang: 'ja',
-    start_url: '/',
-    display: 'standalone',
-    background_color: '#fff',
-    theme_color: '#fff',
-    orientation: 'portrait',
+  pwa: {
+    manifest: {
+      name: 'Pin Plage',
+      shortname: 'パンプラージュ',
+      description:
+        '静岡大学生向けアプリ「Pin Plage」、静大生の快適なキャンパスライフを支援するサービスです。',
+      title: 'Pin Plage',
+      lang: 'ja',
+      start_url: '/',
+      display: 'standalone',
+      background_color: '#fff',
+      theme_color: '#fff',
+      orientation: 'portrait',
+    },
   },
 };
