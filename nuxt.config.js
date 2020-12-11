@@ -121,15 +121,15 @@ export default {
   pwa: {
     manifest: {
       name: 'Pin Plage',
-      shortname: 'パンプラージュ',
+      short_name: 'パンプラージュ',
       description:
         '静岡大学生向けアプリ「Pin Plage」、静大生の快適なキャンパスライフを支援するサービスです。',
       title: 'Pin Plage',
       lang: 'ja',
       start_url: '/',
       display: 'standalone',
-      background_color: '#fff',
-      theme_color: '#fff',
+      background_color: '#ffffff',
+      theme_color: '#ffffff',
       orientation: 'portrait',
     },
   },
