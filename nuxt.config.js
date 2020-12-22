@@ -149,6 +149,7 @@ export default {
       };
     },
   },
+  // TO DO 縦横の固定できてない
   pwa: {
     manifest: {
       name: 'Pin Plage',
