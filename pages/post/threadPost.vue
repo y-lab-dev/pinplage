@@ -1,5 +1,14 @@
 <template>
   <v-container class="post-thread-back" style="height: 100%" fluid>
+    <template>
+      <Modal
+        :modal-title="modalTitle"
+        :modal-text="modalText"
+        :modal-button="buttonText"
+        :modal-toggle="modal"
+        @changeValue="clickModal()"
+      />
+    </template>
     <v-row justify="center">
       <v-card width="90vw" color="white">
         <v-container class="py-0">
@@ -58,6 +67,7 @@ import InputText from '~/components/Atoms/AppInput';
 import InputTextarea from '~/components/Atoms/AppTextarea';
 import InputImage from '~/components/Molecules/AppImageInput';
 import PostButton from '~/components/Atoms/AppButton';
+import Modal from '~/components/Molecules/AppModal';
 import firebase from '~/plugins/firebase';
 const threads = firebase.firestore().collection('threads');
 
@@ -68,6 +78,7 @@ export default {
     InputTextarea,
     InputImage,
     PostButton,
+    Modal,
   },
   data() {
     return {
@@ -81,6 +92,10 @@ export default {
       content: '',
       img: '',
       type: 'スレッド',
+      modal: false,
+      modalTitle: '',
+      modalText: '',
+      buttonText: '',
     };
   },
   computed: {
@@ -116,7 +131,11 @@ export default {
               id: firebase.firestore.FieldValue.arrayUnion(doc.id),
             })
             .then(() => {
-              that.$router.push({ name: 'timeline' });
+              that.modal = !this.modal;
+              that.modalTitle = 'プラージュ獲得';
+              that.modalText =
+                '５プラージュ獲得しました！(反映されるまで少し時間がかかる場合がございます)';
+              that.buttonText = 'Ok';
             })
             .catch((err) => {
               alert(err);
@@ -128,6 +147,10 @@ export default {
     },
     imgAdd(url) {
       this.img = url;
+    },
+    clickModal() {
+      this.modal = !this.modal;
+      this.$router.push({ name: 'timeline' });
     },
   },
 };
