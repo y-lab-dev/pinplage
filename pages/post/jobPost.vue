@@ -1,5 +1,14 @@
 <template>
   <v-container>
+    <template>
+      <Modal
+        :modal-title="modalTitle"
+        :modal-text="modalText"
+        :modal-button="buttonText"
+        :modal-toggle="modal"
+        @changeValue="clickModal()"
+      />
+    </template>
     <p class="required-phrase">※は必須項目です</p>
     <v-row justify="center">
       <v-col cols="12">
@@ -178,6 +187,7 @@ import firebase from '~/plugins/firebase';
 import PostButton from '~/components/Atoms/AppButton';
 import InputImage from '~/components/Molecules/AppImageInput';
 import InputPlace from '~/components/Molecules/AppInputPlace';
+import Modal from '~/components/Molecules/AppModal';
 
 export default {
   layout: 'onlyBack',
@@ -185,6 +195,7 @@ export default {
     PostButton,
     InputImage,
     InputPlace,
+    Modal,
   },
   data() {
     return {
@@ -247,6 +258,10 @@ export default {
       hpUrl: '',
       secret: '',
       res: '',
+      modal: false,
+      modalTitle: '',
+      modalText: '',
+      buttonText: '',
     };
   },
   computed: {
@@ -297,7 +312,11 @@ export default {
               id: firebase.firestore.FieldValue.arrayUnion(doc.id),
             })
             .then(() => {
-              that.$router.push({ name: 'timeline' });
+              that.modal = !this.modal;
+              that.modalTitle = 'プラージュ獲得';
+              that.modalText =
+                '10プラージュ獲得しました！(反映されるまで少し時間がかかる場合がございます)';
+              that.buttonText = 'Ok';
             })
             .catch((err) => {
               alert(err);
@@ -314,6 +333,10 @@ export default {
       this.placeId = val.placeId;
       this.placeName = val.placeName;
       this.geometry = val.geometry;
+    },
+    clickModal() {
+      this.modal = !this.modal;
+      this.$router.push({ name: 'timeline' });
     },
   },
 };

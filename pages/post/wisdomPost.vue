@@ -1,6 +1,15 @@
 <template>
   <div class="post-wisdom-back" style="height: 100vh">
     <v-container style="height: 100%" fluid>
+      <template>
+        <Modal
+          :modal-title="modalTitle"
+          :modal-text="modalText"
+          :modal-button="buttonText"
+          :modal-toggle="modal"
+          @changeValue="clickModal()"
+        />
+      </template>
       <v-row justify="center">
         <v-card width="90vw" color="white">
           <v-container class="py-0">
@@ -101,15 +110,20 @@
 <script>
 import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
+import Modal from '~/components/Molecules/AppModal';
 import WisdomCategory from '~/components/Organisms/WisdomCategory';
 export default {
   layout: 'protected',
-  components: { WisdomCategory },
+  components: { WisdomCategory, Modal },
   data() {
     return {
       newQuestion: null,
       categoryOverlay: false,
       category: 'カテゴリを選択する',
+      modal: false,
+      modalTitle: '',
+      modalText: '',
+      buttonText: '',
     };
   },
   computed: {
@@ -173,10 +187,23 @@ export default {
             .doc(that.uid)
             .collection('wisdom')
             .doc('post')
-            .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true });
+            .set({ id: firebase.firestore.FieldValue.arrayUnion(doc.id) }, { merge: true })
+            .then(() => {
+              that.modal = !this.modal;
+              that.modalTitle = 'プラージュ獲得';
+              that.modalText =
+                '10プラージュ獲得しました！(反映されるまで少し時間がかかる場合がございます)';
+              that.buttonText = 'Ok';
+            })
+            .catch((err) => {
+              alert(err);
+            });
         });
-      that.newQuestion = null;
-      that.$router.push({ name: 'timeline' });
+    },
+    clickModal() {
+      this.modal = !this.modal;
+      this.newQuestion = null;
+      this.$router.push({ name: 'timeline' });
     },
   },
 };

@@ -153,15 +153,15 @@
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
-                    <v-dialog v-model="finishedDialog" persistent max-width="290">
-                      <v-card>
-                        <v-card-title>投稿しました。</v-card-title>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="pink darken-1" text @click.once="finish()">閉じる</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
+                    <template>
+                      <Modal
+                        :modal-title="modalTitle"
+                        :modal-text="modalText"
+                        :modal-button="buttonText"
+                        :modal-toggle="modal"
+                        @changeValue="clickModal()"
+                      />
+                    </template>
                   </v-col>
                 </v-row>
               </v-col>
@@ -179,6 +179,7 @@ import { CoolSelect } from 'vue-cool-select';
 import Rating from '~/components/Molecules/PostRating';
 import InputImage from '~/components/Molecules/AppImageInput';
 import InputPlace from '~/components/Molecules/AppInputPlace';
+import Modal from '~/components/Molecules/AppModal';
 import firebase from '~/plugins/firebase';
 
 const reviewTags = firebase.firestore().collection('reviewTags');
@@ -190,6 +191,7 @@ export default {
     Rating,
     InputImage,
     InputPlace,
+    Modal,
   },
   data() {
     return {
@@ -220,7 +222,10 @@ export default {
       selected: null,
       remove: 0,
       postDialog: false,
-      finishedDialog: false,
+      modal: false,
+      modalTitle: '',
+      modalText: '',
+      buttonText: '',
     };
   },
   computed: {
@@ -364,7 +369,11 @@ export default {
             })
             .then(() => {
               self.postDialog = false;
-              self.finishedDialog = true;
+              self.modal = !this.modal;
+              self.modalTitle = 'プラージュ獲得';
+              self.modalText =
+                '10プラージュ獲得しました！(反映されるまで少し時間がかかる場合がございます)';
+              self.buttonText = 'Ok';
             })
             .catch((err) => {
               alert(err);
@@ -382,8 +391,8 @@ export default {
           alert(err);
         });
     },
-    finish() {
-      this.finishedDialog = false;
+    clickModal() {
+      this.modal = !this.modal;
       this.$router.push({ name: 'timeline' });
     },
   },
