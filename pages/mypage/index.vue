@@ -2,11 +2,7 @@
   <div style="height: 100%">
     <section id="user-top">
       <div class="granim-back">
-        <granim
-          :granim-height="granim.height"
-          :granim-width="granim.width"
-          :granim-gradients="granim.gradients"
-        />
+        <granim :granim-height="granim.height" :granim-width="granim.width" :granim-theme="theme" />
         <v-card
           class="granim-card d-flex justify-center"
           elevation="0"
@@ -92,18 +88,10 @@ export default {
       granim: {
         height: '30vh',
         width: '100vw',
-        gradients: [
-          // for spring
-          // ['#85FFBD', '#FFFB7D'],
-          // ['#FFFB7D', '#85FFBD'],
-          // for Autumn
-          ['#F71810', '#FCCE22'],
-          ['#F4DD2E', '#F3EC0E'],
-        ],
       },
       userTab: null,
       userPoint: 0,
-      items: ['ユーザー履歴'],
+      items: ['ユーザー履歴', 'ポイント獲得履歴'],
       text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     };
@@ -128,6 +116,7 @@ export default {
       email: 'user/email',
       name: 'user/name',
       icon: 'user/icon',
+      theme: 'user/theme',
     }),
   },
   created() {
