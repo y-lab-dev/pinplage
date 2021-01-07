@@ -2,11 +2,7 @@
   <v-container class="pa-0" style="height: 100%">
     <v-row justify="center" align="center" no-gutters>
       <v-col cols="12" class="granim-back">
-        <granim
-          :granim-height="granim.height"
-          :granim-width="granim.width"
-          :granim-gradients="granim.gradients"
-        />
+        <granim :granim-height="granim.height" :granim-width="granim.width" :granim-theme="theme" />
         <v-container class="granim-card-content">
           <v-row justify="center" no-gutters>
             <v-col cols="1"> </v-col>
@@ -45,6 +41,18 @@
           </v-list-item>
         </v-list>
         <v-divider></v-divider>
+        <v-list>
+          <v-list-item class="pl-5" @click="pushPage('/mypage/selectTheme')">
+            <v-list-item-content>
+              <v-list-item-subtitle>マイページ着せ替え 現在：{{ theme }}</v-list-item-subtitle>
+              <v-list-item-title>テーマを選択する</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+        <v-divider></v-divider>
       </v-col>
     </v-row>
   </v-container>
@@ -63,14 +71,8 @@ export default {
       granim: {
         height: '30vh',
         width: '100vw',
-        gradients: [
-          // ['#85FFBD', '#FFFB7D'],
-          // ['#FFFB7D', '#85FFBD'],
-          ['#F71810', '#FCCE22'],
-          ['#F4DD2E', '#F3EC0E'],
-        ],
-        round: '25%',
       },
+      granimTheme: '',
     };
   },
   computed: {
@@ -79,6 +81,7 @@ export default {
       email: 'user/email',
       name: 'user/name',
       icon: 'user/icon',
+      theme: 'user/theme',
     }),
   },
   created() {

@@ -7,6 +7,11 @@
             <p class="ma-0 card-info-amount">{{ point }}</p>
             <p class="ma-0 card-info-title">{{ item.title }}</p>
           </v-col>
+          <v-col cols="4">
+            <v-btn color="#61d4b3" outlined rounded @click="toShop">
+              <span>利用する</span>
+            </v-btn>
+          </v-col>
         </v-row>
       </v-container>
     </v-card>
@@ -32,6 +37,11 @@ export default {
       } else {
         return 50;
       }
+    },
+  },
+  methods: {
+    toShop() {
+      this.$router.push({ name: 'pointShop' });
     },
   },
 };

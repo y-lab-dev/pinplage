@@ -8,6 +8,7 @@ export const state = () => ({
     email: '',
     icon: '',
     name: '',
+    theme: '',
   },
   wisdom: {
     likedPost: '',
@@ -28,6 +29,9 @@ export const getters = {
   },
   name(state) {
     return state.user.name;
+  },
+  theme(state) {
+    return state.user.theme;
   },
   icon(state) {
     return state.user.icon;
@@ -54,6 +58,7 @@ export const mutations = {
   setUserInfo(state, payload) {
     state.user.name = payload.name;
     state.user.icon = payload.icon;
+    state.user.theme = payload.theme;
   },
   setUserWisdom(state, payload) {
     state.wisdom.likedPost = payload;
@@ -69,6 +74,9 @@ export const mutations = {
   },
   changeIcon(state, latestIcon) {
     state.user.icon = latestIcon;
+  },
+  changeTheme(state, latestTheme) {
+    state.user.theme = latestTheme;
   },
 };
 
@@ -95,7 +103,13 @@ export const actions = {
           name: doc.data().name,
           icon: doc.data().icon,
         };
-        return userData;
+        if (doc.data().theme) {
+          userData.theme = doc.data().theme;
+          return userData;
+        } else {
+          userData.theme = '基本';
+          return userData;
+        }
       });
     commit('setUserInfo', userInfo);
   },
