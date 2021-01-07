@@ -87,7 +87,6 @@
                           height="150px"
                           src="https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/konshinya%2F801963_s.jpg?alt=media&token=15b88252-4a9f-47a4-9458-8b9f26a283b0"
                         />
-                        <v-card-text>よいお年を！！</v-card-text>
                       </v-card>
 
                       <v-btn color="primary" @click="e1 = 1"> 最初に戻る </v-btn>
