@@ -62,7 +62,7 @@
             </div>
           </v-card>
         </v-col>
-        <v-col cols="12">
+        <!-- <v-col cols="12">
           <v-card @click="pushPage('pointShop-konshinya')">
             <div class="d-flex flex-no-wrap justify-space-between">
               <div>
@@ -103,7 +103,7 @@
               </v-avatar>
             </div>
           </v-card>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-container>
   </div>
