@@ -101,6 +101,7 @@ export default {
         await that.$store.commit('job/getData', obj);
       }
       assignment().then(this.$router.push('timeline/job/detailjob'));
+      firebase.analytics().logEvent('jobDetail_view', { property: 'jobDetail_view' });
     },
   },
 };

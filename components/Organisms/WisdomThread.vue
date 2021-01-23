@@ -163,6 +163,7 @@ export default {
   methods: {
     wisdomDetail(wisdomId) {
       this.$router.push({ name: 'timeline-wisdom-detailWisdom', query: wisdomId });
+      firebase.analytics().logEvent('wisdomDetail_view', { property: 'wisdomDetail_view' });
     },
   },
 };
