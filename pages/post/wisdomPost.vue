@@ -124,6 +124,7 @@ export default {
       modalTitle: '',
       modalText: '',
       buttonText: '',
+      college: 'shizuoka-h',
     };
   },
   computed: {
@@ -181,6 +182,7 @@ export default {
           read: false,
           poster: that.uid,
           resolved: false,
+          college: that.college,
         })
         .then((doc) => {
           users

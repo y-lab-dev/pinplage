@@ -92,6 +92,7 @@ export default {
       content: '',
       img: '',
       type: 'スレッド',
+      college: 'shizuoka-h',
       modal: false,
       modalTitle: '',
       modalText: '',
@@ -121,6 +122,7 @@ export default {
           uid: that.uid,
           email: that.email,
           type: that.type,
+          college: that.college,
         })
         .then((doc) => {
           user

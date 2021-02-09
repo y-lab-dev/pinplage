@@ -25,6 +25,7 @@ export default {
     const that = this;
     threads
       .orderBy('createdAt', 'desc')
+      .where('college', '==', 'shizuoka-h')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
