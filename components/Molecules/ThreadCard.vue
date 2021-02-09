@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import firebase from 'firebase';
 import dayjs from 'dayjs';
 export default {
   props: {
@@ -74,6 +75,7 @@ export default {
         await that.$store.commit('thread/getId', obj);
       }
       assignment().then(this.$router.push({ name: 'timeline-thread-detailThread' }));
+      firebase.analytics().logEvent('threadDetail_view', { property: 'threadDetail_view' });
     },
   },
 };

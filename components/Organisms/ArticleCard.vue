@@ -103,6 +103,7 @@ export default {
       };
 
       setTimeout(viewsUp, 1000);
+      firebase.analytics().logEvent('articleDetail_view', { property: 'articleDetail_view' });
     },
   },
 };

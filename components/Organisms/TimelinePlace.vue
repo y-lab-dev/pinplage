@@ -123,6 +123,7 @@ export default {
         await self.$store.commit('place/getId', obj.placeId);
       }
       assignment().then(this.$router.push({ name: 'timeline-place-detailPlace' }));
+      firebase.analytics().logEvent('placeDetail_view', { property: 'placeDetail_view' });
     },
     toReviewDetail(obj) {
       const self = this;
@@ -131,6 +132,7 @@ export default {
         await self.$store.commit('place/getId', obj.placeId);
       }
       assignment().then(this.$router.push({ name: 'timeline-review-detailReview' }));
+      firebase.analytics().logEvent('reviewDetail_view', { property: 'reviewDetail_view' });
     },
   },
 };

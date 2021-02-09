@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import firebase from 'firebase';
 import dayjs from 'dayjs';
 export default {
   props: {
@@ -91,6 +92,7 @@ export default {
         await that.$store.commit('event/getData', obj);
       }
       assignment().then(this.$router.push({ name: 'timeline-event-detailEvent' }));
+      firebase.analytics().logEvent('eventDetail_view', { property: 'eventDetail_view' });
     },
   },
 };
