@@ -1,0 +1,6 @@
+dispatch:
+  - url: 'mcaexpf.com/*'
+    service: default
+
+  - url: 'lanterna.mcaexpf.com/*'
+    service: lanterna
