@@ -94,6 +94,7 @@ export default {
     const store = firebase.firestore().collection('reviews');
     store
       .orderBy('createdAt', 'desc')
+      .where('college', '==', 'shizuoka-h')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {

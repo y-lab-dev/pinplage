@@ -26,6 +26,7 @@ export default {
     const wisdoms = firebase.firestore().collection('wisdoms');
     wisdoms
       .orderBy('createdAt', 'desc')
+      .where('college', '==', 'shizuoka-h')
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {

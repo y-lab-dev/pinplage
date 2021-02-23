@@ -200,6 +200,7 @@ export default {
       readonly: false,
       buttonType: 'submit',
       contentPlaceholder: '内容',
+      college: 'shizuoka-h',
       placeId: '',
       mainImg: '',
       img: '',
@@ -356,6 +357,7 @@ export default {
           uid: self.uid,
           email: self.email,
           isRead: true,
+          college: self.college,
         })
         .then((doc) => {
           review
