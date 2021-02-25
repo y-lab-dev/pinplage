@@ -11,7 +11,7 @@ const siteDesc =
   '静岡大学生向けアプリ「Pin Plage」、静大生の快適なキャンパスライフを支援するサービスです。';
 const siteKeywords = '静岡大学,浜松キャンパス,パンプラージュ,PinPlage';
 const imgPath =
-  'https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/icon%2Ficon.png?alt=media&token=e635a951-f203-4abe-be89-08ee65c68e3b';
+  'https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/icon%2Fpinplage%2Ficon.png?alt=media&token=93b9369b-cab4-4818-980a-ecad1953ef13';
 
 export default {
   /*
