@@ -29,6 +29,20 @@ export default {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
+          if (doc.data().type === 'pr') {
+            that.threadArray = [
+              {
+                id: doc.id,
+                name: doc.data().name,
+                content: doc.data().content,
+                img: doc.data().img,
+                date: doc.data().createdAt.toDate(),
+                type: doc.data().type,
+              },
+              ...that.threadArray,
+            ];
+            return;
+          }
           that.threadArray = [
             ...that.threadArray,
             {

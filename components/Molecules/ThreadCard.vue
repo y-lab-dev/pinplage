@@ -23,7 +23,21 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- <v-img v-show="img" :src="img" height="200px"></v-img> -->
+    <v-container v-if="type === 'pr'" class="pa-0 d-flex justify-center">
+      <v-img
+        :src="img"
+        :aspect-ratio="10 / 2"
+        gradient="to top right, rgba(0,0,0,.5), rgba(0,0,0,.5)"
+        class="white--text pa-4 justify-center align-center pr-card"
+      >
+        <span class="pr-name">[PR] {{ name }} </span>
+        <v-row align-content="center mx-auto">
+          <v-col class="text-center">
+            <p class="pr-cc">{{ content }}</p>
+          </v-col>
+        </v-row>
+      </v-img>
+    </v-container>
   </v-card>
 </template>
 
@@ -67,6 +81,10 @@ export default {
   },
   methods: {
     toThreadDetail() {
+      if (this.type === 'pr') {
+        window.open('https://www.planetwalker.biz/accounts/sign_in');
+        return;
+      }
       const that = this;
       const obj = {
         id: this.id,
@@ -84,3 +102,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.pr-cc {
+  text-align: center;
+  margin-bottom: 0;
+  font-size: 1.2rem;
+  font-family: serif;
+}
+.pr-card {
+  position: relative;
+}
+.pr-name {
+  position: absolute;
+  top: 8%;
+  left: 3%;
+  font-size: 0.8rem;
+  font-family: serif;
+}
+</style>
