@@ -1,6 +1,6 @@
 <template>
   <v-card tile class="ma-2" :elevation="2" @click="toThreadDetail()">
-    <v-container class="py-0">
+    <v-container v-if="type === 'thread'" class="py-0">
       <v-row v-if="img">
         <v-col cols="3">
           <v-avatar class="ma-3" size="60" tile>
@@ -41,6 +41,10 @@ export default {
       type: String,
     },
     content: {
+      required: true,
+      type: String,
+    },
+    type: {
       required: true,
       type: String,
     },

@@ -91,7 +91,7 @@ export default {
       name: '',
       content: '',
       img: '',
-      type: 'スレッド',
+      type: 'thread',
       college: 'shizuoka-h',
       modal: false,
       modalTitle: '',
