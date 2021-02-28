@@ -2,5 +2,11 @@ dispatch:
   - url: 'mcaexpf.com/*'
     service: default
 
+  - url: 'pinplage.mcaexpf.com/*'
+    service: pinplage
+
   - url: 'lanterna.mcaexpf.com/*'
     service: lanterna
+
+  - url: 'test.mcaexpf.com/*'
+    service: test
