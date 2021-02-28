@@ -37,6 +37,7 @@ export default {
               content: doc.data().content,
               img: doc.data().img,
               date: doc.data().createdAt.toDate(),
+              type: doc.data().type,
             },
           ];
         });

@@ -7,6 +7,3 @@ dispatch:
 
   - url: 'lanterna.mcaexpf.com/*'
     service: lanterna
-
-  - url: 'test.mcaexpf.com/*'
-    service: test
