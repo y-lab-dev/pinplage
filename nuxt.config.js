@@ -142,6 +142,9 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
+    parallel: true,
+    cache: true,
+    hardSource: true,
     transpile: ['vue-instantsearch', 'instantsearch.js/es'],
     extend(config, ctx) {
       config.node = {
