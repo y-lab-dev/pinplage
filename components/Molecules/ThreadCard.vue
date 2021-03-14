@@ -24,19 +24,15 @@
       </v-row>
     </v-container>
     <v-container v-if="type === 'pr'" class="pa-0 d-flex justify-center">
-      <v-img
-        :src="img"
-        :aspect-ratio="10 / 2"
-        gradient="to top right, rgba(0,0,0,.5), rgba(0,0,0,.5)"
-        class="white--text pa-4 justify-center align-center pr-card"
-      >
-        <span class="pr-name">[PR] {{ name }} </span>
+      <!-- <v-img :src="img" class="white--text pa-4 justify-center align-center pr-card w-full">
         <v-row align-content="center mx-auto">
           <v-col class="text-center">
             <p class="pr-cc">{{ content }}</p>
           </v-col>
         </v-row>
-      </v-img>
+      </v-img> -->
+      <span class="pr-name">[PR]</span>
+      <img :src="img" class="pr-img" />
     </v-container>
   </v-card>
 </template>
@@ -116,8 +112,12 @@ export default {
 .pr-name {
   position: absolute;
   top: 8%;
-  left: 3%;
+  right: 3%;
   font-size: 0.8rem;
   font-family: serif;
+  color: white;
+}
+.pr-img {
+  width: 100%;
 }
 </style>
