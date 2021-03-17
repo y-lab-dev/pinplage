@@ -24,13 +24,6 @@
       </v-row>
     </v-container>
     <v-container v-if="type === 'pr'" class="pa-0 d-flex justify-center">
-      <!-- <v-img :src="img" class="white--text pa-4 justify-center align-center pr-card w-full">
-        <v-row align-content="center mx-auto">
-          <v-col class="text-center">
-            <p class="pr-cc">{{ content }}</p>
-          </v-col>
-        </v-row>
-      </v-img> -->
       <span class="pr-name">[PR]</span>
       <img :src="img" class="pr-img" />
     </v-container>
@@ -119,5 +112,6 @@ export default {
 }
 .pr-img {
   width: 100%;
+  max-height: 10vh;
 }
 </style>
