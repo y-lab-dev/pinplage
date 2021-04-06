@@ -40,7 +40,6 @@ export const mutations = {
   },
   incrementLimit(state) {
     state.limit += 5;
-    console.log(state.limit);
   },
   switchLoading(state) {
     state.loading = !state.loading;

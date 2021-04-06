@@ -3,7 +3,7 @@
     <!-- <template v-slot:activator="{ on, attrs }">
       <v-btn color="#61d4b3" dark v-bind="attrs" v-on="on"> Open Dialog </v-btn>
     </template> -->
-    <v-card class="parent" height="90vh" max-height="1000px">
+    <v-card class="parent">
       <v-stepper v-model="page">
         <v-stepper-header>
           <v-stepper-step :complete="page > 1" step="1"> ようこそ </v-stepper-step>
@@ -40,9 +40,12 @@
                   contain
                 ></v-img>
               </v-responsive>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn dark color="#61d4b3" @click="page = 2"> 次へ </v-btn>
+              </v-card-actions>
             </v-card>
-            <v-btn text @click="dialog = false"> スキップ </v-btn>
-            <v-btn color="#61d4b3" @click="page = 2"> 次へ </v-btn>
+            <!-- <v-btn text @click="dialog = false"> スキップ </v-btn> -->
           </v-stepper-content>
 
           <v-stepper-content step="2">
@@ -55,10 +58,12 @@
                   contain
                 ></v-img>
               </v-responsive>
+              <v-card-actions>
+                <v-btn text @click="page = 1"> 戻る </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn dark color="#61d4b3" @click="page = 3"> 次へ </v-btn>
+              </v-card-actions>
             </v-card>
-
-            <v-btn text @click="page = 1"> 戻る </v-btn>
-            <v-btn color="#61d4b3" @click="page = 3"> 次へ </v-btn>
           </v-stepper-content>
 
           <v-stepper-content step="3">
@@ -71,9 +76,12 @@
                   contain
                 ></v-img>
               </v-responsive>
+              <v-card-actions>
+                <v-btn text @click="page = 2"> 戻る </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn dark color="#61d4b3" @click="page = 4"> 次へ </v-btn>
+              </v-card-actions>
             </v-card>
-            <v-btn text @click="page = 2"> 戻る </v-btn>
-            <v-btn color="#61d4b3" @click="page = 4"> 次へ </v-btn>
           </v-stepper-content>
 
           <v-stepper-content step="4">
@@ -86,9 +94,12 @@
                   contain
                 ></v-img>
               </v-responsive>
+              <v-card-actions>
+                <v-btn text @click="page = 3"> 戻る </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn dark color="#61d4b3" @click="page = 5"> 次へ </v-btn>
+              </v-card-actions>
             </v-card>
-            <v-btn text @click="page = 3"> 戻る </v-btn>
-            <v-btn color="#61d4b3" @click="page = 5"> 次へ </v-btn>
           </v-stepper-content>
 
           <v-stepper-content step="5">
@@ -101,9 +112,13 @@
                   contain
                 ></v-img>
               </v-responsive>
+              <v-card-actions>
+                <v-btn text @click="page = 4"> 戻る </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn dark color="#61d4b3" @click="page = 6"> 次へ </v-btn>
+              </v-card-actions>
             </v-card>
-            <v-btn text @click="page = 4"> 戻る </v-btn>
-            <v-btn color="#61d4b3" @click="page = 6"> 次へ </v-btn>
+
             <!-- <v-btn color="#61d4b3" @click="dialog = false"> 始める </v-btn> -->
           </v-stepper-content>
 
@@ -117,17 +132,12 @@
                   contain
                 ></v-img>
               </v-responsive>
+              <v-card-actions>
+                <v-btn text @click="page = 5"> 戻る </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn dark color="#61d4b3" @click="clickStart"> 始める </v-btn>
+              </v-card-actions>
             </v-card>
-            <v-btn text @click="page = 5"> 戻る </v-btn>
-            <v-btn
-              color="#61d4b3"
-              @click="
-                dialog = false;
-                page = 1;
-              "
-            >
-              始める
-            </v-btn>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -136,12 +146,43 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import firebase from '~/plugins/firebase';
+
 export default {
   data() {
     return {
       page: 1,
-      dialog: true,
+      dialog: false,
     };
+  },
+  computed: {
+    ...mapGetters({
+      uid: 'user/uid',
+    }),
+  },
+  created() {
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(this.uid)
+      .get()
+      .then((doc) => {
+        if (doc.data().firstAccess === undefined) {
+          this.dialog = true;
+        }
+      });
+  },
+  methods: {
+    clickStart() {
+      this.dialog = false;
+      this.page = 1;
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(this.uid)
+        .set({ firstAccess: false }, { merge: true });
+    },
   },
 };
 </script>

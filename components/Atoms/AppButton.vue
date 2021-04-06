@@ -18,11 +18,13 @@ export default {
   props: {
     buttonType: {
       type: String,
-      required: true,
+      required: false,
+      default: 'button',
     },
     buttonMethod: {
       type: Function,
-      required: true,
+      required: false,
+      default: () => {},
     },
     buttonDisabled: {
       type: Boolean,
