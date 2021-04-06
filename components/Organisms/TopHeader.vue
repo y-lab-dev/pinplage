@@ -1,6 +1,6 @@
 <template>
   <div app>
-    <HowToUse :show="show" />
+    <!-- <HowToUse :show="show" /> -->
     <v-app-bar app color="#fff" :elevation="isTimeline ? 0 : 1" :scroll-target="$refs.maincontents">
       <!-- :hide-on-scroll="isTimeline ? true : false" -->
       <v-btn icon :ripple="false" :disabled="!isHide" @click="backPage()">
@@ -76,15 +76,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import HowToUse from '~/components/Organisms/HowToUse';
+// import HowToUse from '~/components/Organisms/HowToUse';
 
 export default {
-  components: {
-    HowToUse,
-  },
   data() {
     return {
-      show: false,
+      // show: false,
       group: null,
       drawer: null,
       subPages: [

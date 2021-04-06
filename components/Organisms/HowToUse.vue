@@ -39,11 +39,11 @@
                   :src="require('~/assets/howtouse/top.jpg')"
                   contain
                 ></v-img>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn dark color="#61d4b3" @click="page = 2"> 次へ </v-btn>
+                </v-card-actions>
               </v-responsive>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn dark color="#61d4b3" @click="page = 2"> 次へ </v-btn>
-              </v-card-actions>
             </v-card>
             <!-- <v-btn text @click="dialog = false"> スキップ </v-btn> -->
           </v-stepper-content>
@@ -57,12 +57,12 @@
                   :src="require('~/assets/howtouse/timeline.jpg')"
                   contain
                 ></v-img>
+                <v-card-actions>
+                  <v-btn text @click="page = 1"> 戻る </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn dark color="#61d4b3" @click="page = 3"> 次へ </v-btn>
+                </v-card-actions>
               </v-responsive>
-              <v-card-actions>
-                <v-btn text @click="page = 1"> 戻る </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn dark color="#61d4b3" @click="page = 3"> 次へ </v-btn>
-              </v-card-actions>
             </v-card>
           </v-stepper-content>
 
@@ -75,12 +75,12 @@
                   :src="require('~/assets/howtouse/search.jpg')"
                   contain
                 ></v-img>
+                <v-card-actions>
+                  <v-btn text @click="page = 2"> 戻る </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn dark color="#61d4b3" @click="page = 4"> 次へ </v-btn>
+                </v-card-actions>
               </v-responsive>
-              <v-card-actions>
-                <v-btn text @click="page = 2"> 戻る </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn dark color="#61d4b3" @click="page = 4"> 次へ </v-btn>
-              </v-card-actions>
             </v-card>
           </v-stepper-content>
 
@@ -93,12 +93,12 @@
                   :src="require('~/assets/howtouse/post.jpg')"
                   contain
                 ></v-img>
+                <v-card-actions>
+                  <v-btn text @click="page = 3"> 戻る </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn dark color="#61d4b3" @click="page = 5"> 次へ </v-btn>
+                </v-card-actions>
               </v-responsive>
-              <v-card-actions>
-                <v-btn text @click="page = 3"> 戻る </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn dark color="#61d4b3" @click="page = 5"> 次へ </v-btn>
-              </v-card-actions>
             </v-card>
           </v-stepper-content>
 
@@ -111,12 +111,12 @@
                   :src="require('~/assets/howtouse/timetable.jpg')"
                   contain
                 ></v-img>
+                <v-card-actions>
+                  <v-btn text @click="page = 4"> 戻る </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn dark color="#61d4b3" @click="page = 6"> 次へ </v-btn>
+                </v-card-actions>
               </v-responsive>
-              <v-card-actions>
-                <v-btn text @click="page = 4"> 戻る </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn dark color="#61d4b3" @click="page = 6"> 次へ </v-btn>
-              </v-card-actions>
             </v-card>
 
             <!-- <v-btn color="#61d4b3" @click="dialog = false"> 始める </v-btn> -->
@@ -131,12 +131,12 @@
                   :src="require('~/assets/howtouse/finish.jpg')"
                   contain
                 ></v-img>
+                <v-card-actions>
+                  <v-btn text @click="page = 5"> 戻る </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn dark color="#61d4b3" @click="clickStart"> 始める </v-btn>
+                </v-card-actions>
               </v-responsive>
-              <v-card-actions>
-                <v-btn text @click="page = 5"> 戻る </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn dark color="#61d4b3" @click="clickStart"> 始める </v-btn>
-              </v-card-actions>
             </v-card>
           </v-stepper-content>
         </v-stepper-items>
