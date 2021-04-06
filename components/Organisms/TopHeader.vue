@@ -79,6 +79,7 @@ export default {
           icon: 'mdi-account-heart-outline',
           link: 'https://forms.gle/n7ejy3uWDJsJBoP89',
         },
+        // { name: '使い方', icon: 'mdi-help', link: 'howtouse' },
         { name: '設定', icon: 'mdi-cog-outline', link: 'setting' },
       ],
       contacts: [
@@ -133,6 +134,9 @@ export default {
         return pageName;
       } else if (pageName === '/club') {
         pageName = '部活・サークル';
+        return pageName;
+      } else if (pageName === '/howtouse') {
+        pageName = '使い方';
         return pageName;
       } else if (pageName === '/setting') {
         pageName = '設定';
