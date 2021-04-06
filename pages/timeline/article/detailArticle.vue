@@ -1,119 +1,122 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-img class="white--text align-end" height="200px" :src="articleObject.mainImg"></v-img>
-        <v-list>
-          <v-list-item-title class="font-weight-bold text-h6">{{
-            articleObject.title
-          }}</v-list-item-title>
-          <v-list-item-subtitle>
-            {{ articleObject.provider }}<created-time-diff :previous-date="articleObject.date" />
-          </v-list-item-subtitle>
-        </v-list>
-        <v-list class="content">
-          <div v-for="item in articleDetailObject.mainArticle" :key="item.id">
-            <v-list-item-content
-              v-if="item.type == 'title'"
-              class="font-weight-bold"
-              style="white-space: pre-wrap; word-wrap: break-word"
-              >{{ item.contents }}</v-list-item-content
-            >
-            <v-list-item-content
-              v-if="item.type == 'detail'"
-              style="white-space: pre-wrap; word-wrap: break-word"
-              >{{ item.contents }}</v-list-item-content
-            >
-            <img v-if="item.type == 'image'" style="width: 100%" :src="item.contents" />
-            <div v-if="item.type == 'image'" style="color: #808080; text-align: center">
-              {{ item.imageDesc }}
+  <div class="detail-article-wrap">
+    <v-container>
+      <v-row>
+        <v-col>
+          <v-img class="white--text align-end" height="25vh" :src="articleObject.mainImg"></v-img>
+          <v-list>
+            <v-list-item-title class="font-weight-bold text-h6">{{
+              articleObject.title
+            }}</v-list-item-title>
+            <v-list-item-subtitle>
+              {{ articleObject.provider }}<created-time-diff :previous-date="articleObject.date" />
+            </v-list-item-subtitle>
+          </v-list>
+          <v-list class="content">
+            <div v-for="item in articleDetailObject.mainArticle" :key="item.id">
+              <v-list-item-content
+                v-if="item.type == 'title'"
+                class="font-weight-bold"
+                style="white-space: pre-wrap; word-wrap: break-word"
+                >{{ item.contents }}</v-list-item-content
+              >
+              <v-list-item-content
+                v-if="item.type == 'detail'"
+                style="white-space: pre-wrap; word-wrap: break-word"
+                >{{ item.contents }}</v-list-item-content
+              >
+              <img v-if="item.type == 'image'" style="width: 100%" :src="item.contents" />
+              <div v-if="item.type == 'image'" style="color: #808080; text-align: center">
+                {{ item.imageDesc }}
+              </div>
             </div>
-          </div>
-        </v-list>
-        <v-list class="mb-4">
-          <v-list-item>
-            <v-list-item-avatar>
-              <img :src="authorIcon" @click="toAuthorArticle" />
-            </v-list-item-avatar>
-            <v-list-item-content @click="toAuthorArticle">
-              <v-list-item-title>{{ authorName }}</v-list-item-title>
-              <v-list-item-subtitle class="to-author">著者関連記事へ</v-list-item-subtitle>
-            </v-list-item-content>
-            <v-row align="center" justify="end">
-              <v-btn v-show="isLiked" icon @click="notLike">
-                <v-icon color="#61d4b3">mdi-thumb-up</v-icon>
-              </v-btn>
-              <v-btn v-show="!isLiked" icon @click="like">
-                <v-icon>mdi-thumb-up</v-icon>
-              </v-btn>
-              <span class="subheading mr-7">{{ articleObject.like }}</span>
-            </v-row>
-          </v-list-item>
-        </v-list>
-        <v-divider></v-divider>
-        <v-list>
-          <v-list-item-title class="text-subtitle-2"
-            ><v-icon size="18" color="#61d4b3" class="mr-1 pb-1">mdi-flag-variant</v-icon
-            >コメント</v-list-item-title
-          >
-        </v-list>
-        <v-divider></v-divider>
-        <v-list two-line class="mb-6">
-          <comment-thread
-            v-for="(item, index) in articleCommentArray"
-            :key="item.commentId"
-            v-bind="articleCommentArray[index]"
-            :class="`index-${index}`"
-          ></comment-thread>
-          <text-area
-            class="mt-4"
-            :textarea-placeholder="commentPlaceholder"
-            :textarea-value="content"
-            @input="content = $event"
-          ></text-area>
-          <v-list-item-content class="caption mx-8"
-            ><p class="mb-0">
-              不適切な投稿をすると、利用規約の違反により<span class="font-weight-bold"
-                >投稿の削除</span
-              >や<span class="font-weight-bold">利用停止</span>となる場合があります。
-            </p>
-          </v-list-item-content>
-          <div class="post-button">
-            <post-button
-              class="mt-4"
-              :button-method="post"
-              :button-type="buttonType"
-              :button-disabled="content == ''"
-              >コメント投稿</post-button
-            >
-          </div>
-        </v-list>
-        <v-divider></v-divider>
-        <v-list v-if="isSameCategory">
-          <v-list-item-title class="text-subtitle-2"
-            ><v-icon size="18" color="#61d4b3" class="mr-1 pb-1">mdi-book-open-page-variant</v-icon
-            >こんな記事も</v-list-item-title
-          >
-        </v-list>
-        <v-divider></v-divider>
-        <v-card
-          v-for="item in articleSameCategoryArray"
-          :key="item.id"
-          flat
-          @click="toDetail(item)"
-        >
-          <v-list-item class="px-3">
-            <img width="70px" height="50px" :src="item.mainImg" />
-            <v-list-item-content class="ml-2">
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.date }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+          </v-list>
+          <v-list class="mb-4">
+            <v-list-item>
+              <v-list-item-avatar>
+                <img :src="authorIcon" @click="toAuthorArticle" />
+              </v-list-item-avatar>
+              <v-list-item-content @click="toAuthorArticle">
+                <v-list-item-title>{{ authorName }}</v-list-item-title>
+                <v-list-item-subtitle class="to-author">著者関連記事へ</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-row align="center" justify="end">
+                <v-btn v-show="isLiked" icon @click="notLike">
+                  <v-icon color="#61d4b3">mdi-thumb-up</v-icon>
+                </v-btn>
+                <v-btn v-show="!isLiked" icon @click="like">
+                  <v-icon>mdi-thumb-up</v-icon>
+                </v-btn>
+                <span class="subheading mr-7">{{ articleObject.like }}</span>
+              </v-row>
+            </v-list-item>
+          </v-list>
           <v-divider></v-divider>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+          <v-list>
+            <v-list-item-title class="text-subtitle-2"
+              ><v-icon size="18" color="#61d4b3" class="mr-1 pb-1">mdi-flag-variant</v-icon
+              >コメント</v-list-item-title
+            >
+          </v-list>
+          <v-divider></v-divider>
+          <v-list two-line class="mb-6">
+            <comment-thread
+              v-for="(item, index) in articleCommentArray"
+              :key="item.commentId"
+              v-bind="articleCommentArray[index]"
+              :class="`index-${index}`"
+            ></comment-thread>
+            <text-area
+              class="mt-4"
+              :textarea-placeholder="commentPlaceholder"
+              :textarea-value="content"
+              @input="content = $event"
+            ></text-area>
+            <v-list-item-content class="caption mx-8"
+              ><p class="mb-0">
+                不適切な投稿をすると、利用規約の違反により<span class="font-weight-bold"
+                  >投稿の削除</span
+                >や<span class="font-weight-bold">利用停止</span>となる場合があります。
+              </p>
+            </v-list-item-content>
+            <div class="post-button">
+              <post-button
+                class="mt-4"
+                :button-method="post"
+                :button-type="buttonType"
+                :button-disabled="content == ''"
+                >コメント投稿</post-button
+              >
+            </div>
+          </v-list>
+          <v-divider></v-divider>
+          <v-list v-if="isSameCategory">
+            <v-list-item-title class="text-subtitle-2"
+              ><v-icon size="18" color="#61d4b3" class="mr-1 pb-1"
+                >mdi-book-open-page-variant</v-icon
+              >こんな記事も</v-list-item-title
+            >
+          </v-list>
+          <v-divider></v-divider>
+          <v-card
+            v-for="item in articleSameCategoryArray"
+            :key="item.id"
+            flat
+            @click="toDetail(item)"
+          >
+            <v-list-item class="px-3">
+              <img width="70px" height="50px" :src="item.mainImg" />
+              <v-list-item-content class="ml-2">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-subtitle>{{ item.date }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -387,6 +390,11 @@ export default {
 };
 </script>
 <style scoped>
+.detail-article-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .to-author {
   text-decoration: underline;
 }

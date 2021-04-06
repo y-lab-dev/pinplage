@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="detail-wisdom-wrap">
     <v-container>
       <v-row align-content="center">
         <v-col cols="4">
@@ -61,52 +61,54 @@
         :source-wisdom-id="question.wisdomId"
       />
     </div>
-    <v-footer app fixed color="white" class="text-area">
-      <v-container class="pa-0">
-        <v-row no-gutters>
-          <v-col cols="12">
-            <v-textarea
-              ref="answer"
-              v-model="answerMessage"
-              clearable
-              auto-grow
-              dense
-              outlined
-              color="#61d4b3"
-              rows="1"
-              hide-details
-              placeholder="回答する"
-              @click="isTouch = true"
-              @click:clear="clearMessage()"
-              @blur="isTouch = false"
-            ></v-textarea>
-          </v-col>
-        </v-row>
-        <v-row
-          v-show="isTouch || answerCounter"
-          class="mt-1"
-          no-gutters
-          justify="end"
-          @touch="isTouch = true"
-        >
-          <v-col v-if="overLimit" cols="5" align-self="center">
-            <span class="over-characther">文字数をオーバーしています</span>
-          </v-col>
-          <v-col cols="3" align-self="center">
-            <span :style="overLimit ? 'color:red;' : ''">{{ answerCounter }}</span> / 200
-          </v-col>
-          <v-col cols="2">
-            <v-chip
-              :disabled="overLimit || !answerMessage"
-              dark
-              color="#61d4b3"
-              @click="postReply()"
-              >回答</v-chip
-            >
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-footer>
+    <div class="wisdom-text-area-wrap">
+      <v-footer app fixed color="white" class="text-area">
+        <v-container class="pa-0">
+          <v-row no-gutters>
+            <v-col cols="12">
+              <v-textarea
+                ref="answer"
+                v-model="answerMessage"
+                clearable
+                auto-grow
+                dense
+                outlined
+                color="#61d4b3"
+                rows="1"
+                hide-details
+                placeholder="回答する"
+                @click="isTouch = true"
+                @click:clear="clearMessage()"
+                @blur="isTouch = false"
+              ></v-textarea>
+            </v-col>
+          </v-row>
+          <v-row
+            v-show="isTouch || answerCounter"
+            class="mt-1"
+            no-gutters
+            justify="end"
+            @touch="isTouch = true"
+          >
+            <v-col v-if="overLimit" cols="5" align-self="center">
+              <span class="over-characther">文字数をオーバーしています</span>
+            </v-col>
+            <v-col cols="3" align-self="center">
+              <span :style="overLimit ? 'color:red;' : ''">{{ answerCounter }}</span> / 200
+            </v-col>
+            <v-col cols="2">
+              <v-chip
+                :disabled="overLimit || !answerMessage"
+                dark
+                color="#61d4b3"
+                @click="postReply()"
+                >回答</v-chip
+              >
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-footer>
+    </div>
   </div>
 </template>
 
@@ -285,6 +287,11 @@ export default {
 };
 </script>
 <style scoped>
+.detail-wisdom-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .category {
   font-size: 0.8rem;
   opacity: 0.8;
@@ -296,6 +303,7 @@ export default {
   font-size: 0.8rem;
   opacity: 0.8;
 }
+
 .text-area {
   border-top: 1px solid rgb(53, 53, 53) !important;
 }

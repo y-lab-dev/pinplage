@@ -5,56 +5,56 @@
       <v-tab>投稿した知恵袋</v-tab>
       <v-tab>あなたの回答</v-tab>
     </v-tabs>
-
-    <v-tabs-items v-model="postedTab">
-      <v-tab-item>
-        <div v-if="!likedWisdoms.length">
-          <prompt-card
-            :link="'timeline'"
-            :image="require('~/assets/timeline/wisdom.png')"
-            :message="'みんなの知恵袋を見てみませんか？'"
-            :timeline-tab="1"
-          />
-        </div>
-        <wisdom-thread v-for="item in likedWisdoms" :key="item.wisdomId" v-bind="item" />
-      </v-tab-item>
-      <v-tab-item>
-        <div v-if="!postedWisdoms.length">
-          <prompt-card
-            :link="'post-wisdomPost'"
-            :image="require('~/assets/timeline/wisdom.png')"
-            :message="'初めての知恵袋を投稿してみませんか？'"
-          />
-        </div>
-        <wisdom-thread
-          v-for="item in postedWisdoms"
-          :key="item.wisdomId"
-          :wisdom-id="item.wisdomId"
-          :poster="uid"
-          :resolved="item.resolved"
-          :content="item.content"
-          :category="item.category"
-          :created-at="item.createdAt"
-          :like-amount="item.likeAmount"
-      /></v-tab-item>
-      <v-tab-item>
-        <div v-if="!postedReplies.length">
-          <prompt-card
-            :link="'timeline'"
-            :image="require('~/assets/timeline/wisdom.png')"
-            :message="'知恵袋に回答してみませんか？'"
-            :timeline-tab="1"
-          />
-        </div>
-        <div
-          v-for="item in postedReplies"
-          :key="item.wisdomId"
-          @click="toParentWisdom(item.parentWisdomId)"
-        >
-          <wisdom-reply :key="item.wisdomId" v-bind="item" />
-        </div>
-      </v-tab-item>
-      <!-- <v-tab-item>
+    <div class="posted-wisdom-wrap">
+      <v-tabs-items v-model="postedTab">
+        <v-tab-item>
+          <div v-if="!likedWisdoms.length">
+            <prompt-card
+              :link="'timeline'"
+              :image="require('~/assets/timeline/wisdom.png')"
+              :message="'みんなの知恵袋を見てみませんか？'"
+              :timeline-tab="1"
+            />
+          </div>
+          <wisdom-thread v-for="item in likedWisdoms" :key="item.wisdomId" v-bind="item" />
+        </v-tab-item>
+        <v-tab-item>
+          <div v-if="!postedWisdoms.length">
+            <prompt-card
+              :link="'post-wisdomPost'"
+              :image="require('~/assets/timeline/wisdom.png')"
+              :message="'初めての知恵袋を投稿してみませんか？'"
+            />
+          </div>
+          <wisdom-thread
+            v-for="item in postedWisdoms"
+            :key="item.wisdomId"
+            :wisdom-id="item.wisdomId"
+            :poster="uid"
+            :resolved="item.resolved"
+            :content="item.content"
+            :category="item.category"
+            :created-at="item.createdAt"
+            :like-amount="item.likeAmount"
+        /></v-tab-item>
+        <v-tab-item>
+          <div v-if="!postedReplies.length">
+            <prompt-card
+              :link="'timeline'"
+              :image="require('~/assets/timeline/wisdom.png')"
+              :message="'知恵袋に回答してみませんか？'"
+              :timeline-tab="1"
+            />
+          </div>
+          <div
+            v-for="item in postedReplies"
+            :key="item.wisdomId"
+            @click="toParentWisdom(item.parentWisdomId)"
+          >
+            <wisdom-reply :key="item.wisdomId" v-bind="item" />
+          </div>
+        </v-tab-item>
+        <!-- <v-tab-item>
         <div
           v-for="item in likedReplies"
           :key="item.wisdomId"
@@ -63,7 +63,8 @@
           <wisdom-reply :key="item.wisdomId" v-bind="item" />
         </div>
       </v-tab-item> -->
-    </v-tabs-items>
+      </v-tabs-items>
+    </div>
   </div>
 </template>
 <script>
@@ -205,3 +206,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.posted-wisdom-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

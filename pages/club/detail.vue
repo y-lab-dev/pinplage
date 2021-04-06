@@ -1,5 +1,5 @@
 <template v-cloak>
-  <div>
+  <div class="detail-wrap">
     <v-carousel cycle height="200" hide-delimiters show-arrows-on-hover class="club-carousel">
       <p class="club-name">
         <v-avatar class="club-icon" size="30px"><img :src="clubIcon" /></v-avatar>
@@ -105,6 +105,11 @@ export default {
 </script>
 
 <style scoped>
+.detail-wrap {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .club-name {
   position: absolute;
   margin-bottom: 0;
@@ -121,6 +126,11 @@ export default {
 }
 .club-carousel {
   position: relative;
+}
+@media only screen and (max-device-width: 550px) {
+  .club-carousel {
+    height: 300;
+  }
 }
 .club-icon {
   background-color: #fff;

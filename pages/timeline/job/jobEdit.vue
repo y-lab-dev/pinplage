@@ -178,11 +178,19 @@
           >
         </div>
         <div class="close-button">
-          <v-btn v-show="!isClose" width="80vw" rounded dark color="pink lighten-2" @click="close">
+          <v-btn
+            v-show="!isClose"
+            width="80vw"
+            max-width="500px"
+            rounded
+            dark
+            color="pink lighten-2"
+            @click="close"
+          >
             <v-icon left>mdi-emoticon-kiss-outline</v-icon>
             募集を締め切る
           </v-btn>
-          <v-btn v-show="isClose" width="80vw" rounded dark color="grey">
+          <v-btn v-show="isClose" width="80vw" max-width="500px" rounded dark color="grey">
             <v-icon left>mdi-check-circle-outline</v-icon>
             募集を終了しました
           </v-btn>

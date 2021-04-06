@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="detail-thread-wrap">
     <v-card tile :elevation="1" class="mb-2">
       <viewer :images="threadObject.img">
         <template v-for="src in threadObject.img">
@@ -200,6 +200,11 @@ export default {
 };
 </script>
 <style scoped>
+.detail-thread-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .top-img {
   width: 100%;
   height: 30vh;

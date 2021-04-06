@@ -31,7 +31,7 @@
       }}</v-card-title>
       <v-card-subtitle class="pl-3 pb-3 text-caption">{{ item.genre }}</v-card-subtitle>
       <v-row>
-        <v-col class="py-0">
+        <v-col cols="6" class="py-0">
           <v-img
             v-show="item.img"
             height="16vh"
@@ -40,7 +40,7 @@
             :src="item.img"
           ></v-img>
         </v-col>
-        <v-col class="py-0">
+        <v-col cols="6" class="py-0">
           <v-list-item class="pl-0">
             <v-icon size="20" left>mdi-currency-cny</v-icon>
             <v-list-item-content class="caption py-0">{{ item.money }}</v-list-item-content>

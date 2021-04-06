@@ -3,19 +3,20 @@
     <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
       <v-tab>投稿したイベント</v-tab>
     </v-tabs>
-
-    <v-tabs-items v-model="postedTab">
-      <v-tab-item>
-        <div v-if="!postedEvents.length">
-          <prompt-card
-            :link="'post-eventPost'"
-            :image="require('~/assets/timeline/event.png')"
-            :message="'初めてのイベントを投稿してみませんか？'"
-          />
-        </div>
-        <event-card v-for="(item, index) in postedEvents" v-cloak :key="index" v-bind="item" />
-      </v-tab-item>
-    </v-tabs-items>
+    <div class="posted-events-wrap">
+      <v-tabs-items v-model="postedTab">
+        <v-tab-item>
+          <div v-if="!postedEvents.length">
+            <prompt-card
+              :link="'post-eventPost'"
+              :image="require('~/assets/timeline/event.png')"
+              :message="'初めてのイベントを投稿してみませんか？'"
+            />
+          </div>
+          <event-card v-for="(item, index) in postedEvents" v-cloak :key="index" v-bind="item" />
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
   </div>
 </template>
 
@@ -77,3 +78,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.posted-events-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

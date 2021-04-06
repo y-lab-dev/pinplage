@@ -1,35 +1,36 @@
 <template>
-  <div>
+  <div class="posted-threads-wrap">
     <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
       <v-tab>投稿したスレッド</v-tab>
       <v-tab>あなたの返信</v-tab>
     </v-tabs>
-
-    <v-tabs-items v-model="postedTab">
-      <v-tab-item>
-        <div v-if="!post.length">
-          <prompt-card
-            :link="'post-threadPost'"
-            :image="require('~/assets/timeline/thread.png')"
-            :message="'初めてのスレッドを投稿してみませんか？'"
-          />
-        </div>
-        <thread-card v-for="item in post" :key="item.id" v-bind="item" />
-      </v-tab-item>
-      <v-tab-item>
-        <div v-if="!reply.length">
-          <prompt-card
-            :link="'timeline'"
-            :image="require('~/assets/timeline/thread.png')"
-            :message="'スレッドに返信してみませんか？'"
-            :timeline-tab="0"
-          />
-        </div>
-        <div v-for="(item, index) in reply" :key="index" @click="pushParentPage(item.parentId)">
-          <thread-comment v-bind="reply[index]"></thread-comment>
-        </div>
-      </v-tab-item>
-    </v-tabs-items>
+    <div class="posted-threads-item-wrap">
+      <v-tabs-items v-model="postedTab">
+        <v-tab-item>
+          <div v-if="!post.length">
+            <prompt-card
+              :link="'post-threadPost'"
+              :image="require('~/assets/timeline/thread.png')"
+              :message="'初めてのスレッドを投稿してみませんか？'"
+            />
+          </div>
+          <thread-card v-for="item in post" :key="item.id" v-bind="item" />
+        </v-tab-item>
+        <v-tab-item>
+          <div v-if="!reply.length">
+            <prompt-card
+              :link="'timeline'"
+              :image="require('~/assets/timeline/thread.png')"
+              :message="'スレッドに返信してみませんか？'"
+              :timeline-tab="0"
+            />
+          </div>
+          <div v-for="(item, index) in reply" :key="index" @click="pushParentPage(item.parentId)">
+            <thread-comment v-bind="reply[index]"></thread-comment>
+          </div>
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
   </div>
 </template>
 
@@ -136,3 +137,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.posted-threads-item-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

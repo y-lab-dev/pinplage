@@ -272,7 +272,9 @@ export default {
   width: 90%;
 }
 .checkbox {
-  margin-left: 70px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 40px;
   display: flex;
 }

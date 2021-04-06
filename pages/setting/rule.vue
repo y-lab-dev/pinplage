@@ -1,11 +1,13 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <AppRule class="app-rule" />
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="rule-wrap">
+    <v-container>
+      <v-row>
+        <v-col>
+          <AppRule class="app-rule" />
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -18,6 +20,11 @@ export default {
 };
 </script>
 <style>
+.rule-wrap {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .app-rule {
   width: 80%;
 }

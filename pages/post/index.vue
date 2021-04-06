@@ -16,7 +16,7 @@
             <v-card>
               <v-img
                 class="white--text"
-                height="24vh"
+                height="27vh"
                 :src="require('~/assets/post/threadPost.jpg')"
               ></v-img>
             </v-card>
@@ -27,7 +27,7 @@
             <v-card>
               <v-img
                 class="white--text"
-                height="24vh"
+                height="27vh"
                 :src="require('~/assets/post/wisdomPost.jpg')"
               ></v-img>
             </v-card>
@@ -38,7 +38,7 @@
             <v-card @click="$store.commit('place/getId', '')">
               <v-img
                 class="white--text"
-                height="24vh"
+                height="27vh"
                 :src="require('~/assets/post/reviewPost.jpg')"
               ></v-img>
             </v-card>
@@ -48,7 +48,7 @@
           <v-card @click="clickModal">
             <v-img
               class="white--text"
-              height="24vh"
+              height="27vh"
               :src="require('~/assets/post/circlePost.jpg')"
             ></v-img>
           </v-card>
@@ -58,7 +58,7 @@
             <v-card>
               <v-img
                 class="white--text"
-                height="24vh"
+                height="27vh"
                 :src="require('~/assets/post/eventPost.jpg')"
               ></v-img>
             </v-card>
@@ -69,7 +69,7 @@
             <v-card>
               <v-img
                 class="white--text"
-                height="24vh"
+                height="27vh"
                 :src="require('~/assets/post/jobPost.jpg')"
               ></v-img>
             </v-card>
@@ -109,13 +109,16 @@ export default {
 .post-card-left {
   padding-left: 18px;
   padding-right: 9px;
-  padding-top: 18px;
   padding-bottom: 0;
 }
 .post-card-right {
   padding-left: 9px;
   padding-right: 18px;
-  padding-top: 18px;
   padding-bottom: 0;
+}
+@media only screen and (max-device-width: 550px) {
+  .white--text {
+    height: 24vh;
+  }
 }
 </style>

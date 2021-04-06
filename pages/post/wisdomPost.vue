@@ -214,6 +214,7 @@ export default {
 .post-wisdom-back {
   background-color: #e7e7e75e;
   height: 100vh;
+  max-height: 600px;
 }
 .warning-message {
   text-align: right;

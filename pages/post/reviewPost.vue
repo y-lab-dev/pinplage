@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%" align="center">
+  <div class="review-post-wrap" style="height: 100%" align="center">
     <div ref="map" />
     <v-card width="98vw">
       <v-container style="height: 100%" fluid>
@@ -130,6 +130,7 @@
                           <v-btn
                             rounded
                             width="80vw"
+                            max-width="500px"
                             class="white--text button-color center"
                             outlined
                             v-bind="attrs"
@@ -402,6 +403,11 @@ export default {
 </script>
 
 <style scoped>
+.review-post-wrap {
+  max-width: 550px;
+  margin-right: auto;
+  margin-left: auto;
+}
 input[type='radio'] {
   display: none;
 }
