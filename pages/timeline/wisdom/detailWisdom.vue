@@ -14,10 +14,10 @@
       <v-row dense class="mt-2">
         <v-col cols="2">
           <v-avatar>
-            <img :src="posterIcon" />
+            <img :src="question.posterIcon" />
           </v-avatar>
         </v-col>
-        <v-col cols="9" align-self="center">{{ posterName }}</v-col>
+        <v-col cols="9" align-self="center">{{ question.posterName }}</v-col>
       </v-row>
       <v-row>
         <v-col cols="12">{{ question.content }}</v-col>
@@ -35,7 +35,7 @@
         <v-col cols="3" class="bar-item" align-self="start" @click="openMessage()">
           <v-icon class="mx-auto">mdi-message-outline</v-icon>
         </v-col>
-        <v-col cols="3" class="bar-item"><wisdom-like :wisdom-id="$route.query" /></v-col>
+        <v-col cols="3" class="bar-item"><wisdom-like :wisdom-id="wisdomId" /></v-col>
       </v-row>
       <v-divider></v-divider>
     </v-container>
@@ -58,7 +58,7 @@
         v-bind="answers[index]"
         :resolved="question.resolved"
         :poster="question.poster"
-        :source-wisdom-id="question.wisdomId"
+        :source-wisdom-id="wisdomId"
       />
     </div>
     <div class="wisdom-text-area-wrap">
@@ -123,19 +123,14 @@ export default {
   components: { WisdomLike, WisdomReply },
   data() {
     return {
-      question: {},
-      answers: [],
       newAnswers: [],
-      posterIcon: null,
-      posterName: null,
       answerMessage: null,
       isTouch: false,
     };
   },
   computed: {
     formatDay() {
-      const formatDay = dayjs(this.question.createdAt).format('HH:mm  YYYY/MM/DD ');
-      return formatDay;
+      return dayjs(this.question.createdAt).format('HH:mm  YYYY/MM/DD ');
     },
     noReply() {
       if (this.answers.length === 0) {
@@ -163,63 +158,13 @@ export default {
       email: 'user/email',
       name: 'user/name',
       icon: 'user/icon',
+      wisdomId: 'wisdomContents/wisdomId',
+      question: 'wisdomContents/content',
+      answers: 'wisdomContents/answers',
     }),
   },
-  created() {
-    const that = this;
-    const docId = this.$route.query;
-    const wisdoms = firebase.firestore().collection('wisdoms').doc(docId);
-    const users = firebase.firestore().collection('users');
-    async function getWisdoms() {
-      await wisdoms.get().then((doc) => {
-        const wisdom = doc.data();
-        that.question = {
-          wisdomId: doc.id,
-          poster: wisdom.poster,
-          likeAmount: wisdom.like,
-          resolved: wisdom.resolved,
-          content: wisdom.content,
-          category: wisdom.category,
-          createdAt: wisdom.createdAt.toDate(),
-        };
-      });
-    }
-
-    getWisdoms().then(() => {
-      users
-        .doc(that.question.poster)
-        .get()
-        .then((doc) => {
-          that.posterName = doc.data().name;
-          that.posterIcon = doc.data().icon;
-        });
-    });
-
-    wisdoms
-      .collection('reply')
-      .orderBy('createdAt')
-      .get()
-      .then((snapshot) => {
-        if (snapshot.size === 0) {
-          return;
-        }
-        snapshot.forEach((doc) => {
-          const answer = doc.data();
-          const answerDetail = {
-            wisdomId: doc.id,
-            replyer: answer.replyer,
-            likeAmount: answer.like,
-            content: answer.content,
-            createdAt: answer.createdAt.toDate(),
-            bestAnswer: answer.bestAnswer,
-          };
-          if (answer.bestAnswer === true) {
-            that.answers = [answerDetail, ...that.answers];
-          } else {
-            that.answers = [...that.answers, answerDetail];
-          }
-        });
-      });
+  mounted() {
+    console.log('run');
   },
   methods: {
     clearMessage() {
@@ -253,7 +198,7 @@ export default {
         return;
       }
       const timestamp = firebase.firestore.Timestamp.now();
-      const wisdoms = firebase.firestore().collection('wisdoms').doc(this.$route.query);
+      const wisdoms = firebase.firestore().collection('wisdoms').doc(this.wisdomId);
       const users = firebase.firestore().collection('users').doc(this.uid);
       wisdoms
         .collection('reply')
@@ -266,17 +211,8 @@ export default {
           replyer: that.uid,
         })
         .then((doc) => {
-          const newAnswer = {
-            wisdomId: timestamp.toDate().toString(),
-            poster: that.uid,
-            likeAmount: 0,
-            content: that.answerMessage,
-            createdAt: timestamp.toDate(),
-          };
           that.answerMessage = '';
-          const newAnswers = [...that.answers, newAnswer];
-          that.answers = newAnswers;
-          that.scrollToElement(newAnswers.length - 1);
+          that.scrollToElement(this.answers.length - 1);
           users
             .collection('wisdom')
             .doc('reply')

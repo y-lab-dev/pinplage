@@ -162,8 +162,14 @@ export default {
   },
   methods: {
     wisdomDetail(wisdomId) {
-      this.$router.push({ name: 'timeline-wisdom-detailWisdom', query: wisdomId });
-      firebase.analytics().logEvent('wisdomDetail_view', { property: 'wisdomDetail_view' });
+      this.setWisdomId(this.wisdomId).then(() => {
+        this.$router.push({ name: 'timeline-wisdom-detailWisdom' });
+        firebase.analytics().logEvent('wisdomDetail_view', { property: 'wisdomDetail_view' });
+      });
+    },
+    async setWisdomId(wisdomId) {
+      await this.$store.dispatch('wisdomContents/clearAnswers');
+      await this.$store.dispatch('wisdomContents/setWisdomId', { id: wisdomId });
     },
   },
 };
