@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HowToUse />
     <v-tabs
       v-model="model"
       grow
@@ -69,6 +70,7 @@ import Wisdom from '~/components/Organisms/TimelineWisdom';
 import Place from '~/components/Organisms/TimelinePlace';
 import Event from '~/components/Organisms/TimelineEvent';
 import TimelineArticle from '~/components/Organisms/TimelineArticle';
+import HowToUse from '~/components/Organisms/HowToUse';
 
 export default {
   layout: 'protected',
@@ -79,6 +81,7 @@ export default {
     Wisdom,
     Event,
     TimelineArticle,
+    HowToUse,
   },
   data() {
     return {
