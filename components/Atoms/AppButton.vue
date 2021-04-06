@@ -2,6 +2,7 @@
   <v-btn
     rounded
     width="80vw"
+    max-width="500px"
     class="white--text button-color"
     outlined
     :type="buttonType"

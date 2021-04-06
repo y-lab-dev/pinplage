@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%">
+  <div class="detail-review-wrap" style="height: 100%">
     <v-container style="height: 100%" fluid>
       <v-row justify="center" align-content="center" style="height: 100%" fluid>
         <v-col>
@@ -398,6 +398,11 @@ export default {
 </script>
 
 <style scoped>
+.detail-review-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .post-button {
   text-align: center;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%">
+  <div class="detail-place-wrap" style="height: 100%">
     <v-container style="height: 100%" fluid>
       <v-row justify="center" align-content="center" style="height: 100%" fluid>
         <v-col>
@@ -119,10 +119,11 @@
             </v-list>
             <v-footer app fixed class="ma-0 py-3 buttom-button-bar">
               <v-row no-gutters>
-                <v-col cols="5" class="text-center">
+                <v-col cols="5" md="6" class="text-center">
                   <v-btn
                     v-show="!isKeep"
                     width="33vw"
+                    max-width="350px"
                     rounded
                     outlined
                     color="yellow darken-3"
@@ -135,6 +136,7 @@
                   <v-btn
                     v-show="isKeep"
                     width="33vw"
+                    max-width="350px"
                     rounded
                     color="yellow darken-3"
                     dark
@@ -144,9 +146,10 @@
                     <v-icon left>mdi-heart</v-icon>行きたい
                   </v-btn>
                 </v-col>
-                <v-col cols="7" class="text-center">
+                <v-col cols="7" md="6" class="text-center">
                   <v-btn
                     width="52vw"
+                    max-width="550px"
                     rounded
                     color="orange"
                     class="bottom-button"
@@ -355,6 +358,11 @@ export default {
 };
 </script>
 <style scoped>
+.detail-place-wrap {
+  max-width: 550px;
+  margin-right: auto;
+  margin-left: auto;
+}
 .main {
   width: 100%;
   height: 240px;

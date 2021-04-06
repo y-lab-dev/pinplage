@@ -1,206 +1,208 @@
 <template>
-  <v-container fluid>
-    <v-row align="center">
-      <v-col>
-        <viewer :images="eventObject.img">
-          <template v-for="src in eventObject.img">
-            <img :key="src" class="top-img" :src="src" />
-          </template>
-        </viewer>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-subtitle class="red--text">{{ eventObject.date }}</v-list-item-subtitle>
-            <v-list-item-title>{{ eventObject.title }}</v-list-item-title>
-            <v-list-item-subtitle>
-              {{ eventObject.placeName }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-        <v-btn
-          v-show="!isJoin"
-          class="ml-2"
-          color="#61d4b3"
-          rounded
-          width="80%"
-          color-text="white"
-          dark
-          @click="joinDialog = true"
-          >参加する</v-btn
-        >
-        <v-dialog v-model="joinDialog" width="400">
-          <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title
-              >イベントに参加</v-card-title
-            >
-
-            <v-card-text class="mt-5 px-5 pb-5" style="text-align: center"
-              >このイベントに参加しますか？</v-card-text
-            >
-            <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-btn color="#61d4b3" text @click="joinDialog = false">キャンセル</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn color="blue" text @click="join()">OK</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-btn
-          v-show="!isInterest"
-          class="ml-2"
-          style="float: right"
-          color="#61d4b3"
-          fab
-          small
-          dark
-          @click="interest()"
-        >
-          <v-icon>mdi-thumb-up</v-icon>
-        </v-btn>
-        <v-btn
-          v-show="isJoin"
-          class="ml-2"
-          color="#61d4b3"
-          rounded
-          width="80%"
-          color-text="white"
-          dark
-          @click="cancelDialog = true"
-        >
-          参加する
-          <v-icon>mdi-check-circle-outline</v-icon>
-        </v-btn>
-        <v-dialog v-model="cancelDialog" width="400">
-          <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title
-              >イベントのキャンセル</v-card-title
-            >
-
-            <v-card-text class="mt-5 px-5 pb-5" style="text-align: center"
-              >このイベントの参加をやめますか？</v-card-text
-            >
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-btn color="#61d4b3" text @click="cancelDialog = false">キャンセル</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn color="red" text @click="notJoin()">OK</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-btn
-          v-show="isInterest"
-          class="ml-2"
-          color="#61d4b3"
-          style="color: #ea5532; float: right"
-          fab
-          small
-          dark
-          @click="notInterest()"
-        >
-          <v-icon>mdi-thumb-up</v-icon>
-        </v-btn>
-        <v-list-item class="mt-3">
-          <v-icon size="25" left>mdi-account-multiple</v-icon>
-          <v-list-item-content class="text-subtitle-2">
-            参加予定人数{{ eventObject.join }}人・{{ eventObject.interest }}人が興味あり
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-icon size="25" left>mdi-account-check</v-icon>
-          <v-list-item-content class="text-subtitle-2"
-            >{{ poster }}さんの公開イベント</v-list-item-content
-          >
-        </v-list-item>
-        <v-list-item>
-          <v-icon size="25" left>mdi-map-marker</v-icon>
-          <v-list-item-content class="text-subtitle-2">{{
-            eventObject.placeName
-          }}</v-list-item-content>
-        </v-list-item>
-        <v-divider class="mt-4 content-divider"></v-divider>
-        <v-list>
-          <v-list-item-title class="content-title">基本情報</v-list-item-title>
-          <v-list-item-content class="font-weight-black">詳細</v-list-item-content>
-          <v-list-item-content
-            class="text-subtitle-2"
-            style="white-space: pre-wrap; word-wrap: break-word"
-            >{{ eventDetailObject.content }}</v-list-item-content
-          >
-          <v-list-item-content class="font-weight-black">日時 </v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">
-            {{ eventObject.date }} {{ eventDetailObject.startTime }}-{{
-              eventDetailObject.finishTime
-            }}
-          </v-list-item-content>
-          <v-list-item-content class="font-weight-black">場所</v-list-item-content>
-          <v-list-item-content class="text-subtitle-2">{{
-            eventObject.placeName
-          }}</v-list-item-content>
-          <google-map v-show="geometry" :geometry="geometry"></google-map>
-          <div v-if="eventDetailObject.fee">
-            <v-list-item-content v-if="eventDetailObject.fee" class="font-weight-black"
-              >参加費</v-list-item-content
-            >
-            <v-list-item-content class="text-subtitle-2">{{
-              eventDetailObject.fee
-            }}</v-list-item-content>
-          </div>
-          <div v-if="eventDetailObject.capacity">
-            <v-list-item-content class="font-weight-black">定員</v-list-item-content>
-            <v-list-item-content class="text-subtitle-2">{{
-              eventDetailObject.capacity
-            }}</v-list-item-content>
-          </div>
-          <div v-if="eventDetailObject.hpUrl">
-            <v-list-item-content class="font-weight-black">参考URL</v-list-item-content>
-            <v-list-item-content
-              class="text-subtitle-2 content-url"
-              @click="toLink(eventDetailObject.hpUrl)"
-            >
-              {{ eventDetailObject.hpUrl }}
+  <div class="detail-event-wrap">
+    <v-container fluid>
+      <v-row align="center">
+        <v-col>
+          <viewer :images="eventObject.img">
+            <template v-for="src in eventObject.img">
+              <img :key="src" class="top-img" :src="src" />
+            </template>
+          </viewer>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-subtitle class="red--text">{{ eventObject.date }}</v-list-item-subtitle>
+              <v-list-item-title>{{ eventObject.title }}</v-list-item-title>
+              <v-list-item-subtitle>
+                {{ eventObject.placeName }}
+              </v-list-item-subtitle>
             </v-list-item-content>
-          </div>
-        </v-list>
-        <nuxt-link to="/timeline/event/eventEdit">
-          <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
-            <v-icon>mdi-pencil</v-icon>編集
+          </v-list-item>
+          <v-btn
+            v-show="!isJoin"
+            class="ml-2"
+            color="#61d4b3"
+            rounded
+            width="80%"
+            color-text="white"
+            dark
+            @click="joinDialog = true"
+            >参加する</v-btn
+          >
+          <v-dialog v-model="joinDialog" width="400">
+            <v-card>
+              <v-card-title class="headline grey lighten-2" primary-title
+                >イベントに参加</v-card-title
+              >
+
+              <v-card-text class="mt-5 px-5 pb-5" style="text-align: center"
+                >このイベントに参加しますか？</v-card-text
+              >
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-btn color="#61d4b3" text @click="joinDialog = false">キャンセル</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="blue" text @click="join()">OK</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-btn
+            v-show="!isInterest"
+            class="ml-2"
+            style="float: right"
+            color="#61d4b3"
+            fab
+            small
+            dark
+            @click="interest()"
+          >
+            <v-icon>mdi-thumb-up</v-icon>
           </v-btn>
-        </nuxt-link>
-        <v-divider class="mt-12 content-divider"></v-divider>
-        <v-list two-line>
-          <v-list-item-title class="content-title">質問リスト</v-list-item-title>
-          <question-thread
-            v-for="(item, index) in eventQuestionArray"
-            :key="item.questionId"
-            v-bind="eventQuestionArray[index]"
-            :class="`index-${index}`"
-          ></question-thread>
-          <text-area
-            class="mt-4"
-            :textarea-placeholder="contentPlaceholder"
-            :textarea-value="content"
-            @input="content = $event"
-          ></text-area>
-          <v-list-item-content class="caption mx-8"
-            ><p class="mb-0">
-              不適切な投稿をすると、利用規約の違反により<span class="font-weight-bold"
-                >投稿の削除</span
-              >や<span class="font-weight-bold">利用停止</span>となる場合があります。
-            </p>
-          </v-list-item-content>
-          <div class="post-button">
-            <post-button
-              class="mt-4"
-              :button-method="post"
-              :button-type="buttonType"
-              :button-disabled="content == ''"
-              >質問投稿</post-button
+          <v-btn
+            v-show="isJoin"
+            class="ml-2"
+            color="#61d4b3"
+            rounded
+            width="80%"
+            color-text="white"
+            dark
+            @click="cancelDialog = true"
+          >
+            参加する
+            <v-icon>mdi-check-circle-outline</v-icon>
+          </v-btn>
+          <v-dialog v-model="cancelDialog" width="400">
+            <v-card>
+              <v-card-title class="headline grey lighten-2" primary-title
+                >イベントのキャンセル</v-card-title
+              >
+
+              <v-card-text class="mt-5 px-5 pb-5" style="text-align: center"
+                >このイベントの参加をやめますか？</v-card-text
+              >
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-btn color="#61d4b3" text @click="cancelDialog = false">キャンセル</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="red" text @click="notJoin()">OK</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-btn
+            v-show="isInterest"
+            class="ml-2"
+            color="#61d4b3"
+            style="color: #ea5532; float: right"
+            fab
+            small
+            dark
+            @click="notInterest()"
+          >
+            <v-icon>mdi-thumb-up</v-icon>
+          </v-btn>
+          <v-list-item class="mt-3">
+            <v-icon size="25" left>mdi-account-multiple</v-icon>
+            <v-list-item-content class="text-subtitle-2">
+              参加予定人数{{ eventObject.join }}人・{{ eventObject.interest }}人が興味あり
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-icon size="25" left>mdi-account-check</v-icon>
+            <v-list-item-content class="text-subtitle-2"
+              >{{ poster }}さんの公開イベント</v-list-item-content
             >
-          </div>
-        </v-list>
-      </v-col>
-    </v-row>
-  </v-container>
+          </v-list-item>
+          <v-list-item>
+            <v-icon size="25" left>mdi-map-marker</v-icon>
+            <v-list-item-content class="text-subtitle-2">{{
+              eventObject.placeName
+            }}</v-list-item-content>
+          </v-list-item>
+          <v-divider class="mt-4 content-divider"></v-divider>
+          <v-list>
+            <v-list-item-title class="content-title">基本情報</v-list-item-title>
+            <v-list-item-content class="font-weight-black">詳細</v-list-item-content>
+            <v-list-item-content
+              class="text-subtitle-2"
+              style="white-space: pre-wrap; word-wrap: break-word"
+              >{{ eventDetailObject.content }}</v-list-item-content
+            >
+            <v-list-item-content class="font-weight-black">日時 </v-list-item-content>
+            <v-list-item-content class="text-subtitle-2">
+              {{ eventObject.date }} {{ eventDetailObject.startTime }}-{{
+                eventDetailObject.finishTime
+              }}
+            </v-list-item-content>
+            <v-list-item-content class="font-weight-black">場所</v-list-item-content>
+            <v-list-item-content class="text-subtitle-2">{{
+              eventObject.placeName
+            }}</v-list-item-content>
+            <google-map v-show="geometry" :geometry="geometry"></google-map>
+            <div v-if="eventDetailObject.fee">
+              <v-list-item-content v-if="eventDetailObject.fee" class="font-weight-black"
+                >参加費</v-list-item-content
+              >
+              <v-list-item-content class="text-subtitle-2">{{
+                eventDetailObject.fee
+              }}</v-list-item-content>
+            </div>
+            <div v-if="eventDetailObject.capacity">
+              <v-list-item-content class="font-weight-black">定員</v-list-item-content>
+              <v-list-item-content class="text-subtitle-2">{{
+                eventDetailObject.capacity
+              }}</v-list-item-content>
+            </div>
+            <div v-if="eventDetailObject.hpUrl">
+              <v-list-item-content class="font-weight-black">参考URL</v-list-item-content>
+              <v-list-item-content
+                class="text-subtitle-2 content-url"
+                @click="toLink(eventDetailObject.hpUrl)"
+              >
+                {{ eventDetailObject.hpUrl }}
+              </v-list-item-content>
+            </div>
+          </v-list>
+          <nuxt-link to="/timeline/event/eventEdit">
+            <v-btn v-if="isEdit" rounded style="margin: 0 auto; float: right">
+              <v-icon>mdi-pencil</v-icon>編集
+            </v-btn>
+          </nuxt-link>
+          <v-divider class="mt-12 content-divider"></v-divider>
+          <v-list two-line>
+            <v-list-item-title class="content-title">質問リスト</v-list-item-title>
+            <question-thread
+              v-for="(item, index) in eventQuestionArray"
+              :key="item.questionId"
+              v-bind="eventQuestionArray[index]"
+              :class="`index-${index}`"
+            ></question-thread>
+            <text-area
+              class="mt-4"
+              :textarea-placeholder="contentPlaceholder"
+              :textarea-value="content"
+              @input="content = $event"
+            ></text-area>
+            <v-list-item-content class="caption mx-8"
+              ><p class="mb-0">
+                不適切な投稿をすると、利用規約の違反により<span class="font-weight-bold"
+                  >投稿の削除</span
+                >や<span class="font-weight-bold">利用停止</span>となる場合があります。
+              </p>
+            </v-list-item-content>
+            <div class="post-button">
+              <post-button
+                class="mt-4"
+                :button-method="post"
+                :button-type="buttonType"
+                :button-disabled="content == ''"
+                >質問投稿</post-button
+              >
+            </div>
+          </v-list>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -478,6 +480,11 @@ export default {
 };
 </script>
 <style scoped>
+.detail-event-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .top-img {
   width: 100%;
   height: 30vh;

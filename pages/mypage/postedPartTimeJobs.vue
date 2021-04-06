@@ -4,130 +4,146 @@
       <v-tab>投稿したアルバイト</v-tab>
       <v-tab>キープしたアルバイト</v-tab>
     </v-tabs>
-
-    <v-tabs-items v-model="postedTab">
-      <v-tab-item>
-        <div v-if="!post.length">
-          <prompt-card
-            :link="'post-jobPost'"
-            :image="require('~/assets/timeline/job.png')"
-            :message="'アルバイトをみんなに紹介してみませんか？'"
-          />
-        </div>
-        <v-card
-          v-for="item in post"
-          :key="item.id"
-          class="mt-2 mx-2"
-          :elevation="4"
-          @click="tojobDetail(item)"
-        >
-          <v-chip v-show="item.isNew" color="green" small outlined class="ml-3 mt-3"> NEW </v-chip>
-          <v-chip
-            v-if="item.isRecruit"
-            :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
-            small
-            color="red"
-            outlined
-          >
-            募集中
-          </v-chip>
-          <v-chip
-            v-if="!item.isRecruit"
-            :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
-            small
-            color="primary"
-            outlined
-          >
-            募集締切
-          </v-chip>
-          <v-card-title
-            class="pl-3 pt-3 text-subtitle-1 font-weight-bold blue--text text--darken-3"
-            >{{ item.name }}</v-card-title
-          >
-          <v-card-subtitle class="pl-3 pb-3 text-caption">{{ item.genre }}</v-card-subtitle>
-          <div class="d-flex justify-space-around">
-            <v-img
-              v-show="item.img"
-              height="16vh"
-              width="44vw"
-              class="ml-3 mb-3"
-              :src="item.img"
-            ></v-img>
-            <div>
-              <v-list-item>
-                <v-icon size="20" left>mdi-currency-cny</v-icon>
-                <v-list-item-content class="caption py-0">{{ item.money }}</v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-icon size="20" left>mdi-map-marker</v-icon>
-                <v-list-item-content class="caption">{{ item.placeName }}</v-list-item-content>
-              </v-list-item>
-            </div>
+    <div class="posted-job-wrap">
+      <v-tabs-items v-model="postedTab">
+        <v-tab-item>
+          <div v-if="!post.length">
+            <prompt-card
+              :link="'post-jobPost'"
+              :image="require('~/assets/timeline/job.png')"
+              :message="'アルバイトをみんなに紹介してみませんか？'"
+            />
           </div>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <div v-if="!keep.length">
-          <prompt-card
-            :link="'timeline'"
-            :image="require('~/assets/timeline/job.png')"
-            :message="'どんなアルバイトがあるか覗いてみませんか？'"
-            :timeline-tab="5"
-          />
-        </div>
-        <v-card
-          v-for="item in keep"
-          :key="item.id"
-          class="mt-2 mx-2"
-          :elevation="4"
-          @click="tojobDetail(item)"
-        >
-          <v-chip v-show="item.isNew" color="green" small outlined class="ml-3 mt-3"> NEW </v-chip>
-          <v-chip
-            v-if="item.isRecruit"
-            :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
-            small
-            color="red"
-            outlined
+          <v-card
+            v-for="item in post"
+            :key="item.id"
+            class="mt-2 mx-2"
+            :elevation="4"
+            @click="tojobDetail(item)"
           >
-            募集中
-          </v-chip>
-          <v-chip
-            v-if="!item.isRecruit"
-            :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
-            small
-            color="primary"
-            outlined
-          >
-            募集締切
-          </v-chip>
-          <v-card-title
-            class="pl-3 pt-3 text-subtitle-1 font-weight-bold blue--text text--darken-3"
-            >{{ item.name }}</v-card-title
-          >
-          <v-card-subtitle class="pl-3 pb-3 text-caption">{{ item.genre }}</v-card-subtitle>
-          <div class="d-flex justify-space-around">
-            <v-img
-              v-show="item.img"
-              height="16vh"
-              width="44vw"
-              class="ml-3 mb-3"
-              :src="item.img"
-            ></v-img>
-            <div>
-              <v-list-item>
-                <v-icon size="20" left>mdi-currency-cny</v-icon>
-                <v-list-item-content class="caption py-0">{{ item.money }}</v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-icon size="20" left>mdi-map-marker</v-icon>
-                <v-list-item-content class="caption">{{ item.placeName }}</v-list-item-content>
-              </v-list-item>
+            <v-chip v-show="item.isNew" color="green" small outlined class="ml-3 mt-3">
+              NEW
+            </v-chip>
+            <v-chip
+              v-if="item.isRecruit"
+              :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
+              small
+              color="red"
+              outlined
+            >
+              募集中
+            </v-chip>
+            <v-chip
+              v-if="!item.isRecruit"
+              :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
+              small
+              color="primary"
+              outlined
+            >
+              募集締切
+            </v-chip>
+            <v-card-title
+              class="pl-3 pt-3 text-subtitle-1 font-weight-bold blue--text text--darken-3"
+              >{{ item.name }}</v-card-title
+            >
+            <v-card-subtitle class="pl-3 pb-3 text-caption">{{ item.genre }}</v-card-subtitle>
+            <div class="d-flex justify-space-around">
+              <v-row>
+                <v-col cols="6" md="6">
+                  <v-img
+                    v-show="item.img"
+                    height="16vh"
+                    width="44vw"
+                    max-width="200px"
+                    class="ml-3 mb-3"
+                    :src="item.img"
+                  ></v-img>
+                </v-col>
+                <v-col cols="6">
+                  <div>
+                    <v-list-item>
+                      <v-icon size="20" left>mdi-currency-cny</v-icon>
+                      <v-list-item-content class="caption py-0">{{
+                        item.money
+                      }}</v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-icon size="20" left>mdi-map-marker</v-icon>
+                      <v-list-item-content class="caption">{{
+                        item.placeName
+                      }}</v-list-item-content>
+                    </v-list-item>
+                  </div>
+                </v-col></v-row
+              >
             </div>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <div v-if="!keep.length">
+            <prompt-card
+              :link="'timeline'"
+              :image="require('~/assets/timeline/job.png')"
+              :message="'どんなアルバイトがあるか覗いてみませんか？'"
+              :timeline-tab="5"
+            />
           </div>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
+          <v-card
+            v-for="item in keep"
+            :key="item.id"
+            class="mt-2 mx-2"
+            :elevation="4"
+            @click="tojobDetail(item)"
+          >
+            <v-chip v-show="item.isNew" color="green" small outlined class="ml-3 mt-3">
+              NEW
+            </v-chip>
+            <v-chip
+              v-if="item.isRecruit"
+              :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
+              small
+              color="red"
+              outlined
+            >
+              募集中
+            </v-chip>
+            <v-chip
+              v-if="!item.isRecruit"
+              :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
+              small
+              color="primary"
+              outlined
+            >
+              募集締切
+            </v-chip>
+            <v-card-title
+              class="pl-3 pt-3 text-subtitle-1 font-weight-bold blue--text text--darken-3"
+              >{{ item.name }}</v-card-title
+            >
+            <v-card-subtitle class="pl-3 pb-3 text-caption">{{ item.genre }}</v-card-subtitle>
+            <div class="d-flex justify-space-around">
+              <v-img
+                v-show="item.img"
+                height="16vh"
+                width="44vw"
+                class="ml-3 mb-3"
+                :src="item.img"
+              ></v-img>
+              <div>
+                <v-list-item>
+                  <v-icon size="20" left>mdi-currency-cny</v-icon>
+                  <v-list-item-content class="caption py-0">{{ item.money }}</v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-icon size="20" left>mdi-map-marker</v-icon>
+                  <v-list-item-content class="caption">{{ item.placeName }}</v-list-item-content>
+                </v-list-item>
+              </div>
+            </div>
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
   </div>
 </template>
 
@@ -263,6 +279,11 @@ export default {
 </script>
 
 <style scoped>
+.posted-job-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .newchip {
   margin-top: 12px;
   margin-left: 4px;

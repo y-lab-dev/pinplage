@@ -2,6 +2,7 @@
   <div class="textarea-place">
     <textarea
       color="#61d4b3"
+      style="max-width: 500px"
       class="textarea-text px-3 py-1"
       :value="textareaValue"
       :placeholder="textareaPlaceholder"

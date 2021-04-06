@@ -24,6 +24,9 @@ export default {
 <style scoped>
 #app {
   font-family: 'Kosugi', sans-serif;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .main-layout-styles {
   height: 100%;

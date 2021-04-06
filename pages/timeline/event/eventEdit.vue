@@ -167,6 +167,7 @@
           <v-btn
             rounded
             width="80vw"
+            max-width="500px"
             color="red lighten-3"
             class="white--text"
             :disabled="cancel == true"

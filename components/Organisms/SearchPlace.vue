@@ -158,22 +158,33 @@ export default {
 }
 .searchboxback {
   margin-top: -1vh;
-  margin-left: -2vw;
-  margin-right: -2vw;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: -1vw;
   width: 100vw;
+  max-width: 550px;
   background-color: rgba(255, 255, 255, 0.6);
 }
 .searchbox {
   margin-top: 1vh;
-  margin-left: 2vw;
   background: white;
   border: 1px solid orange;
   width: 96vw;
-  border-radius: 10px 10px;
+  max-width: 550px;
+  height: 11vh;
+  border-radius: 7px 7px;
   z-index: 1;
   position: fixed;
   top: 2;
+}
+@media only screen and (max-device-width: 550px) {
+  .searchbox {
+    margin-left: 2vw;
+  }
+  .searchboxback {
+    margin-left: -2vw;
+    margin-right: -2vw;
+  }
 }
 .searchresult {
   margin-top: 15vh;
@@ -209,5 +220,10 @@ input::placeholder {
   transform: scale(0.75);
   margin-left: -4%;
   width: 104%;
+}
+@media only screen and (min-device-width: 550px) {
+  .v-input__slot {
+    margin-right: 10%;
+  }
 }
 </style>
