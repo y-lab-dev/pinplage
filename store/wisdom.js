@@ -1,38 +1,63 @@
 import firebase from '@/plugins/firebase';
-// const db = firebase.firestore();
 
 export const state = () => ({
   wisdoms: [],
+  maxLimit: Number,
+  limit: 5,
+  loading: false,
 });
 
 export const getters = {
   wisdoms(state) {
     return state.wisdoms;
   },
+  maxLimit(state) {
+    return state.maxLimit;
+  },
+  limit(state) {
+    return state.limit;
+  },
+  loadjs(state) {
+    return state.loading;
+  },
 };
 
 export const mutations = {
-  setWisdoms(state, { payload, index }) {
-    console.log(index);
-    if (index === 0) {
-      state.wisdoms = [payload, ...state.wisdoms];
-    } else {
-      state.wisdoms = [...state.wisdoms, payload];
+  setWisdoms(state, { payload, target }) {
+    const checkExist = state.wisdoms.some((wisdom) => wisdom.wisdomId === payload.wisdomId);
+    if (!checkExist) {
+      this._vm.$set(state.wisdoms, target, payload);
     }
+  },
+  setMaxLimit(state, { payload }) {
+    state.maxLimit = payload;
+  },
+  modifyWisdom(state, { payload, target }) {
+    this._vm.$set(state.wisdoms, target, payload);
+  },
+  removeWisdom(state, { target }) {
+    this._vm.$delete(state.wisdoms, target);
+  },
+  incrementLimit(state) {
+    state.limit += 5;
+    console.log(state.limit);
+  },
+  switchLoading(state) {
+    state.loading = !state.loading;
   },
 };
 
 export const actions = {
-  getWisdoms({ commit }) {
+  getWisdoms({ state, commit, dispatch }) {
     firebase
       .firestore()
       .collection('wisdoms')
       .orderBy('createdAt', 'desc')
       .where('college', '==', 'shizuoka-h')
-      .limit(10)
+      .limit(state.limit)
       .onSnapshot((querySnapshot) => {
-        querySnapshot.docChanges().forEach((change) => {
-          console.log(change);
+        commit('setMaxLimit', { payload: querySnapshot.size });
+        querySnapshot.docChanges().forEach(async (change) => {
           if (change.type === 'added') {
             const wisdom = change.doc.data();
             const postedWisdom = {
@@ -42,22 +67,57 @@ export const actions = {
               likeAmount: wisdom.like,
               content: wisdom.content,
               category: wisdom.category,
-              createdAt: wisdom.createdAt.toDate(),
+              createdAt: change.doc.data({ serverTimestamps: 'estimate' }).createdAt.toDate(),
             };
-            firebase
+            postedWisdom.replyAmount = await firebase
               .firestore()
               .collection('wisdoms')
               .doc(change.doc.id)
               .collection('reply')
               .get()
               .then((snapshot) => {
-                postedWisdom.replyAmount = snapshot.size;
+                return snapshot.size;
               });
-            commit('setWisdoms', { payload: postedWisdom, index: change.newIndex });
+            commit('setWisdoms', { payload: postedWisdom, target: change.newIndex });
+          } else if (change.type === 'modified') {
+            const wisdom = change.doc.data();
+            const modifiedWisdom = {
+              wisdomId: change.doc.id,
+              poster: wisdom.poster,
+              resolved: wisdom.resolved,
+              likeAmount: wisdom.like,
+              content: wisdom.content,
+              category: wisdom.category,
+              createdAt: change.doc.data({ serverTimestamps: 'estimate' }).createdAt.toDate(),
+            };
+            modifiedWisdom.replyAmount = await firebase
+              .firestore()
+              .collection('wisdoms')
+              .doc(change.doc.id)
+              .collection('reply')
+              .get()
+              .then((snapshot) => {
+                return snapshot.size;
+              });
+            commit('modifyWisdom', { payload: modifiedWisdom, target: change.newIndex });
           } else if (change.type === 'removed') {
-            console.log('removed');
+            commit('removeWisdom', { target: change.oldIndex });
           }
         });
       });
+  },
+  incrementLimit({ state, commit, dispatch }) {
+    commit('incrementLimit');
+    dispatch('getWisdoms');
+  },
+  unsubscribed({ state }) {
+    const unsubscribed = firebase
+      .firestore()
+      .collection('wisdoms')
+      .orderBy('createdAt', 'desc')
+      .where('college', '==', 'shizuoka-h')
+      .limit(state.limit)
+      .onSnapshot(() => {});
+    unsubscribed();
   },
 };
