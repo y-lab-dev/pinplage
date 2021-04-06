@@ -39,7 +39,7 @@
           <nuxt-link to="resetPassword">パスワードを忘れた方へ</nuxt-link>
         </div>
         <div class="sign-up">
-          <nuxt-link to="signUp">新規登録</nuxt-link>
+          <nuxt-link to="signUp"><sign-in-button>新規登録</sign-in-button></nuxt-link>
         </div>
       </v-col>
     </v-row>
@@ -186,6 +186,6 @@ export default {
 .sign-up {
   text-align: center;
   margin-top: 200px;
-  text-decoration: underline;
+  text-decoration: none;
 }
 </style>

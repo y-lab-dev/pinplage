@@ -1,5 +1,6 @@
 <template>
   <div app>
+    <HowToUse :show="show" />
     <v-app-bar app color="#fff" :elevation="isTimeline ? 0 : 1" :scroll-target="$refs.maincontents">
       <!-- :hide-on-scroll="isTimeline ? true : false" -->
       <v-btn icon :ripple="false" :disabled="!isHide" @click="backPage()">
@@ -44,6 +45,14 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!-- <v-list-item @click.stop="pushHowtoUse">
+          <v-list-item-icon class="ml-3">
+            <v-icon color="rgba(0,0,0,0.6)">mdi-run</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="item-title"> 使い方 </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item> -->
         <v-divider class="my-3"></v-divider>
         <v-list-item
           v-for="(item, index) in contacts"
@@ -67,9 +76,15 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import HowToUse from '~/components/Organisms/HowToUse';
+
 export default {
+  components: {
+    HowToUse,
+  },
   data() {
     return {
+      show: false,
       group: null,
       drawer: null,
       subPages: [
@@ -160,6 +175,10 @@ export default {
         this.$router.push({ name: link });
       }
     },
+    // pushHowtoUse() {
+    //   console.log('hi!');
+    //   this.show = true;
+    // },
   },
 };
 </script>
