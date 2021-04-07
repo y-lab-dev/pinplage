@@ -24,7 +24,7 @@ export default {
 <style scoped>
 #app {
   font-family: 'Kosugi', sans-serif;
-  max-width: 550px;
+  max-width: 500px;
   margin-left: auto;
   margin-right: auto;
 }

@@ -7,7 +7,7 @@
             class="button-wrapper"
             width="35vw"
             height="7vh"
-            max-width="210px"
+            max-width="180px"
             nuxt
             dark
             :to="content.link"
