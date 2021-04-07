@@ -13,7 +13,7 @@
     "start": "nuxt start"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.12.0",
+    "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/pwa": "^3.1.2",
     "@nuxtjs/vuetify": "^1.11.2",
@@ -34,6 +34,7 @@
     "vue-cool-select": "^3.5.2",
     "vue-cropperjs": "^4.1.0",
     "vue-directive-tooltip": "^1.6.3",
+    "vue-infinite-loading": "^2.4.5",
     "vue-instantsearch": "^3.2.0",
     "vue-localstorage": "^0.6.2",
     "vue-star-rating": "^1.6.1"

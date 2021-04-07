@@ -36,14 +36,14 @@
                 <p class="posted-content">{{ content }}</p>
                 <v-row no-gutters justify="end">
                   <v-col class="pa-1 pr-0" cols="4" align-self="center">
-                    <wisdom-like
+                    <!-- <wisdom-like
                       :wisdom-id="wisdomId"
                       :type="'likedReply'"
                       :parent-id="sourceWisdomId"
                     />
                     <span class="posted-info">
                       {{ likeAmount }}
-                    </span>
+                    </span> -->
                   </v-col>
                 </v-row>
               </v-col>
@@ -66,10 +66,10 @@
 import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
 import CreatedTimeDiff from '~/components/Molecules/TimeDiff';
-import WisdomLike from '~/components/Organisms/WisdomLike';
+// import WisdomLike from '~/components/Organisms/WisdomLike';
 import WisdomBestAnswer from '~/components/Organisms/WisdomBestAnswer';
 export default {
-  components: { CreatedTimeDiff, WisdomLike, WisdomBestAnswer },
+  components: { CreatedTimeDiff, WisdomBestAnswer },
   props: {
     wisdomId: {
       required: true,
