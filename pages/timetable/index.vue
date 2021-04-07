@@ -113,10 +113,10 @@ export default {
     },
   },
   data: () => ({
-    term: '後期',
+    term: '前期',
     title: '時間割',
     length: 2,
-    onboarding: 1,
+    onboarding: 0,
     weekNames: ['mo', 'tu', 'we', 'th', 'fr'],
     targetClass: {},
     targetTime: '',
