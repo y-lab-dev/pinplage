@@ -162,7 +162,7 @@ export default {
   margin-right: auto;
   margin-bottom: -1vw;
   width: 100vw;
-  max-width: 550px;
+  max-width: 500px;
   background-color: rgba(255, 255, 255, 0.6);
 }
 .searchbox {
@@ -170,8 +170,8 @@ export default {
   background: white;
   border: 1px solid orange;
   width: 96vw;
-  max-width: 550px;
-  height: 11vh;
+  max-width: 500px;
+  height: 13vh;
   border-radius: 7px 7px;
   z-index: 1;
   position: fixed;
@@ -221,7 +221,7 @@ input::placeholder {
   margin-left: -4%;
   width: 104%;
 }
-@media only screen and (min-device-width: 550px) {
+@media only screen and (min-width: 550px) {
   .v-input__slot {
     margin-right: 10%;
   }
