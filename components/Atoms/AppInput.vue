@@ -2,6 +2,7 @@
   <div class="input-place ma-2">
     <input
       class="input-text px-3 py-1"
+      style="max-width: 430px"
       :type="inputType"
       :value="inputValue"
       :placeholder="inputPlaceholder"

@@ -2,6 +2,7 @@
   <v-btn
     rounded
     width="80vw"
+    max-width="450px"
     class="white--text button-color"
     outlined
     :type="buttonType"
@@ -17,11 +18,13 @@ export default {
   props: {
     buttonType: {
       type: String,
-      required: true,
+      required: false,
+      default: 'button',
     },
     buttonMethod: {
       type: Function,
-      required: true,
+      required: false,
+      default: () => {},
     },
     buttonDisabled: {
       type: Boolean,

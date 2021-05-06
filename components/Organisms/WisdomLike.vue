@@ -24,30 +24,30 @@ export default {
       default: '',
     },
   },
-  data() {
-    return {
-      alreadyLiked: false,
-    };
-  },
   computed: {
     ...mapGetters({
       uid: 'user/uid',
       likedWisdoms: 'user/likedPost',
       likedReply: 'user/likedReply',
     }),
+    alreadyLiked() {
+      const checkAlreadyLiked = (wisdomId) => wisdomId === this.wisdomId;
+      return this.likedWisdoms.some(checkAlreadyLiked);
+    },
   },
-  created() {
-    if (this.type === 'likedPost') {
-      this.alreadyLiked = this.likedWisdoms.some((value) => {
-        return value === this.wisdomId;
-      });
-    } else {
-      this.alreadyLiked = this.likedReply.some((value) => {
-        return value === this.wisdomId;
-      });
-    }
-  },
+  // mounted() {
+  //   if (this.type === 'likedPost') {
+  //     this.alreadyLiked = this.likedWisdoms.some((value) => {
+  //       return value === this.wisdomId;
+  //     });
+  //   } else {
+  //     this.alreadyLiked = this.likedReply.some((value) => {
+  //       return value === this.wisdomId;
+  //     });
+  //   }
+  // },
   methods: {
+    test() {},
     addWisdomLike() {
       const that = this;
       const userWisdomLikedPost = firebase
@@ -83,11 +83,9 @@ export default {
         const targetWisdom = await firebase.firestore().collection('wisdoms').doc(this.wisdomId);
         if (!this.alreadyLiked) {
           targetWisdom.update({ like: firebase.firestore.FieldValue.increment(1) });
-          that.alreadyLiked = true;
           that.$store.dispatch('user/getUserWisdom');
         } else {
           targetWisdom.update({ like: firebase.firestore.FieldValue.increment(-1) });
-          that.alreadyLiked = false;
           that.$store.dispatch('user/getUserWisdom');
         }
       } else if (this.type === 'likedReply') {

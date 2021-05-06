@@ -6,130 +6,135 @@
     </v-tabs>
 
     <v-container>
-      <v-tabs-items v-model="postedTab">
-        <v-tab-item>
-          <div v-if="!keptPlaces.length">
-            <prompt-card
-              :link="'timeline'"
-              :image="require('~/assets/timeline/review.png')"
-              :message="'静大生の口コミがどんな感じか見てみますか？'"
-              :timeline-tab="2"
-            />
-          </div>
-          <div v-for="item in keptPlaces" :key="item.id">
-            <v-card nuxt outlined tile :elevation="2" @click="toPlaceDetail(item)">
-              <v-container>
-                <v-row justify="center" align-content="center">
-                  <v-col cols="4">
-                    <v-list class="px-2 py-0">
-                      <v-img max-width="100%" :src="item.img"></v-img>
-                    </v-list>
-                  </v-col>
-                  <v-col class="px-0">
-                    <v-container class="pa-0">
-                      <v-row>
-                        <v-col cols="10" class="pa-0">
-                          <v-card-text
-                            class="pa-0"
-                            style="color: #1976d2"
-                            @click="toPlaceDetail(item)"
-                            >{{ item.name }}</v-card-text
-                          >
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" class="pa-0">
-                          <div class="px-1 pt-1">
-                            <rating
-                              :show-rating="false"
-                              :star-size="15"
-                              :rating-result="item.rating"
-                              :increment="1"
-                            ></rating>
-                          </div>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card>
-          </div>
-        </v-tab-item>
-        <v-tab-item>
-          <div v-if="!post.length">
-            <prompt-card
-              :link="'post-reviewPost'"
-              :image="require('~/assets/timeline/review.png')"
-              :message="'初めての口コミを投稿してみませんか？'"
-            />
-          </div>
-          <v-container>
-            <div v-for="item in post" :key="item.id">
-              <v-card
-                v-if="item.isRead"
-                nuxt
-                outlined
-                tile
-                :elevation="2"
-                @click="toReviewDetail(item)"
-              >
-                <v-row justify="center" align-content="center">
-                  <v-col class="title pl-5 pr-0" cols="7">
-                    <v-card-text class="pa-0" style="color: #1976d2" @click="toPlaceDetail(item)">{{
-                      item.name
-                    }}</v-card-text>
-                  </v-col>
-                  <v-col cols="5" class="px-0">
-                    <div class="px-1 pt-1">
-                      <rating
-                        :show-rating="false"
-                        :star-size="20"
-                        :rating-result="item.rating"
-                        :increment="1"
-                      ></rating>
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-row align-content="center">
-                  <v-col class="px-8 py-0" cols="8" justify="center">
-                    <v-chip v-show="item.genre" color="orange" small outlined>
-                      {{ item.genre }}
-                    </v-chip>
-                  </v-col>
-                  <v-col class="pa-0" cols="4">
-                    <div v-for="scene in item.scene" :key="scene">
-                      <div v-if="!scene.indexOf('朝')">
-                        <v-icon color="orange">mdi-weather-sunset</v-icon>
-                        <span class="orange--text py-3">朝</span>
-                      </div>
-                      <div v-if="!scene.indexOf('昼')">
-                        <v-icon color="orange">mdi-weather-sunny</v-icon>
-                        <span class="orange--text py-3">昼</span>
-                      </div>
-                      <div v-if="!scene.indexOf('夜')">
-                        <v-icon color="orange">mdi-moon-waning-crescent</v-icon>
-                        <span class="orange--text py-3">夜</span>
-                      </div>
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-list class="px-2 py-0">
-                  <v-list-item-content v-if="item.comment" class="py-4">
-                    <div class="says">{{ item.comment }}</div>
-                  </v-list-item-content>
-                  <v-img max-width="100%" max-height="240px" :src="item.img"></v-img>
-                  <v-row>
-                    <v-col>
-                      <v-list-item-subtitle align="right">{{ item.date }}</v-list-item-subtitle>
+      <div class="posted-surrounding-facilities-wrap">
+        <v-tabs-items v-model="postedTab">
+          <v-tab-item>
+            <div v-if="!keptPlaces.length">
+              <prompt-card
+                :link="'timeline'"
+                :image="require('~/assets/timeline/review.png')"
+                :message="'静大生の口コミがどんな感じか見てみますか？'"
+                :timeline-tab="2"
+              />
+            </div>
+            <div v-for="item in keptPlaces" :key="item.id">
+              <v-card nuxt outlined tile :elevation="2" @click="toPlaceDetail(item)">
+                <v-container>
+                  <v-row justify="center" align-content="center">
+                    <v-col cols="4">
+                      <v-list class="px-2 py-0">
+                        <v-img max-width="100%" :src="item.img"></v-img>
+                      </v-list>
+                    </v-col>
+                    <v-col class="px-0">
+                      <v-container class="pa-0">
+                        <v-row>
+                          <v-col cols="10" class="pa-0">
+                            <v-card-text
+                              class="pa-0"
+                              style="color: #1976d2"
+                              @click="toPlaceDetail(item)"
+                              >{{ item.name }}</v-card-text
+                            >
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col cols="12" class="pa-0">
+                            <div class="px-1 pt-1">
+                              <rating
+                                :show-rating="false"
+                                :star-size="15"
+                                :rating-result="item.rating"
+                                :increment="1"
+                              ></rating>
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-container>
                     </v-col>
                   </v-row>
-                </v-list>
+                </v-container>
               </v-card>
             </div>
-          </v-container>
-        </v-tab-item>
-      </v-tabs-items>
+          </v-tab-item>
+          <v-tab-item>
+            <div v-if="!post.length">
+              <prompt-card
+                :link="'post-reviewPost'"
+                :image="require('~/assets/timeline/review.png')"
+                :message="'初めての口コミを投稿してみませんか？'"
+              />
+            </div>
+            <v-container>
+              <div v-for="item in post" :key="item.id">
+                <v-card
+                  v-if="item.isRead"
+                  nuxt
+                  outlined
+                  tile
+                  :elevation="2"
+                  @click="toReviewDetail(item)"
+                >
+                  <v-row justify="center" align-content="center">
+                    <v-col class="title pl-5 pr-0" cols="7">
+                      <v-card-text
+                        class="pa-0"
+                        style="color: #1976d2"
+                        @click="toPlaceDetail(item)"
+                        >{{ item.name }}</v-card-text
+                      >
+                    </v-col>
+                    <v-col cols="5" class="px-0">
+                      <div class="px-1 pt-1">
+                        <rating
+                          :show-rating="false"
+                          :star-size="20"
+                          :rating-result="item.rating"
+                          :increment="1"
+                        ></rating>
+                      </div>
+                    </v-col>
+                  </v-row>
+                  <v-row align-content="center">
+                    <v-col class="px-8 py-0" cols="8" justify="center">
+                      <v-chip v-show="item.genre" color="orange" small outlined>
+                        {{ item.genre }}
+                      </v-chip>
+                    </v-col>
+                    <v-col class="pa-0" cols="4">
+                      <div v-for="scene in item.scene" :key="scene">
+                        <div v-if="!scene.indexOf('朝')">
+                          <v-icon color="orange">mdi-weather-sunset</v-icon>
+                          <span class="orange--text py-3">朝</span>
+                        </div>
+                        <div v-if="!scene.indexOf('昼')">
+                          <v-icon color="orange">mdi-weather-sunny</v-icon>
+                          <span class="orange--text py-3">昼</span>
+                        </div>
+                        <div v-if="!scene.indexOf('夜')">
+                          <v-icon color="orange">mdi-moon-waning-crescent</v-icon>
+                          <span class="orange--text py-3">夜</span>
+                        </div>
+                      </div>
+                    </v-col>
+                  </v-row>
+                  <v-list class="px-2 py-0">
+                    <v-list-item-content v-if="item.comment" class="py-4">
+                      <div class="says">{{ item.comment }}</div>
+                    </v-list-item-content>
+                    <v-img max-width="100%" max-height="240px" :src="item.img"></v-img>
+                    <v-row>
+                      <v-col>
+                        <v-list-item-subtitle align="right">{{ item.date }}</v-list-item-subtitle>
+                      </v-col>
+                    </v-row>
+                  </v-list>
+                </v-card>
+              </div>
+            </v-container>
+          </v-tab-item>
+        </v-tabs-items>
+      </div>
     </v-container>
   </div>
 </template>
@@ -251,6 +256,11 @@ export default {
 };
 </script>
 <style scoped>
+.posted-surrounding-facilities-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .says {
   display: inline-block;
   position: relative;

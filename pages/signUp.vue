@@ -122,7 +122,7 @@ export default {
         this.check();
       } else if (
         !new RegExp(
-          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com/
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com|ylab.dev.test@gmail.com/
         ).test(val)
       ) {
         this.emailValidation = '静大メールを入力してください';
@@ -272,7 +272,9 @@ export default {
   width: 90%;
 }
 .checkbox {
-  margin-left: 70px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 40px;
   display: flex;
 }

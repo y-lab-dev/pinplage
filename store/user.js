@@ -11,7 +11,7 @@ export const state = () => ({
     theme: '',
   },
   wisdom: {
-    likedPost: '',
+    likedPost: [],
     likedReply: [],
     posted: [],
   },

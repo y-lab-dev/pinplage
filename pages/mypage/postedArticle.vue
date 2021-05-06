@@ -4,37 +4,38 @@
       <v-tab>お気に入り</v-tab>
       <v-tab>あなたのコメント</v-tab>
     </v-tabs>
-
-    <v-tabs-items v-model="postedTab">
-      <v-tab-item>
-        <div v-if="!favorites.length">
-          <prompt-card
-            :link="'timeline'"
-            :image="require('~/assets/timeline/article.png')"
-            :message="'お気に入りの記事を見つけてみませんか？'"
-            :timeline-tab="3"
-          />
-        </div>
-        <div v-else>
-          <article-card
-            v-for="(item, index) in favorites"
-            :key="item.id"
-            v-bind="favorites[index]"
-          />
-        </div>
-      </v-tab-item>
-      <v-tab-item>
-        <div v-if="!comments.length">
-          <prompt-card
-            :link="'timeline'"
-            :image="require('~/assets/timeline/article.png')"
-            :message="'記事にコメントしてませんか？筆者がコメントを待っています。'"
-            :timeline-tab="3"
-          />
-        </div>
-        <comment-thread v-for="(item, index) in comments" :key="index" v-bind="item" />
-      </v-tab-item>
-    </v-tabs-items>
+    <div class="posted-article-item-wrap">
+      <v-tabs-items v-model="postedTab">
+        <v-tab-item>
+          <div v-if="!favorites.length">
+            <prompt-card
+              :link="'timeline'"
+              :image="require('~/assets/timeline/article.png')"
+              :message="'お気に入りの記事を見つけてみませんか？'"
+              :timeline-tab="3"
+            />
+          </div>
+          <div v-else>
+            <article-card
+              v-for="(item, index) in favorites"
+              :key="item.id"
+              v-bind="favorites[index]"
+            />
+          </div>
+        </v-tab-item>
+        <v-tab-item>
+          <div v-if="!comments.length">
+            <prompt-card
+              :link="'timeline'"
+              :image="require('~/assets/timeline/article.png')"
+              :message="'記事にコメントしてませんか？筆者がコメントを待っています。'"
+              :timeline-tab="3"
+            />
+          </div>
+          <comment-thread v-for="(item, index) in comments" :key="index" v-bind="item" />
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
   </div>
 </template>
 
@@ -141,3 +142,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.posted-article-item-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

@@ -39,7 +39,7 @@
           <nuxt-link to="resetPassword">パスワードを忘れた方へ</nuxt-link>
         </div>
         <div class="sign-up">
-          <nuxt-link to="signUp">新規登録</nuxt-link>
+          <nuxt-link to="signUp"><sign-in-button>新規登録</sign-in-button></nuxt-link>
         </div>
       </v-col>
     </v-row>
@@ -86,7 +86,7 @@ export default {
         this.check();
       } else if (
         !new RegExp(
-          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com/
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com|ylab.dev.test@gmail.com/
         ).test(val)
       ) {
         this.emailValidation = '静大メールを入力してください';
@@ -186,6 +186,6 @@ export default {
 .sign-up {
   text-align: center;
   margin-top: 200px;
-  text-decoration: underline;
+  text-decoration: none;
 }
 </style>
