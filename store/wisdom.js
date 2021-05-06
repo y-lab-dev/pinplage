@@ -2,7 +2,7 @@ import firebase from '@/plugins/firebase';
 
 export const state = () => ({
   wisdoms: [],
-  maxLimit: Number,
+  maxLimit: 10,
   limit: 5,
   loading: false,
 });
@@ -17,7 +17,7 @@ export const getters = {
   limit(state) {
     return state.limit;
   },
-  loadjs(state) {
+  loading(state) {
     return state.loading;
   },
 };
@@ -39,10 +39,11 @@ export const mutations = {
     this._vm.$delete(state.wisdoms, target);
   },
   incrementLimit(state) {
+    console.log(state.limit);
     state.limit += 5;
   },
-  switchLoading(state) {
-    state.loading = !state.loading;
+  switchLoading(state, { loading }) {
+    state.loading = loading;
   },
 };
 
@@ -55,7 +56,7 @@ export const actions = {
       .where('college', '==', 'shizuoka-h')
       .limit(state.limit)
       .onSnapshot((querySnapshot) => {
-        commit('setMaxLimit', { payload: querySnapshot.size });
+        console.log(querySnapshot.size);
         querySnapshot.docChanges().forEach(async (change) => {
           if (change.type === 'added') {
             const wisdom = change.doc.data();
@@ -105,9 +106,27 @@ export const actions = {
         });
       });
   },
+  getMaxLimit({ state, commit }) {
+    firebase
+      .firestore()
+      .collection('wisdoms')
+      .get()
+      .then((snapshot) => {
+        commit('setMaxLimit', { payload: snapshot.size });
+      });
+  },
   incrementLimit({ state, commit, dispatch }) {
-    commit('incrementLimit');
-    dispatch('getWisdoms');
+    if (state.loading) return;
+    commit('switchLoading', { loading: true });
+    const test = async () => {
+      await commit('incrementLimit');
+      await dispatch('getMaxLimit');
+      await dispatch('getWisdoms');
+    };
+    test().then(() => {
+      console.log('switch loading');
+      commit('switchLoading', { loading: false });
+    });
   },
   unsubscribed({ state }) {
     const unsubscribed = firebase

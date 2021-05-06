@@ -61,6 +61,9 @@ export const mutations = {
     state.user.theme = payload.theme;
   },
   setUserWisdom(state, payload) {
+    payload.forEach((vl) => {
+      console.log(vl);
+    });
     state.wisdom.likedPost = payload;
   },
   setUserLikedWisdomReply(state, payload) {
