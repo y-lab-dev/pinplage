@@ -348,7 +348,7 @@ export default {
     },
     toLink(link) {
       if (link.match(/^http(s)?/)) {
-        location.href = link;
+        window.open(link, null, 'noopener');
       } else {
         return null;
       }
