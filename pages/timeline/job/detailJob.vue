@@ -408,6 +408,11 @@ export default {
   height: 30vh;
   object-fit: cover;
 }
+@media screen and (min-width: 960px) {
+  .top-img {
+    height: 40vh;
+  }
+}
 .content-divider {
   border-color: #61d4b3;
 }

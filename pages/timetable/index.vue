@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="timetable-wrap">
     <template>
       <v-card-actions class="justify-space-between">
         <v-btn text @click="prev">
@@ -240,6 +240,10 @@ export default {
 </script>
 
 <style scoped>
+.timetable-wrap {
+  max-width: 600px;
+  margin: auto;
+}
 table {
   border-collapse: separate;
   border-spacing: 5px;

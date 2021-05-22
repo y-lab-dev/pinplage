@@ -72,6 +72,7 @@ export default {
     toThreadDetail() {
       if (this.type === 'pr') {
         window.open('https://www.planetwalker.biz/accounts/sign_in');
+        firebase.analytics().logEvent('PlanetWalkerAd_view', { property: 'PlanetWalkerAd_view' });
         return;
       }
       const that = this;
@@ -113,5 +114,10 @@ export default {
 .pr-img {
   width: 100%;
   max-height: 10vh;
+}
+@media screen and (min-width: 600px) {
+  .pr-img {
+    max-height: 15vh;
+  }
 }
 </style>

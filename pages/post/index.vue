@@ -106,10 +106,12 @@ export default {
 .post-items-wrap {
   height: 100%;
   max-height: 500px;
+  max-width: 600px;
+  margin: auto;
 }
 @media screen and (min-width: 600px) {
   .post-items-wrap {
-    margin-top: 20%;
+    margin-top: 7%;
     margin-bottom: auto;
   }
 }

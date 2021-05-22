@@ -1,7 +1,12 @@
 <template>
   <div app>
     <!-- <HowToUse :show="show" /> -->
-    <v-app-bar app color="#fff" :elevation="isTimeline ? 0 : 1" :scroll-target="$refs.maincontents">
+    <v-app-bar
+      app
+      color="accent"
+      :elevation="isTimeline ? 0 : 1"
+      :scroll-target="$refs.maincontents"
+    >
       <!-- :hide-on-scroll="isTimeline ? true : false" -->
       <v-btn icon :ripple="false" :disabled="!isHide" @click="backPage()">
         <v-icon v-show="isHide" color="#78dabe">mdi-arrow-left-bold-outline</v-icon>
@@ -11,9 +16,12 @@
         <span class="header-title">{{ headerName }}</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon :ripple="false" @click.stop="drawer = !drawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      <!-- <v-switch v-model="theme" false :prepend-icon="themeIcon" color="#61d4b3" label=""></v-switch> -->
+      <div class="menu-icon">
+        <v-btn icon :ripple="false" @click.stop="drawer = !drawer">
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+      </div>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" class="drawer-menu" fixed temporary right>
@@ -82,6 +90,7 @@ export default {
   data() {
     return {
       // show: false,
+      theme: false,
       group: null,
       drawer: null,
       subPages: [
@@ -157,7 +166,15 @@ export default {
         return '';
       }
     },
+    // themeIcon() {
+    //   return this.theme ? 'mdi-weather-night' : 'mdi-weather-sunny';
+    // },
   },
+  // watch: {
+  //   theme() {
+  //     this.$vuetify.theme.dark = this.theme;
+  //   },
+  // },
   methods: {
     backPage() {
       this.$router.go(-1);
@@ -190,5 +207,10 @@ export default {
 }
 .drawer-menu {
   z-index: 20;
+}
+@media screen and (min-width: 960px) {
+  .menu-icon {
+    display: none;
+  }
 }
 </style>

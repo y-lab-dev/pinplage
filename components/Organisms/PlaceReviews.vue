@@ -27,7 +27,7 @@
           </v-row>
           <v-list-item-content>
             <div class="chatting">
-              <div class="says">{{ content }}</div>
+              <div class="says" color="fff">{{ content }}</div>
             </div>
           </v-list-item-content>
           <v-img max-width="100%" max-height="240px" :src="img"></v-img>

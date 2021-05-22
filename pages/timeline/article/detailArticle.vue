@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-img class="white--text align-end" height="25vh" :src="articleObject.mainImg"></v-img>
+          <v-img class="white--text align-end top-img" :src="articleObject.mainImg"></v-img>
           <v-list>
             <v-list-item-title class="font-weight-bold text-h6">{{
               articleObject.title
@@ -390,6 +390,14 @@ export default {
 };
 </script>
 <style scoped>
+.top-img {
+  height: 25vh;
+}
+@media screen and (min-width: 960px) {
+  .top-img {
+    height: 40vh;
+  }
+}
 .detail-article-wrap {
   max-width: 550px;
   margin-left: auto;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="search-contents">
     <search-place />
   </div>
 </template>
@@ -10,3 +10,8 @@ export default {
   components: { searchPlace },
 };
 </script>
+<style>
+.search-contents {
+  margin: 0 auto;
+}
+</style>
