@@ -197,7 +197,7 @@ export default {
         link === 'https://forms.gle/n7ejy3uWDJsJBoP89' ||
         link === 'https://twitter.com/pin__plage'
       ) {
-        location.href = link;
+        window.open(link, null, 'noopener');
       } else {
         this.$router.push({ name: link });
       }
