@@ -167,7 +167,7 @@ export default {
       contacts: [
         // { name: 'パンプラweb版', icon: 'mdi-web', link: 'webplage' },
         {
-          name: 'twitter',
+          name: 'Twitter',
           icon: 'mdi-twitter',
           link: 'https://twitter.com/pin__plage',
           color: '#1DA1F2',
@@ -197,7 +197,7 @@ export default {
         link === 'https://forms.gle/n7ejy3uWDJsJBoP89' ||
         link === 'https://twitter.com/pin__plage'
       ) {
-        location.href = link;
+        window.open(link, null, 'noopener');
       } else {
         this.$router.push({ name: link });
       }
