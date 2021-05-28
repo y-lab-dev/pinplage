@@ -167,7 +167,7 @@ export default {
       contacts: [
         // { name: 'パンプラweb版', icon: 'mdi-web', link: 'webplage' },
         {
-          name: 'twitter',
+          name: 'Twitter',
           icon: 'mdi-twitter',
           link: 'https://twitter.com/pin__plage',
           color: '#1DA1F2',
