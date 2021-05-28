@@ -129,7 +129,7 @@ export default {
 }
 @media only screen and (max-device-width: 550px) {
   .club-carousel {
-    height: 300;
+    height: 300 !important;
   }
 }
 .club-icon {

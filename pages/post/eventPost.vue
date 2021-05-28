@@ -282,7 +282,7 @@ export default {
 </script>
 <style scoped>
 .event-post-wrap {
-  max-width: 800px;
+  max-width: 600px;
   margin-right: auto;
   margin-left: auto;
 }

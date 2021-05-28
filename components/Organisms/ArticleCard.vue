@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-card class="mt-2 mx-2" :elevation="5" @click="toDetail">
-      <v-img class="white--text align-end" height="200px" :src="mainImg"></v-img>
+    <v-card class="mt-2 mx-2 article-card" :elevation="5" @click="toDetail">
+      <v-img class="white--text align-end article-img" :src="mainImg"></v-img>
       <v-card-title class="font-weight-bold">
         {{ title }}
       </v-card-title>
@@ -108,3 +108,13 @@ export default {
   },
 };
 </script>
+<style scoped>
+.article-img {
+  height: 200px;
+}
+@media screen and (min-width: 960px) {
+  .article-img {
+    height: 230px;
+  }
+}
+</style>

@@ -481,7 +481,7 @@ export default {
 </script>
 <style scoped>
 .detail-event-wrap {
-  max-width: 550px;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -489,6 +489,11 @@ export default {
   width: 100%;
   height: 30vh;
   object-fit: cover;
+}
+@media screen and (min-width: 960px) {
+  .top-img {
+    height: 40vh;
+  }
 }
 .content-divider {
   border-color: #61d4b3;

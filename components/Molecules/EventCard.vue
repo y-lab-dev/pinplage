@@ -1,6 +1,6 @@
 <template>
   <v-card class="mt-2 mx-2" :elevation="5" @click="toDetail">
-    <v-img v-if="img" class="white--text align-end" height="200px" :src="img"></v-img>
+    <v-img v-if="img" class="white--text align-end event-img" :src="img"></v-img>
     <v-card-subtitle v-if="cancel" class="red--text pb-0"
       >このイベントが中止になりました</v-card-subtitle
     >
@@ -97,3 +97,13 @@ export default {
   },
 };
 </script>
+<style>
+.event-img {
+  height: 200px;
+}
+@media screen and (min-width: 960px) {
+  .event-img {
+    height: 230px;
+  }
+}
+</style>
