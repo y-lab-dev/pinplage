@@ -41,7 +41,7 @@ export const mutations = {
 
 export const actions = {
   getClubs({ state, commit }) {
-    if (state.clubsSize !== 0) return;
+    if (state.clubs.length !== 0) return;
     db.where('genre', '==', '部活')
       .orderBy('name')
       .get()
@@ -58,13 +58,12 @@ export const actions = {
       });
   },
   getCircles({ state, commit }) {
-    if (state.circlesSize !== 0) return;
+    if (state.circles.length !== 0) return;
     db.where('genre', '==', 'サークル')
       .orderBy('name')
       .get()
       .then((snapshot) => {
         commit('setCirclesSize', { circlesSize: snapshot.size });
-        console.log(snapshot.size);
         snapshot.forEach((doc) => {
           const circle = {
             id: doc.id,
