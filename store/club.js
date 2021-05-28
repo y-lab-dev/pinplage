@@ -5,8 +5,6 @@ export const state = () => ({
   clubTab: 'tab-1',
   circles: [],
   clubs: [],
-  circlesSize: 0,
-  clubsSize: 0,
 });
 
 export const getters = {
@@ -31,12 +29,6 @@ export const mutations = {
   setCircles(state, { circle }) {
     state.circles = [...state.circles, circle];
   },
-  setCirclesSize(state, { circlesSize }) {
-    state.circlesSize = circlesSize;
-  },
-  setClubsSize(state, { clubsSize }) {
-    state.circlesSize = clubsSize;
-  },
 };
 
 export const actions = {
@@ -46,7 +38,6 @@ export const actions = {
       .orderBy('name')
       .get()
       .then((snapshot) => {
-        commit('setClubsSize', { clubsSize: snapshot.size });
         snapshot.forEach((doc) => {
           const club = {
             id: doc.id,
@@ -63,7 +54,6 @@ export const actions = {
       .orderBy('name')
       .get()
       .then((snapshot) => {
-        commit('setCirclesSize', { circlesSize: snapshot.size });
         snapshot.forEach((doc) => {
           const circle = {
             id: doc.id,
