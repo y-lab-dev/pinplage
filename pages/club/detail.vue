@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     goToLink(link) {
-      location.href = link;
+      window.open(link, null, 'noopener');
     },
   },
 };
