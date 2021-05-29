@@ -8,7 +8,11 @@
     <v-tabs-items v-model="clubTab" @change="pauseTab">
       <v-tab-item>
         <v-list>
-          <v-list-item v-for="(item, index) in club" :key="index" @click="clubDetail(item.id)">
+          <v-list-item
+            v-for="(item, index) in clubs"
+            :key="index"
+            @click="toClubDetail(item.id, item.name, item.icon)"
+          >
             <v-list-item-avatar>
               <img :src="item.icon" />
             </v-list-item-avatar>
@@ -20,7 +24,11 @@
       </v-tab-item>
       <v-tab-item>
         <v-list>
-          <v-list-item v-for="(item, index) in circle" :key="index" @click="clubDetail(item.id)">
+          <v-list-item
+            v-for="(item, index) in circles"
+            :key="index"
+            @click="toClubDetail(item.id, item.name, item.icon)"
+          >
             <v-list-item-avatar>
               <img :src="item.icon" />
             </v-list-item-avatar>
@@ -36,53 +44,37 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import firebase from '~/plugins/firebase';
 export default {
   layout: 'protected',
+  fetch() {
+    this.$store.dispatch('club/getClubs');
+    this.$store.dispatch('club/getCircles');
+  },
   data() {
     return {
       clubTab: '',
-      club: [],
-      circle: [],
     };
   },
   computed: {
     ...mapGetters({
       tab: 'club/tab',
+      circles: 'club/circles',
+      clubs: 'club/clubs',
     }),
   },
   created() {
     this.clubTab = this.tab;
-    const that = this;
-    // const circles =
-    firebase
-      .firestore()
-      .collection('circles')
-      .orderBy('name')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          if (doc.data().genre === '部活') {
-            const clubData = {
-              id: doc.id,
-              name: doc.data().name,
-              icon: doc.data().icon,
-            };
-            that.club.push(clubData);
-          } else {
-            const circleData = {
-              id: doc.id,
-              name: doc.data().name,
-              icon: doc.data().icon,
-            };
-            that.circle.push(circleData);
-          }
-        });
-      });
   },
   methods: {
-    clubDetail(clubId) {
-      this.$router.push({ name: 'club-detail', query: clubId });
+    async dispatchClubDetails(id, name, icon) {
+      await this.$store.dispatch('clubDetails/setId', { id });
+      await this.$store.dispatch('clubDetails/setNameAndIcon', { name, icon });
+      this.$store.dispatch('clubDetails/getClubDetails');
+    },
+    toClubDetail(id, name, icon) {
+      this.dispatchClubDetails(id, name, icon).then(() => {
+        this.$router.push({ name: 'club-detail' });
+      });
     },
     pauseTab() {
       this.$store.commit('club/pauseTab', this.clubTab);
