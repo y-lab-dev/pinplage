@@ -1,6 +1,6 @@
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 // Add the Firebase services that you want to use
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -22,7 +22,7 @@ const config = {
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
   firebase.auth();
-  firebase.firestore();
+  firebase.firestore().useEmulator('localhost', 8080);
   firebase.storage();
   firebase.analytics();
 }
