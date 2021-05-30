@@ -6,6 +6,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/analytics';
+
 require('dotenv').config();
 
 const config = {
@@ -22,7 +23,7 @@ const config = {
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
   firebase.auth();
-  firebase.firestore().useEmulator('localhost', 8080);
+  firebase.firestore();
   firebase.storage();
   firebase.analytics();
 }
