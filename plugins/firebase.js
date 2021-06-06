@@ -25,7 +25,9 @@ if (!firebase.apps.length) {
   firebase.auth();
   firebase.firestore();
   firebase.storage();
-  firebase.analytics();
+  if (process.browser) {
+    firebase.analytics();
+  }
 }
 
 export default firebase;
