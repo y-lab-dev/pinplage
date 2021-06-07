@@ -40,13 +40,11 @@ jobs:
       # Build, GAE deploy
       - uses: actions/checkout@v2
       - name: Setup gcloud environment
-        uses: GoogleCloudPlatform/github-actions@0.1.1
+        uses: google-github-actions/setup-gcloud@master
         with:
-          # The version of the gcloud SDK to be installed.  Example: 275.0.0
-          # The service account email which will be used for authentication.
-          service_account_email: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
-          # The service account key which will be used for authentication.
-          service_account_key: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS }}
+           project_id: ${{ secrets.GCP_PROJECT_ID }}
+           service_account_key: ${{ secrets.GCP_SA_KEY }}
+           export_default_credentials: true
       - name: Run tests with ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -64,9 +62,9 @@ jobs:
           FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGINGSENDERID }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APPID }}
           FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENTID }}
-          GOOGLEMAPS_APIKEY: ${{ secrets.GOOGLEMAPS_APIKEY}}
-          ALGOLIA_ID: ${{ ZI3A3BYLFT} }
-          ALGOLIA_SEARCH_APIKEY: ${{dd660cd8b43da0cc68310ac6a365438b}}
+          GOOGLEMAPS_APIKEY: ${{ secrets.GOOGLEMAPS_APIKEY　}}
+          ALGOLIA_ID: ${{ secrets.ALGOLIA_ID　}}
+          ALGOLIA_SEARCH_APIKEY: ${{ secrets.ALGOLIA_SEARCH_APIKEY }}
           
       - name: GAE deploy
         run: gcloud app deploy app.yaml --projecet mcaexpf-2020
