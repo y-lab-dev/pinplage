@@ -56,14 +56,14 @@ jobs:
           npm install
           npm run build
         env:
-          APIKEY: ${{ secrets.FIREBASE_APIKEY }}
-          AUTHDOMAIN: ${{ secrets.FIREBASE_AUTHDOMAIN }}
-          DATABASEURL: ${{ secrets.FIREBASE_DATABASEURL }}
-          PROJECTID: ${{ secrets.FIREBASE_PROJECTID }}
-          STORAGEBUCKET: ${{ secrets.FIREBASE_STORAGEBUCKET }}
-          MESSAGINGSENDERID: ${{ secrets.FIREBASE_MESSAGINGSENDERID }}
-          APPID: ${{ secrets.FIREBASE_APPID }}
-          MEASUREMENTID: ${{ secrets.FIREBASE_MEASUREMENTID }}
+          FIREBASE_APIKEY: ${{ secrets.FIREBASE_APIKEY }}
+          FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTHDOMAIN }}
+          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASEURL }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECTID }}
+          FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGEBUCKET }}
+          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGINGSENDERID }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APPID }}
+          FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENTID }}
           GOOGLEMAPS_APIKEY: ${{ secrets.GOOGLEMAPS_APIKEY}}
           ALGOLIA_ID: ${{ ZI3A3BYLFT} }
           ALGOLIA_SEARCH_APIKEY: ${{dd660cd8b43da0cc68310ac6a365438b}}
