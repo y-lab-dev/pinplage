@@ -63,7 +63,9 @@
             <v-tab-item>
               <job></job>
             </v-tab-item>
-            <TimelinePostButton />
+            <div v-if="buttonHidden">
+              <TimelinePostButton />
+            </div>
           </v-tabs-items>
         </div>
       </v-col>
@@ -176,6 +178,13 @@ export default {
       name: 'user/name',
       icon: 'user/icon',
     }),
+    buttonHidden() {
+      if (this.$vuetify.breakpoint.name === 'xs' || this.$vuetify.breakpoint.name === 'sm') {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   created() {
     this.model = this.tab;
