@@ -1,5 +1,5 @@
-<template>
-  <v-bottom-navigation :app="true" grow fixed class="bottom-navigation" color="#78dabe">
+<template app>
+  <v-bottom-navigation app grow fixed class="bottom-navigation" color="#78dabe">
     <v-btn
       v-for="item in tabItems"
       :key="item.link"
