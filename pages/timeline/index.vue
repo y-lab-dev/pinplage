@@ -168,7 +168,6 @@ export default {
           color: '#1DA1F2',
         },
       ],
-      hidden: false,
     };
   },
   computed: {
@@ -180,9 +179,6 @@ export default {
   },
   created() {
     this.model = this.tab;
-    setTimeout(() => {
-      this.hidden = true;
-    }, 100);
   },
   methods: {
     pauseTab() {
@@ -212,16 +208,6 @@ export default {
   top: 0;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
   z-index: 10;
-}
-.tabs_styles {
-  position: relative;
-}
-.fab_button_styles {
-  position: sticky;
-  position: -webkit-sticky;
-  right: 10px;
-  z-index: 10;
-  top: 10px;
 }
 </style>
 <style>
