@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-row cols="12"
+  <div app>
+    <v-row cols="12" no-gutters
       ><v-col xs="12" sm="12" md="8">
         <div class="timeline-contents-wrap">
           <HowToUse />
@@ -46,7 +46,7 @@
             >
           </v-tabs>
 
-          <v-tabs-items v-cloak v-model="model" @change="pauseTab">
+          <v-tabs-items v-cloak v-model="model" class="tabs_styles" @change="pauseTab">
             <v-tab-item>
               <thread></thread>
             </v-tab-item>
@@ -63,6 +63,9 @@
             <v-tab-item>
               <job></job>
             </v-tab-item>
+            <div v-if="buttonHidden">
+              <TimelinePostButton />
+            </div>
           </v-tabs-items>
         </div>
       </v-col>
@@ -97,14 +100,6 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <!-- <v-list-item @click.stop="pushHowtoUse">
-          <v-list-item-icon class="ml-3">
-            <v-icon color="rgba(0,0,0,0.6)">mdi-run</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title class="item-title"> 使い方 </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> -->
               <v-divider class="my-3"></v-divider>
               <v-list-item
                 v-for="(item, index) in contacts"
@@ -137,6 +132,7 @@ import Place from '~/components/Organisms/TimelinePlace';
 import Event from '~/components/Organisms/TimelineEvent';
 import TimelineArticle from '~/components/Organisms/TimelineArticle';
 import HowToUse from '~/components/Organisms/HowToUse';
+import TimelinePostButton from '~/components/Molecules/TimelinePostButtuon.vue';
 
 export default {
   layout: 'protected',
@@ -148,6 +144,7 @@ export default {
     Event,
     TimelineArticle,
     HowToUse,
+    TimelinePostButton,
   },
   data() {
     return {
@@ -181,6 +178,13 @@ export default {
       name: 'user/name',
       icon: 'user/icon',
     }),
+    buttonHidden() {
+      if (this.$vuetify.breakpoint.name === 'xs' || this.$vuetify.breakpoint.name === 'sm') {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   created() {
     this.model = this.tab;
@@ -211,8 +215,8 @@ export default {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  z-index: 10;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+  z-index: 10;
 }
 </style>
 <style>
