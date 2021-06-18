@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-row cols="12"
+  <div app>
+    <v-row cols="12" no-gutters
       ><v-col xs="12" sm="12" md="8">
         <div class="timeline-contents-wrap">
           <HowToUse />
@@ -46,7 +46,7 @@
             >
           </v-tabs>
 
-          <v-tabs-items v-cloak v-model="model" @change="pauseTab">
+          <v-tabs-items v-cloak v-model="model" class="tabs_styles" @change="pauseTab">
             <v-tab-item>
               <thread></thread>
             </v-tab-item>
@@ -63,6 +63,7 @@
             <v-tab-item>
               <job></job>
             </v-tab-item>
+            <TimelinePostButton />
           </v-tabs-items>
         </div>
       </v-col>
@@ -97,14 +98,6 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <!-- <v-list-item @click.stop="pushHowtoUse">
-          <v-list-item-icon class="ml-3">
-            <v-icon color="rgba(0,0,0,0.6)">mdi-run</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title class="item-title"> 使い方 </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> -->
               <v-divider class="my-3"></v-divider>
               <v-list-item
                 v-for="(item, index) in contacts"
@@ -137,6 +130,7 @@ import Place from '~/components/Organisms/TimelinePlace';
 import Event from '~/components/Organisms/TimelineEvent';
 import TimelineArticle from '~/components/Organisms/TimelineArticle';
 import HowToUse from '~/components/Organisms/HowToUse';
+import TimelinePostButton from '~/components/Molecules/TimelinePostButtuon.vue';
 
 export default {
   layout: 'protected',
@@ -148,6 +142,7 @@ export default {
     Event,
     TimelineArticle,
     HowToUse,
+    TimelinePostButton,
   },
   data() {
     return {
@@ -173,6 +168,7 @@ export default {
           color: '#1DA1F2',
         },
       ],
+      hidden: false,
     };
   },
   computed: {
@@ -184,6 +180,9 @@ export default {
   },
   created() {
     this.model = this.tab;
+    setTimeout(() => {
+      this.hidden = true;
+    }, 100);
   },
   methods: {
     pauseTab() {
@@ -211,8 +210,18 @@ export default {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  z-index: 10;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+.tabs_styles {
+  position: relative;
+}
+.fab_button_styles {
+  position: sticky;
+  position: -webkit-sticky;
+  right: 10px;
+  z-index: 10;
+  top: 10px;
 }
 </style>
 <style>
