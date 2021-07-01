@@ -54,7 +54,7 @@
           >
         </div>
         <div class="to-login">
-          <nuxt-link to="login">アカウントをお持ちの方</nuxt-link>
+          <nuxt-link to="login"><sign-up-button>アカウントをお持ちの方</sign-up-button></nuxt-link>
         </div>
       </v-col>
     </v-row>
@@ -266,7 +266,7 @@ export default {
 .to-login {
   text-align: center;
   margin-top: 200px;
-  text-decoration: underline;
+  text-decoration: none;
 }
 .app-rule-modal {
   width: 90%;
