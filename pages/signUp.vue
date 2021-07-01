@@ -110,7 +110,7 @@ export default {
         this.completedName = true;
         this.check();
       } else {
-        this.nameValidation = '1文字以上を入力してください';
+        this.nameValidation = '1文字以上入力してください';
         this.completedName = false;
         this.check();
       }
@@ -125,7 +125,7 @@ export default {
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com|ylab.dev.test@gmail.com/
         ).test(val)
       ) {
-        this.emailValidation = '静大メールを入力してください';
+        this.emailValidation = '静大メールのアドレスを入力してください';
         this.completedEmail = false;
         this.check();
       } else {
@@ -140,7 +140,7 @@ export default {
         this.completedPassword = true;
         this.check();
       } else {
-        this.passwordValidation = '英数字６文字以上で入力してください';
+        this.passwordValidation = '英数字6文字以上で入力してください';
         this.completedPassword = false;
         this.check();
       }
@@ -265,7 +265,7 @@ export default {
 }
 .to-login {
   text-align: center;
-  margin-top: 200px;
+  margin-top: 150px;
   text-decoration: none;
 }
 .app-rule-modal {

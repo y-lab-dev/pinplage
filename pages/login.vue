@@ -185,7 +185,7 @@ export default {
 }
 .sign-up {
   text-align: center;
-  margin-top: 200px;
+  margin-top: 150px;
   text-decoration: none;
 }
 </style>

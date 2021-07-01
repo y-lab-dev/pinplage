@@ -29,7 +29,7 @@
             >
           </div>
           <div class="to-login mt-4 font-subtitle-2">
-            <nuxt-link to="login">ログイン画面へ</nuxt-link>
+            <nuxt-link to="login"><reset-button>ログイン画面へ</reset-button></nuxt-link>
           </div>
         </div>
       </v-col>
@@ -121,5 +121,7 @@ export default {
 }
 .to-login {
   text-align: center;
+  margin-top: 150px;
+  text-decoration: none;
 }
 </style>
