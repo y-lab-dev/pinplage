@@ -94,7 +94,7 @@ export default {
           icon: 'mdi-account-heart-outline',
           link: 'https://forms.gle/n7ejy3uWDJsJBoP89',
         },
-        // { name: '使い方', icon: 'mdi-help', link: 'howtouse' },
+        { name: 'よくある質問', icon: 'mdi-help', link: 'q&a' },
         { name: '設定', icon: 'mdi-cog-outline', link: 'setting' },
       ],
       contacts: [
@@ -150,8 +150,8 @@ export default {
       } else if (pageName === '/club') {
         pageName = '部活・サークル';
         return pageName;
-      } else if (pageName === '/howtouse') {
-        pageName = '使い方';
+      } else if (pageName === '/q&a') {
+        pageName = 'よくある質問';
         return pageName;
       } else if (pageName === '/setting') {
         pageName = '設定';
