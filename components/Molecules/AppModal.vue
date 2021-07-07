@@ -9,10 +9,15 @@
         <v-card-text style="margin-top: 20px; padding: 0 20px 20px; text-align: center">
           {{ modalText }}
         </v-card-text>
+        <!-- <v-card-text>
+          プラージュは、マイページ>ショップでご利用いただけます。
+          マイページの着せ替えや、期間限定イベントへの参加によって嬉しい商品が得られます。
+        </v-card-text> -->
         <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
+          <!-- <v-btn color="#61d4b3" text> ショップへ移動 </v-btn> -->
           <v-btn color="#61d4b3" text @click="changeModalValue()">
             {{ modalButton }}
           </v-btn>

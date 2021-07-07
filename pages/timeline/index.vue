@@ -1,126 +1,128 @@
 <template>
-  <div app>
-    <v-row cols="12" no-gutters
-      ><v-col xs="12" sm="12" md="8">
-        <div class="timeline-contents-wrap">
-          <HowToUse />
-          <v-tabs
-            v-model="model"
-            grow
-            color="#61d4b3"
-            class="tabs"
-            center-active
-            height="57px"
-            min-width="600px"
-            @change="pauseTab"
-          >
-            <v-tab
-              ><v-avatar rounded tile size="30"
-                ><img :src="require('~/assets/timeline/thread.png')" /></v-avatar
-              ><span class="ml-2">スレッド</span></v-tab
+  <div>
+    <v-container>
+      <v-row cols="12" no-gutters
+        ><v-col xs="12" sm="12" md="8">
+          <div class="timeline-contents-wrap">
+            <HowToUse />
+            <v-tabs
+              v-model="model"
+              grow
+              color="#61d4b3"
+              class="tabs"
+              center-active
+              height="57px"
+              min-width="600px"
+              @change="pauseTab"
             >
-            <v-tab
-              ><v-avatar rounded tile size="30"
-                ><img :src="require('~/assets/timeline/wisdom.png')" /></v-avatar
-              ><span class="ml-2">知恵袋</span></v-tab
-            >
-            <v-tab
-              ><v-avatar rounded tile size="30"
-                ><img :src="require('~/assets/timeline/review.png')" /></v-avatar
-              ><span class="ml-2">クチコミ</span></v-tab
-            >
-            <v-tab
-              ><v-avatar rounded tile size="30"
-                ><img :src="require('~/assets/timeline/article.png')" /></v-avatar
-              ><span class="ml-2">学生記事</span></v-tab
-            >
-            <v-tab
-              ><v-avatar rounded tile size="30"
-                ><img :src="require('~/assets/timeline/event.png')" /></v-avatar
-              ><span class="ml-2">イベント</span></v-tab
-            >
-            <v-tab
-              ><v-avatar rounded tile size="30"
-                ><img :src="require('~/assets/timeline/job.png')" /></v-avatar
-              ><span class="ml-2">アルバイト</span></v-tab
-            >
-          </v-tabs>
+              <v-tab
+                ><v-avatar rounded tile size="30"
+                  ><img :src="require('~/assets/timeline/thread.png')" /></v-avatar
+                ><span class="ml-2">スレッド</span></v-tab
+              >
+              <v-tab
+                ><v-avatar rounded tile size="30"
+                  ><img :src="require('~/assets/timeline/wisdom.png')" /></v-avatar
+                ><span class="ml-2">知恵袋</span></v-tab
+              >
+              <v-tab
+                ><v-avatar rounded tile size="30"
+                  ><img :src="require('~/assets/timeline/review.png')" /></v-avatar
+                ><span class="ml-2">クチコミ</span></v-tab
+              >
+              <v-tab
+                ><v-avatar rounded tile size="30"
+                  ><img :src="require('~/assets/timeline/article.png')" /></v-avatar
+                ><span class="ml-2">学生記事</span></v-tab
+              >
+              <v-tab
+                ><v-avatar rounded tile size="30"
+                  ><img :src="require('~/assets/timeline/event.png')" /></v-avatar
+                ><span class="ml-2">イベント</span></v-tab
+              >
+              <v-tab
+                ><v-avatar rounded tile size="30"
+                  ><img :src="require('~/assets/timeline/job.png')" /></v-avatar
+                ><span class="ml-2">アルバイト</span></v-tab
+              >
+            </v-tabs>
 
-          <v-tabs-items v-cloak v-model="model" class="tabs_styles" @change="pauseTab">
-            <v-tab-item>
-              <thread></thread>
-            </v-tab-item>
-            <v-tab-item><wisdom /></v-tab-item>
-            <v-tab-item>
-              <place></place>
-            </v-tab-item>
-            <v-tab-item>
-              <TimelineArticle />
-            </v-tab-item>
-            <v-tab-item>
-              <event></event>
-            </v-tab-item>
-            <v-tab-item>
-              <job></job>
-            </v-tab-item>
-            <div v-if="buttonHidden">
-              <TimelinePostButton />
-            </div>
-          </v-tabs-items>
-        </div>
-      </v-col>
-      <v-col cols="4">
-        <div class="right-menu-wrap">
-          <v-card width="360px">
-            <v-list nav dense>
-              <v-list-item
-                class="pl-0"
-                :disabled="this.$route.path.includes('mypage')"
-                @click.stop="pushPage('mypage')"
-              >
-                <v-list-item-avatar>
-                  <v-img :src="icon"></v-img>
-                </v-list-item-avatar>
-                <span>{{ name }}</span>
-              </v-list-item>
-              <v-divider class="my-3"></v-divider>
-              <v-list-item
-                v-for="(item, index) in subPages"
-                :key="item.name"
-                class="my-1"
-                nuxt
-                @click.stop="pushPage(subPages[index].link)"
-              >
-                <v-list-item-icon class="ml-3">
-                  <v-icon color="rgba(0,0,0,0.6)" v-text="item.icon"></v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title class="item-title">
-                    {{ item.name }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-divider class="my-3"></v-divider>
-              <v-list-item
-                v-for="(item, index) in contacts"
-                :key="item.name"
-                class="my-1"
-                @click.stop="pushPage(contacts[index].link)"
-              >
-                <v-list-item-icon class="ml-3">
-                  <v-icon :color="item.color" v-text="item.icon"></v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title class="item-title">
-                    {{ item.name }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list></v-card
-          >
-        </div></v-col
-      >
-    </v-row>
+            <v-tabs-items v-cloak v-model="model" class="tabs_styles" @change="pauseTab">
+              <v-tab-item>
+                <thread></thread>
+              </v-tab-item>
+              <v-tab-item><wisdom /></v-tab-item>
+              <v-tab-item>
+                <place></place>
+              </v-tab-item>
+              <v-tab-item>
+                <TimelineArticle />
+              </v-tab-item>
+              <v-tab-item>
+                <event></event>
+              </v-tab-item>
+              <v-tab-item>
+                <job></job>
+              </v-tab-item>
+              <div v-if="buttonHidden">
+                <TimelinePostButton />
+              </div>
+            </v-tabs-items>
+          </div>
+        </v-col>
+        <v-col cols="4">
+          <div class="right-menu-wrap">
+            <v-card width="360px">
+              <v-list nav dense>
+                <v-list-item
+                  class="pl-0"
+                  :disabled="this.$route.path.includes('mypage')"
+                  @click.stop="pushPage('mypage')"
+                >
+                  <v-list-item-avatar>
+                    <v-img :src="icon"></v-img>
+                  </v-list-item-avatar>
+                  <span>{{ name }}</span>
+                </v-list-item>
+                <v-divider class="my-3"></v-divider>
+                <v-list-item
+                  v-for="(item, index) in subPages"
+                  :key="item.name"
+                  class="my-1"
+                  nuxt
+                  @click.stop="pushPage(subPages[index].link)"
+                >
+                  <v-list-item-icon class="ml-3">
+                    <v-icon color="rgba(0,0,0,0.6)" v-text="item.icon"></v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title class="item-title">
+                      {{ item.name }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider class="my-3"></v-divider>
+                <v-list-item
+                  v-for="(item, index) in contacts"
+                  :key="item.name"
+                  class="my-1"
+                  @click.stop="pushPage(contacts[index].link)"
+                >
+                  <v-list-item-icon class="ml-3">
+                    <v-icon :color="item.color" v-text="item.icon"></v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title class="item-title">
+                      {{ item.name }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list></v-card
+            >
+          </div></v-col
+        >
+      </v-row>
+    </v-container>
   </div>
 </template>
 <script>
