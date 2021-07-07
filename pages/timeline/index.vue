@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container class="pa-0">
       <v-row cols="12" no-gutters
         ><v-col xs="12" sm="12" md="8">
           <div class="timeline-contents-wrap">
