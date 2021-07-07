@@ -158,7 +158,7 @@ export default {
           icon: 'mdi-account-heart-outline',
           link: 'https://forms.gle/n7ejy3uWDJsJBoP89',
         },
-        { name: 'よくある質問', icon: 'mdi-help', link: 'q&a' },
+        // { name: '使い方', icon: 'mdi-help', link: 'howtouse' },
         { name: '設定', icon: 'mdi-cog-outline', link: 'setting' },
       ],
       contacts: [
