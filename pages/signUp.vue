@@ -54,7 +54,7 @@
           >
         </div>
         <div class="to-login">
-          <nuxt-link to="login"><sign-up-button>アカウントをお持ちの方</sign-up-button></nuxt-link>
+          <nuxt-link to="login"><sign-up-button>ログインはこちら</sign-up-button></nuxt-link>
         </div>
       </v-col>
     </v-row>
@@ -247,18 +247,19 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
+$error-color: #e81123;
 .title {
   text-align: center;
   margin-top: 65px;
 }
 .validation-email {
   text-align: center;
-  color: red;
+  color: $error-color;
 }
 .validation-password {
   text-align: center;
-  color: red;
+  color: $error-color;
 }
 .sign-up-button-place {
   text-align: center;
