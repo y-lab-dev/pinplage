@@ -115,6 +115,11 @@ export default {
   width: 100%;
   max-height: 10vh;
 }
+@media screen and (min-width: 500px) {
+  .pr-img {
+    max-height: 13vh;
+  }
+}
 @media screen and (min-width: 600px) {
   .pr-img {
     max-height: 15vh;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="threads-view">
     <thread-card v-for="item in threadArray" :key="item.id" v-bind="item" />
   </div>
 </template>
@@ -59,3 +59,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.threads-view {
+  max-width: 550px;
+}
+</style>
