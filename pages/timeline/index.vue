@@ -256,7 +256,7 @@ export default {
 .right-menu-wrap {
   position: sticky;
   position: -webkit-sticky;
-  top: 0;
+  top: 55px;
   z-index: 10;
   margin-right: auto;
   padding: 10px 0 0 15px;
