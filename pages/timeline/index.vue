@@ -193,7 +193,11 @@ export default {
       }
     },
     menuHidden() {
-      if (this.$vuetify.breakpoint.name === 'md' || this.$vuetify.breakpoint.name === 'lg') {
+      if (
+        this.$vuetify.breakpoint.name === 'md' ||
+        this.$vuetify.breakpoint.name === 'lg' ||
+        this.$vuetify.breakpoint.name === 'xl'
+      ) {
         return true;
       } else {
         return false;
