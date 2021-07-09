@@ -1,14 +1,10 @@
 <template>
   <div class="wisdoms-view">
-    <div class="infinite-scroll">
-      <div class="infinite-scroll-list">
-        <wisdom-thread v-for="item in wisdoms" :key="item.wisdomId" v-bind="item" />
-        <infinite-loading ref="infiniteLoading" spinner="waveDots" @infinite="infiniteHandler">
-          <slot slot="no-more">表示可能な件数に達しました</slot>
-          <slot slot="no-results">表示可能な件数に達しました</slot>
-        </infinite-loading>
-      </div>
-    </div>
+    <wisdom-thread v-for="item in wisdoms" :key="item.wisdomId" v-bind="item" />
+    <infinite-loading ref="infiniteLoading" spinner="waveDots" @infinite="infiniteHandler">
+      <slot slot="no-more">表示可能な件数に達しました</slot>
+      <slot slot="no-results">表示可能な件数に達しました</slot>
+    </infinite-loading>
   </div>
 </template>
 <script>
