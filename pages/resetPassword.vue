@@ -1,36 +1,35 @@
 <template>
   <v-container>
-    <v-row justify="center">
+    <v-row align-content="center">
       <v-col cols="12">
-        <div>
-          <div class="title">パスワード再設定</div>
-          <template>
-            <Modal
-              :modal-title="modalTitle"
-              :modal-text="modalText"
-              :modal-button="buttonText"
-              :modal-toggle="modal"
-              @changeValue="clickModal()"
-            />
-          </template>
-          <input-text
-            :input-type="inputType"
-            :input-placeholder="mailPlaceholder"
-            :input-value="email"
-            @input="email = $event"
-          ></input-text>
-          <div class="validation-email">{{ emailValidation }}</div>
-          <div class="reset-button-place mt-4 mb-2">
-            <reset-button
-              :button-method="reset"
-              :button-type="buttonType"
-              :button-disabled="resetValidation"
-              >リセットする</reset-button
-            >
-          </div>
-          <div class="to-login mt-4 font-subtitle-2">
-            <nuxt-link to="login"><reset-button>ログイン画面へ</reset-button></nuxt-link>
-          </div>
+        <div class="title">パスワード再設定</div>
+        <template>
+          <Modal
+            :modal-title="modalTitle"
+            :modal-text="modalText"
+            :modal-button="buttonText"
+            :modal-toggle="modal"
+            @changeValue="clickModal()"
+          />
+        </template>
+        <input-text
+          :input-type="inputType"
+          :input-placeholder="mailPlaceholder"
+          :input-value="email"
+          @input="email = $event"
+        ></input-text>
+        <div class="validation-email">{{ emailValidation }}</div>
+        <div class="reset-button-place mt-4 mb-2">
+          <reset-button
+            :button-method="reset"
+            :button-type="buttonType"
+            :button-disabled="resetValidation"
+            >リセットする</reset-button
+          >
+        </div>
+        <br />
+        <div class="to-login">
+          <nuxt-link to="login"><reset-button>ログイン画面へ</reset-button></nuxt-link>
         </div>
       </v-col>
     </v-row>
@@ -53,7 +52,7 @@ export default {
       email: '',
       inputType: 'text',
       buttonType: 'submit',
-      mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
+      mailPlaceholder: 'メールアドレス（○○@shizuoka.ac.jp）',
       emailValidation: '',
       resetValidation: true,
       modal: false,
@@ -72,7 +71,7 @@ export default {
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com|ylab.dev.test@gmail.com/
         ).test(val)
       ) {
-        this.emailValidation = '静大メールのみ可能です';
+        this.emailValidation = '静大メールアドレス（○○@shizuoka.ac.jp）のみ使用可能です';
         this.resetValidation = true;
       } else {
         this.emailValidation = '';
@@ -94,7 +93,7 @@ export default {
           that.modal = !that.modal;
           that.modalTitle = 'パスワード再設定';
           that.modalText = 'パスワードの再設定メールを送信しました';
-          that.buttonText = 'Ok';
+          that.buttonText = 'OK';
         })
         .catch((err) => {
           alert(err);

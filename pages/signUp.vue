@@ -82,7 +82,7 @@ export default {
       passwordType: 'password',
       buttonType: 'submit',
       namePlaceholder: 'ユーザ名',
-      mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
+      mailPlaceholder: 'メールアドレス（○○@shizuoka.ac.jp）',
       passwordPlaceholder: 'パスワード（英数字6文字以上）',
       name: '',
       email: '',
@@ -125,7 +125,7 @@ export default {
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com|ylab.dev.test@gmail.com/
         ).test(val)
       ) {
-        this.emailValidation = '静大メールのアドレスを入力してください';
+        this.emailValidation = '静大メールアドレス（○○@shizuoka.ac.jp）のみ使用可能です';
         this.completedEmail = false;
         this.check();
       } else {
