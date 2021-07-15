@@ -135,5 +135,6 @@ export default {
 .author-wrap {
   max-width: 600px;
   margin: 0 auto;
+  cursor: default;
 }
 </style>
