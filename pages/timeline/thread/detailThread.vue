@@ -204,6 +204,7 @@ export default {
   max-width: 550px;
   margin-left: auto;
   margin-right: auto;
+  cursor: default;
 }
 .top-img {
   width: 100%;
