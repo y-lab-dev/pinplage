@@ -484,6 +484,7 @@ export default {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  cursor: default;
 }
 .top-img {
   width: 100%;
@@ -505,6 +506,7 @@ export default {
 .content-url {
   color: #00f;
   text-decoration: underline;
+  cursor: pointer;
 }
 .post-button {
   text-align: center;

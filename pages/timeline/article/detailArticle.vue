@@ -36,7 +36,7 @@
               <v-list-item-avatar class="article-author">
                 <img :src="authorIcon" @click="toAuthorArticle" />
               </v-list-item-avatar>
-              <v-list-item-content @click="toAuthorArticle" class="article-author">
+              <v-list-item-content class="article-author" @click="toAuthorArticle">
                 <v-list-item-title>{{ authorName }}</v-list-item-title>
                 <v-list-item-subtitle class="to-author">著者関連記事へ</v-list-item-subtitle>
               </v-list-item-content>
