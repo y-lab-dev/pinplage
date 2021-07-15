@@ -362,6 +362,7 @@ export default {
   max-width: 550px;
   margin-right: auto;
   margin-left: auto;
+  cursor: default;
 }
 .main {
   width: 100%;

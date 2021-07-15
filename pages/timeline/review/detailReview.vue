@@ -19,7 +19,7 @@
               </v-col>
             </v-row>
             <v-row align-content="center">
-              <v-col cclass="pl-5 pr-0" cols="7">
+              <v-col class="pl-5 pr-0 place-name" cols="7">
                 <v-card-title
                   class="pa-0"
                   style="color: #1976d2"
@@ -402,6 +402,10 @@ export default {
   max-width: 550px;
   margin-left: auto;
   margin-right: auto;
+  cursor: default;
+}
+.place-name {
+  cursor: pointer;
 }
 .post-button {
   text-align: center;
