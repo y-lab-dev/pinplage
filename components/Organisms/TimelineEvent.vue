@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="events-view">
     <event-card v-for="(item, index) in eventArray" :key="index" v-bind="item" />
   </div>
 </template>
@@ -45,3 +45,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.events-view {
+  max-width: 550px;
+}
+</style>
