@@ -227,6 +227,7 @@ export default {
   max-width: 550px;
   margin-left: auto;
   margin-right: auto;
+  cursor: default;
 }
 .category {
   font-size: 0.8rem;

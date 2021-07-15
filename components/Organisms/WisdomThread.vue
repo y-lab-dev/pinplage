@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0">
-    <v-row no-gutters>
+    <v-row class="posted-wisdom-card" no-gutters>
       <v-col class="pa-0" cols="12">
         <v-divider></v-divider>
         <v-card tile elevation="0">
@@ -36,7 +36,7 @@
                 </v-col>
               </v-row>
               <p class="posted-content" @click="wisdomDetail(wisdomId)">{{ content }}</p>
-              <v-row no-gutters justify="end">
+              <v-row class="bottom-line" no-gutters justify="end">
                 <v-col
                   v-if="!answerDisplay"
                   class="pa-1"
@@ -173,6 +173,9 @@ export default {
 };
 </script>
 <style scoped>
+.posted-wisdom-card {
+  cursor: pointer;
+}
 .posted-wisdoms-title {
   margin: 16px 0;
   text-align: center;
@@ -205,5 +208,8 @@ export default {
 }
 .chip-row {
   max-width: 100vw;
+}
+.bottom-line {
+  cursor: default;
 }
 </style>
