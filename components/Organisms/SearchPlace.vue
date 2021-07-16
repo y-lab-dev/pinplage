@@ -41,7 +41,7 @@
                       class="pa-0 ma-0"
                       @click="toPlaceDetail(item)"
                     >
-                      <v-card nuxt outlined tile :elevation="2">
+                      <v-card class="place-card" nuxt outlined tile :elevation="2">
                         <v-card-title class="pa-2">{{ item.name }}</v-card-title>
                         <div class="px-1 pt-1">
                           <rating
@@ -235,6 +235,9 @@ export default {
 </style>
 
 <style>
+.place-card {
+  cursor: pointer;
+}
 .IZ-select__input {
   box-shadow: none !important;
 }
