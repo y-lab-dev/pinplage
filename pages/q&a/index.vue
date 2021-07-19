@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="question-wrap">
     <v-card>
       <v-card-title class="layout justify-center">パンプラージュについて</v-card-title>
     </v-card>
     <v-expansion-panels focusable class="panel">
       <v-expansion-panel v-for="list in pinplage" :key="list.title">
         <v-expansion-panel-header> {{ list.title }} </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-content class="answer">
           {{ list.text }}
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -16,7 +16,7 @@
     <v-expansion-panels focusable class="panel">
       <v-expansion-panel v-for="list in post" :key="list.title">
         <v-expansion-panel-header> {{ list.title }} </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-content class="answer">
           {{ list.text }}
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -26,7 +26,7 @@
     <v-expansion-panels focusable class="panel">
       <v-expansion-panel v-for="list in user" :key="list.title">
         <v-expansion-panel-header> {{ list.title }} </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-content class="answer">
           {{ list.text }}
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -36,7 +36,7 @@
     <v-expansion-panels focusable class="panel">
       <v-expansion-panel v-for="list in timetable" :key="list.title">
         <v-expansion-panel-header> {{ list.title }} </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-content class="answer">
           {{ list.text }}
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -99,11 +99,17 @@ export default {
 </script>
 
 <style scoped>
+.question-wrap {
+  cursor: default;
+}
 .panel {
   margin-bottom: 5%;
 }
 .v-card {
   background-color: #61d4b3;
   color: #fff;
+}
+.answer {
+  cursor: default;
 }
 </style>
