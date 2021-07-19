@@ -407,6 +407,7 @@ export default {
   max-width: 550px;
   margin-right: auto;
   margin-left: auto;
+  cursor: default;
 }
 input[type='radio'] {
   display: none;
@@ -442,7 +443,6 @@ input[type='radio'].scene:checked + label {
   float: left;
   width: 120px;
 }
-
 .tags {
   box-shadow: none !important;
   width: 180px;
@@ -451,6 +451,9 @@ input[type='radio'].scene:checked + label {
 .button-color {
   background: linear-gradient(to right, #36aa37 0%, #2da8aa 50%);
   opacity: 0.6;
+}
+.select-button {
+  cursor: pointer;
 }
 </style>
 <style>

@@ -48,7 +48,7 @@
                       <img :src="userIcon" />
                     </v-avatar>
                   </v-col>
-                  <v-col cols="9" align-self="center">{{ userName }}</v-col>
+                  <v-col class="username" cols="9" align-self="center">{{ userName }}</v-col>
                 </v-row>
                 <v-row dense class="ma-2">
                   <v-col cols="12">
@@ -235,6 +235,10 @@ export default {
   text-align: center;
   margin-bottom: 0;
   font-size: 0.8rem;
+  cursor: default;
+}
+.username {
+  cursor: default;
 }
 .overlay {
   display: flex;

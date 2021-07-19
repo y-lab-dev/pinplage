@@ -160,6 +160,9 @@ export default {
 };
 </script>
 <style scoped>
+.catchphrase {
+  cursor: default;
+}
 .thread-post-wrap {
   max-width: 600px;
   margin: 0 auto;

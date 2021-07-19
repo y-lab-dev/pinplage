@@ -354,6 +354,7 @@ export default {
   margin-bottom: 0;
   margin-left: 4px;
   font-size: 0.8rem;
+  cursor: default;
 }
 .post-button {
   text-align: center;
