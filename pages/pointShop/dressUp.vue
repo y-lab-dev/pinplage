@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-          <v-card>
+          <v-card class="explanation-card">
             <v-card-title>マイページ背景着せ替え</v-card-title>
             <v-card-subtitle class="pb-0"
               >こちらで購入した背景をマイページの背景としてご利用頂けます。
@@ -37,7 +37,7 @@
                 <v-chip v-else>購入済み</v-chip>
               </template>
 
-              <v-card>
+              <v-card class="confirm-card">
                 <v-card-title class="headline grey lighten-2"> 購入確認画面 </v-card-title>
 
                 <v-card-text class="pt-5">
@@ -211,8 +211,15 @@ export default {
 </script>
 
 <style scoped>
+.explanation-card {
+  cursor: default;
+}
 .theme-name {
   margin-bottom: 0;
   text-align: center;
+  cursor: default;
+}
+.confirm-card {
+  cursor: default;
 }
 </style>
