@@ -44,6 +44,7 @@
                   </th>
                   <td
                     v-for="day in weekNames"
+                    class="timetable-square"
                     :key="day"
                     :style="{ background: data[day].color }"
                     @click="detail(data[day], index, day)"
@@ -262,6 +263,7 @@ table th {
   color: white;
   border: solid 1px #000;
   font-size: 0.6rem;
+  cursor: default;
 }
 table td {
   background-color: #e8e7e1;
@@ -295,5 +297,8 @@ table td {
 .bound-leave-to {
   transform: scale(0.9);
   opacity: 0;
+}
+.timetable-square {
+  cursor: pointer;
 }
 </style>

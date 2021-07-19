@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <v-dialog v-model="dialogToggle" persistent width="400">
-      <v-card>
+      <v-card class="dialog-card">
         <v-card-title class="headline grey lighten-2" primary-title>
           {{ dialogTitle }}
         </v-card-title>
@@ -12,7 +12,7 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn color="#61d4b3" text @click="cancelDelete()">
+          <v-btn class="cancel-button" color="#61d4b3" text @click="cancelDelete()">
             {{ dialogCancel }}
           </v-btn>
           <v-spacer></v-spacer>
@@ -59,3 +59,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.cancel-button {
+  cursor: pointer;
+}
+.dialog-card {
+  cursor: default;
+}
+</style>

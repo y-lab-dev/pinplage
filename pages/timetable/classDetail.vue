@@ -38,7 +38,7 @@
       </div>
       <div v-else>
         <v-list dense>
-          <v-list-item v-for="(item, key) in dataList" :key="item.index">
+          <v-list-item class="selected-content" v-for="(item, key) in dataList" :key="item.index">
             <v-list-item-icon>
               <v-icon>{{ iconList[key] }}</v-icon>
             </v-list-item-icon>
@@ -88,7 +88,7 @@
       >
     </div>
     <div v-else-if="targetClass.edited && !colorSelected">
-      <v-list two-line subheader style="padding: 0 0">
+      <v-list class="edit-dialog" two-line subheader style="padding: 0 0">
         <v-list-item v-for="(item, index) in classInfoJ" :key="index">
           <v-list-item-content v-if="!isEditMode[classInfoE[index]]" style="padding: 0 0">
             <v-list-item-title v-text="item"></v-list-item-title>
@@ -422,6 +422,7 @@ export default {
   z-index: 6;
   padding: 4.4vh;
   box-sizing: border-box;
+  cursor: default;
 }
 .close-btn {
   position: absolute;
@@ -429,6 +430,7 @@ export default {
   right: 2.1vh;
   font-size: 1rem;
   color: #717171;
+  cursor: pointer;
 }
 .counters-wrapper {
   display: flex;
@@ -469,5 +471,8 @@ export default {
 .counter-right:active {
   background-color: gray;
   color: white;
+}
+.timetable {
+  cursor: pointer;
 }
 </style>
