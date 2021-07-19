@@ -90,6 +90,7 @@ export default {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  cursor: default;
 }
 .club-name {
   position: absolute;
