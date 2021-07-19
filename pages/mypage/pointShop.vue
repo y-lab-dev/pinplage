@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container class="plage-wrap">
       <v-row dense>
         <v-col cols="12">
           <v-card color="#fff">

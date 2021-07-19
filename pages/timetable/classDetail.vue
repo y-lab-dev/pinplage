@@ -38,7 +38,7 @@
       </div>
       <div v-else>
         <v-list dense>
-          <v-list-item class="selected-content" v-for="(item, key) in dataList" :key="item.index">
+          <v-list-item v-for="(item, key) in dataList" :key="item.index">
             <v-list-item-icon>
               <v-icon>{{ iconList[key] }}</v-icon>
             </v-list-item-icon>
@@ -471,8 +471,5 @@ export default {
 .counter-right:active {
   background-color: gray;
   color: white;
-}
-.timetable {
-  cursor: pointer;
 }
 </style>

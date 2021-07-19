@@ -44,9 +44,9 @@
                   </th>
                   <td
                     v-for="day in weekNames"
-                    class="timetable-square"
                     :key="day"
                     :style="{ background: data[day].color }"
+                    class="timetable-square"
                     @click="detail(data[day], index, day)"
                   >
                     <span class="classTitle">

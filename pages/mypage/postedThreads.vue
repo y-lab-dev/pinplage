@@ -142,5 +142,6 @@ export default {
   max-width: 550px;
   margin-left: auto;
   margin-right: auto;
+  cursor: pointer;
 }
 </style>

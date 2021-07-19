@@ -8,7 +8,7 @@
         :icon="item.icon"
         fill-dot
       >
-        <v-card color="#61d4b3" dark width="60vw">
+        <v-card class="pointlog" color="#61d4b3" dark width="60vw">
           <v-card-title class="pa-0 pl-4">
             <p style="margin-bottom: 0; font-size: 0.8rem">{{ item.point }}プラージュ獲得</p>
           </v-card-title>
@@ -83,3 +83,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.pointlog {
+  cursor: default;
+}
+</style>
