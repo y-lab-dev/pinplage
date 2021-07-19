@@ -204,6 +204,7 @@ export default {
 .header-title {
   font-size: 1rem;
   opacity: 0.8;
+  cursor: default;
 }
 .drawer-menu {
   z-index: 20;

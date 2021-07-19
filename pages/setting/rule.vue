@@ -24,6 +24,7 @@ export default {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  cursor: default;
 }
 .app-rule {
   width: 80%;
