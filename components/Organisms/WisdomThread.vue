@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0">
-    <v-row no-gutters>
+    <v-row class="posted-wisdom-card" no-gutters>
       <v-col class="pa-0" cols="12">
         <v-divider></v-divider>
         <v-card tile elevation="0">
@@ -173,6 +173,9 @@ export default {
 };
 </script>
 <style scoped>
+.posted-wisdom-card {
+  cursor: pointer;
+}
 .posted-wisdoms-title {
   margin: 16px 0;
   text-align: center;

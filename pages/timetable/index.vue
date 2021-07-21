@@ -46,6 +46,7 @@
                     v-for="day in weekNames"
                     :key="day"
                     :style="{ background: data[day].color }"
+                    class="timetable-square"
                     @click="detail(data[day], index, day)"
                   >
                     <span class="classTitle">
@@ -295,5 +296,8 @@ table td {
 .bound-leave-to {
   transform: scale(0.9);
   opacity: 0;
+}
+.timetable-square {
+  cursor: pointer;
 }
 </style>

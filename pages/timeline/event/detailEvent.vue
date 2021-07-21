@@ -505,6 +505,7 @@ export default {
 .content-url {
   color: #00f;
   text-decoration: underline;
+  cursor: pointer;
 }
 .post-button {
   text-align: center;

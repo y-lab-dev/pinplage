@@ -19,7 +19,7 @@
               </v-col>
             </v-row>
             <v-row align-content="center">
-              <v-col cclass="pl-5 pr-0" cols="7">
+              <v-col class="pl-5 pr-0 place-name" cols="7">
                 <v-card-title
                   class="pa-0"
                   style="color: #1976d2"
@@ -415,5 +415,8 @@ export default {
 }
 .buttom-button-bar {
   background-color: rgba(255, 255, 255, 0.6);
+}
+.place-name {
+  cursor: pointer;
 }
 </style>
