@@ -33,10 +33,10 @@
           </v-list>
           <v-list class="mb-4">
             <v-list-item>
-              <v-list-item-avatar>
+              <v-list-item-avatar class="article-author-icon">
                 <img :src="authorIcon" @click="toAuthorArticle" />
               </v-list-item-avatar>
-              <v-list-item-content @click="toAuthorArticle">
+              <v-list-item-content class="article-author-name" @click="toAuthorArticle">
                 <v-list-item-title>{{ authorName }}</v-list-item-title>
                 <v-list-item-subtitle class="to-author">著者関連記事へ</v-list-item-subtitle>
               </v-list-item-content>
@@ -408,5 +408,11 @@ export default {
 }
 .post-button {
   text-align: center;
+}
+.article-author-icon {
+  cursor: pointer;
+}
+.article-author-name {
+  cursor: pointer;
 }
 </style>

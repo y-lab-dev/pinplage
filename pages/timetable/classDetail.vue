@@ -429,6 +429,7 @@ export default {
   right: 2.1vh;
   font-size: 1rem;
   color: #717171;
+  cursor: pointer;
 }
 .counters-wrapper {
   display: flex;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="articles-view">
     <article-card
       v-for="(item, index) in articleArray"
       :key="item.id"
@@ -53,3 +53,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.articles-view {
+  max-width: 550px;
+}
+</style>

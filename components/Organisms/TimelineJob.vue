@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="jobs-view">
     <v-card
       v-for="item in jobArray"
       :key="item.id"
@@ -116,5 +116,8 @@ export default {
 .no-newchip {
   margin-top: 12px;
   margin-left: 12px;
+}
+.jobs-view {
+  max-width: 550px;
 }
 </style>

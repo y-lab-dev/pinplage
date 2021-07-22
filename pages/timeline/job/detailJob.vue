@@ -94,9 +94,11 @@
                 <v-list-item-content class="font-weight-black">公式HP</v-list-item-content>
               </v-list-item>
               <v-list-item>
-                <v-list-item-content class="text-subtitle-2" @click="toLink(jobDetailObject.hp)">{{
-                  jobDetailObject.hp
-                }}</v-list-item-content>
+                <v-list-item-content
+                  class="text-subtitle-2 content-url"
+                  @click="toLink(jobDetailObject.hp)"
+                  >{{ jobDetailObject.hp }}</v-list-item-content
+                >
               </v-list-item>
             </div>
             <div v-if="jobDetailObject.secret">
@@ -427,6 +429,7 @@ export default {
 .content-url {
   color: #00f;
   text-decoration: underline;
+  cursor: pointer;
 }
 .edit-button {
   float: right;
