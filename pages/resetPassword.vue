@@ -92,7 +92,7 @@ export default {
           Cookies.remove('pass');
           that.modal = !that.modal;
           that.modalTitle = 'パスワード再設定';
-          that.modalText = 'パスワードの再設定メールを送信しました';
+          that.modalText = 'パスワードの再設定メールを送信しました。';
           that.buttonText = 'OK';
         })
         .catch((err) => {
