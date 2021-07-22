@@ -110,14 +110,14 @@ export default {
         this.completedName = true;
         this.check();
       } else {
-        this.nameValidation = '1文字以上を入力してください';
+        this.nameValidation = '1文字以上を入力してください。';
         this.completedName = false;
         this.check();
       }
     },
     email(val) {
       if (val.length === 0) {
-        this.emailValidation = 'メールアドレスを入力してください';
+        this.emailValidation = 'メールアドレスを入力してください。';
         this.completedEmail = false;
         this.check();
       } else if (

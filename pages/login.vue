@@ -128,7 +128,8 @@ export default {
             if (!user.emailVerified) {
               this.modal = !this.modal;
               this.modalTitle = '認証エラー';
-              this.modalText = '認証メールを確認してください';
+              this.modalText =
+                '認証メールを確認してください。認証メールが届かない場合は、迷惑メールフォルダの確認もお願いします。';
               this.buttonText = 'Ok';
             } else {
               const token = await firebase.auth().currentUser.getIdToken(true);
@@ -146,7 +147,8 @@ export default {
         .catch(() => {
           this.modal = !this.modal;
           this.modalTitle = 'エラー';
-          this.modalText = 'メールアドレスまたはパスワードが違います';
+          this.modalText =
+            'メールアドレスまたはパスワードが違います。メールアドレスで認証がまだの場合は、迷惑メールフォルダを確認してください。';
           this.buttonText = 'Ok';
         });
     },
