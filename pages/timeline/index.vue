@@ -68,9 +68,7 @@
                     </v-tab-item>
                   </div>
                 </v-col>
-                <div v-if="buttonHidden">
-                  <TimelinePostButton />
-                </div>
+                <TimelinePostButton v-if="buttonHidden" />
                 <v-col v-if="menuHidden" md="4">
                   <div class="right-menu-wrap">
                     <v-card min-width="280px">
@@ -245,12 +243,12 @@ export default {
   font-size: 0.8rem;
 }
 .timeline-main-contents {
-  max-width: 550px;
   margin: auto;
 }
 @media screen and (min-width: 960px) {
   .timeline-main-contents {
     float: right;
+    min-width: 550px;
   }
 }
 .right-menu-wrap {
