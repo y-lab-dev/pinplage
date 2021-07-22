@@ -163,19 +163,18 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
-$error-color: #e81123;
+<style scoped>
 .title {
   text-align: center;
   margin-top: 85px;
 }
 .validation-email {
   text-align: center;
-  color: $error-color;
+  color: #e81123;
 }
 .validation-password {
   text-align: center;
-  color: $error-color;
+  color: #e81123;
 }
 .login-button-place {
   text-align: center;

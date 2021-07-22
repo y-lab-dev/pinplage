@@ -106,15 +106,14 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
-$error-color: #e81123;
+<style scoped>
 .title {
   text-align: center;
   margin-top: 65px;
 }
 .validation-email {
   text-align: center;
-  color: $error-color;
+  color: #e81123;
 }
 .reset-button-place {
   text-align: center;
