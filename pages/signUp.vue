@@ -54,7 +54,7 @@
           >
         </div>
         <div class="to-login">
-          <nuxt-link to="login">アカウントをお持ちの方</nuxt-link>
+          <nuxt-link to="login"><sign-up-button>ログインはこちら</sign-up-button></nuxt-link>
         </div>
       </v-col>
     </v-row>
@@ -82,7 +82,7 @@ export default {
       passwordType: 'password',
       buttonType: 'submit',
       namePlaceholder: 'ユーザ名',
-      mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
+      mailPlaceholder: 'メールアドレス（○○@shizuoka.ac.jp）',
       passwordPlaceholder: 'パスワード（英数字6文字以上）',
       name: '',
       email: '',
@@ -110,7 +110,7 @@ export default {
         this.completedName = true;
         this.check();
       } else {
-        this.nameValidation = '1文字以上を入力してください';
+        this.nameValidation = '1文字以上入力してください';
         this.completedName = false;
         this.check();
       }
@@ -125,7 +125,7 @@ export default {
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com|ylab.dev.test@gmail.com/
         ).test(val)
       ) {
-        this.emailValidation = '静大メールを入力してください';
+        this.emailValidation = '静大メールアドレス（○○@shizuoka.ac.jp）のみ使用可能です';
         this.completedEmail = false;
         this.check();
       } else {
@@ -140,7 +140,7 @@ export default {
         this.completedPassword = true;
         this.check();
       } else {
-        this.passwordValidation = '英数字６文字以上で入力してください';
+        this.passwordValidation = '英数字6文字以上で入力してください';
         this.completedPassword = false;
         this.check();
       }
@@ -254,19 +254,19 @@ export default {
 }
 .validation-email {
   text-align: center;
-  color: red;
+  color: #e81123;
 }
 .validation-password {
   text-align: center;
-  color: red;
+  color: #e81123;
 }
 .sign-up-button-place {
   text-align: center;
 }
 .to-login {
   text-align: center;
-  margin-top: 200px;
-  text-decoration: underline;
+  margin-top: 150px;
+  text-decoration: none;
 }
 .app-rule-modal {
   width: 90%;
