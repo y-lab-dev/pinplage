@@ -190,7 +190,8 @@ export default {
         .set({
           email: val.email,
           name: this.name,
-          icon: 'https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/user%2Ficon%2FdefaultIcon%2FS__46546947.jpg?alt=media&token=872c7955-4673-472f-a184-5c51717dcee1',
+          icon:
+            'https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/user%2Ficon%2FdefaultIcon%2FS__46546947.jpg?alt=media&token=872c7955-4673-472f-a184-5c51717dcee1',
           userToken: '',
           point: 0,
         })
