@@ -30,7 +30,6 @@
     "load-google-maps-api": "^2.0.2",
     "nuxt": "^2.14.0",
     "replace": "^1.2.0",
-    "tslib": "^2.3.0",
     "v-viewer": "^1.5.1",
     "vue-cool-select": "^3.5.2",
     "vue-cropperjs": "^4.1.0",
