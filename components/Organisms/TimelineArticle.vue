@@ -56,5 +56,6 @@ export default {
 <style scoped>
 .articles-view {
   max-width: 550px;
+  margin: auto;
 }
 </style>

@@ -119,5 +119,6 @@ export default {
 }
 .jobs-view {
   max-width: 550px;
+  margin: auto;
 }
 </style>

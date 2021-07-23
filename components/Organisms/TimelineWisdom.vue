@@ -47,5 +47,6 @@ export default {
 <style scoped>
 .wisdoms-view {
   max-width: 550px;
+  margin: auto;
 }
 </style>

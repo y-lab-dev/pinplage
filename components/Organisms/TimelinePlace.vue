@@ -154,5 +154,6 @@ export default {
 <style scoped>
 .places-view {
   max-width: 550px;
+  margin: auto;
 }
 </style>

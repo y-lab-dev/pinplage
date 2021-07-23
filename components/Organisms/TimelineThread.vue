@@ -62,5 +62,6 @@ export default {
 <style scoped>
 .threads-view {
   max-width: 550px;
+  margin: auto;
 }
 </style>

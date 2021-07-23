@@ -48,5 +48,6 @@ export default {
 <style scoped>
 .events-view {
   max-width: 550px;
+  margin: auto;
 }
 </style>
