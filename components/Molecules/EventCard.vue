@@ -4,15 +4,32 @@
     <v-card-subtitle v-if="cancel" class="red--text pb-0"
       >このイベントが中止になりました</v-card-subtitle
     >
-    <v-card-title class="title">{{ title }}</v-card-title>
-    <v-card-subtitle>{{ placeName }}</v-card-subtitle>
-    <v-list-item>
+    <div class="event-card-contents">
+      <v-card-title class="title">{{ title }}</v-card-title>
+      <v-card-subtitle>{{ placeName }}</v-card-subtitle>
+      <v-card-text v-if="createTime > updatedPoint" class="text--secondary"
+        >{{ startView }} 〜 {{ finishView }}</v-card-text
+      >
+    </div>
+    <!-- アプデ前のイベントの詳細 -->
+    <v-list-item v-if="createTime < updatedPoint">
       <v-chip v-if="now == holdDate" color="#ff3912" text-color="white">開催日</v-chip>
       <v-chip v-if="now > holdDate" color="#7d7af5" text-color="white">開催済み</v-chip>
       <v-chip v-if="now < holdDate" color="#6cc75a" text-color="white">未開催</v-chip>
       <v-list-item-content class="ml-2">
         {{ date }}
       </v-list-item-content>
+      <v-row align="center" justify="end">
+        <v-icon class="mr-1" style="color: #ea5532">mdi-thumb-up</v-icon>
+        <span v-if="interest" class="subheading mr-2">{{ interest }}</span>
+      </v-row>
+    </v-list-item>
+    <!-- アプデ後のイベントの詳細 -->
+    <v-list-item v-else>
+      <v-chip v-if="now > finishTime" color="#7d7af5" text-color="white">開催済み</v-chip>
+      <v-chip v-if="now < startTime" color="#6cc75a" text-color="white">未開催</v-chip>
+      <v-chip v-else color="#ff3912" text-color="white">開催中</v-chip>
+      <v-list-item-content class="date-view ml-2"> </v-list-item-content>
       <v-row align="center" justify="end">
         <v-icon class="mr-1" style="color: #ea5532">mdi-thumb-up</v-icon>
         <span v-if="interest" class="subheading mr-2">{{ interest }}</span>
@@ -59,6 +76,22 @@ export default {
       required: true,
       type: String,
     },
+    startView: {
+      required: true,
+      type: String,
+    },
+    finishView: {
+      required: true,
+      type: String,
+    },
+    startDate: {
+      required: true,
+      type: String,
+    },
+    finishDate: {
+      required: true,
+      type: String,
+    },
     cancel: {
       required: true,
       type: Boolean,
@@ -67,10 +100,18 @@ export default {
       required: true,
       type: Number,
     },
+    createdAt: {
+      required: true,
+      type: String,
+    },
   },
   data() {
     return {
-      now: dayjs().format('YYYY-MM-DD'),
+      updatedPoint: '2021-07-20',
+      now: dayjs().format('YYYY-MM-DD HH:mm'),
+      startTime: dayjs(this.startDate).format('YYYY-MM-DD HH:mm'),
+      finishTime: dayjs(this.finishDate).format('YYYY-MM-DD HH:mm'),
+      createTime: dayjs(this.createdAt.toDate()).format('YYYY-MM-DD HH:mm'),
     };
   },
   methods: {
@@ -84,8 +125,13 @@ export default {
         geometry: this.geometry,
         date: this.date,
         holdDate: this.date,
+        startView: this.startView,
+        finishView: this.finishView,
+        startDate: this.startDate,
+        finishDate: this.finishDate,
         cancel: this.cancel,
         interest: this.interest,
+        createdAt: this.createdAt,
       };
       const that = this;
       async function assignment() {
@@ -105,5 +151,10 @@ export default {
   .event-img {
     height: 230px;
   }
+}
+.v-card__text,
+.v-card__subtitle {
+  padding: 1px 1px 1px 16px;
+  font-size: 13px;
 }
 </style>

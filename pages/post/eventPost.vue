@@ -33,7 +33,6 @@
             required
           ></v-select>
           <input-place :label="placeholder" @place="placeAdd"></input-place>
-          <!-- ここからワイがイベント改善するよ -->
           <v-row>
             <v-col cols="1"><v-icon>mdi-calendar</v-icon></v-col>
             <v-col cols="1"></v-col>
@@ -93,6 +92,7 @@
             :rules="[() => !!content || requiredText]"
             required
           ></v-textarea>
+          <v-btn @click="console()">console.log</v-btn>
           <div class="post-button">
             <post-button
               :button-method="post"
@@ -122,7 +122,6 @@ import PostButton from '~/components/Atoms/AppButton';
 import InputImage from '~/components/Molecules/AppImageInput';
 import InputPlace from '~/components/Molecules/AppInputPlace';
 import Modal from '~/components/Molecules/AppModal';
-
 export default {
   layout: 'onlyBack',
   components: {
@@ -179,14 +178,14 @@ export default {
       const formatFinish = new Date(this.finishDate);
       const sYear = formatStart.getFullYear();
       const sMonth = 1 + formatStart.getMonth();
-      const sDate = formatStart.getDate();
-      const sHours = formatStart.getHours();
-      const sMinutes = formatStart.getMinutes();
+      const sDate = ('0' + formatStart.getDate()).slice(-2);
+      const sHours = ('0' + formatStart.getHours()).slice(-2);
+      const sMinutes = ('0' + formatStart.getMinutes()).slice(-2);
       const fYear = formatFinish.getFullYear();
       const fMonth = 1 + formatFinish.getMonth();
-      const fDate = formatFinish.getDate();
-      const fHours = formatFinish.getHours();
-      const fMinutes = formatFinish.getMinutes();
+      const fDate = ('0' + formatFinish.getDate()).slice(-2);
+      const fHours = ('0' + formatFinish.getHours()).slice(-2);
+      const fMinutes = ('0' + formatFinish.getMinutes()).slice(-2);
       event
         .add({
           title: that.title,
@@ -196,6 +195,7 @@ export default {
           placeName: that.placeName,
           geometry: that.geometry,
           // 下二つはYYYY-MM-DD HH:MM
+          date: that.startDate,
           startDate: that.startDate,
           finishDate: that.finishDate,
           // 下二つはYYYY年MM月DD日 HH:MM
@@ -255,6 +255,22 @@ export default {
     clickModal() {
       this.modal = !this.modal;
       this.$router.push({ name: 'timeline' });
+    },
+    console() {
+      const formatStart = new Date(this.startDate);
+      const formatFinish = new Date(this.finishDate);
+      const sYear = formatStart.getFullYear();
+      const sMonth = 1 + formatStart.getMonth();
+      const sDate = ('0' + formatStart.getDate()).slice(-2);
+      const sHours = ('0' + formatStart.getHours()).slice(-2);
+      const sMinutes = ('0' + formatStart.getMinutes()).slice(-2);
+      const fYear = formatFinish.getFullYear();
+      const fMonth = 1 + formatFinish.getMonth();
+      const fDate = ('0' + formatFinish.getDate()).slice(-2);
+      const fHours = ('0' + formatFinish.getHours()).slice(-2);
+      const fMinutes = ('0' + formatFinish.getMinutes()).slice(-2);
+      console.log(sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes);
+      console.log(fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes);
     },
   },
 };

@@ -274,6 +274,10 @@ export default {
           geometry: doc.data().geometry,
           date: doc.data().date,
           holdDate: doc.data().date,
+          startView: doc.data().startView,
+          finishView: doc.data().finishView,
+          startDate: doc.data().startDate,
+          finishDate: doc.data().finishDate,
           join: doc.data().join,
           interest: doc.data().interest,
         };
