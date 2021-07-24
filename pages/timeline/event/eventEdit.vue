@@ -336,10 +336,8 @@ export default {
             .collection('detail')
             .doc('browse')
             .update({
-              startTime: that.startTime,
-              finishTime: that.finishTime,
-              startView: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
-              finishView: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
+              startTime: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
+              finishTime: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
               fee: that.entryFee,
               capacity: that.capacity,
               hpUrl: that.hpUrl,
