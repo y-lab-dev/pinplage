@@ -86,6 +86,7 @@ export default {
     '@/plugins/vue-instantsearch.js',
     '@/plugins/viewer.js',
     '@/plugins/vue-cool-select.js',
+    '@/plugins/vue-ctk-date-time-picker.js',
     { src: '~/plugins/infiniteloading', ssr: false },
   ],
   /*
