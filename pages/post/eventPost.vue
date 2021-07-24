@@ -62,7 +62,6 @@
               </div>
             </v-col>
           </v-row>
-          <!-- ここから削除対象 -->
           <v-text-field
             v-model="capacity"
             color="#61d4b3"
@@ -92,7 +91,6 @@
             :rules="[() => !!content || requiredText]"
             required
           ></v-textarea>
-          <v-btn @click="console()">console.log</v-btn>
           <div class="post-button">
             <post-button
               :button-method="post"
@@ -194,11 +192,11 @@ export default {
           placeId: that.placeId,
           placeName: that.placeName,
           geometry: that.geometry,
-          // 下二つはYYYY-MM-DD HH:MM
+          // 下3つはYYYY-MM-DD HH:MM
           date: that.startDate,
           startDate: that.startDate,
           finishDate: that.finishDate,
-          // 下二つはYYYY年MM月DD日 HH:MM
+          // 下2つはYYYY年MM月DD日 HH:MM
           startView: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
           finishView: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
           createdAt: timestamp,
@@ -215,8 +213,8 @@ export default {
             .collection('detail')
             .doc('browse')
             .set({
-              startView: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
-              finishView: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
+              startTime: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
+              finishTime: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
               fee: that.entryFee,
               capacity: that.capacity,
               hpUrl: that.hpUrl,
@@ -255,22 +253,6 @@ export default {
     clickModal() {
       this.modal = !this.modal;
       this.$router.push({ name: 'timeline' });
-    },
-    console() {
-      const formatStart = new Date(this.startDate);
-      const formatFinish = new Date(this.finishDate);
-      const sYear = formatStart.getFullYear();
-      const sMonth = 1 + formatStart.getMonth();
-      const sDate = ('0' + formatStart.getDate()).slice(-2);
-      const sHours = ('0' + formatStart.getHours()).slice(-2);
-      const sMinutes = ('0' + formatStart.getMinutes()).slice(-2);
-      const fYear = formatFinish.getFullYear();
-      const fMonth = 1 + formatFinish.getMonth();
-      const fDate = ('0' + formatFinish.getDate()).slice(-2);
-      const fHours = ('0' + formatFinish.getHours()).slice(-2);
-      const fMinutes = ('0' + formatFinish.getMinutes()).slice(-2);
-      console.log(sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes);
-      console.log(fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes);
     },
   },
 };

@@ -10,7 +10,14 @@
           </viewer>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-subtitle class="red--text">{{ eventObject.date }}</v-list-item-subtitle>
+              <v-list-item-subtitle
+                v-if="eventObject.createdTime > updatedPoint"
+                class="event-date red--text"
+                >{{ eventObject.startView }} 〜 {{ eventObject.finishView }}</v-list-item-subtitle
+              >
+              <v-list-item-subtitle v-else class="event-date red--text">{{
+                eventObject.date
+              }}</v-list-item-subtitle>
               <v-list-item-title>{{ eventObject.title }}</v-list-item-title>
               <v-list-item-subtitle>
                 {{ eventObject.placeName }}
@@ -129,9 +136,7 @@
             >
             <v-list-item-content class="font-weight-black">日時 </v-list-item-content>
             <v-list-item-content class="text-subtitle-2">
-              {{ eventObject.date }} {{ eventDetailObject.startTime }}-{{
-                eventDetailObject.finishTime
-              }}
+              {{ eventDetailObject.startTime }} 〜 {{ eventDetailObject.finishTime }}
             </v-list-item-content>
             <v-list-item-content class="font-weight-black">場所</v-list-item-content>
             <v-list-item-content class="text-subtitle-2">{{
@@ -239,6 +244,7 @@ export default {
       userName: '',
       userIcon: '',
       poster: '',
+      updatedPoint: '2021-07-20',
     };
   },
   computed: {
@@ -280,6 +286,7 @@ export default {
           finishDate: doc.data().finishDate,
           join: doc.data().join,
           interest: doc.data().interest,
+          createdTime: dayjs(doc.data().createdAt.toDate()).format('YYYY-MM-DD HH:mm'),
         };
 
         user
@@ -513,5 +520,8 @@ export default {
 }
 .post-button {
   text-align: center;
+}
+.event-date {
+  font-size: 13px;
 }
 </style>
