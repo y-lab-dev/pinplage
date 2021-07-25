@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="question-and-answer-wrap">
     <v-card>
       <v-card-title class="layout justify-center">パンプラージュについて</v-card-title>
     </v-card>
@@ -8,6 +8,9 @@
         <v-expansion-panel-header> {{ list.title }} </v-expansion-panel-header>
         <v-expansion-panel-content>
           {{ list.text }}
+          <div class="answer-img-wrap">
+            <v-img :src="list.img" class="answer-img" />
+          </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -52,7 +55,13 @@ export default {
       pinplage: [
         {
           title: 'パンプラージュとは何ですか？',
-          text: '静岡大学情報学部遊橋研究室が運営するモバイルキャンパスアプリです。',
+          text: '静岡大学情報学部遊橋研究室が運営する静大生向けモバイルキャンパスアプリです。',
+        },
+        {
+          title: 'PWAとは何ですか？',
+          text:
+            'PWAとはモバイル向けWebサイトをスマートフォン向けアプリのように使えるようにする仕組みのことです。ホーム画面にアプリを表示することで、より使いやすくなります。詳しくは下記をご覧ください。',
+          img: require('~/assets/howtouse/new_pwa.png'),
         },
         {
           title: 'バグや不具合を見つけました。',
@@ -73,7 +82,7 @@ export default {
         {
           title: '「プラージュ」とは何ですか？',
           text:
-            'パンプラージュ内で投稿アクションをする事で得ることが出来る、アプリ内通貨です。マイページの「利用する」ボタンからご利用いただけます。',
+            'パンプラージュ内で投稿をする事で得ることが出来る、アプリ内通貨です。マイページの「利用する」ボタンからご利用いただけます。',
         },
       ],
       user: [
@@ -83,14 +92,14 @@ export default {
         },
         {
           title: 'パスワードの変更はどこからできますか？',
-          text: 'ログイン画面からパスワードを再設定からできます。',
+          text: 'ログイン画面からパスワードを再設定することができます。',
         },
       ],
       timetable: [
         {
           title: '時間割の作成はどのようにしますか？',
           text:
-            '該当する曜日と時間帯をクリックし、授業を選択してください。カラーを変更して自分だけのオリジナル時間割を作成してください。',
+            '該当する曜日と時間帯をクリックし、授業を選択してください。カラーを変更して自分だけのオリジナル時間割を作成できます。',
         },
       ],
     };
@@ -105,5 +114,19 @@ export default {
 .v-card {
   background-color: #61d4b3;
   color: #fff;
+}
+.question-and-answer-wrap {
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.answer-img {
+  width: 100%;
+  height: auto;
+}
+
+.answer-img-wrap {
+  margin: 0 10%;
 }
 </style>
