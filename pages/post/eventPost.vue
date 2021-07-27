@@ -91,6 +91,7 @@
             :rules="[() => !!content || requiredText]"
             required
           ></v-textarea>
+          <v-btn @click="console()">console</v-btn>
           <div class="post-button">
             <post-button
               :button-method="post"
@@ -165,25 +166,15 @@ export default {
     ...mapGetters({ uid: 'user/uid', email: 'user/email' }),
   },
   methods: {
+    console() {
+      console.log(this.startDate);
+    },
     post() {
       const that = this;
       const event = firebase.firestore().collection('events');
       const timestamp = firebase.firestore.Timestamp.now();
       const db = firebase.firestore();
       const user = db.collection('users');
-      // イベント日付のフォーマット（リファクタリングの余地あり）
-      const formatStart = new Date(this.startDate);
-      const formatFinish = new Date(this.finishDate);
-      const sYear = formatStart.getFullYear();
-      const sMonth = 1 + formatStart.getMonth();
-      const sDate = ('0' + formatStart.getDate()).slice(-2);
-      const sHours = ('0' + formatStart.getHours()).slice(-2);
-      const sMinutes = ('0' + formatStart.getMinutes()).slice(-2);
-      const fYear = formatFinish.getFullYear();
-      const fMonth = 1 + formatFinish.getMonth();
-      const fDate = ('0' + formatFinish.getDate()).slice(-2);
-      const fHours = ('0' + formatFinish.getHours()).slice(-2);
-      const fMinutes = ('0' + formatFinish.getMinutes()).slice(-2);
       event
         .add({
           title: that.title,
@@ -192,13 +183,10 @@ export default {
           placeId: that.placeId,
           placeName: that.placeName,
           geometry: that.geometry,
-          // 下3つはYYYY-MM-DD HH:MM
+          // YYYY年MM月DD日 HH:MM
           date: that.startDate,
           startDate: that.startDate,
           finishDate: that.finishDate,
-          // 下2つはYYYY年MM月DD日 HH:MM
-          startView: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
-          finishView: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
           createdAt: timestamp,
           updatedAt: timestamp,
           cancel: false,
@@ -208,18 +196,15 @@ export default {
           join: 0,
         })
         .then((doc) => {
-          event
-            .doc(doc.id)
-            .collection('detail')
-            .doc('browse')
-            .set({
-              startTime: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
-              finishTime: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
-              fee: that.entryFee,
-              capacity: that.capacity,
-              hpUrl: that.hpUrl,
-              content: that.content,
-            });
+          event.doc(doc.id).collection('detail').doc('browse').set({
+            // YYYY年MM月DD日 HH:MM
+            startTime: that.startDate,
+            finishTime: that.finishDate,
+            fee: that.entryFee,
+            capacity: that.capacity,
+            hpUrl: that.hpUrl,
+            content: that.content,
+          });
           user
             .doc(this.uid)
             .collection('event')

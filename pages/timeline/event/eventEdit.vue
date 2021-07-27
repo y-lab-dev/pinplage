@@ -49,7 +49,7 @@
             <v-col cols="1"><v-icon>mdi-calendar</v-icon></v-col>
             <v-col cols="1"></v-col>
             <v-col cols="10">
-              <div id="date-picker">
+              <div id="DateTimePicker">
                 <vue-ctk-date-time-picker
                   v-model="startDate"
                   label="※日程(始まり)"
@@ -62,7 +62,7 @@
             </v-col>
             <v-col cols="2"></v-col
             ><v-col cols="10">
-              <div id="date-picker">
+              <div id="DateTimePicker">
                 <vue-ctk-date-time-picker
                   v-model="finishDate"
                   label="※日程(終わり)"
@@ -183,8 +183,6 @@ export default {
       lang: 'ja',
       formatView: 'YYYY年MM月DD日 HH:mm',
       formatStyle: 'YYYY-MM-DD HH:mm',
-      startView: '',
-      finishView: '',
       startDate: '',
       finishDate: '',
       capacity: '',
@@ -234,8 +232,6 @@ export default {
         that.placeName = doc.data().placeName;
         that.geometry = doc.data().geometry;
         that.date = doc.data().date;
-        that.startView = doc.data().startView;
-        that.finishView = doc.data().finishView;
         that.startDate = doc.data().startDate;
         that.finishDate = doc.data().finishDate;
         that.cancel = doc.data().cancel;
@@ -300,19 +296,6 @@ export default {
       const that = this;
       const event = firebase.firestore().collection('events').doc(this.id);
       const timestamp = firebase.firestore.Timestamp.now();
-      // イベント日付のフォーマット（リファクタリングの余地あり）
-      const formatStart = new Date(this.startDate);
-      const formatFinish = new Date(this.finishDate);
-      const sYear = formatStart.getFullYear();
-      const sMonth = 1 + formatStart.getMonth();
-      const sDate = ('0' + formatStart.getDate()).slice(-2);
-      const sHours = ('0' + formatStart.getHours()).slice(-2);
-      const sMinutes = ('0' + formatStart.getMinutes()).slice(-2);
-      const fYear = formatFinish.getFullYear();
-      const fMonth = 1 + formatFinish.getMonth();
-      const fDate = ('0' + formatFinish.getDate()).slice(-2);
-      const fHours = ('0' + formatFinish.getHours()).slice(-2);
-      const fMinutes = ('0' + formatFinish.getMinutes()).slice(-2);
       event
         .update({
           title: that.title,
@@ -325,24 +308,18 @@ export default {
           date: that.startDate,
           startDate: that.startDate,
           finishDate: that.finishDate,
-          // 下2つはYYYY年MM月DD日 HH:MM
-          startView: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
-          finishView: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
           updatedAt: timestamp,
           cancel: false,
         })
         .then(() => {
-          event
-            .collection('detail')
-            .doc('browse')
-            .update({
-              startTime: sYear + '年' + sMonth + '月' + sDate + '日 ' + sHours + ':' + sMinutes,
-              finishTime: fYear + '年' + fMonth + '月' + fDate + '日 ' + fHours + ':' + fMinutes,
-              fee: that.entryFee,
-              capacity: that.capacity,
-              hpUrl: that.hpUrl,
-              content: that.content,
-            });
+          event.collection('detail').doc('browse').update({
+            startTime: that.startDate,
+            finishTime: that.finishDate,
+            fee: that.entryFee,
+            capacity: that.capacity,
+            hpUrl: that.hpUrl,
+            content: that.content,
+          });
         })
         .then(() => {
           const that = this;

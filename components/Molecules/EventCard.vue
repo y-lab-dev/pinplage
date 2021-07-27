@@ -8,7 +8,7 @@
       <v-card-title class="title">{{ title }}</v-card-title>
       <v-card-subtitle>{{ placeName }}</v-card-subtitle>
       <v-card-text v-if="createTime > updatedPoint" class="text--secondary"
-        >{{ startView }} 〜 {{ finishView }}</v-card-text
+        >{{ startTime }} 〜 {{ finishTime }}</v-card-text
       >
     </div>
     <!-- アプデ前のイベントの詳細 -->
@@ -26,8 +26,8 @@
     </v-list-item>
     <!-- アプデ後のイベントの詳細 -->
     <v-list-item v-else>
-      <v-chip v-if="now > finishTime" color="#7d7af5" text-color="white">開催済み</v-chip>
-      <v-chip v-if="now < startTime" color="#6cc75a" text-color="white">未開催</v-chip>
+      <v-chip v-if="now > finishDate" color="#7d7af5" text-color="white">開催済み</v-chip>
+      <v-chip v-if="now < startDate" color="#6cc75a" text-color="white">未開催</v-chip>
       <v-chip v-else color="#ff3912" text-color="white">開催中</v-chip>
       <v-list-item-content class="date-view ml-2"> </v-list-item-content>
       <v-row align="center" justify="end">
@@ -76,14 +76,6 @@ export default {
       required: true,
       type: String,
     },
-    startView: {
-      required: true,
-      type: String,
-    },
-    finishView: {
-      required: true,
-      type: String,
-    },
     startDate: {
       required: true,
       type: String,
@@ -109,8 +101,8 @@ export default {
     return {
       updatedPoint: '2021-07-20',
       now: dayjs().format('YYYY-MM-DD HH:mm'),
-      startTime: dayjs(this.startDate).format('YYYY-MM-DD HH:mm'),
-      finishTime: dayjs(this.finishDate).format('YYYY-MM-DD HH:mm'),
+      startTime: dayjs(this.startDate).format('YYYY年MM月DD日 HH:mm'),
+      finishTime: dayjs(this.finishDate).format('YYYY年MM月DD日 HH:mm'),
       createTime: dayjs(this.createdAt.toDate()).format('YYYY-MM-DD HH:mm'),
     };
   },
@@ -125,8 +117,6 @@ export default {
         geometry: this.geometry,
         date: this.date,
         holdDate: this.date,
-        startView: this.startView,
-        finishView: this.finishView,
         startDate: this.startDate,
         finishDate: this.finishDate,
         cancel: this.cancel,

@@ -13,7 +13,7 @@
               <v-list-item-subtitle
                 v-if="eventObject.createdTime > updatedPoint"
                 class="event-date red--text"
-                >{{ eventObject.startView }} 〜 {{ eventObject.finishView }}</v-list-item-subtitle
+                >{{ eventObject.startDate }} 〜 {{ eventObject.finishDate }}</v-list-item-subtitle
               >
               <v-list-item-subtitle v-else class="event-date red--text">{{
                 eventObject.date
@@ -280,10 +280,8 @@ export default {
           geometry: doc.data().geometry,
           date: doc.data().date,
           holdDate: doc.data().date,
-          startView: doc.data().startView,
-          finishView: doc.data().finishView,
-          startDate: doc.data().startDate,
-          finishDate: doc.data().finishDate,
+          startDate: dayjs(doc.data().startDate).format('YYYY年MM月DD日 HH:mm'),
+          finishDate: dayjs(doc.data().finishDate).format('YYYY年MM月DD日 HH:mm'),
           join: doc.data().join,
           interest: doc.data().interest,
           createdTime: dayjs(doc.data().createdAt.toDate()).format('YYYY-MM-DD HH:mm'),
@@ -313,8 +311,8 @@ export default {
               content: doc.data().content,
               fee: doc.data().fee,
               hpUrl: doc.data().hpUrl,
-              startTime: doc.data().startTime,
-              finishTime: doc.data().finishTime,
+              startTime: dayjs(doc.data().startTime).format('YYYY年MM月DD日 HH:mm'),
+              finishTime: dayjs(doc.data().finishTime).format('YYYY年MM月DD日 HH:mm'),
             };
           });
       });
@@ -522,6 +520,6 @@ export default {
   text-align: center;
 }
 .event-date {
-  font-size: 13px;
+  font-size: 12px;
 }
 </style>
