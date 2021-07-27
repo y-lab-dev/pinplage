@@ -91,7 +91,6 @@
             :rules="[() => !!content || requiredText]"
             required
           ></v-textarea>
-          <v-btn @click="console()">console</v-btn>
           <div class="post-button">
             <post-button
               :button-method="post"
@@ -166,9 +165,6 @@ export default {
     ...mapGetters({ uid: 'user/uid', email: 'user/email' }),
   },
   methods: {
-    console() {
-      console.log(this.startDate);
-    },
     post() {
       const that = this;
       const event = firebase.firestore().collection('events');
