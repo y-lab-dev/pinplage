@@ -36,8 +36,11 @@ export default {
               geometry: doc.data().geometry,
               date: doc.data().date,
               holdDate: doc.data().date,
+              startDate: doc.data().startDate,
+              finishDate: doc.data().finishDate,
               cancel: doc.data().cancel,
               interest: doc.data().interest,
+              createdAt: doc.data().createdAt,
             },
           ];
         });
@@ -48,5 +51,6 @@ export default {
 <style scoped>
 .events-view {
   max-width: 550px;
+  margin: auto;
 }
 </style>
