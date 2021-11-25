@@ -151,8 +151,8 @@ export default {
     cache: true,
     transpile: ['vue-instantsearch', 'instantsearch.js/es'],
     extend(config, ctx) {
-        const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-        config.plugins.push(new HardSourceWebpackPlugin())
+      const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+      config.plugins.push(new HardSourceWebpackPlugin());
       config.node = {
         fs: 'empty',
       };

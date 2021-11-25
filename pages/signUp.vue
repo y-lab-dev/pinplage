@@ -1,60 +1,70 @@
 <template>
   <v-container>
     <v-row align-content="center">
-      <v-col cols="12">
-        <div class="title">アカウント作成</div>
-        <template>
-          <Modal
-            :modal-title="modalTitle"
-            :modal-text="modalText"
-            :modal-button="buttonText"
-            :modal-toggle="modal"
-            @changeValue="clickModal()"
-          />
-        </template>
-        <input-text
-          :input-type="nameType"
-          :input-placeholder="namePlaceholder"
-          :input-value="name"
-          @input="name = $event"
-        ></input-text>
-        <div class="validation-email">{{ nameValidation }}</div>
-
-        <input-text
-          :input-type="inputType"
-          :input-placeholder="mailPlaceholder"
-          :input-value="email"
-          @input="email = $event"
-        ></input-text>
-        <div class="validation-email">{{ emailValidation }}</div>
-
-        <input-text
-          :input-type="passwordType"
-          :input-placeholder="passwordPlaceholder"
-          :input-value="password"
-          @input="password = $event"
-        ></input-text>
-        <div class="validation-password">{{ passwordValidation }}</div>
-        <template v-if="modalAppRule">
-          <AppRule class="app-rule-modal" />
-        </template>
-        <div class="checkbox">
-          <v-checkbox v-model="checkbox" color="#61d4b3"></v-checkbox>
-          <div class="app-rule-text" @click="pushAppRule()">
-            <span class="important">{{ appRule }}</span>
-            に同意する
+      <v-col cols="6">
+        <div class="bg">
+          <div class="bg-main">
+            <p><img src="~/assets/login.png" width="70%" /></p>
+            <h1>浜キャン生のための<br />モバイルキャンパスアプリ</h1>
           </div>
         </div>
-        <div class="sign-up-button-place mt-8">
-          <sign-up-button
-            :button-method="signUp"
-            :button-type="buttonType"
-            :button-disabled="loginValidation"
-            >新規登録する</sign-up-button
-          >
-        </div>
-        <div class="to-login">
-          <nuxt-link to="login"><sign-up-button>ログインはこちら</sign-up-button></nuxt-link>
+      </v-col>
+      <v-col cols="6">
+        <div class="main">
+          <div class="title">アカウント作成</div>
+          <template>
+            <Modal
+              :modal-title="modalTitle"
+              :modal-text="modalText"
+              :modal-button="buttonText"
+              :modal-toggle="modal"
+              @changeValue="clickModal()"
+            />
+          </template>
+          <input-text
+            :input-type="nameType"
+            :input-placeholder="namePlaceholder"
+            :input-value="name"
+            @input="name = $event"
+          ></input-text>
+          <div class="validation-email">{{ nameValidation }}</div>
+
+          <input-text
+            :input-type="inputType"
+            :input-placeholder="mailPlaceholder"
+            :input-value="email"
+            @input="email = $event"
+          ></input-text>
+          <div class="validation-email">{{ emailValidation }}</div>
+
+          <input-text
+            :input-type="passwordType"
+            :input-placeholder="passwordPlaceholder"
+            :input-value="password"
+            @input="password = $event"
+          ></input-text>
+          <div class="validation-password">{{ passwordValidation }}</div>
+          <template v-if="modalAppRule">
+            <AppRule class="app-rule-modal" />
+          </template>
+          <div class="checkbox">
+            <v-checkbox v-model="checkbox" color="#61d4b3"></v-checkbox>
+            <div class="app-rule-text" @click="pushAppRule()">
+              <span class="important">{{ appRule }}</span>
+              に同意する
+            </div>
+          </div>
+          <div class="sign-up-button-place mt-8">
+            <sign-up-button
+              :button-method="signUp"
+              :button-type="buttonType"
+              :button-disabled="loginValidation"
+              >新規登録する</sign-up-button
+            >
+          </div>
+          <div class="to-login">
+            <nuxt-link to="login"><sign-up-button>ログインはこちら</sign-up-button></nuxt-link>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -248,9 +258,43 @@ export default {
 };
 </script>
 <style scoped>
+.bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(rgb(45, 168, 170), rgb(54, 170, 55));
+}
+.bg-main {
+  height: 97%;
+  display: -ms-grid;
+  display: grid;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+}
+.bg-main p {
+  margin-bottom: -200px;
+}
+.bg-main h1 {
+  font-size: 32px;
+  font-weight: normal;
+  color: #fff;
+}
+.main {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+}
 .title {
   text-align: center;
   margin-top: 65px;
+  margin-bottom: 30px;
 }
 .validation-email {
   text-align: center;
