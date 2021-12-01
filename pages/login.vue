@@ -4,7 +4,7 @@
       <v-col cols="6">
         <div class="bg">
           <div class="bg-main">
-            <p><img src="~/assets/login.png" width="70%" /></p>
+            <p><img src="~/assets/login.png" /></p>
             <h1>浜キャン生のための<br />モバイルキャンパスアプリ</h1>
           </div>
         </div>
@@ -176,52 +176,6 @@ export default {
 };
 </script>
 <style scoped>
-.bg {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(rgb(45, 168, 170), rgb(54, 170, 55));
-}
-.bg-main {
-  height: 97%;
-  display: -ms-grid;
-  display: grid;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: center;
-}
-.bg-main p {
-  margin-bottom: -200px;
-}
-.bg-main h1 {
-  font-size: 32px;
-  font-weight: normal;
-  color: #fff;
-}
-.main {
-  position: fixed;
-  left: 50%;
-  top: 0;
-  width: 50%;
-  height: 100%;
-}
-.title {
-  text-align: center;
-  margin-top: 85px;
-  margin-bottom: 30px;
-}
-.validation-email {
-  text-align: center;
-  color: #e81123;
-}
-.validation-password {
-  text-align: center;
-  color: #e81123;
-}
 .login-button-place {
   text-align: center;
 }
@@ -235,3 +189,4 @@ export default {
   text-decoration: none;
 }
 </style>
+<style scoped src="@/assets/login.css"></style>
