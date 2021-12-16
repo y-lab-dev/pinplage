@@ -18,10 +18,10 @@
             <span class="ml-2"> 勤務時間</span>
           </v-list-item>
           <span class="ml-5">{{ jobObject.startTime1 }}-{{ jobObject.endTime1 }}</span>
-          <span v-if="jobObject.startTime2" class="ml-3">
+          <span v-if="jobObject.startTime2" class="ml-2">
             {{ jobObject.startTime2 }}-{{ jobObject.endTime2 }}
           </span>
-          <span v-if="jobObject.startTime3" class="ml-3">
+          <span v-if="jobObject.startTime3" class="ml-2">
             {{ jobObject.startTime3 }}-{{ jobObject.endTime3 }}
           </span>
 

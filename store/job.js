@@ -103,6 +103,7 @@ export const actions = {
               contactEmail: recruit.contactEmail,
               contactPhone: recruit.contactPhone,
               contactRemark: recruit.contactRemark,
+
               date: change.doc.data({ serverTimestamps: 'estimate' }).createdAt.toDate(),
             };
             commit('modifyRecruitArray', { payload: modifiedRecruit, target: change.newIndex });

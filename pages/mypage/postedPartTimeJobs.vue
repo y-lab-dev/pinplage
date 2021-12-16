@@ -1,12 +1,13 @@
 <template>
   <div>
     <v-tabs v-model="postedTab" grow color="#61d4b3" class="posted-tabs">
-      <v-tab>投稿したアルバイト</v-tab>
+      <!-- <v-tab>投稿したアルバイト</v-tab> -->
+
       <v-tab>キープしたアルバイト</v-tab>
     </v-tabs>
     <div class="posted-job-wrap">
       <v-tabs-items v-model="postedTab">
-        <v-tab-item>
+        <!-- <v-tab-item>
           <div v-if="!post.length">
             <prompt-card
               :link="'post-jobPost'"
@@ -78,7 +79,8 @@
               >
             </div>
           </v-card>
-        </v-tab-item>
+        </v-tab-item> -->
+
         <v-tab-item>
           <div v-if="!keep.length">
             <prompt-card
@@ -95,11 +97,8 @@
             :elevation="4"
             @click="tojobDetail(item)"
           >
-            <v-chip v-show="item.isNew" color="green" small outlined class="ml-3 mt-3">
-              NEW
-            </v-chip>
             <v-chip
-              v-if="item.isRecruit"
+              v-if="item.isPublic"
               :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
               small
               color="red"
@@ -108,7 +107,7 @@
               募集中
             </v-chip>
             <v-chip
-              v-if="!item.isRecruit"
+              v-if="!item.isPublic"
               :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
               small
               color="primary"
@@ -149,11 +148,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import dayjs from 'dayjs';
 import firebase from '~/plugins/firebase';
 import PromptCard from '~/components/Molecules/PromptCard';
 const users = firebase.firestore().collection('users');
-const jobs = firebase.firestore().collection('jobs');
+const jobs = firebase.firestore().collection('recruit');
+// import dayjs from 'dayjs';
 
 export default {
   layout: 'onlyBack',
@@ -174,41 +173,42 @@ export default {
     }),
   },
   created() {
-    this.getUserPostJobs();
     this.getUserKeepJobs();
+    // this.getUserPostJobs();
     // this.getUserReplyJobs();
   },
   methods: {
-    async getUserPostJobs() {
-      const that = this;
-      await jobs
-        .where('poster', '==', this.uid)
-        .orderBy('updatedAt', 'desc')
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            const now = dayjs();
-            const newDate = dayjs(doc.data().createdAt.toDate()).locale('ja').add(1, 'week');
-            const isNew = dayjs(now).isBefore(newDate);
-            that.post = [
-              ...that.post,
-              {
-                id: doc.id,
-                name: doc.data().name,
-                genre: doc.data().genre,
-                img: doc.data().img,
-                placeName: doc.data().placeName,
-                geometry: doc.data().geometry,
-                startTime: doc.data().startTime,
-                endTime: doc.data().endTime,
-                money: doc.data().money,
-                isRecruit: doc.data().isRecruit,
-                isNew,
-              },
-            ];
-          });
-        });
-    },
+    // async getUserPostJobs() {
+    //   const that = this;
+    //   await jobs
+    //     .where('poster', '==', this.uid)
+    //     .orderBy('updatedAt', 'desc')
+    //     .get()
+    //     .then((snapshot) => {
+    //       snapshot.forEach((doc) => {
+    //         const now = dayjs();
+    //         const newDate = dayjs(doc.data().createdAt.toDate()).locale('ja').add(1, 'week');
+    //         const isNew = dayjs(now).isBefore(newDate);
+    //         that.post = [
+    //           ...that.post,
+    //           {
+    //             id: doc.id,
+    //             name: doc.data().name,
+    //             genre: doc.data().genre,
+    //             img: doc.data().img,
+    //             placeName: doc.data().placeName,
+    //             geometry: doc.data().geometry,
+    //             startTime: doc.data().startTime,
+    //             endTime: doc.data().endTime,
+    //             money: doc.data().money,
+    //             isRecruit: doc.data().isRecruit,
+    //             isNew,
+    //           },
+    //         ];
+    //       });
+    //     });
+    // },
+
     async getUserKeepJobs() {
       const that = this;
       await users
@@ -223,25 +223,34 @@ export default {
               .doc(jobId)
               .get()
               .then((doc) => {
-                const now = dayjs();
-                const newDate = dayjs(doc.data().createdAt.toDate()).locale('ja').add(1, 'week');
-                const isNew = dayjs(now).isBefore(newDate);
+                // const now = dayjs();
+                // const newDate = dayjs(doc.data().createdAt.toDate()).locale('ja').add(1, 'week');
+                // const isNew = dayjs(now).isBefore(newDate);
+
                 that.keep = [
                   ...that.keep,
                   {
                     id: doc.id,
-                    name: doc.data().name,
-                    genre: doc.data().genre,
                     img: doc.data().img,
+                    genre: doc.data().genre,
                     placeName: doc.data().placeName,
-                    geometry: doc.data().geometry,
-                    startTime: doc.data().startTime,
-                    endTime: doc.data().endTime,
                     money: doc.data().money,
-                    isRecruit: doc.data().isRecruit,
-                    isNew,
+                    remark: doc.data().remark,
+                    geometry: doc.data().geometry,
+                    startTime1: doc.data().startTime1,
+                    endTime1: doc.data().endTime1,
+                    startTime2: doc.data().startTime2,
+                    endTime2: doc.data().endTime2,
+                    startTime3: doc.data().startTime3,
+                    endTime3: doc.data().endTime3,
+                    isPublic: doc.data().isPublic,
+                    poster: doc.data().uid,
+                    contactEmail: doc.data().contactEmail,
+                    contactPhone: doc.data().contactPhone,
+                    contactRemark: doc.data().contactRemark,
                   },
                 ];
+                console.log(that.keep);
               });
           });
         });
@@ -269,8 +278,9 @@ export default {
     // },
     tojobDetail(obj) {
       const that = this;
+      console.log(obj);
       async function assignment() {
-        await that.$store.commit('job/getData', obj);
+        await that.$store.dispatch('job/getRecruitDetail', obj);
       }
       assignment().then(this.$router.push({ name: 'timeline-job-detailJob' }));
     },

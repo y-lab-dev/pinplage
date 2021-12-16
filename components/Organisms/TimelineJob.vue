@@ -84,7 +84,6 @@ export default {
 
   methods: {
     tojobDetail(obj) {
-      console.log(obj);
       const that = this;
       async function assignment() {
         await that.$store.dispatch('job/getRecruitDetail', obj);
