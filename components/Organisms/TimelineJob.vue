@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="jobs-view">
     <v-card
       v-for="item in jobArray"
       :key="item.id"
@@ -30,27 +30,29 @@
         item.name
       }}</v-card-title>
       <v-card-subtitle class="pl-3 pb-3 text-caption">{{ item.genre }}</v-card-subtitle>
-      <v-row>
-        <v-col cols="6" class="py-0">
-          <v-img
-            v-show="item.img"
-            height="16vh"
-            width="44vw"
-            class="ml-3 mb-3"
-            :src="item.img"
-          ></v-img>
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-list-item class="pl-0">
-            <v-icon size="20" left>mdi-currency-cny</v-icon>
-            <v-list-item-content class="caption py-0">{{ item.money }}</v-list-item-content>
-          </v-list-item>
-          <v-list-item class="pl-0">
-            <v-icon size="20" left>mdi-map-marker</v-icon>
-            <v-list-item-content class="caption">{{ item.placeName }}</v-list-item-content>
-          </v-list-item>
-        </v-col>
-      </v-row>
+      <v-container>
+        <v-row>
+          <v-col cols="6" class="py-0">
+            <v-img
+              v-show="item.img"
+              height="16vh"
+              width="44vw"
+              class="ml-3 mb-3"
+              :src="item.img"
+            ></v-img>
+          </v-col>
+          <v-col cols="6" class="py-0">
+            <v-list-item class="pl-0">
+              <v-icon size="20" left>mdi-currency-cny</v-icon>
+              <v-list-item-content class="caption py-0">{{ item.money }}</v-list-item-content>
+            </v-list-item>
+            <v-list-item class="pl-0">
+              <v-icon size="20" left>mdi-map-marker</v-icon>
+              <v-list-item-content class="caption">{{ item.placeName }}</v-list-item-content>
+            </v-list-item>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card>
   </div>
 </template>
@@ -114,5 +116,9 @@ export default {
 .no-newchip {
   margin-top: 12px;
   margin-left: 12px;
+}
+.jobs-view {
+  max-width: 550px;
+  margin: auto;
 }
 </style>

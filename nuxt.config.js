@@ -86,6 +86,7 @@ export default {
     '@/plugins/vue-instantsearch.js',
     '@/plugins/viewer.js',
     '@/plugins/vue-cool-select.js',
+    '@/plugins/vue-ctk-date-time-picker.js',
     { src: '~/plugins/infiniteloading', ssr: false },
   ],
   /*
@@ -128,12 +129,15 @@ export default {
       themes: {
         dark: {
           primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+          accent: colors.grey.darken4,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
+        },
+        light: {
+          accent: colors.shades.white,
         },
       },
     },
@@ -147,6 +151,8 @@ export default {
     cache: true,
     transpile: ['vue-instantsearch', 'instantsearch.js/es'],
     extend(config, ctx) {
+        const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+        config.plugins.push(new HardSourceWebpackPlugin())
       config.node = {
         fs: 'empty',
       };

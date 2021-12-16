@@ -1,78 +1,84 @@
 <template>
-  <div style="height: 100%">
-    <ais-instant-search :search-client="searchClient" index-name="places">
-      <v-container style="height: 100%" fluid class="py-0">
-        <v-row justify="center" align-content="center" style="height: 100%">
-          <v-col class="pa-0">
-            <div class="searchbox">
-              <div class="searchboxback">
-                <v-row justify="center" align-content="center">
-                  <v-col cols="1"></v-col>
-                  <v-col class="pa-0">
-                    <div class="px-0 pt-4 pb-1">
-                      <ais-search-box v-model="all" align="center" placeholder="店名・ジャンル" />
-                    </div>
-                  </v-col>
-                  <v-col cols="1"></v-col>
-                </v-row>
-                <v-row>
-                  <v-col class="px-2 py-0">
-                    <v-autocomplete
-                      v-model="selectHashtag"
-                      :items="hashtags"
-                      color="orange"
-                      outlined
-                      dense
-                      chips
-                      small-chips
-                      label="#ハッシュタグ"
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row>
-              </div>
-            </div>
-            <div class="searchresult">
-              <ais-hits>
-                <ul slot-scope="{ items }" class="pa-0">
-                  <ol
-                    v-for="item in items"
-                    :key="item.objectID"
-                    class="pa-0 ma-0"
-                    @click="toPlaceDetail(item)"
-                  >
-                    <v-card nuxt outlined tile :elevation="2">
-                      <v-card-title class="pa-2">{{ item.name }}</v-card-title>
-                      <div class="px-1 pt-1">
-                        <rating
-                          :show-rating="true"
-                          :star-size="20"
-                          :rating-result="item.rating"
-                          :increment="0.1"
-                        ></rating>
+  <div class="search-place-wrap">
+    <div class="search-background">
+      <ais-instant-search :search-client="searchClient" index-name="places">
+        <v-container style="height: 100%" fluid class="py-0">
+          <v-row justify="center" align-content="center" style="height: 100%">
+            <v-col class="pa-0">
+              <div class="searchbox">
+                <div class="searchboxback">
+                  <v-row justify="center" align-content="center">
+                    <v-col cols="1"></v-col>
+                    <v-col class="pa-0">
+                      <div class="px-0 pt-4 pb-1">
+                        <ais-search-box v-model="all" align="center" placeholder="店名・ジャンル" />
                       </div>
-                      <template v-for="(genre, index) in item.genres">
-                        <v-chip
-                          v-show="genre"
-                          :key="index"
-                          color="orange"
-                          small
-                          outlined
-                          class="ma-2"
-                          >{{ genre }}</v-chip
-                        >
-                      </template>
-                      <v-img v-show="item.mainImgUrl" :src="item.mainImgUrl" class="photo"></v-img>
-                      <p class="mx-2">{{ item.vincinty }}</p>
-                    </v-card>
-                  </ol>
-                </ul>
-              </ais-hits>
-              <div style="height: 80px"></div>
-            </div>
-          </v-col>
-        </v-row>
-      </v-container>
-    </ais-instant-search>
+                    </v-col>
+                    <v-col cols="1"></v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="px-2 py-0">
+                      <v-autocomplete
+                        v-model="selectHashtag"
+                        :items="hashtags"
+                        color="orange"
+                        outlined
+                        dense
+                        chips
+                        small-chips
+                        label="#ハッシュタグ"
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                </div>
+              </div>
+              <div class="searchresult">
+                <ais-hits>
+                  <ul slot-scope="{ items }" class="pa-0">
+                    <ol
+                      v-for="item in items"
+                      :key="item.objectID"
+                      class="pa-0 ma-0"
+                      @click="toPlaceDetail(item)"
+                    >
+                      <v-card class="place-card" nuxt outlined tile :elevation="2">
+                        <v-card-title class="pa-2">{{ item.name }}</v-card-title>
+                        <div class="px-1 pt-1">
+                          <rating
+                            :show-rating="true"
+                            :star-size="20"
+                            :rating-result="item.rating"
+                            :increment="0.1"
+                          ></rating>
+                        </div>
+                        <template v-for="(genre, index) in item.genres">
+                          <v-chip
+                            v-show="genre"
+                            :key="index"
+                            color="orange"
+                            small
+                            outlined
+                            class="ma-2"
+                            >{{ genre }}</v-chip
+                          >
+                        </template>
+                        <v-img
+                          v-show="item.mainImgUrl"
+                          :src="item.mainImgUrl"
+                          class="photo"
+                        ></v-img>
+                        <p class="mx-2">{{ item.vincinty }}</p>
+                      </v-card>
+                    </ol>
+                  </ul>
+                </ais-hits>
+                <div style="height: 80px"></div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </ais-instant-search>
+    </div>
   </div>
 </template>
 
@@ -151,32 +157,18 @@ export default {
 </script>
 
 <style scoped>
+.search-place-wrap {
+  margin: 0 auto;
+}
 .photo {
   max-width: 95vw;
   max-height: 240px;
   margin: auto;
 }
-.searchboxback {
-  margin-top: -1vh;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: -1vw;
-  width: 100vw;
-  max-width: 500px;
-  background-color: rgba(255, 255, 255, 0.6);
+.place-card {
+  cursor: pointer;
 }
-.searchbox {
-  margin-top: 1vh;
-  background: white;
-  border: 1px solid orange;
-  width: 96vw;
-  max-width: 500px;
-  height: 13vh;
-  border-radius: 7px 7px;
-  z-index: 1;
-  position: fixed;
-  top: 2;
-}
+
 @media only screen and (max-device-width: 550px) {
   .searchbox {
     margin-left: 2vw;
@@ -186,11 +178,62 @@ export default {
     margin-right: -2vw;
   }
 }
-.searchresult {
-  margin-top: 15vh;
-  position: absolute;
-  z-index: 0;
-  width: 100%;
+
+@media screen and (max-width: 600px) {
+  .searchresult {
+    margin: 0 auto;
+    margin-top: 15vh;
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+  }
+  .searchbox {
+    margin-top: 1vh;
+    background: white;
+    border: 1px solid orange;
+    width: 96vw;
+    max-width: 500px;
+    height: 13vh;
+    border-radius: 7px 7px;
+    z-index: 1;
+    position: fixed;
+    top: 2;
+  }
+  .searchboxback {
+    margin-top: -1vh;
+    margin-bottom: -1vw;
+    width: 100vw;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+}
+@media screen and (min-width: 600px) {
+  .search-place-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .searchresult {
+    margin-top: 15vh;
+    max-width: 600px;
+  }
+  .searchbox {
+    margin-top: 1vh;
+    background: white;
+    border: 2px solid orange;
+    height: 13vh;
+    z-index: 1;
+    position: fixed;
+    top: 2;
+  }
+  .searchboxback {
+    margin-top: -1vh;
+    margin-bottom: -1vw;
+    width: 100vw;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.6);
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 </style>
 

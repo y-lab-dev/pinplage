@@ -1,4 +1,4 @@
-runtime: nodejs10
+runtime: nodejs14
 
 handlers:
   - url: /_nuxt
@@ -10,4 +10,4 @@ env_variables:
   NUXT_HOST: '0.0.0.0'
   NUXT_PORT: '8080'
 
-service: default
+service: test

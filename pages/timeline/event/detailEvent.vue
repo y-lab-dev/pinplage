@@ -10,7 +10,14 @@
           </viewer>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-subtitle class="red--text">{{ eventObject.date }}</v-list-item-subtitle>
+              <v-list-item-subtitle
+                v-if="eventObject.createdTime > updatedPoint"
+                class="event-date red--text"
+                >{{ eventObject.startDate }} 〜 {{ eventObject.finishDate }}</v-list-item-subtitle
+              >
+              <v-list-item-subtitle v-else class="event-date red--text">{{
+                eventObject.date
+              }}</v-list-item-subtitle>
               <v-list-item-title>{{ eventObject.title }}</v-list-item-title>
               <v-list-item-subtitle>
                 {{ eventObject.placeName }}
@@ -129,9 +136,7 @@
             >
             <v-list-item-content class="font-weight-black">日時 </v-list-item-content>
             <v-list-item-content class="text-subtitle-2">
-              {{ eventObject.date }} {{ eventDetailObject.startTime }}-{{
-                eventDetailObject.finishTime
-              }}
+              {{ eventDetailObject.startTime }} 〜 {{ eventDetailObject.finishTime }}
             </v-list-item-content>
             <v-list-item-content class="font-weight-black">場所</v-list-item-content>
             <v-list-item-content class="text-subtitle-2">{{
@@ -239,6 +244,7 @@ export default {
       userName: '',
       userIcon: '',
       poster: '',
+      updatedPoint: '2021-07-20',
     };
   },
   computed: {
@@ -274,8 +280,11 @@ export default {
           geometry: doc.data().geometry,
           date: doc.data().date,
           holdDate: doc.data().date,
+          startDate: dayjs(doc.data().startDate).format('YYYY年MM月DD日 HH:mm'),
+          finishDate: dayjs(doc.data().finishDate).format('YYYY年MM月DD日 HH:mm'),
           join: doc.data().join,
           interest: doc.data().interest,
+          createdTime: dayjs(doc.data().createdAt.toDate()).format('YYYY-MM-DD HH:mm'),
         };
 
         user
@@ -302,8 +311,8 @@ export default {
               content: doc.data().content,
               fee: doc.data().fee,
               hpUrl: doc.data().hpUrl,
-              startTime: doc.data().startTime,
-              finishTime: doc.data().finishTime,
+              startTime: dayjs(doc.data().startTime).format('YYYY年MM月DD日 HH:mm'),
+              finishTime: dayjs(doc.data().finishTime).format('YYYY年MM月DD日 HH:mm'),
             };
           });
       });
@@ -430,7 +439,7 @@ export default {
     },
     toLink(link) {
       if (link.match(/^http(s)?/)) {
-        location.href = link;
+        window.open(link, null, 'noopener');
       } else {
         return null;
       }
@@ -481,7 +490,7 @@ export default {
 </script>
 <style scoped>
 .detail-event-wrap {
-  max-width: 550px;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -489,6 +498,11 @@ export default {
   width: 100%;
   height: 30vh;
   object-fit: cover;
+}
+@media screen and (min-width: 960px) {
+  .top-img {
+    height: 40vh;
+  }
 }
 .content-divider {
   border-color: #61d4b3;
@@ -500,8 +514,12 @@ export default {
 .content-url {
   color: #00f;
   text-decoration: underline;
+  cursor: pointer;
 }
 .post-button {
   text-align: center;
+}
+.event-date {
+  font-size: 12px;
 }
 </style>

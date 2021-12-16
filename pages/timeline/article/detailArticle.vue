@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-img class="white--text align-end" height="25vh" :src="articleObject.mainImg"></v-img>
+          <v-img class="white--text align-end top-img" :src="articleObject.mainImg"></v-img>
           <v-list>
             <v-list-item-title class="font-weight-bold text-h6">{{
               articleObject.title
@@ -33,10 +33,10 @@
           </v-list>
           <v-list class="mb-4">
             <v-list-item>
-              <v-list-item-avatar>
+              <v-list-item-avatar class="article-author-icon">
                 <img :src="authorIcon" @click="toAuthorArticle" />
               </v-list-item-avatar>
-              <v-list-item-content @click="toAuthorArticle">
+              <v-list-item-content class="article-author-name" @click="toAuthorArticle">
                 <v-list-item-title>{{ authorName }}</v-list-item-title>
                 <v-list-item-subtitle class="to-author">著者関連記事へ</v-list-item-subtitle>
               </v-list-item-content>
@@ -390,6 +390,14 @@ export default {
 };
 </script>
 <style scoped>
+.top-img {
+  height: 25vh;
+}
+@media screen and (min-width: 960px) {
+  .top-img {
+    height: 40vh;
+  }
+}
 .detail-article-wrap {
   max-width: 550px;
   margin-left: auto;
@@ -400,5 +408,11 @@ export default {
 }
 .post-button {
   text-align: center;
+}
+.article-author-icon {
+  cursor: pointer;
+}
+.article-author-name {
+  cursor: pointer;
 }
 </style>

@@ -6,27 +6,31 @@
     <v-card class="parent">
       <v-stepper v-model="page">
         <v-stepper-header>
-          <v-stepper-step :complete="page > 1" step="1"> ようこそ </v-stepper-step>
+          <v-stepper-step color="#61d4b3" :complete="page > 1" step="1">
+            タイムライン
+          </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="page > 2" step="2"> タイムライン </v-stepper-step>
+          <v-stepper-step color="#61d4b3" :complete="page > 2" step="2"> 検索 </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="page > 3" step="3"> 検索 </v-stepper-step>
+          <v-stepper-step color="#61d4b3" :complete="page > 3" step="3"> 投稿 </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="page > 4" step="4"> 投稿 </v-stepper-step>
+          <v-stepper-step color="#61d4b3" :complete="page > 4" step="4"> 時間割 </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="page > 5" step="5"> 時間割 </v-stepper-step>
+          <v-stepper-step color="#61d4b3" :complete="page > 5" step="5">
+            マイページ
+          </v-stepper-step>
 
-          <!-- <v-divider></v-divider>
+          <v-divider></v-divider>
 
-          <v-stepper-step step="6"> おわり </v-stepper-step> -->
+          <v-stepper-step color="#61d4b3" step="6"> PWAの紹介 </v-stepper-step>
         </v-stepper-header>
 
         <v-stepper-items>
@@ -36,7 +40,7 @@
                 <v-img
                   class="white--text"
                   height="60vh"
-                  :src="require('~/assets/howtouse/top.jpg')"
+                  :src="require('~/assets/howtouse/new_timeline.png')"
                   contain
                 ></v-img>
                 <v-card-actions>
@@ -54,7 +58,7 @@
                 <v-img
                   class="white--text"
                   height="60vh"
-                  :src="require('~/assets/howtouse/timeline.jpg')"
+                  :src="require('~/assets/howtouse/new_search.png')"
                   contain
                 ></v-img>
                 <v-card-actions>
@@ -72,7 +76,7 @@
                 <v-img
                   class="white--text"
                   height="60vh"
-                  :src="require('~/assets/howtouse/search.jpg')"
+                  :src="require('~/assets/howtouse/new_post.png')"
                   contain
                 ></v-img>
                 <v-card-actions>
@@ -90,7 +94,7 @@
                 <v-img
                   class="white--text"
                   height="60vh"
-                  :src="require('~/assets/howtouse/post.jpg')"
+                  :src="require('~/assets/howtouse/new_timetable.png')"
                   contain
                 ></v-img>
                 <v-card-actions>
@@ -108,7 +112,7 @@
                 <v-img
                   class="white--text"
                   height="60vh"
-                  :src="require('~/assets/howtouse/timetable.jpg')"
+                  :src="require('~/assets/howtouse/new_mypage.png')"
                   contain
                 ></v-img>
                 <v-card-actions>
@@ -128,7 +132,7 @@
                 <v-img
                   class="white--text"
                   height="60vh"
-                  :src="require('~/assets/howtouse/finish.jpg')"
+                  :src="require('~/assets/howtouse/new_pwa.png')"
                   contain
                 ></v-img>
                 <v-card-actions>

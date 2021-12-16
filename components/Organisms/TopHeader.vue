@@ -1,7 +1,12 @@
 <template>
   <div app>
     <!-- <HowToUse :show="show" /> -->
-    <v-app-bar app color="#fff" :elevation="isTimeline ? 0 : 1" :scroll-target="$refs.maincontents">
+    <v-app-bar
+      app
+      color="accent"
+      :elevation="isTimeline ? 0 : 1"
+      :scroll-target="$refs.maincontents"
+    >
       <!-- :hide-on-scroll="isTimeline ? true : false" -->
       <v-btn icon :ripple="false" :disabled="!isHide" @click="backPage()">
         <v-icon v-show="isHide" color="#78dabe">mdi-arrow-left-bold-outline</v-icon>
@@ -11,9 +16,12 @@
         <span class="header-title">{{ headerName }}</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon :ripple="false" @click.stop="drawer = !drawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      <!-- <v-switch v-model="theme" false :prepend-icon="themeIcon" color="#61d4b3" label=""></v-switch> -->
+      <div class="menu-icon">
+        <v-btn icon :ripple="false" @click.stop="drawer = !drawer">
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+      </div>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" class="drawer-menu" fixed temporary right>
@@ -82,6 +90,7 @@ export default {
   data() {
     return {
       // show: false,
+      theme: false,
       group: null,
       drawer: null,
       subPages: [
@@ -91,13 +100,13 @@ export default {
           icon: 'mdi-account-heart-outline',
           link: 'https://forms.gle/n7ejy3uWDJsJBoP89',
         },
-        // { name: '使い方', icon: 'mdi-help', link: 'howtouse' },
+        { name: 'よくある質問', icon: 'mdi-help', link: 'q&a' },
         { name: '設定', icon: 'mdi-cog-outline', link: 'setting' },
       ],
       contacts: [
         // { name: 'パンプラweb版', icon: 'mdi-web', link: 'webplage' },
         {
-          name: 'twitter',
+          name: 'Twitter',
           icon: 'mdi-twitter',
           link: 'https://twitter.com/pin__plage',
           color: '#1DA1F2',
@@ -147,8 +156,8 @@ export default {
       } else if (pageName === '/club') {
         pageName = '部活・サークル';
         return pageName;
-      } else if (pageName === '/howtouse') {
-        pageName = '使い方';
+      } else if (pageName === '/q&a') {
+        pageName = 'よくある質問';
         return pageName;
       } else if (pageName === '/setting') {
         pageName = '設定';
@@ -157,7 +166,15 @@ export default {
         return '';
       }
     },
+    // themeIcon() {
+    //   return this.theme ? 'mdi-weather-night' : 'mdi-weather-sunny';
+    // },
   },
+  // watch: {
+  //   theme() {
+  //     this.$vuetify.theme.dark = this.theme;
+  //   },
+  // },
   methods: {
     backPage() {
       this.$router.go(-1);
@@ -167,7 +184,7 @@ export default {
         link === 'https://forms.gle/n7ejy3uWDJsJBoP89' ||
         link === 'https://twitter.com/pin__plage'
       ) {
-        location.href = link;
+        window.open(link, null, 'noopener');
       } else {
         this.$router.push({ name: link });
       }
@@ -190,5 +207,10 @@ export default {
 }
 .drawer-menu {
   z-index: 20;
+}
+@media screen and (min-width: 960px) {
+  .menu-icon {
+    display: none;
+  }
 }
 </style>

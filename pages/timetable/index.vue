@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="timetable-wrap">
     <template>
       <v-card-actions class="justify-space-between">
         <v-btn text @click="prev">
@@ -46,6 +46,7 @@
                     v-for="day in weekNames"
                     :key="day"
                     :style="{ background: data[day].color }"
+                    class="timetable-square"
                     @click="detail(data[day], index, day)"
                   >
                     <span class="classTitle">
@@ -240,6 +241,10 @@ export default {
 </script>
 
 <style scoped>
+.timetable-wrap {
+  max-width: 600px;
+  margin: auto;
+}
 table {
   border-collapse: separate;
   border-spacing: 5px;
@@ -291,5 +296,8 @@ table td {
 .bound-leave-to {
   transform: scale(0.9);
   opacity: 0;
+}
+.timetable-square {
+  cursor: pointer;
 }
 </style>

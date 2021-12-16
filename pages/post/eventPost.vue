@@ -33,78 +33,35 @@
             required
           ></v-select>
           <input-place :label="placeholder" @place="placeAdd"></input-place>
-          <v-dialog
-            ref="dialogs"
-            v-model="dateModal"
-            :return-value.sync="date"
-            persistent
-            width="290px"
-          >
-            <template v-slot:activator="{ on }">
-              <v-text-field
-                v-model="date"
-                color="#61d4b3"
-                label="※日程"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" scrollable color="#61d4b3">
-              <v-btn text color="#61d4b3" @click="dateModal = false">Cancel</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn text color="blue" @click="$refs.dialogs.save(date)">OK</v-btn>
-            </v-date-picker>
-          </v-dialog>
-          <div style="display: inline-flex">
-            <v-dialog
-              ref="dialog1"
-              v-model="startTimeModal"
-              :return-value.sync="startTime"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="startTime"
+          <v-row>
+            <v-col cols="1"><v-icon>mdi-calendar</v-icon></v-col>
+            <v-col cols="1"></v-col>
+            <v-col cols="10">
+              <div id="date-picker">
+                <vue-ctk-date-time-picker
+                  v-model="startDate"
+                  label="※日程(始まり)"
                   color="#61d4b3"
-                  label="※時間(始まり)"
-                  prepend-icon="mdi-clock"
-                  readonly
-                  class="mr-3"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-time-picker v-if="startTimeModal" v-model="startTime" full-width color="#61d4b3">
-                <v-btn text color="#61d4b3" @click="startTimeModal = false">Cancel</v-btn>
-                <v-spacer></v-spacer>
-                <v-btn text color="blue" @click="$refs.dialog1.save(startTime)">OK</v-btn>
-              </v-time-picker>
-            </v-dialog>
-            <v-dialog
-              ref="dialog2"
-              v-model="finishTimeModal"
-              :return-value.sync="finishTime"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="finishTime"
+                  :formatted="formatView"
+                  :format="formatStyle"
+                  :locale="lang"
+                ></vue-ctk-date-time-picker>
+              </div>
+            </v-col>
+            <v-col cols="2"></v-col
+            ><v-col cols="10">
+              <div id="date-picker">
+                <vue-ctk-date-time-picker
+                  v-model="finishDate"
+                  label="※日程(終わり)"
                   color="#61d4b3"
-                  label="※時間(終わり)"
-                  prepend-icon
-                  readonly
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-time-picker v-if="finishTimeModal" v-model="finishTime" full-width color="#61d4b3">
-                <v-btn text color="#61d4b3" @click="finishTimeModal = false">Cancel</v-btn>
-                <v-spacer></v-spacer>
-                <v-btn text color="blue" @click="$refs.dialog2.save(finishTime)">OK</v-btn>
-              </v-time-picker>
-            </v-dialog>
-          </div>
+                  :formatted="formatView"
+                  :format="formatStyle"
+                  :locale="lang"
+                ></vue-ctk-date-time-picker>
+              </div>
+            </v-col>
+          </v-row>
           <v-text-field
             v-model="capacity"
             color="#61d4b3"
@@ -143,10 +100,10 @@
                 type == '' ||
                 placeId == '' ||
                 placeName == '' ||
-                date == '' ||
-                startTime == '' ||
-                finishTime == '' ||
-                content == ''
+                startDate == '' ||
+                finishDate == '' ||
+                content == '' ||
+                finishDate - startDate <= 0
               "
               >投稿</post-button
             >
@@ -163,7 +120,6 @@ import PostButton from '~/components/Atoms/AppButton';
 import InputImage from '~/components/Molecules/AppImageInput';
 import InputPlace from '~/components/Molecules/AppInputPlace';
 import Modal from '~/components/Molecules/AppModal';
-
 export default {
   layout: 'onlyBack',
   components: {
@@ -184,9 +140,11 @@ export default {
       placeId: '',
       placeName: '',
       geometry: '',
-      date: '',
-      startTime: '',
-      finishTime: '',
+      lang: 'ja',
+      formatView: 'YYYY年MM月DD日 HH:mm',
+      formatStyle: 'YYYY-MM-DD HH:mm',
+      startDate: '',
+      finishDate: '',
       capacity: '',
       img: '',
       entryFee: '',
@@ -197,9 +155,6 @@ export default {
       publishers: [],
       addButton: '投稿',
       formIsValid: true,
-      dateModal: false,
-      startTimeModal: false,
-      finishTimeModal: false,
       modal: false,
       modalTitle: '',
       modalText: '',
@@ -216,7 +171,6 @@ export default {
       const timestamp = firebase.firestore.Timestamp.now();
       const db = firebase.firestore();
       const user = db.collection('users');
-
       event
         .add({
           title: that.title,
@@ -225,7 +179,10 @@ export default {
           placeId: that.placeId,
           placeName: that.placeName,
           geometry: that.geometry,
-          date: that.date,
+          // YYYY年MM月DD日 HH:MM
+          date: that.startDate,
+          startDate: that.startDate,
+          finishDate: that.finishDate,
           createdAt: timestamp,
           updatedAt: timestamp,
           cancel: false,
@@ -236,8 +193,9 @@ export default {
         })
         .then((doc) => {
           event.doc(doc.id).collection('detail').doc('browse').set({
-            startTime: that.startTime,
-            finishTime: that.finishTime,
+            // YYYY年MM月DD日 HH:MM
+            startTime: that.startDate,
+            finishTime: that.finishDate,
             fee: that.entryFee,
             capacity: that.capacity,
             hpUrl: that.hpUrl,
@@ -282,7 +240,7 @@ export default {
 </script>
 <style scoped>
 .event-post-wrap {
-  max-width: 800px;
+  max-width: 600px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -293,5 +251,24 @@ export default {
 }
 .post-button {
   text-align: center;
+}
+</style>
+<style>
+.field-input[data-v-5b500588] {
+  font-size: 14px;
+  min-height: 50px;
+  padding-bottom: 2px;
+  padding-left: 1px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-bottom: 1px solid rgb(148, 148, 148);
+  border-radius: 0.5px;
+  width: 85.5%;
+}
+.date-time-picker,
+.date-time-picker input,
+.date-time-picker label,
+.date-time-picker p,
+.date-time-picker span {
+  font-family: sans-serif;
 }
 </style>

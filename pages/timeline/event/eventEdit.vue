@@ -1,183 +1,143 @@
 <template>
-  <v-container>
-    <p class="required-phrase">※は必須項目です</p>
-    <v-row justify="center">
-      <v-col cols="12" md="8" sm="6">
-        <v-img v-show="img" :src="img" height="200px"></v-img>
-        <v-btn v-show="img" style="float: right" @click="imgDelete">
-          <v-icon>mdi-delete-empty</v-icon>
-        </v-btn>
-        <v-file-input
-          v-show="!img"
-          color="#61d4b3"
-          accept="image/png, image/jpeg, image/bmp"
-          prepend-icon="mdi-camera"
-          label="画像"
-          :clearable="false"
-          @change="imgAdd"
-        ></v-file-input>
-        <v-text-field
-          v-model="title"
-          color="#61d4b3"
-          label="※イベント名"
-          prepend-icon="mdi-flag-variant"
-          :rules="[() => !!title || requiredText]"
-          required
-        ></v-text-field>
-        <v-select
-          v-model="type"
-          color="#61d4b3"
-          :items="types"
-          sv-model="Type"
-          label="※イベントタイプ"
-          prepend-icon="mdi-content-copy"
-          :rules="[() => !!type || requiredText]"
-          required
-        ></v-select>
-        <div ref="map" />
-        <v-text-field
-          ref="input"
-          v-model="placeName"
-          color="#61d4b3"
-          label="※場所"
-          prepend-icon="mdi-map-marker-radius"
-          :rules="[() => !!placeName || requiredText]"
-          required
-        ></v-text-field>
-        <v-dialog
-          ref="dialogs"
-          v-model="dateModal"
-          :return-value.sync="date"
-          persistent
-          width="290px"
-        >
-          <template v-slot:activator="{ on }">
-            <v-text-field
-              v-model="date"
-              color="#61d4b3"
-              label="※日程"
-              prepend-icon="mdi-calendar"
-              readonly
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="date" scrollable color="#61d4b3">
-            <v-btn text color="#61d4b3" @click="dateModal = false">Cancel</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn text color="blue" @click="$refs.dialogs.save(date)">OK</v-btn>
-          </v-date-picker>
-        </v-dialog>
-        <div style="display: inline-flex">
-          <v-dialog
-            ref="dialog1"
-            v-model="startTimeModal"
-            :return-value.sync="startTime"
-            persistent
-            width="290px"
-          >
-            <template v-slot:activator="{ on }">
-              <v-text-field
-                v-model="startTime"
-                color="#61d4b3"
-                label="※時間(始まり)"
-                prepend-icon="mdi-clock"
-                readonly
-                class="mr-3"
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-time-picker v-if="startTimeModal" v-model="startTime" full-width color="#61d4b3">
-              <v-btn text color="#61d4b3" @click="startTimeModal = false">Cancel</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn text color="blue" @click="$refs.dialog1.save(startTime)">OK</v-btn>
-            </v-time-picker>
-          </v-dialog>
-          <v-dialog
-            ref="dialog2"
-            v-model="finishTimeModal"
-            :return-value.sync="finishTime"
-            persistent
-            width="290px"
-          >
-            <template v-slot:activator="{ on }">
-              <v-text-field
-                v-model="finishTime"
-                color="#61d4b3"
-                label="※時間(終わり)"
-                prepend-icon
-                readonly
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-time-picker v-if="finishTimeModal" v-model="finishTime" full-width color="#61d4b3">
-              <v-btn text color="#61d4b3" @click="finishTimeModal = false">Cancel</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn text color="blue" @click="$refs.dialog2.save(finishTime)">OK</v-btn>
-            </v-time-picker>
-          </v-dialog>
-        </div>
-        <v-text-field
-          v-model="capacity"
-          color="#61d4b3"
-          label="定員"
-          placeholder="ex.特になし,20人"
-          prepend-icon="mdi-account-multiple"
-        ></v-text-field>
-        <v-text-field
-          v-model="entryFee"
-          color="#61d4b3"
-          label="参加費"
-          prepend-icon="mdi-cash-usd"
-        ></v-text-field>
-        <v-text-field
-          v-model="hpUrl"
-          color="#61d4b3"
-          label="ホームページなど（URL）"
-          prepend-icon="mdi-home-circle-outline"
-        ></v-text-field>
-        <v-textarea
-          v-model="content"
-          color="#61d4b3"
-          auto-grow
-          label="※詳細"
-          rows="3"
-          prepend-icon="mdi-pencil"
-          :rules="[() => !!content || requiredText]"
-          required
-        ></v-textarea>
-        <div class="edit-button mb-3">
-          <post-button
-            :button-method="post"
-            :button-type="buttonType"
-            :button-disabled="
-              img == '' ||
-              title == '' ||
-              type == '' ||
-              placeId == '' ||
-              placeName == '' ||
-              date == '' ||
-              startTime == '' ||
-              finishTime == '' ||
-              content == ''
-            "
-            >編集完了</post-button
-          >
-        </div>
-        <div class="cancel-button">
-          <v-btn
-            rounded
-            width="80vw"
-            max-width="500px"
-            color="red lighten-3"
-            class="white--text"
-            :disabled="cancel == true"
-            @click="eventCancel"
-            >イベントを中止にする</v-btn
-          >
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="event-edit-wrap">
+    <v-container>
+      <p class="required-phrase">※は必須項目です</p>
+      <v-row justify="center">
+        <v-col cols="12" md="8" sm="6">
+          <v-img v-show="img" :src="img" class="top-img"></v-img>
+          <v-btn v-show="img" style="float: right" @click="imgDelete">
+            <v-icon>mdi-delete-empty</v-icon>
+          </v-btn>
+          <v-file-input
+            v-show="!img"
+            color="#61d4b3"
+            accept="image/png, image/jpeg, image/bmp"
+            prepend-icon="mdi-camera"
+            label="画像"
+            :clearable="false"
+            @change="imgAdd"
+          ></v-file-input>
+          <v-text-field
+            v-model="title"
+            color="#61d4b3"
+            label="※イベント名"
+            prepend-icon="mdi-flag-variant"
+            :rules="[() => !!title || requiredText]"
+            required
+          ></v-text-field>
+          <v-select
+            v-model="type"
+            color="#61d4b3"
+            :items="types"
+            sv-model="Type"
+            label="※イベントタイプ"
+            prepend-icon="mdi-content-copy"
+            :rules="[() => !!type || requiredText]"
+            required
+          ></v-select>
+          <div ref="map" />
+          <v-text-field
+            ref="input"
+            v-model="placeName"
+            color="#61d4b3"
+            label="※場所"
+            prepend-icon="mdi-map-marker-radius"
+            :rules="[() => !!placeName || requiredText]"
+            required
+          ></v-text-field>
+          <v-row>
+            <v-col cols="1"><v-icon>mdi-calendar</v-icon></v-col>
+            <v-col cols="1"></v-col>
+            <v-col cols="10">
+              <div id="DateTimePicker">
+                <vue-ctk-date-time-picker
+                  v-model="startDate"
+                  label="※日程(始まり)"
+                  color="#61d4b3"
+                  :formatted="formatView"
+                  :format="formatStyle"
+                  :locale="lang"
+                ></vue-ctk-date-time-picker>
+              </div>
+            </v-col>
+            <v-col cols="2"></v-col
+            ><v-col cols="10">
+              <div id="DateTimePicker">
+                <vue-ctk-date-time-picker
+                  v-model="finishDate"
+                  label="※日程(終わり)"
+                  color="#61d4b3"
+                  :formatted="formatView"
+                  :format="formatStyle"
+                  :locale="lang"
+                ></vue-ctk-date-time-picker>
+              </div>
+            </v-col>
+          </v-row>
+          <v-text-field
+            v-model="capacity"
+            color="#61d4b3"
+            label="定員"
+            placeholder="ex.特になし,20人"
+            prepend-icon="mdi-account-multiple"
+          ></v-text-field>
+          <v-text-field
+            v-model="entryFee"
+            color="#61d4b3"
+            label="参加費"
+            prepend-icon="mdi-cash-usd"
+          ></v-text-field>
+          <v-text-field
+            v-model="hpUrl"
+            color="#61d4b3"
+            label="ホームページなど（URL）"
+            prepend-icon="mdi-home-circle-outline"
+          ></v-text-field>
+          <v-textarea
+            v-model="content"
+            color="#61d4b3"
+            auto-grow
+            label="※詳細"
+            rows="3"
+            prepend-icon="mdi-pencil"
+            :rules="[() => !!content || requiredText]"
+            required
+          ></v-textarea>
+          <div class="edit-button mb-3">
+            <post-button
+              :button-method="post"
+              :button-type="buttonType"
+              :button-disabled="
+                img == '' ||
+                title == '' ||
+                type == '' ||
+                placeId == '' ||
+                placeName == '' ||
+                date == '' ||
+                startDate == '' ||
+                finishDate == '' ||
+                content == '' ||
+                finishDate - startDate <= 0
+              "
+              >編集完了</post-button
+            >
+          </div>
+          <div class="cancel-button">
+            <v-btn
+              rounded
+              width="80vw"
+              max-width="500px"
+              color="red lighten-3"
+              class="white--text"
+              :disabled="cancel == true"
+              @click="eventCancel"
+              >イベントを中止にする</v-btn
+            >
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -220,6 +180,11 @@ export default {
       cancel: '',
       startTime: '',
       finishTime: '',
+      lang: 'ja',
+      formatView: 'YYYY年MM月DD日 HH:mm',
+      formatStyle: 'YYYY-MM-DD HH:mm',
+      startDate: '',
+      finishDate: '',
       capacity: '',
       hpUrl: '',
       img: '',
@@ -230,9 +195,6 @@ export default {
       publishers: [],
       addButton: '投稿',
       formIsValid: true,
-      dateModal: false,
-      startTimeModal: false,
-      finishTimeModal: false,
       gmap: {},
       mapAutoComplete: null,
       map: null,
@@ -270,6 +232,8 @@ export default {
         that.placeName = doc.data().placeName;
         that.geometry = doc.data().geometry;
         that.date = doc.data().date;
+        that.startDate = doc.data().startDate;
+        that.finishDate = doc.data().finishDate;
         that.cancel = doc.data().cancel;
         console.log('this.geometry:ddddd ', that.geometry);
       })
@@ -332,7 +296,6 @@ export default {
       const that = this;
       const event = firebase.firestore().collection('events').doc(this.id);
       const timestamp = firebase.firestore.Timestamp.now();
-
       event
         .update({
           title: that.title,
@@ -341,14 +304,17 @@ export default {
           placeId: that.placeId,
           placeName: that.placeName,
           geometry: that.geometry,
-          date: that.date,
+          // 下3つはYYYY-MM-DD HH:MM
+          date: that.startDate,
+          startDate: that.startDate,
+          finishDate: that.finishDate,
           updatedAt: timestamp,
           cancel: false,
         })
         .then(() => {
           event.collection('detail').doc('browse').update({
-            startTime: that.startTime,
-            finishTime: that.finishTime,
+            startTime: that.startDate,
+            finishTime: that.finishDate,
             fee: that.entryFee,
             capacity: that.capacity,
             hpUrl: that.hpUrl,
@@ -402,6 +368,20 @@ export default {
 };
 </script>
 <style scoped>
+.event-edit-wrap {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.top-img {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+}
+@media screen and (min-width: 960px) {
+  .top-img {
+    height: 40vh;
+  }
+}
 .required-phrase {
   margin-bottom: 0;
   margin-left: 4px;

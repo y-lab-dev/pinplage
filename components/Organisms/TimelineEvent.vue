@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="events-view">
     <event-card v-for="(item, index) in eventArray" :key="index" v-bind="item" />
   </div>
 </template>
@@ -36,8 +36,11 @@ export default {
               geometry: doc.data().geometry,
               date: doc.data().date,
               holdDate: doc.data().date,
+              startDate: doc.data().startDate,
+              finishDate: doc.data().finishDate,
               cancel: doc.data().cancel,
               interest: doc.data().interest,
+              createdAt: doc.data().createdAt,
             },
           ];
         });
@@ -45,3 +48,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.events-view {
+  max-width: 550px;
+  margin: auto;
+}
+</style>

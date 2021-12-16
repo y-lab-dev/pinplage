@@ -94,9 +94,11 @@
                 <v-list-item-content class="font-weight-black">公式HP</v-list-item-content>
               </v-list-item>
               <v-list-item>
-                <v-list-item-content class="text-subtitle-2" @click="toLink(jobDetailObject.hp)">{{
-                  jobDetailObject.hp
-                }}</v-list-item-content>
+                <v-list-item-content
+                  class="text-subtitle-2 content-url"
+                  @click="toLink(jobDetailObject.hp)"
+                  >{{ jobDetailObject.hp }}</v-list-item-content
+                >
               </v-list-item>
             </div>
             <div v-if="jobDetailObject.secret">
@@ -348,7 +350,7 @@ export default {
     },
     toLink(link) {
       if (link.match(/^http(s)?/)) {
-        location.href = link;
+        window.open(link, null, 'noopener');
       } else {
         return null;
       }
@@ -408,6 +410,11 @@ export default {
   height: 30vh;
   object-fit: cover;
 }
+@media screen and (min-width: 960px) {
+  .top-img {
+    height: 40vh;
+  }
+}
 .content-divider {
   border-color: #61d4b3;
 }
@@ -422,6 +429,7 @@ export default {
 .content-url {
   color: #00f;
   text-decoration: underline;
+  cursor: pointer;
 }
 .edit-button {
   float: right;

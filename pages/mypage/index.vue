@@ -192,10 +192,20 @@ export default {
   border-radius: 50%;
   background: linear-gradient(45deg, #2cc45e, #e6f938);
 }
-.user-career {
-  margin-top: 5vh;
-  margin-left: 1vw;
-  margin-right: 1vw;
+@media screen and (max-width: 600px) {
+  .user-career {
+    margin-top: 5vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
+  }
+}
+@media screen and (min-width: 600px) {
+  .user-career {
+    max-width: 600px;
+    margin-top: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 .user-tab-title {
   font-size: 0.8rem;

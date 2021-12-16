@@ -17,8 +17,14 @@ export default {
   computed: {
     TimeDiff() {
       const now = dayjs().locale('ja');
-      const diff = dayjs(this.previousDate).locale('ja').from(now);
-      return diff;
+      const postedDate = dayjs(this.previousDate);
+      const compareDate = postedDate.add(1, 'w');
+      if (now.isAfter(compareDate) || now.isSame(compareDate)) {
+        return postedDate.format('YYYY/MM/DD');
+      } else {
+        const diff = dayjs(this.previousDate).locale('ja').from(now);
+        return diff;
+      }
     },
   },
 };

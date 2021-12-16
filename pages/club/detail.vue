@@ -2,14 +2,15 @@
   <div class="detail-wrap">
     <v-carousel cycle height="200" hide-delimiters show-arrows-on-hover class="club-carousel">
       <p class="club-name">
-        <v-avatar class="club-icon" size="30px"><img :src="clubIcon" /></v-avatar>
-        <span>{{ clubName }}</span>
+        <v-avatar class="club-icon" size="30px"><img :src="icon" /></v-avatar>
+        <span>{{ name }}</span>
       </p>
-      <v-carousel-item v-for="(item, index) in clubPictures" :key="index" :src="item" />
+      <v-carousel-item v-for="(item, index) in details.picture" :key="index" :src="item" />
     </v-carousel>
+
     <v-card flat>
-      <v-card-subtitle class="pb-2 club-introduction-title">{{ clubName }}について</v-card-subtitle>
-      <v-card-text class="club-introduction-text">{{ clubIntroduction }}</v-card-text>
+      <v-card-subtitle class="pb-2 club-introduction-title"> {{ name }}について </v-card-subtitle>
+      <v-card-text class="club-introduction-text">{{ details.introduction }}</v-card-text>
       <v-card-actions>
         <v-container fluid class="py-0">
           <v-row justify="center" class="">
@@ -36,7 +37,7 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-subtitle>{{ item.title }}</v-list-item-subtitle>
-            <v-list-item-title>{{ clublistDetails[index] }}</v-list-item-title>
+            <v-list-item-title>{{ details.more[index] }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -45,15 +46,11 @@
 </template>
 
 <script>
-import firebase from '~/plugins/firebase';
+import { mapGetters } from 'vuex';
 export default {
   layout: 'onlyBack',
   data() {
     return {
-      clubIcon: '',
-      clubName: '',
-      clubIntroduction: '',
-      clubPictures: [],
       clubListItems: [
         { title: '活動目標', color: '#E8002B', icon: 'mdi-target' },
         { title: '活動場所', color: '#FA6964', icon: 'mdi-run' },
@@ -61,7 +58,6 @@ export default {
         { title: '活動予算', color: '#e6b422', icon: 'mdi-currency-jpy' },
         { title: '男女比', color: '#3ac6df', icon: 'mdi-human-male-female' },
       ],
-      clublistDetails: [],
       clubLinks: [
         { title: '公式HP', color: '#61D4b3', icon: 'mdi-home', link: '', class: '' },
         { title: 'twitter', color: '#1A91DA', icon: 'mdi-twitter', link: '', class: '' },
@@ -69,36 +65,21 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters({
+      details: 'clubDetails/clubDetails',
+      name: 'clubDetails/name',
+      icon: 'clubDetails/icon',
+    }),
+  },
   created() {
-    const that = this;
-    const clubData = firebase.firestore().collection('circles').doc(that.$route.query);
-    clubData.get().then((doc) => {
-      that.clubIcon = doc.data().icon;
-      that.clubName = doc.data().name;
-    });
-
-    clubData
-      .collection('detail')
-      .doc('browse')
-      .get()
-      .then((doc) => {
-        that.clubPictures = doc.data().picture;
-        that.clubIntroduction = doc.data().introduction;
-        that.clublistDetails = [
-          doc.data().goal,
-          doc.data().place,
-          doc.data().time,
-          doc.data().money,
-          doc.data().number,
-        ];
-        that.clubLinks[0].link = doc.data().link.homepage;
-        that.clubLinks[1].link = doc.data().link.twitter;
-        that.clubLinks[2].link = doc.data().link.instagram;
-      });
+    this.clubLinks[0].link = this.details.link.homepage;
+    this.clubLinks[1].link = this.details.link.twitter;
+    this.clubLinks[2].link = this.details.link.instagram;
   },
   methods: {
     goToLink(link) {
-      location.href = link;
+      window.open(link, null, 'noopener');
     },
   },
 };
@@ -129,7 +110,7 @@ export default {
 }
 @media only screen and (max-device-width: 550px) {
   .club-carousel {
-    height: 300;
+    height: 300 !important;
   }
 }
 .club-icon {

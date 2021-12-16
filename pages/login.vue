@@ -63,7 +63,7 @@ export default {
       inputType: 'text',
       passwordType: 'password',
       buttonType: 'submit',
-      mailPlaceholder: '静大メール（○○@shizuoka.ac.jp）',
+      mailPlaceholder: 'メールアドレス（○○@shizuoka.ac.jp）',
       passwordPlaceholder: 'パスワード（英数字6文字以上）',
       email: '',
       password: '',
@@ -89,7 +89,7 @@ export default {
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(s.)?(inf.)?(coop.)?shizuoka.ac.jp|yuhashi.laboratory@gmail.com|akuz2013zuka.2013@gmail.com|pinplage.dev@gmail.com|ylab.dev.test@gmail.com/
         ).test(val)
       ) {
-        this.emailValidation = '静大メールを入力してください';
+        this.emailValidation = '静大メールアドレス（○○@shizuoka.ac.jp）のみ使用可能です';
         this.completedEmail = false;
         this.check();
       } else {
@@ -104,7 +104,7 @@ export default {
         this.completedPassword = true;
         this.check();
       } else {
-        this.passwordValidation = '英数字６文字以上で入力してください';
+        this.passwordValidation = '英数字6文字以上で入力してください';
         this.completedPassword = false;
         this.check();
       }
@@ -128,7 +128,8 @@ export default {
             if (!user.emailVerified) {
               this.modal = !this.modal;
               this.modalTitle = '認証エラー';
-              this.modalText = '認証メールを確認してください';
+              this.modalText =
+                '認証メールを確認してください。認証メールが届かない場合は、迷惑メールフォルダの確認もお願いします。';
               this.buttonText = 'Ok';
             } else {
               const token = await firebase.auth().currentUser.getIdToken(true);
@@ -146,7 +147,8 @@ export default {
         .catch(() => {
           this.modal = !this.modal;
           this.modalTitle = 'エラー';
-          this.modalText = 'メールアドレスまたはパスワードが違います';
+          this.modalText =
+            'メールアドレスまたはパスワードが違います。メールアドレスで認証がまだの場合は、迷惑メールフォルダを確認してください。';
           this.buttonText = 'Ok';
         });
     },
@@ -170,11 +172,11 @@ export default {
 }
 .validation-email {
   text-align: center;
-  color: red;
+  color: #e81123;
 }
 .validation-password {
   text-align: center;
-  color: red;
+  color: #e81123;
 }
 .login-button-place {
   text-align: center;
@@ -185,7 +187,7 @@ export default {
 }
 .sign-up {
   text-align: center;
-  margin-top: 200px;
+  margin-top: 150px;
   text-decoration: none;
 }
 </style>

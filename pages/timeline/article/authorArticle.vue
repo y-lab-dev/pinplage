@@ -1,52 +1,54 @@
 <template>
-  <v-container class="author-article-back" style="height: 100%" fluid>
-    <v-row justify="center">
-      <v-col>
-        <v-card flat :elevation="3">
-          <v-img height="100px" :src="authorIcon"></v-img>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-img :src="authorIcon"></v-img>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ authorName | authorText }}
-                <v-chip
-                  v-if="articleNumbers >= 5"
-                  class="mb-1"
-                  color="#000000"
-                  label
-                  text-color="white"
-                  x-small
-                  >PRO</v-chip
-                >
-              </v-list-item-title>
-              <!-- <v-list-item-subtitle style="white-space: pre-wrap; word-wrap: break-word">{{
+  <div class="author-wrap">
+    <v-container class="author-article-back" style="height: 100%" fluid>
+      <v-row justify="center">
+        <v-col>
+          <v-card flat :elevation="3">
+            <v-img height="100px" :src="authorIcon"></v-img>
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-img :src="authorIcon"></v-img>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ authorName | authorText }}
+                  <v-chip
+                    v-if="articleNumbers >= 5"
+                    class="mb-1"
+                    color="#000000"
+                    label
+                    text-color="white"
+                    x-small
+                    >PRO</v-chip
+                  >
+                </v-list-item-title>
+                <!-- <v-list-item-subtitle style="white-space: pre-wrap; word-wrap: break-word">{{
                 authorInfo
               }}</v-list-item-subtitle> -->
-            </v-list-item-content>
-          </v-list-item>
-          <v-spacer></v-spacer>
-          <v-divider></v-divider>
-        </v-card>
-        <v-card
-          v-for="item in authorArticleArray"
-          :key="item.articleId"
-          flat
-          class="mt-2 mx-1"
-          :elevation="3"
-          @click="toDetail(item)"
-        >
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.createdAt }}</v-list-item-subtitle>
-            </v-list-item-content>
-            <img width="70px" height="50px" :src="item.mainImg" />
-          </v-list-item> </v-card
-      ></v-col>
-    </v-row>
-  </v-container>
+              </v-list-item-content>
+            </v-list-item>
+            <v-spacer></v-spacer>
+            <v-divider></v-divider>
+          </v-card>
+          <v-card
+            v-for="item in authorArticleArray"
+            :key="item.articleId"
+            flat
+            class="mt-2 mx-1"
+            :elevation="3"
+            @click="toDetail(item)"
+          >
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-subtitle>{{ item.createdAt }}</v-list-item-subtitle>
+              </v-list-item-content>
+              <img width="70px" height="50px" :src="item.mainImg" />
+            </v-list-item> </v-card
+        ></v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -129,5 +131,9 @@ export default {
 <style scoped>
 .author-article-back {
   background-color: #e7e7e75e;
+}
+.author-wrap {
+  max-width: 600px;
+  margin: 0 auto;
 }
 </style>

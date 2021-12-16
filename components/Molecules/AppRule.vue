@@ -345,7 +345,8 @@
 <style scoped>
 .agreement {
   color: black;
-  width: 360px;
+  min-width: 360px;
+  max-width: 1000px;
   height: 1600px;
   margin: auto;
   background-color: white;

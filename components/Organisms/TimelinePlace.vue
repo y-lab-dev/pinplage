@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%">
+  <div class="places-view" style="height: 100%">
     <v-container style="height: 100%" fluid>
       <v-row style="height: 100%">
         <v-col class="pt-0">
@@ -149,5 +149,11 @@ export default {
 .title {
   display: flex;
   align-items: center;
+}
+</style>
+<style scoped>
+.places-view {
+  max-width: 550px;
+  margin: auto;
 }
 </style>
