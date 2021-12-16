@@ -124,23 +124,28 @@
                 </v-row>
                 <v-row align="center">
                   <v-col cols="12" align="center">
-                    <v-dialog v-model="postDialog" persistent max-width="290">
+                    <div class="post-button">
+                      <post-button
+                        :button-method="post"
+                        :button-type="buttonType"
+                        :button-disabled="rating == 0 || placeId == '' || placeName == ''"
+                        >投稿</post-button
+                      >
+                    </div>
+                    <!-- <v-dialog v-model="postDialog" persistent max-width="290">
                       <template v-slot:activator="{ on, attrs }">
-                        <div style="padding: 10px 9px">
-                          <v-btn
-                            rounded
-                            width="80vw"
-                            max-width="500px"
-                            class="white--text button-color center"
-                            outlined
-                            v-bind="attrs"
-                            :type="buttonType"
-                            :disabled="rating == 0 || placeName == ''"
-                            v-on="on"
-                            >投稿</v-btn
-                          >
-                        </div>
-                      </template>
+
+                    <div class="post-button">
+                      <post-button
+                        :button-method="post"
+                        :button-type="buttonType"
+                        :button-disabled="rating == 0 || placeId == '' || placeName == ''"
+                        v-bind="attrs"
+                        v-on="on"
+                        >投稿</post-button
+                      >
+                    </div>
+                    </template>
                       <v-card>
                         <v-card-title>投稿しますか？</v-card-title>
                         <v-card-actions>
@@ -153,7 +158,8 @@
                           >
                         </v-card-actions>
                       </v-card>
-                    </v-dialog>
+                    </v-dialog>  -->
+
                     <template>
                       <Modal
                         :modal-title="modalTitle"
@@ -181,6 +187,7 @@ import Rating from '~/components/Molecules/PostRating';
 import InputImage from '~/components/Molecules/AppImageInput';
 import InputPlace from '~/components/Molecules/AppInputPlace';
 import Modal from '~/components/Molecules/AppModal';
+import PostButton from '~/components/Atoms/AppButton';
 import firebase from '~/plugins/firebase';
 
 const reviewTags = firebase.firestore().collection('reviewTags');
@@ -193,10 +200,11 @@ export default {
     InputImage,
     InputPlace,
     Modal,
+    PostButton,
   },
   data() {
     return {
-      placeholder: '※場所を入力',
+      placeholder: '※場所を入力して選択してください',
       inputType: 'text',
       readonly: false,
       buttonType: 'submit',
@@ -318,13 +326,13 @@ export default {
       let tags = [];
       if (this.content !== '') {
         str = this.content.replace('＃', '#');
-        console.log(str);
+        // console.log(str);
         tags = str.match(/[#＃][Ａ-Ｚａ-ｚA-Za-z一-鿆0-9０-９ぁ-ヶｦ-ﾟー._-]+/gm);
         if (tags) {
           const tags2 = tags.filter((n) => n !== '#');
-          console.log(tags2);
+          // console.log(tags2);
           const arr = this.hashtags.concat(tags2);
-          console.log(arr);
+          // console.log(arr);
           let newHashtags = this.hashtags;
           newHashtags = [...new Set(arr)];
           if (this.hashtags !== newHashtags) {
@@ -451,6 +459,9 @@ input[type='radio'].scene:checked + label {
 .button-color {
   background: linear-gradient(to right, #36aa37 0%, #2da8aa 50%);
   opacity: 0.6;
+}
+.post-button {
+  text-align: center;
 }
 </style>
 <style>

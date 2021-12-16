@@ -29,7 +29,7 @@ export default {
         'post/reviewPost',
         '',
         'post/eventPost',
-        'post/jobPost',
+        '',
       ],
     };
   },
@@ -38,7 +38,7 @@ export default {
       tab: 'timeline/tab',
     }),
     hidden() {
-      if (this.tab === 3) {
+      if (this.tab === 3 || this.tab === 5) {
         return false;
       } else {
         return true;
