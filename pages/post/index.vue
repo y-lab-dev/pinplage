@@ -48,7 +48,7 @@
           </nuxt-link>
         </v-col>
         <v-col cols="6" sm="4" md="4" class="post-card-right">
-          <v-card max-width="170px" @click="clickModal">
+          <v-card max-width="170px" @click="clickModal('circle')">
             <v-img
               class="white--text post-img"
               height="24vh"
@@ -70,16 +70,14 @@
           </nuxt-link>
         </v-col>
         <v-col cols="6" sm="4" md="4" class="post-card-right">
-          <nuxt-link to="post/jobPost">
-            <v-card max-width="170px">
-              <v-img
-                class="white--text post-img"
-                height="24vh"
-                max-width="170px"
-                :src="require('~/assets/post/jobPost.jpg')"
-              ></v-img>
-            </v-card>
-          </nuxt-link>
+          <v-card max-width="170px" @click="clickModal('job')">
+            <v-img
+              class="white--text post-img"
+              height="24vh"
+              max-width="170px"
+              :src="require('~/assets/post/jobPost.jpg')"
+            ></v-img>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -96,13 +94,21 @@ export default {
   data() {
     return {
       modal: false,
-      modalTitle: 'サークル投稿について',
-      modalText: 'サークルに関する情報投稿できる機能は現在準備中です。今しばらくお待ち下さい。',
+      modalTitle: '',
+      modalText: '',
       buttonText: 'OK',
     };
   },
   methods: {
-    clickModal() {
+    clickModal(val) {
+      if (val === 'circle') {
+        this.modalTitle = 'サークル投稿について';
+        this.modalText =
+          'サークルに関する情報投稿できる機能は現在準備中です。今しばらくお待ち下さい。';
+      } else if (val === 'job') {
+        this.modalTitle = 'アルバイト投稿について';
+        this.modalText = 'アルバイトに関する投稿を希望される場合は、お問い合わせください。';
+      }
       this.modal = !this.modal;
     },
   },

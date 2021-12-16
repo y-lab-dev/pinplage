@@ -76,7 +76,6 @@ export default {
       bounds: defaultBounds,
       componentRestrictions: { country: 'jp' },
       types: ['establishment'],
-      strictBounds: true,
     };
     let element = this.$refs.input.$el;
     element = element.querySelector('input');

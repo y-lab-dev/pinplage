@@ -132,7 +132,7 @@ export default {
     return {
       buttonType: 'submit',
       imgPath: 'events/image/',
-      placeholder: '※場所',
+      placeholder: '※場所(入力して選択してください)',
       imgLabel: '画像',
       requiredText: 'この項目は必須です',
       title: '',

@@ -1,5 +1,11 @@
 <template>
   <div class="jobs-view">
+    <div v-if="!jobArray.length">
+      <prompt-card
+        :image="require('~/assets/timeline/job.png')"
+        :message="'現在募集中のアルバイトはありません。'"
+      />
+    </div>
     <v-card
       v-for="item in jobArray"
       :key="item.id"
@@ -9,7 +15,7 @@
     >
       <v-chip v-show="item.isNew" color="green" small outlined class="ml-3 mt-3"> NEW </v-chip>
       <v-chip
-        v-if="item.isRecruit"
+        v-if="item.isPublic"
         :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
         small
         color="red"
@@ -18,7 +24,7 @@
         募集中
       </v-chip>
       <v-chip
-        v-if="!item.isRecruit"
+        v-if="!item.isPublic"
         :class="{ newchip: item.isNew, 'no-newchip': !item.isNew }"
         small
         color="primary"
@@ -57,52 +63,32 @@
   </div>
 </template>
 <script>
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
+import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
+import PromptCard from '~/components/Molecules/PromptCard';
 
-const jobs = firebase.firestore().collection('jobs');
 export default {
-  data() {
-    return {
-      jobArray: [],
-    };
+  components: {
+    PromptCard,
   },
+  computed: {
+    ...mapGetters({
+      jobArray: 'job/recruitArray',
+    }),
+  },
+
   created() {
-    const that = this;
-    jobs
-      .orderBy('createdAt', 'desc')
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          const now = dayjs();
-          const newDate = dayjs(doc.data().createdAt.toDate()).locale('ja').add(1, 'week');
-          const isNew = dayjs(now).isBefore(newDate);
-          that.jobArray = [
-            ...that.jobArray,
-            {
-              id: doc.id,
-              name: doc.data().name,
-              genre: doc.data().genre,
-              img: doc.data().img,
-              placeName: doc.data().placeName,
-              geometry: doc.data().geometry,
-              startTime: doc.data().startTime,
-              endTime: doc.data().endTime,
-              money: doc.data().money,
-              isRecruit: doc.data().isRecruit,
-              isNew,
-            },
-          ];
-        });
-      });
+    this.$store.dispatch('job/getRecruitArray');
   },
+
   methods: {
     tojobDetail(obj) {
       const that = this;
       async function assignment() {
-        await that.$store.commit('job/getData', obj);
+        await that.$store.dispatch('job/getRecruitDetail', obj);
       }
-      assignment().then(this.$router.push('timeline/job/detailjob'));
+      assignment().then(this.$router.push({ name: 'timeline-job-detailJob' }));
       firebase.analytics().logEvent('jobDetail_view', { property: 'jobDetail_view' });
     },
   },
