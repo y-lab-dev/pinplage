@@ -1,5 +1,11 @@
 <template>
   <div class="jobs-view">
+    <div v-if="!jobArray.length">
+      <prompt-card
+        :image="require('~/assets/timeline/job.png')"
+        :message="'現在募集中のアルバイトはありません。'"
+      />
+    </div>
     <v-card
       v-for="item in jobArray"
       :key="item.id"
@@ -60,8 +66,12 @@
 // import dayjs from 'dayjs';
 import { mapGetters } from 'vuex';
 import firebase from '~/plugins/firebase';
+import PromptCard from '~/components/Molecules/PromptCard';
 
 export default {
+  components: {
+    PromptCard,
+  },
   computed: {
     ...mapGetters({
       jobArray: 'job/recruitArray',
