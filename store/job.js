@@ -1,4 +1,5 @@
 import firebase from '@/plugins/firebase';
+const recruitdb = firebase.firestore().collection('recruit');
 
 export const state = () => ({
   jobId: '',
@@ -52,71 +53,65 @@ export const mutations = {
 };
 export const actions = {
   async getRecruitArray({ commit }) {
-    await firebase
-      .firestore()
-      .collection('recruit')
-      .where('isPublic', '==', true)
-      .onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === 'added') {
-            const recruit = change.doc.data();
-            const postedRecruit = {
-              id: change.doc.id,
-              img: recruit.img,
-              genre: recruit.genre,
-              placeName: recruit.placeName,
-              money: recruit.money,
-              remark: recruit.remark,
-              geometry: recruit.geometry,
-              startTime1: recruit.startTime1,
-              endTime1: recruit.endTime1,
-              startTime2: recruit.startTime2,
-              endTime2: recruit.endTime2,
-              startTime3: recruit.startTime3,
-              endTime3: recruit.endTime3,
-              isPublic: recruit.isPublic,
-              poster: recruit.uid,
-              contactEmail: recruit.contactEmail,
-              contactPhone: recruit.contactPhone,
-              contactRemark: recruit.contactRemark,
-              date: change.doc.data({ serverTimestamps: 'estimate' }).createdAt.toDate(),
-            };
-            commit('setRecruitArray', { payload: postedRecruit, target: change.newIndex });
-          } else if (change.type === 'modified') {
-            const recruit = change.doc.data();
-            const modifiedRecruit = {
-              id: change.doc.id,
-              img: recruit.img,
-              genre: recruit.genre,
-              placeName: recruit.placeName,
-              money: recruit.money,
-              remark: recruit.remark,
-              geometry: recruit.geometry,
-              startTime1: recruit.startTime1,
-              endTime1: recruit.endTime1,
-              startTime2: recruit.startTime2,
-              endTime2: recruit.endTime2,
-              startTime3: recruit.startTime3,
-              endTime3: recruit.endTime3,
-              isPublic: recruit.isPublic,
-              poster: recruit.uid,
-              contactEmail: recruit.contactEmail,
-              contactPhone: recruit.contactPhone,
-              contactRemark: recruit.contactRemark,
+    await recruitdb.where('isPublic', '==', true).onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === 'added') {
+          const recruit = change.doc.data();
+          const postedRecruit = {
+            id: change.doc.id,
+            img: recruit.img,
+            genre: recruit.genre,
+            placeName: recruit.placeName,
+            money: recruit.money,
+            remark: recruit.remark,
+            geometry: recruit.geometry,
+            startTime1: recruit.startTime1,
+            endTime1: recruit.endTime1,
+            startTime2: recruit.startTime2,
+            endTime2: recruit.endTime2,
+            startTime3: recruit.startTime3,
+            endTime3: recruit.endTime3,
+            isPublic: recruit.isPublic,
+            poster: recruit.uid,
+            contactEmail: recruit.contactEmail,
+            contactPhone: recruit.contactPhone,
+            contactRemark: recruit.contactRemark,
+            date: change.doc.data({ serverTimestamps: 'estimate' }).createdAt.toDate(),
+          };
+          commit('setRecruitArray', { payload: postedRecruit, target: change.newIndex });
+        } else if (change.type === 'modified') {
+          const recruit = change.doc.data();
+          const modifiedRecruit = {
+            id: change.doc.id,
+            img: recruit.img,
+            genre: recruit.genre,
+            placeName: recruit.placeName,
+            money: recruit.money,
+            remark: recruit.remark,
+            geometry: recruit.geometry,
+            startTime1: recruit.startTime1,
+            endTime1: recruit.endTime1,
+            startTime2: recruit.startTime2,
+            endTime2: recruit.endTime2,
+            startTime3: recruit.startTime3,
+            endTime3: recruit.endTime3,
+            isPublic: recruit.isPublic,
+            poster: recruit.uid,
+            contactEmail: recruit.contactEmail,
+            contactPhone: recruit.contactPhone,
+            contactRemark: recruit.contactRemark,
 
-              date: change.doc.data({ serverTimestamps: 'estimate' }).createdAt.toDate(),
-            };
-            commit('modifyRecruitArray', { payload: modifiedRecruit, target: change.newIndex });
-          } else if (change.type === 'removed') {
-            commit('removeRecruitArray', { target: change.oldIndex });
-          }
-        });
+            date: change.doc.data({ serverTimestamps: 'estimate' }).createdAt.toDate(),
+          };
+          commit('modifyRecruitArray', { payload: modifiedRecruit, target: change.newIndex });
+        } else if (change.type === 'removed') {
+          commit('removeRecruitArray', { target: change.oldIndex });
+        }
       });
+    });
   },
   async getRecruitDetail({ commit }, payload) {
-    await firebase
-      .firestore()
-      .collection('recruit')
+    await recruitdb
       .doc(payload.id)
       .collection('detail')
       .doc('browse')
@@ -138,9 +133,7 @@ export const actions = {
         };
         commit('setRecruitDetail', { payload: recruitDetail });
       });
-    await firebase
-      .firestore()
-      .collection('recruit')
+    await recruitdb
       .doc(payload.id)
       .get()
       .then((doc) => {
