@@ -23,8 +23,8 @@
 export default {
   props: {
     link: {
-      required: false,
       type: String,
+      required: false,
       default: '',
     },
     image: {
