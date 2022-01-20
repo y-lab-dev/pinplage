@@ -1,45 +1,55 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <div class="title">ログイン</div>
-        <template>
-          <Modal
-            :modal-title="modalTitle"
-            :modal-text="modalText"
-            :modal-button="buttonText"
-            :modal-toggle="modal"
-            @changeValue="clickModal()"
-          />
-        </template>
-        <input-text
-          :input-type="inputType"
-          :input-placeholder="mailPlaceholder"
-          :input-value="email"
-          @input="email = $event"
-        ></input-text>
-        <div class="validation-email">{{ emailValidation }}</div>
+      <v-col cols="6">
+        <div class="bg">
+          <div class="bg-main">
+            <p><img src="~/assets/login.png" /></p>
+            <h1>浜キャン生のための<br />モバイルキャンパスアプリ</h1>
+          </div>
+        </div>
+      </v-col>
+      <v-col cols="6">
+        <div class="main">
+          <div class="title">ログイン</div>
+          <template>
+            <Modal
+              :modal-title="modalTitle"
+              :modal-text="modalText"
+              :modal-button="buttonText"
+              :modal-toggle="modal"
+              @changeValue="clickModal()"
+            />
+          </template>
+          <input-text
+            :input-type="inputType"
+            :input-placeholder="mailPlaceholder"
+            :input-value="email"
+            @input="email = $event"
+          ></input-text>
+          <div class="validation-email">{{ emailValidation }}</div>
 
-        <input-text
-          :input-type="passwordType"
-          :input-placeholder="passwordPlaceholder"
-          :input-value="password"
-          @input="password = $event"
-        ></input-text>
-        <div class="validation-password">{{ passwordValidation }}</div>
-        <div class="login-button-place mt-8 mb-2">
-          <sign-in-button
-            :button-method="login"
-            :button-type="buttonType"
-            :button-disabled="loginValidation"
-            >ログインする</sign-in-button
-          >
-        </div>
-        <div class="password-forget text-caption mt-4">
-          <nuxt-link to="resetPassword">パスワードを忘れた方へ</nuxt-link>
-        </div>
-        <div class="sign-up">
-          <nuxt-link to="signUp"><sign-in-button>新規登録</sign-in-button></nuxt-link>
+          <input-text
+            :input-type="passwordType"
+            :input-placeholder="passwordPlaceholder"
+            :input-value="password"
+            @input="password = $event"
+          ></input-text>
+          <div class="validation-password">{{ passwordValidation }}</div>
+          <div class="login-button-place mt-8 mb-2">
+            <sign-in-button
+              :button-method="login"
+              :button-type="buttonType"
+              :button-disabled="loginValidation"
+              >ログインする</sign-in-button
+            >
+          </div>
+          <div class="password-forget text-caption mt-4">
+            <nuxt-link to="resetPassword">パスワードを忘れた方へ</nuxt-link>
+          </div>
+          <div class="sign-up">
+            <nuxt-link to="signUp"><sign-in-button>新規登録</sign-in-button></nuxt-link>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -166,18 +176,6 @@ export default {
 };
 </script>
 <style scoped>
-.title {
-  text-align: center;
-  margin-top: 85px;
-}
-.validation-email {
-  text-align: center;
-  color: #e81123;
-}
-.validation-password {
-  text-align: center;
-  color: #e81123;
-}
 .login-button-place {
   text-align: center;
 }
@@ -191,3 +189,4 @@ export default {
   text-decoration: none;
 }
 </style>
+<style scoped src="@/assets/login.css"></style>
