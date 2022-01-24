@@ -3,8 +3,11 @@
     <v-container>
       <v-row dense>
         <v-col cols="12">
-          <v-card color="#fff">
-            <v-card-title>現在保有しているプラージュ:{{ pointAmount }}</v-card-title>
+          <v-card color="#6ed688">
+            <v-card-title>
+              <p>現在保有しているプラージュ:</p>
+              <p class="plagecl">{{ pointAmount }}</p>
+            </v-card-title>
           </v-card>
         </v-col>
         <v-col cols="12">
@@ -19,7 +22,7 @@
 
                 <v-card-text class="pt-5">
                   パンプラージュ内で次の投稿アクションをする事で得ることが出来る、アプリ内通貨です。<br />
-                  このプラージュショップ内で利用することが出来ます。<br />
+                  このプラージュショップ内で着せ替え等に利用することが出来ます。<br />
                   <span style="color: red">対象の投稿アクション</span><br />
                   ①スレッドの投稿 <br />
                   ②知恵袋の投稿 <br />
@@ -146,3 +149,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.plagecl {
+  position: relative;
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.979);
+}
+</style>
