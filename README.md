@@ -1,6 +1,6 @@
 **これは静岡大学浜松キャンパス生のキャンパスライフを快適にするためのアプリケーションです.**
 
-# Pin plage
+# Pin Plage
 
 Pin Plage を利用してみたい方は[こちら](https://pinplage.mcaexpf.com/)
 
@@ -60,8 +60,6 @@ $ npm run build
 
 This software uses the following open source packages:
 ![image](https://firebasestorage.googleapis.com/v0/b/mcaexpf-2020.appspot.com/o/README%2Ftechnology.png?alt=media&token=1d594a9d-8ff3-4141-b936-99dbc69df0f8)
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 # Contributing
 
