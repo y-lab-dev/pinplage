@@ -23,8 +23,9 @@
 export default {
   props: {
     link: {
-      required: true,
       type: String,
+      required: false,
+      default: '',
     },
     image: {
       required: true,

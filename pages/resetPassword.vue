@@ -1,35 +1,45 @@
 <template>
   <v-container>
     <v-row align-content="center">
-      <v-col cols="12">
-        <div class="title">パスワード再設定</div>
-        <template>
-          <Modal
-            :modal-title="modalTitle"
-            :modal-text="modalText"
-            :modal-button="buttonText"
-            :modal-toggle="modal"
-            @changeValue="clickModal()"
-          />
-        </template>
-        <input-text
-          :input-type="inputType"
-          :input-placeholder="mailPlaceholder"
-          :input-value="email"
-          @input="email = $event"
-        ></input-text>
-        <div class="validation-email">{{ emailValidation }}</div>
-        <div class="reset-button-place mt-4 mb-2">
-          <reset-button
-            :button-method="reset"
-            :button-type="buttonType"
-            :button-disabled="resetValidation"
-            >リセットする</reset-button
-          >
+      <v-col cols="6">
+        <div class="bg">
+          <div class="bg-main">
+            <p><img src="~/assets/login.png" width="70%" /></p>
+            <h1>浜キャン生のための<br />モバイルキャンパスアプリ</h1>
+          </div>
         </div>
-        <br />
-        <div class="to-login">
-          <nuxt-link to="login"><reset-button>ログイン画面へ</reset-button></nuxt-link>
+      </v-col>
+      <v-col cols="6">
+        <div class="main">
+          <div class="title">パスワード再設定</div>
+          <template>
+            <Modal
+              :modal-title="modalTitle"
+              :modal-text="modalText"
+              :modal-button="buttonText"
+              :modal-toggle="modal"
+              @changeValue="clickModal()"
+            />
+          </template>
+          <input-text
+            :input-type="inputType"
+            :input-placeholder="mailPlaceholder"
+            :input-value="email"
+            @input="email = $event"
+          ></input-text>
+          <div class="validation-email">{{ emailValidation }}</div>
+          <div class="reset-button-place mt-4 mb-2">
+            <reset-button
+              :button-method="reset"
+              :button-type="buttonType"
+              :button-disabled="resetValidation"
+              >リセットする</reset-button
+            >
+          </div>
+          <br />
+          <div class="to-login">
+            <nuxt-link to="login"><reset-button>ログイン画面へ</reset-button></nuxt-link>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -107,14 +117,6 @@ export default {
 };
 </script>
 <style scoped>
-.title {
-  text-align: center;
-  margin-top: 65px;
-}
-.validation-email {
-  text-align: center;
-  color: #e81123;
-}
 .reset-button-place {
   text-align: center;
 }
@@ -124,3 +126,4 @@ export default {
   text-decoration: none;
 }
 </style>
+<style scoped src="@/assets/login.css"></style>
