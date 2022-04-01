@@ -71,7 +71,6 @@
   </v-container>
 </template>
 <script>
-import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignUpButton from '~/components/Atoms/AppButton';
 import AppRule from '~/components/Molecules/AppRule';
