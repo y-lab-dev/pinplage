@@ -87,7 +87,7 @@ export const actions = {
   async login({ commit }, payload) {
     await Cookies.remove('email');
     await Cookies.remove('pass');
-    await Cookies.set('accessToken', payload.token, { expires: 90, samesite: 'lax' });
+    await Cookies.set('accessToken', payload.token, { expires: 180, samesite: 'lax' });
     commit('getData', {
       uid: payload.uid,
       email: payload.email,
