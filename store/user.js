@@ -82,9 +82,8 @@ export const mutations = {
 
 export const actions = {
   async login({ commit }, payload) {
-    await Cookies.set('email', payload.email, { expires: 90, samesite: 'lax' });
-    await Cookies.remove('password');
-    await Cookies.set('pass', payload.password, { expires: 90, samesite: 'lax' });
+    await Cookies.remove('email');
+    await Cookies.remove('pass');
     await Cookies.set('accessToken', payload.token, { expires: 90, samesite: 'lax' });
     commit('getData', {
       uid: payload.uid,
