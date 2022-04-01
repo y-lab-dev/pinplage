@@ -55,6 +55,9 @@ export const mutations = {
   switchLogin(state) {
     state.user.isLogin = true;
   },
+  logout(state) {
+    state.user.isLogin = false;
+  },
   setUserInfo(state, payload) {
     state.user.name = payload.name;
     state.user.icon = payload.icon;
@@ -82,10 +85,9 @@ export const mutations = {
 
 export const actions = {
   async login({ commit }, payload) {
-    await Cookies.set('email', payload.email, { expires: 90, samesite: 'lax' });
-    await Cookies.remove('password');
-    await Cookies.set('pass', payload.password, { expires: 90, samesite: 'lax' });
-    await Cookies.set('accessToken', payload.token, { expires: 90, samesite: 'lax' });
+    await Cookies.remove('email');
+    await Cookies.remove('pass');
+    await Cookies.set('accessToken', payload.token, { expires: 180, samesite: 'lax' });
     commit('getData', {
       uid: payload.uid,
       email: payload.email,

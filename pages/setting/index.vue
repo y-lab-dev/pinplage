@@ -59,6 +59,7 @@ export default {
     },
     logout() {
       Cookies.remove('accessToken');
+      this.$store.commit('user/logout');
       this.$router.push({ name: 'login' });
     },
     clickDialog() {

@@ -71,7 +71,6 @@
   </v-container>
 </template>
 <script>
-import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignUpButton from '~/components/Atoms/AppButton';
 import AppRule from '~/components/Molecules/AppRule';
@@ -176,8 +175,6 @@ export default {
             await firebase.auth().onAuthStateChanged((user) => {
               if (user) {
                 that.saveUserData(user);
-                Cookies.set('email', that.email, { expires: 90 });
-                Cookies.set('pass', that.password, { expires: 90 });
               }
               that.modal = !that.modal;
               that.modalTitle = '登録完了';

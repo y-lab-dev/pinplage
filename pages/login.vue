@@ -56,7 +56,6 @@
   </v-container>
 </template>
 <script>
-import Cookies from 'js-cookie';
 import InputText from '~/components/Atoms/AppInput';
 import SignInButton from '~/components/Atoms/AppButton';
 import Modal from '~/components/Molecules/AppModal';
@@ -120,14 +119,6 @@ export default {
       }
     },
   },
-  created() {
-    if (Cookies.get('email') && Cookies.get('pass')) {
-      this.email = Cookies.get('email');
-      this.password = Cookies.get('pass');
-    } else if (Cookies.get('email')) {
-      this.email = Cookies.get('email');
-    }
-  },
   methods: {
     login() {
       firebase
@@ -146,7 +137,6 @@ export default {
               this.$store.dispatch('user/login', {
                 uid: user.uid,
                 email: user.email,
-                password: this.password,
                 token,
               });
               this.$store.dispatch('user/getUserInfo');
