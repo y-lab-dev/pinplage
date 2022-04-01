@@ -55,6 +55,9 @@ export const mutations = {
   switchLogin(state) {
     state.user.isLogin = true;
   },
+  Logout(state) {
+    state.user.isLogin = false;
+  },
   setUserInfo(state, payload) {
     state.user.name = payload.name;
     state.user.icon = payload.icon;
