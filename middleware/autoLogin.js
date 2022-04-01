@@ -1,7 +1,5 @@
 export default function ({ store, redirect }) {
-  if (!store.getters['user/isAuthenticated']) {
-    return redirect('/login');
-  } else {
+  if (store.getters['user/isAuthenticated']) {
     return redirect('/timeline');
   }
 }
