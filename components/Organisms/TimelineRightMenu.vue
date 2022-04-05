@@ -1,4 +1,4 @@
-<template>
+<template fixed>
   <div class="right-menu-wrap">
     <v-card min-width="280px">
       <v-list nav dense>
@@ -102,9 +102,7 @@ export default {
 
 <style>
 .right-menu-wrap {
-  position: sticky;
-  position: -webkit-sticky;
-  top: 55px;
+  position: fixed;
   z-index: 10;
   margin-right: auto;
   padding: 10px 0 0 15px;

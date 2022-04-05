@@ -99,7 +99,7 @@ export default {
   },
   data() {
     return {
-      updatedPoint: '2021-07-20',
+      updatedPoint: '2022-04-05',
       now: dayjs().format('YYYY-MM-DD HH:mm'),
       startTime: dayjs(this.startDate).format('YYYY年MM月DD日 HH:mm'),
       finishTime: dayjs(this.finishDate).format('YYYY年MM月DD日 HH:mm'),

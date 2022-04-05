@@ -16,7 +16,7 @@
         <span class="header-title">{{ headerName }}</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <!-- <v-switch v-model="theme" false :prepend-icon="themeIcon" color="#61d4b3" label=""></v-switch> -->
+      <v-switch v-model="theme" false :prepend-icon="themeIcon" color="#61d4b3" label=""></v-switch>
       <div class="menu-icon">
         <v-btn icon :ripple="false" @click.stop="drawer = !drawer">
           <v-icon>mdi-menu</v-icon>
@@ -170,11 +170,11 @@ export default {
     //   return this.theme ? 'mdi-weather-night' : 'mdi-weather-sunny';
     // },
   },
-  // watch: {
-  //   theme() {
-  //     this.$vuetify.theme.dark = this.theme;
-  //   },
-  // },
+  watch: {
+    theme() {
+      this.$vuetify.theme.dark = this.theme;
+    },
+  },
   methods: {
     backPage() {
       this.$router.go(-1);
