@@ -17,7 +17,6 @@ export const getters = {
     return state.geometry;
   },
   recruitArray(state) {
-    console.log('aa' + state.recruitArray);
     return state.recruitArray;
   },
   recruitDetail(state) {
